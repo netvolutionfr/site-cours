@@ -75,3 +75,4 @@ details.corriges > summary { cursor: pointer; font-weight: 700; font-size: var(-
 .sl-markdown-content figcaption { font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
 .sl-markdown-content table { display: block; overflow-x: auto; }
 .sequence-overview h2 { font-size: var(--sl-text-h4); }
+iframe.brut { width: 100%; min-height: 80vh; border: 0; display: block; }

@@ -13,7 +13,7 @@
    "date": "2026-10-05",
    "pdf": "/nsi/1g/SQ00-distanciel-afficher-ou-renvoyer.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -64,7 +64,7 @@
    "date": "2026-10-02",
    "pdf": "/nsi/1g/SQ00-distanciel-coffre-fort-python.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -155,7 +155,7 @@
    "date": null,
    "pdf": "/nsi/1g/SQ00-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -476,7 +476,7 @@
    "date": null,
    "pdf": "/nsi/1g/SQ01-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -517,7 +517,7 @@
    "date": null,
    "pdf": "/sio/1sio-bloc1/SQ01-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -563,7 +563,7 @@
    "date": "2026-09-17",
    "pdf": "/sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -611,7 +611,7 @@
    "pieces": [
     "/sio/1sio-bloc1/dom-soft-tech.zip"
    ],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -657,7 +657,7 @@
    "date": "2026-10-01",
    "pdf": null,
    "pieces": [],
-   "lien": "/sio/1sio-bloc1/SQ03-P03-distanciel-dom.html",
+   "brut": "/sio/1sio-bloc1/SQ03-P03-distanciel-dom.brut.html",
    "titres": []
   },
   {
@@ -672,7 +672,7 @@
    "date": "2026-10-01",
    "pdf": "/sio/1sio-bloc1/SQ03-P03-dom.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -700,7 +700,7 @@
    "pieces": [
     "/sio/1sio-bloc1/dom-soft-tech.zip"
    ],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -746,7 +746,7 @@
    "date": null,
    "pdf": "/sio/1sio-bloc1/SQ03-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -852,7 +852,7 @@
    "date": null,
    "pdf": "/sio/1sio-bloc3/SQ01-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -968,7 +968,7 @@
    "date": "2026-09-24",
    "pdf": "/sio/1sio-bloc3/SQ02-P02-tp-reperer-sensibiliser.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1014,7 +1014,7 @@
    "date": null,
    "pdf": "/sio/1sio-bloc3/SQ02-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1105,7 +1105,7 @@
    "date": "2026-10-08",
    "pdf": "/sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1151,7 +1151,7 @@
    "date": "2026-10-01",
    "pdf": null,
    "pieces": [],
-   "lien": "/sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique.html",
+   "brut": "/sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique.brut.html",
    "titres": []
   },
   {
@@ -1166,7 +1166,7 @@
    "date": "2026-10-01",
    "pdf": "/sio/1sio-bloc3/SQ03-P01-identite-numerique.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1202,7 +1202,7 @@
    "date": "2026-10-01",
    "pdf": "/sio/1sio-bloc3/SQ03-P02-tp-usurpation.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1248,7 +1248,7 @@
    "date": null,
    "pdf": "/sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1294,7 +1294,7 @@
    "date": null,
    "pdf": "/sio/1sio-bloc3/SQ03-support-eleve.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1420,7 +1420,7 @@
    "date": "2026-10-05",
    "pdf": "/sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,
@@ -1461,7 +1461,7 @@
    "date": "2026-10-06",
    "pdf": "/sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel.pdf",
    "pieces": [],
-   "lien": null,
+   "brut": null,
    "titres": [
     {
      "depth": 3,

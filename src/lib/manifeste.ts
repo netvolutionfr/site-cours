@@ -5,7 +5,7 @@ export interface Titre { depth: number; slug: string; text: string }
 export interface Support {
 	slug: string; matiere: string; classe: string; rubrique: string; sequence: string;
 	titre: string; sousTitre: string; nature: string; date: string | null;
-	pdf: string | null; pieces: string[]; lien: string | null; titres: Titre[];
+	pdf: string | null; pieces: string[]; brut: string | null; titres: Titre[];
 }
 export interface Sequence {
 	id: string; matiere: string; classe: string; rubrique: string; rubriqueLibelle: string;
@@ -32,7 +32,7 @@ export function classes() {
 }
 
 // URL historiques (…/SQ03-P03-dom.html) : liens relatifs entre supports et favoris des élèves.
-export const lienSupport = (s: Support) => s.lien ?? `/${s.slug}.html`;
+export const lienSupport = (s: Support) => `/${s.slug}.html`;
 
 const VARIANTES: Record<string, 'success' | 'note' | 'tip' | 'caution' | 'danger' | 'default'> = {
 	'Cours complet': 'success', Diaporama: 'note', Cours: 'tip', Activité: 'caution', 'À distance': 'danger',

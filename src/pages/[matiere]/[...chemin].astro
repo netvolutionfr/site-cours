@@ -5,16 +5,15 @@ import { Badge, LinkButton } from '@astrojs/starlight/components';
 import { jourFr, lienSupport, parSequence, parSlug, sidebarClasse, supports, variante } from '../../lib/manifeste';
 
 export function getStaticPaths() {
-	return supports
-		.filter((s) => !s.lien)
-		.map((s) => {
-			const [matiere, ...chemin] = s.slug.split('/');
-			return { params: { matiere, chemin: chemin.join('/') }, props: { s } };
-		});
+	return supports.map((s) => {
+		const [matiere, ...chemin] = s.slug.split('/');
+		return { params: { matiere, chemin: chemin.join('/') }, props: { s } };
+	});
 }
 
 const { s } = Astro.props;
-const html = readFileSync(`contenu/pages/${s.slug.replaceAll('/', '--')}.html`, 'utf-8');
+// Page HTML autonome (écrite à la main) : isolée dans une iframe, sinon corps rendu par web.lua.
+const html = s.brut ? '' : readFileSync(`contenu/pages/${s.slug.replaceAll('/', '--')}.html`, 'utf-8');
 const seq = parSequence.get(s.sequence);
 const voisins = seq?.supports ?? [];
 const i = voisins.indexOf(s.slug);
@@ -50,7 +49,7 @@ const voisin = (slug?: string) => {
 			</p>
 		)}
 	</div>
-	<Fragment set:html={html} />
+	{s.brut ? <iframe class="brut" src={s.brut} title={s.titre}></iframe> : <Fragment set:html={html} />}
 </StarlightPage>
 
 <script>
@@ -64,5 +63,32 @@ const voisin = (slug?: string) => {
 			const ex = q.querySelector<HTMLElement>('.explication')!;
 			if (ex.textContent!.trim()) ex.hidden = !ok;
 		});
+	});
+
+	// Page autonome : sans son propre cartouche, à la hauteur de son contenu, au thème du site.
+	document.querySelectorAll<HTMLIFrameElement>('iframe.brut').forEach((f) => {
+		const brancher = () => {
+			const d = f.contentDocument;
+			if (!d?.body || d.location.href === 'about:blank' || f.dataset.branche) return;
+			f.dataset.branche = '1';
+			d.querySelector('body > header')?.remove();
+			d.querySelector('body > footer')?.remove();
+			const theme = () => (d.documentElement.dataset.theme = document.documentElement.dataset.theme);
+			theme();
+			new MutationObserver(theme).observe(document.documentElement, { attributeFilter: ['data-theme'] });
+			const ajuster = () => (f.style.height = `${d.documentElement.scrollHeight}px`);
+			new ResizeObserver(ajuster).observe(d.body);
+			ajuster();
+			// Ancres internes : l'iframe ne défile pas, c'est la page qui doit défiler.
+			d.addEventListener('click', (e) => {
+				const a = (e.target as Element).closest?.('a[href^="#"]');
+				const cible = a && d.getElementById(decodeURIComponent(a.getAttribute('href')!.slice(1)));
+				if (!cible) return;
+				e.preventDefault();
+				scrollTo({ top: f.getBoundingClientRect().top + scrollY + cible.getBoundingClientRect().top - 80, behavior: 'smooth' });
+			});
+		};
+		f.addEventListener('load', brancher);
+		if (f.contentDocument?.readyState === 'complete') brancher();
 	});
 </script>
