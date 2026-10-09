@@ -1,0 +1,23 @@
+---
+import { Badge } from '@astrojs/starlight/components';
+import { jourFr, lienSupport, parSequence, variante, type Support } from '../lib/manifeste';
+
+interface Props { s: Support; avecDate?: boolean; avecSequence?: boolean }
+const { s, avecDate = true, avecSequence = false } = Astro.props;
+const sous = avecSequence ? parSequence.get(s.sequence)?.titre : s.sousTitre;
+---
+
+<li class="ressource">
+	{avecDate && s.date && <time datetime={s.date}>{jourFr(s.date)}</time>}
+	<Badge text={s.nature} variant={variante(s.nature)} />
+	<span class="titre">
+		<a href={lienSupport(s)}>{s.titre}</a>
+		{sous && <small>{sous}</small>}
+	</span>
+	{(s.pdf || s.pieces.length > 0) && (
+		<span class="liens">
+			{s.pdf && <a href={s.pdf}>PDF</a>}
+			{s.pieces.map((p) => <a href={p} download>{p.split('.').pop()!.toUpperCase()}</a>)}
+		</span>
+	)}
+</li>

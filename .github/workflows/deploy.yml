@@ -1,0 +1,36 @@
+# Construit le site Starlight et le publie sur cours.siovision.fr à chaque push sur main
+# (dont les exports poussés par la CI de Prof). Clé restreinte côté serveur : rrsync sur /home/cours/www.
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Déploiement
+        if: env.SSH_KEY != ''
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # Le chemin distant est relatif à /home/cours/www (imposé par rrsync).
+          rsync -rlz --delete -e "ssh -i ~/.ssh/deploy" dist/ cours@serveur.siovision.fr:

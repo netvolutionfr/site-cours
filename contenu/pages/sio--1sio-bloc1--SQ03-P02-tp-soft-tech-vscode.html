@@ -1,0 +1,144 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Se repérer dans les fichiers d’un site existant avec VSCode.</li>
+<li>Modifier du contenu HTML en respectant sa structure, et vérifier le
+résultat dans le navigateur.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Partie 1 de cette séquence : structure HTML, balises courantes,
+indentation (rappelées en express ci-dessous).</li>
+<li>Notion de fichier et de dossier (Bloc 1, SQ01).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Étape 1</td>
+<td>Explorer avant de modifier (10 min)</td>
+</tr>
+<tr>
+<td>Étape 2</td>
+<td>Modifier le contenu (30 min)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Compétence <strong>B1.3 — Développer la présence en ligne de
+l’organisation</strong>, sous-compétence « Participer à l’évolution d’un
+site Web exploitant les données de l’organisation ». Cette activité en
+est une première application concrète : lire un site existant, puis le
+faire évoluer.</p>
+</div>
+<h3 id="consignes-générales">Consignes générales</h3>
+<p><strong>En binôme, en autonomie, durée totale : 40 minutes environ
+(10 min étape 1, 30 min étape 2).</strong> Aucune aide extérieure (IA,
+recherche Internet) n’est autorisée : lire et modifier vous-mêmes le
+code existant est précisément l’objectif.</p>
+<h3 id="rappel-express">Rappel express</h3>
+<ul>
+<li>Une balise a une <strong>ouvrante</strong> et une
+<strong>fermante</strong> (<code>&lt;p&gt;...&lt;/p&gt;</code>), sauf
+les éléments <strong>vides</strong>, qui n’ont pas de fermante
+(<code>&lt;img ...&gt;</code>).</li>
+<li>L’<strong>indentation</strong> montre ce qui est imbriqué dans quoi
+— la respecter, pas seulement la recopier.</li>
+<li>Réflexe permanent : modifier → <strong>enregistrer</strong>
+(<code>Ctrl/Cmd + S</code>) → <strong>rafraîchir le navigateur</strong>
+pour voir le résultat.</li>
+</ul>
+<h3 id="le-projet-soft-tech">Le projet : Soft-Tech</h3>
+<pre class="text"><code>site-reparation/
+├── index.html              (page d&#39;accueil)
+├── assets/
+│   ├── style.css           (CSS commun à tout le site)
+│   └── images/
+├── services/index.html
+│   ├── reparation/index.html
+│   └── entretien/index.html
+├── atelier/index.html
+└── conseils/index.html</code></pre>
+<p>Chaque rubrique a son propre dossier et son propre
+<code>index.html</code> ; une seule feuille de style
+(<code>assets/style.css</code>) est partagée par toutes les pages.
+VSCode s’utilise ici en deux zones : l’<strong>explorateur de
+fichiers</strong> (à gauche) pour l’arborescence, et
+l’<strong>éditeur</strong> (au centre) pour le contenu du fichier
+sélectionné. Pour voir le résultat, ouvrez le fichier <code>.html</code>
+directement dans le navigateur.</p>
+<h3 id="étape-1-explorer-avant-de-modifier">Étape 1 — Explorer avant de
+modifier</h3>
+<p><strong>10 minutes.</strong></p>
+<ol type="1">
+<li>Ouvrez le dossier <code>site-reparation</code> dans VSCode, puis
+<code>index.html</code>.</li>
+<li>Ouvrez ce même fichier dans le navigateur : comparez le code et ce
+qui s’affiche.</li>
+<li>Retrouvez, dans le code, deux balises vues en partie 1
+(<code>h1</code>, <code>p</code>, <code>a</code>, <code>img</code>,
+<code>nav</code>…) et notez à quoi elles correspondent
+visuellement.</li>
+<li>Ouvrez <code>atelier/index.html</code> : notez une différence et un
+point commun avec la page d’accueil (regardez notamment le
+<code>&lt;link&gt;</code> vers le CSS).</li>
+</ol>
+<p><strong>À produire :</strong> ces quatre observations, notées sur
+papier ou dans un fichier texte.</p>
+<p><strong>Critère de réussite de l’étape 1 :</strong> vous savez dire,
+sans rouvrir le code, où se trouve le fichier d’une page donnée, et
+citer deux balises du code en indiquant ce qu’elles produisent à
+l’écran.</p>
+<h3 id="étape-2-modifier-le-contenu">Étape 2 — Modifier le contenu</h3>
+<p><strong>30 minutes.</strong></p>
+<p>Avant de modifier : repérez la balise ouvrante et sa fermante
+correspondante, respectez l’indentation existante. Une balise mal fermée
+ne provoque pas toujours une erreur visible — en cas de doute, comparez
+avec une balise similaire déjà présente ailleurs dans le fichier.</p>
+<ol type="1">
+<li>Dans <code>atelier/index.html</code>, ajoutez une nouvelle
+<code>&lt;section&gt;</code> (après les sections existantes, avant
+<code>&lt;/main&gt;</code>) avec un titre
+<code>&lt;h2&gt;Horaires d&#39;ouverture&lt;/h2&gt;</code> et un paragraphe
+donnant des horaires de votre choix.</li>
+<li>Dans <code>index.html</code> (accueil), modifiez le texte du
+paragraphe <code>introduction</code> pour qu’il mentionne un nouveau
+service au choix (ex. : diagnostic gratuit, devis sous 24h).</li>
+<li>Après chaque modification : enregistrez, rafraîchissez le
+navigateur, vérifiez que la page s’affiche normalement (pas de texte
+disparu, pas de mise en page cassée).</li>
+</ol>
+<p><strong>À produire :</strong> les deux modifications, visibles et
+fonctionnelles dans le navigateur.</p>
+<h3 id="vérification-avant-de-terminer">Vérification avant de
+terminer</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Mes quatre observations de l’étape 1
+sont notées, et je retrouve sans hésiter le fichier correspondant à une
+page du site.</label></li>
+<li><label><input type="checkbox"></input>La nouvelle section « Horaires
+d’ouverture » est visible sur la page atelier.</label></li>
+<li><label><input type="checkbox"></input>Elle est placée après les sections
+existantes, avant <code>&lt;/main&gt;</code>, et son indentation
+respecte celle des sections déjà présentes.</label></li>
+<li><label><input type="checkbox"></input>Le paragraphe d’introduction de
+l’accueil mentionne le nouveau service choisi.</label></li>
+<li><label><input type="checkbox"></input>Les deux pages s’affichent
+normalement dans le navigateur, sans élément cassé.</label></li>
+</ul>
+<p>Si l’un de ces points manque, reprenez votre travail avant de le
+montrer.</p>

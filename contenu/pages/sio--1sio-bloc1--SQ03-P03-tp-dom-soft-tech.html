@@ -1,0 +1,145 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Repérer un élément HTML grâce à son id ou à sa class.</li>
+<li>Lire et compléter un court programme JavaScript qui réagit à un
+clic.</li>
+<li>Vérifier une modification dans le navigateur.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Structure d’une page HTML, balises et attributs.</li>
+<li>Ouvrir un dossier dans VSCode, enregistrer et rafraîchir une
+page.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Étape 1</td>
+<td>Observer l’arbre et les repères (10 min)</td>
+</tr>
+<tr>
+<td>Étape 2</td>
+<td>Modifier un texte avec JavaScript (10 min)</td>
+</tr>
+<tr>
+<td>Étape 3</td>
+<td>Réagir à un clic (15 min)</td>
+</tr>
+<tr>
+<td>Étape 4</td>
+<td>Défi : mettre une prestation en évidence (10 min)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Cette activité est une découverte complémentaire de la séquence Web.
+Elle prépare la lecture des sélecteurs CSS, mais aucune compétence
+nouvelle n’est requise pour poursuivre le projet HTML Soft-Tech.</p>
+</div>
+<h3 id="consignes">Consignes</h3>
+<p><strong>En binôme, sur poste, 45 minutes environ.</strong> Travaillez
+sans IA ni recherche Internet : le but est de lire quelques lignes et de
+vérifier ce que le navigateur fait réellement.</p>
+<p><a href="dom-soft-tech.zip">Télécharger le projet dom-soft-tech
+(ZIP)</a>.</p>
+<p>Extrayez le dossier dom-soft-tech dans votre espace de travail,
+ouvrez-le dans VSCode, puis ouvrez index.html dans un navigateur. Le
+fichier script.js est déjà relié à la page ; conservez les noms d’id et
+de class fournis.</p>
+<p>La feuille de style incluse contient deux classes : masque cache un
+élément, selectionnee le met en évidence. Nous n’étudions pas encore le
+CSS : elles servent seulement à rendre le résultat visible.</p>
+<h3 id="étape-1---observer-les-repères">Étape 1 - Observer les
+repères</h3>
+<p><strong>10 minutes.</strong> Dans index.html, retrouvez le paragraphe
+qui porte l’attribut id=“conseil”, le bouton id=“bouton-conseil” et les
+trois éléments de classe prestation.</p>
+<ol type="1">
+<li>Dans le navigateur, faites un clic droit sur le conseil puis
+choisissez <strong>Inspecter</strong>.</li>
+<li>Repérez l’élément HTML correspondant dans les outils de
+développement.</li>
+<li>Expliquez à votre binôme : pourquoi id=“conseil” est-il écrit une
+fois, alors que class=“prestation” apparaît trois fois ?</li>
+</ol>
+<p><strong>À produire :</strong> une phrase qui distingue le rôle d’un
+id et celui d’une class.</p>
+<h3 id="étape-2---modifier-un-texte">Étape 2 - Modifier un texte</h3>
+<p><strong>10 minutes.</strong> Dans script.js, ajoutez après la ligne
+de commentaire :</p>
+<pre><code>const conseil = document.querySelector(&quot;#conseil&quot;);
+conseil.textContent = &quot;Un conseil : sauvegardez vos données avant toute réparation.&quot;;</code></pre>
+<ol type="1">
+<li>Enregistrez le fichier.</li>
+<li>Rafraîchissez la page.</li>
+<li>Vérifiez que seul le texte du conseil a changé.</li>
+</ol>
+<p><strong>À produire :</strong> le nouveau conseil, visible dans le
+navigateur.</p>
+<h3 id="étape-3---masquer-puis-réafficher-le-conseil">Étape 3 - Masquer
+puis réafficher le conseil</h3>
+<p><strong>15 minutes.</strong> Ajoutez ensuite le code suivant.
+Lisez-le avant de l’exécuter : que va faire la page au premier clic ? au
+second ?</p>
+<pre><code>const bouton = document.querySelector(&quot;#bouton-conseil&quot;);
+
+bouton.addEventListener(&quot;click&quot;, () =&gt; {
+  conseil.classList.toggle(&quot;masque&quot;);
+});</code></pre>
+<ol type="1">
+<li>Enregistrez, rafraîchissez, puis cliquez deux fois sur le
+bouton.</li>
+<li>Décrivez ce que toggle(“masque”) fait à chaque clic.</li>
+<li>Modifiez le texte du bouton pour qu’il soit plus clair : « Afficher
+ou masquer le conseil ».</li>
+</ol>
+<p><strong>À produire :</strong> un bouton fonctionnel et une
+explication de l’alternance observée.</p>
+<h3 id="étape-4---défi-mettre-une-prestation-en-évidence">Étape 4 - Défi
+: mettre une prestation en évidence</h3>
+<p><strong>10 minutes.</strong> Complétez ce code en remplaçant les deux
+points de suspension par les valeurs utiles.</p>
+<pre><code>const prestation = document.querySelector(&quot;...&quot;);
+const boutonPrestation = document.querySelector(&quot;...&quot;);
+
+boutonPrestation.addEventListener(&quot;click&quot;, () =&gt; {
+  prestation.classList.toggle(&quot;selectionnee&quot;);
+});</code></pre>
+<p>Le premier sélecteur doit retrouver la première prestation de la
+page. Le second doit retrouver le bouton prévu. Testez plusieurs
+clics.</p>
+<p><strong>À produire :</strong> le bouton « Mettre en avant une
+prestation » fait apparaître puis disparaître le cadre bleu autour de «
+Diagnostic ».</p>
+<h3 id="vérification-avant-de-terminer">Vérification avant de
+terminer</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Je distingue id (repère unique) et
+class (étiquette partagée).</label></li>
+<li><label><input type="checkbox"></input>Mon texte de conseil est modifié par
+script.js.</label></li>
+<li><label><input type="checkbox"></input>Le premier bouton masque puis
+réaffiche le conseil.</label></li>
+<li><label><input type="checkbox"></input>Le second bouton ajoute puis retire
+la mise en évidence de « Diagnostic ».</label></li>
+<li><label><input type="checkbox"></input>Je sais citer le cycle de
+vérification : enregistrer, rafraîchir, observer.</label></li>
+</ul>
+<p>Si un point manque, reprenez l’étape correspondante avant de montrer
+votre travail.</p>

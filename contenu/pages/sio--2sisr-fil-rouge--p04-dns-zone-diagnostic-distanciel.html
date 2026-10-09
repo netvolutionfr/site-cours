@@ -1,0 +1,135 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Lire des enregistrements d’une zone DNS et corriger deux
+écarts.</li>
+<li>Choisir un contrôle après modification d’un service.</li>
+<li>Distinguer un nom absent d’un serveur injoignable.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Connaître le rôle des enregistrements A, CNAME et MX.</li>
+<li>Aucune VM, commande ni installation n’est nécessaire.</li>
+<li>Toutes les données utiles figurent dans cette fiche.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Demande et zone à examiner</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Corrections et contrôles</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Diagnostic à transmettre</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<p><strong>Travail individuel, environ 1 heure.</strong> Répondre sur
+papier ou dans un document texte ; garder les numéros des questions et
+transmettre par le canal habituel de la classe. Aucun logiciel de
+virtualisation n’est nécessaire. Sans IA ni recherche : la fiche
+contient les rappels utiles.</p>
+<p><strong>Temps conseillé :</strong> 10 min de lecture, 30 min de
+résolution, 10 min de synthèse, 10 min de relecture et de marge.</p>
+<h3 id="demande-de-léquipe">1. Demande de l’équipe</h3>
+<p>Le serveur <code>dns.lab.test</code> (<code>10.77.1.10</code>) publie
+la zone locale <code>lab.test</code>. L’application web a quitté
+<code>10.77.1.30</code> pour <code>10.77.1.31</code>. Le serveur de
+messagerie est <code>mail.lab.test</code> (<code>10.77.1.40</code>). Les
+utilisateurs doivent atteindre le web par <code>web.lab.test</code> et
+<code>www.lab.test</code>, et le domaine doit annoncer <strong>le
+nom</strong> de son serveur mail.</p>
+<p><strong>Repère.</strong> <code>A</code> relie un nom à une adresse
+IPv4. <code>CNAME</code> fait pointer un alias vers un autre nom.
+<code>MX</code> désigne par un nom le serveur qui reçoit les courriels
+d’un domaine. Dans un fichier de zone, un nom complet finit par un
+point. Le numéro de série <code>SOA</code> doit augmenter lors d’une
+modification de la zone.</p>
+<h4 id="document-a-extrait-de-la-zone-avant-intervention">Document A —
+Extrait de la zone avant intervention</h4>
+<pre class="text"><code>$TTL 300
+@    IN SOA   dns.lab.test. admin.lab.test. (
+              2026100601 3600 900 604800 300 )
+@    IN NS    dns.lab.test.
+dns  IN A     10.77.1.10
+web  IN A     10.77.1.30
+www  IN CNAME web.lab.test.
+mail IN A     10.77.1.40
+@    IN MX 10 10.77.1.40</code></pre>
+<h3 id="corriger-et-contrôler">2. Corriger et contrôler</h3>
+<p><strong>1. Lire.</strong> Quel nom du document A représente un alias
+? Vers quel nom pointe-t-il ? Cette question ne dépend pas de la
+correction des deux lignes erronées.</p>
+<p><strong>2. Corriger.</strong> Recopier uniquement les <strong>deux
+lignes</strong> à modifier pour satisfaire la demande de l’équipe.
+Expliquer séparément chaque modification. Le point final des noms
+complets compte.</p>
+<p><strong>3. Versionner.</strong> Proposer une nouvelle valeur pour le
+numéro de série <code>SOA</code>. Pourquoi le modifier ? Cette question
+peut être traitée même si la question 2 est restée sans réponse.</p>
+<p>Après correction, l’administratrice a vérifié la zone et relevé les
+résultats suivants. <strong>Ils sont fournis pour les questions 4 et 5 ;
+utilisez-les même si vos réponses précédentes sont
+différentes.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Résultat après correction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interroger <code>web.lab.test</code> en type <code>A</code></td>
+<td><code>10.77.1.31</code></td>
+</tr>
+<tr>
+<td>Interroger <code>www.lab.test</code> en type <code>CNAME</code></td>
+<td><code>web.lab.test.</code></td>
+</tr>
+<tr>
+<td>Interroger <code>lab.test</code> en type <code>MX</code></td>
+<td><code>10 mail.lab.test.</code></td>
+</tr>
+<tr>
+<td>Interroger <code>absent.lab.test</code> en type <code>A</code></td>
+<td><code>NXDOMAIN</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4. Vérifier.</strong> Quels deux résultats prouvent que la
+nouvelle adresse web et le destinataire du courrier sont publiés ?
+L’alias seul prouve-t-il que le site web répond en HTTP ? Justifier.</p>
+<p><strong>5. Diagnostiquer.</strong> <code>NXDOMAIN</code> pour
+<code>absent.lab.test</code> signifie-t-il que le serveur DNS est
+injoignable ? Quel résultat attendrait-on plutôt si le client ne
+recevait aucune réponse du serveur ?</p>
+<h3 id="restitution">3. Restitution</h3>
+<p>Rédiger <strong>4 à 6 lignes</strong> à destination de
+l’administratrice : changements effectués, ordre de vérification
+(fichier, service, requêtes), conclusion permise par les tests et
+contrôle supplémentaire nécessaire pour confirmer que le site web
+fonctionne.</p>
+<blockquote>
+<p><strong>Critère de réussite.</strong> La synthèse sépare clairement
+publication DNS, réponse du serveur DNS et fonctionnement réel du
+service web.</p>
+</blockquote>

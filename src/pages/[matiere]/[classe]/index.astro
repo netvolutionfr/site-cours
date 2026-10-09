@@ -1,0 +1,54 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import Ressource from '../../../components/Ressource.astro';
+import { classes, parSlug, periode, sequences, sidebarClasse } from '../../../lib/manifeste';
+
+export function getStaticPaths() {
+	return classes().map((c) => ({ params: { matiere: c.matiere, classe: c.classe }, props: c }));
+}
+
+const { matiere, classe, supports } = Astro.props;
+const seqs = sequences.filter((q) => q.matiere === matiere && q.classe === classe);
+const recents = supports.filter((s) => s.date).sort((a, b) => b.date!.localeCompare(a.date!)).slice(0, 5);
+const rubriques = [...new Set(seqs.map((q) => q.rubrique))];
+const plusieurs = rubriques.length > 1;
+const ancre = (id: string) => id.replaceAll('/', '-').toLowerCase();
+const headings = [
+	...(recents.length ? [{ depth: 2, slug: 'recents', text: 'Dernières ressources' }] : []),
+	...rubriques.flatMap((r) => [
+		...(plusieurs ? [{ depth: 2, slug: r || 'general', text: seqs.find((q) => q.rubrique === r)!.rubriqueLibelle }] : []),
+		...seqs.filter((q) => q.rubrique === r).map((q) => ({ depth: plusieurs ? 3 : 2, slug: ancre(q.id), text: q.titre })),
+	]),
+];
+---
+
+<StarlightPage
+	frontmatter={{ title: `${classe.toUpperCase()} — par séquence` }}
+	sidebar={sidebarClasse(matiere, classe)}
+	headings={headings}
+>
+	{recents.length > 0 && (
+		<section class="recents">
+			<h2 id="recents">Dernières ressources</h2>
+			<ul class="res">{recents.map((s) => <Ressource s={s} avecSequence />)}</ul>
+		</section>
+	)}
+	{rubriques.map((r) => (
+		<>
+			{plusieurs && <h2 id={r || 'general'}>{seqs.find((q) => q.rubrique === r)!.rubriqueLibelle}</h2>}
+			{seqs.filter((q) => q.rubrique === r).map((q) => {
+				const liste = q.supports.map((slug) => parSlug.get(slug)!);
+				const Titre = plusieurs ? 'h3' : 'h2';
+				return (
+					<article class="sequence">
+						<Titre id={ancre(q.id)}>{q.titre}</Titre>
+						{periode(q) && <p class="periode">{periode(q)}</p>}
+						<ul class="res">
+							{liste.map((s) => <Ressource s={s} avecDate={s.nature !== 'Cours complet'} />)}
+						</ul>
+					</article>
+				);
+			})}
+		</>
+	))}
+</StarlightPage>

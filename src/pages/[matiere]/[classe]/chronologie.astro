@@ -1,0 +1,30 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import Ressource from '../../../components/Ressource.astro';
+import { classes, jourFr, lundi, sidebarClasse } from '../../../lib/manifeste';
+
+export function getStaticPaths() {
+	return classes().map((c) => ({ params: { matiere: c.matiere, classe: c.classe }, props: c }));
+}
+
+const { matiere, classe, supports } = Astro.props;
+const semaines = new Map<string, typeof supports>();
+for (const s of supports.filter((s) => s.date).sort((a, b) => b.date!.localeCompare(a.date!))) {
+	const l = lundi(s.date!);
+	semaines.set(l, [...(semaines.get(l) ?? []), s]);
+}
+---
+
+<StarlightPage
+	frontmatter={{ title: `${classe.toUpperCase()} — chronologie` }}
+	sidebar={sidebarClasse(matiere, classe)}
+	headings={[...semaines.keys()].map((l) => ({ depth: 2, slug: `s-${l}`, text: `Semaine du ${jourFr(l)}` }))}
+>
+	{semaines.size === 0 && <p>Aucune ressource datée pour l'instant.</p>}
+	{[...semaines].map(([l, liste]) => (
+		<>
+			<h2 id={`s-${l}`} class="semaine">Semaine du {jourFr(l, true)}</h2>
+			<ul class="res">{liste.map((s) => <Ressource s={s} avecSequence />)}</ul>
+		</>
+	))}
+</StarlightPage>

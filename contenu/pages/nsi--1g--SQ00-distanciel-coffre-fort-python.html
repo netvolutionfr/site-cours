@@ -1,0 +1,410 @@
+<p>Le lycée est fermé aujourd’hui. Le coffre-fort de la salle NSI, lui,
+attend : il est fermé par <strong>six serrures</strong>. Chaque serrure
+s’ouvre avec une fonction Python correcte, et chaque serrure ouverte
+révèle une lettre du code secret.</p>
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Écrire une fonction qui <strong>renvoie</strong> un résultat avec
+<code>return</code>.</li>
+<li>Choisir entre plusieurs cas avec <code>if</code>, <code>and</code>,
+<code>or</code>.</li>
+<li>Répéter avec <code>for</code> (accumulateur) et <code>while</code>
+(condition d’arrêt).</li>
+<li>Lire un résultat de test et corriger son programme.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Séquence SQ00 : variables, conditions, boucles, fonctions.</li>
+<li>Un téléphone ou un ordinateur avec une connexion Internet : rien à
+installer.</li>
+</ul>
+</section>
+<section id="parcours-environ-1-heure" class="outline">
+<h3>Parcours (environ 1 heure)</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serrures 1 à 3</td>
+<td>Renvoyer une valeur, choisir entre plusieurs cas</td>
+</tr>
+<tr>
+<td>Serrures 4 et 5</td>
+<td>Répéter avec <code>for</code>, puis avec <code>while</code></td>
+</tr>
+<tr>
+<td>Serrure 6 et bonus</td>
+<td>Construire une chaîne de caractères</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Écrivez votre code dans la zone grise, puis appuyez sur <strong>▶
+Tester</strong> : Python s’exécute dans la page et vérifie votre
+fonction sur plusieurs exemples. Une ligne ✗ indique l’appel qui échoue,
+la valeur attendue et celle obtenue. Le bouton <strong>Exécuter</strong>
+lance votre code sans les tests, pour essayer des <code>print</code>.
+Votre code reste enregistré sur cet appareil si vous fermez la page. Sur
+téléphone, le bouton <strong>⇥ Indenter</strong> insère 4 espaces, et la
+touche Entrée reprend le décalage automatiquement après une ligne qui
+finit par <code>:</code>.</p>
+</div>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Travail personnel, <strong>sans IA</strong> : le but est que vous
+sachiez écrire ces fonctions lundi, seuls, dans Thonny. Si vous bloquez
+plus de 10 minutes sur une serrure, ouvrez l’indice dans les corrigés en
+bas de page, puis passez à la suivante.</p>
+</div>
+<div class="coffre">
+<p><strong>Code du coffre</strong></p>
+</div>
+<h3 id="serrure-1-le-périmètre">Serrure 1 — Le périmètre</h3>
+<p>Écrire la fonction <code>perimetre_carre(cote)</code> qui
+<strong>renvoie</strong> le périmètre d’un carré dont on donne la
+longueur du côté. Par exemple, <code>perimetre_carre(5)</code> vaut
+<code>20</code>.</p>
+<section class="exo-py" data-lettre="O">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def perimetre_carre(cote):
+    # Renvoyer le périmètre du carré
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["perimetre_carre(5) == 20","perimetre_carre(0) == 0","perimetre_carre(2.5) == 10.0"]</script></section>
+<h3 id="serrure-2-le-tarif-du-musée">Serrure 2 — Le tarif du musée</h3>
+<p>Un musée pratique trois tarifs : <strong>5 €</strong> pour les moins
+de 12 ans, <strong>7 €</strong> à partir de 65 ans, <strong>10
+€</strong> pour tous les autres. Écrire la fonction
+<code>tarif(age)</code> qui renvoie le prix à payer.</p>
+<p>Rappel : dès qu’un <code>return</code> est exécuté, la fonction
+s’arrête. Plusieurs <code>if</code> qui renvoient chacun leur résultat
+suffisent. Regardez bien les tests aux âges 12 et 65.</p>
+<section class="exo-py" data-lettre="C">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def tarif(age):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["tarif(8) == 5","tarif(11) == 5","tarif(12) == 10","tarif(40) == 10","tarif(64) == 10","tarif(65) == 7","tarif(80) == 7"]</script></section>
+<h3 id="serrure-3-lescape-game">Serrure 3 — L’escape game</h3>
+<p>Un escape game accepte les joueurs de <strong>16 ans ou
+plus</strong>. Les plus jeunes ne peuvent entrer que s’ils sont
+<strong>accompagnés</strong> d’un adulte. Écrire la fonction
+<code>peut_entrer(age, accompagne)</code> qui renvoie <code>True</code>
+ou <code>False</code> ; le paramètre <code>accompagne</code> vaut
+lui-même <code>True</code> ou <code>False</code>.</p>
+<p>Défi : une seule ligne <code>return</code> suffit, sans
+<code>if</code>.</p>
+<section class="exo-py" data-lettre="T">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def peut_entrer(age, accompagne):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["peut_entrer(17, False) == True","peut_entrer(16, False) == True","peut_entrer(15, False) == False","peut_entrer(15, True) == True","peut_entrer(30, True) == True"]</script></section>
+<h3 id="serrure-4-la-somme-des-entiers">Serrure 4 — La somme des
+entiers</h3>
+<p>Écrire la fonction <code>somme_jusqua(n)</code> qui renvoie la somme
+<code>1 + 2 + 3 + … + n</code>, calculée avec une boucle
+<code>for</code>. Par exemple, <code>somme_jusqua(4)</code> vaut
+<code>1 + 2 + 3 + 4 = 10</code>.</p>
+<p>Pensez à l’<strong>accumulateur</strong> : une variable qui commence
+à <code>0</code> avant la boucle et augmente à chaque tour. Vérifiez
+quelles valeurs prend <code>i</code> dans <code>range(...)</code>.</p>
+<section class="exo-py" data-lettre="E">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def somme_jusqua(n):
+    total = 0
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["somme_jusqua(1) == 1","somme_jusqua(4) == 10","somme_jusqua(10) == 55","somme_jusqua(0) == 0","somme_jusqua(100) == 5050"]</script></section>
+<h3 id="serrure-5-les-bactéries">Serrure 5 — Les bactéries</h3>
+<p>Une population de bactéries <strong>double toutes les
+heures</strong>. Écrire la fonction <code>heures(depart, seuil)</code>
+qui renvoie le nombre d’heures nécessaires pour que la population,
+partie de <code>depart</code> bactéries, atteigne <strong>au
+moins</strong> <code>seuil</code>.</p>
+<p>Exemple : en partant de 1 bactérie, on a 2, puis 4, puis 8, puis 16 :
+il faut <strong>4 heures</strong> pour atteindre au moins 10.</p>
+<p>Le nombre de tours n’est pas connu à l’avance : c’est le travail
+d’une boucle <code>while</code>. Deux variables changent à chaque tour :
+la population et le nombre d’heures.</p>
+<section class="exo-py" data-lettre="T">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def heures(depart, seuil):
+    population = depart
+    nb_heures = 0
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["heures(1, 10) == 4","heures(1, 2) == 1","heures(1, 1) == 0","heures(3, 100) == 6","heures(1, 1000) == 10"]</script></section>
+<h3 id="serrure-6-une-ligne-détoiles">Serrure 6 — Une ligne
+d’étoiles</h3>
+<p>Écrire la fonction <code>ligne(n)</code> qui <strong>renvoie</strong>
+(et n’affiche pas) une chaîne de <code>n</code> étoiles, construite avec
+une boucle, <strong>sans</strong> utiliser <code>&quot;*&quot; * n</code>. Par
+exemple, <code>ligne(3)</code> vaut <code>&quot;***&quot;</code>.</p>
+<p>Même idée qu’un accumulateur, mais avec du texte : on part de la
+chaîne vide <code>&quot;&quot;</code> et on ajoute une étoile à chaque tour avec
+<code>+</code>.</p>
+<section class="exo-py" data-lettre="S">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def ligne(n):
+    resultat = &quot;&quot;
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["ligne(3) == \"***\"","ligne(1) == \"*\"","ligne(0) == \"\"","ligne(10) == \"**********\""]</script></section>
+<h3 id="bonus-des-étoiles-espacées">Bonus — Des étoiles espacées</h3>
+<p>Écrire <code>ligne_espacee(n)</code> qui renvoie <code>n</code>
+étoiles séparées par une espace, <strong>sans espace à la fin</strong> :
+<code>ligne_espacee(3)</code> vaut <code>&quot;* * *&quot;</code>. La première
+étoile, ou la dernière, est un cas particulier.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def ligne_espacee(n):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["ligne_espacee(3) == \"* * *\"","ligne_espacee(1) == \"*\"","ligne_espacee(0) == \"\"","ligne_espacee(5) == \"* * * * *\""]</script></section>
+<p>Pour finir, affichez un escalier en <strong>réutilisant</strong>
+votre fonction <code>ligne</code> : complétez le programme, puis appuyez
+sur <strong>Exécuter</strong>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def ligne(n):
+    # Recopiez ici votre fonction de la serrure 6
+    ...
+
+for i in range(1, 6):
+    print(ligne(i))</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<h3 id="avant-lundi">Avant lundi</h3>
+<p>Rien à envoyer. Notez sur papier ou dans un document le <strong>code
+du coffre</strong>, et pour la serrure qui vous a résisté le plus
+longtemps, l’erreur que vous faisiez et comment vous l’avez trouvée.
+Lundi, nous découvrirons ce que signifie le mot du coffre.</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<p>Ouvrez d’abord l’indice, réessayez, puis seulement la solution.</p>
+<h3 id="serrure-1">Serrure 1</h3>
+<p>Indice : un <code>print</code> affiche le résultat mais ne le renvoie
+pas ; le test attend un <code>return</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> perimetre_carre(cote):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">4</span> <span class="op">*</span> cote</span></code></pre></div>
+<h3 id="serrure-2">Serrure 2</h3>
+<p>Indice : « moins de 12 ans » s’écrit <code>age &lt; 12</code> ; « à
+partir de 65 ans » s’écrit <code>age &gt;= 65</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tarif(age):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">12</span>:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">5</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">65</span>:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">7</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">10</span></span></code></pre></div>
+<h3 id="serrure-3">Serrure 3</h3>
+<p>Indice : on entre si l’âge suffit <strong>ou</strong> si l’on est
+accompagné.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> peut_entrer(age, accompagne):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> age <span class="op">&gt;=</span> <span class="dv">16</span> <span class="kw">or</span> accompagne</span></code></pre></div>
+<h3 id="serrure-4">Serrure 4</h3>
+<p>Indice : <code>range(n)</code> va de <code>0</code> à
+<code>n - 1</code> ; pour aller jusqu’à <code>n</code>, il faut
+<code>range(1, n + 1)</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> somme_jusqua(n):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> total <span class="op">+</span> i</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total</span></code></pre></div>
+<h3 id="serrure-5">Serrure 5</h3>
+<p>Indice : on continue tant que la population est
+<strong>inférieure</strong> au seuil. Si la page signale une boucle
+infinie, vérifiez que <code>population</code> change dans la boucle.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> heures(depart, seuil):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    population <span class="op">=</span> depart</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    nb_heures <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> population <span class="op">&lt;</span> seuil:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        population <span class="op">=</span> population <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        nb_heures <span class="op">=</span> nb_heures <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nb_heures</span></code></pre></div>
+<h3 id="serrure-6">Serrure 6</h3>
+<p>Indice : le <code>return</code> se place <strong>après</strong> la
+boucle, pas dedans.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ligne(n):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        resultat <span class="op">=</span> resultat <span class="op">+</span> <span class="st">&quot;*&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<h3 id="bonus">Bonus</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ligne_espacee(n):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            resultat <span class="op">=</span> resultat <span class="op">+</span> <span class="st">&quot; &quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        resultat <span class="op">=</span> resultat <span class="op">+</span> <span class="st">&quot;*&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+</details>
+<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python… (quelques secondes, une seule fois)</div>
+<script>
+// Exercices Python : Pyodide dans un worker (module, exigé par Pyodide ≥ 314), pour pouvoir arrêter une boucle infinie.
+(() => {
+const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+const DELAI_MS = 4000;
+const HARNESS = String.raw`
+import json, sys
+
+AIDES = {
+    "IndentationError": "Vérifiez les espaces en début de ligne : le bloc sous def, if, for ou while doit être décalé de 4 espaces.",
+    "SyntaxError": "Python ne comprend pas cette ligne : deux-points oubliés après if/for/while/def, parenthèse ou guillemet non fermé ?",
+    "NameError": "Un nom est inconnu : faute de frappe, variable utilisée avant d'avoir reçu une valeur, ou fonction mal nommée ?",
+    "TypeError": "Opération entre types incompatibles (texte et nombre ?) ou mauvais nombre de paramètres.",
+    "ZeroDivisionError": "Division par zéro.",
+    "UnboundLocalError": "Variable utilisée avant d'avoir reçu une valeur dans la fonction : initialisez-la avant la boucle.",
+}
+
+def _msg(e):
+    nom = type(e).__name__
+    ligne = getattr(e, "lineno", None)
+    if ligne is None:
+        tb = e.__traceback__
+        while tb:
+            if tb.tb_frame.f_code.co_filename == "<votre code>":
+                ligne = tb.tb_lineno
+            tb = tb.tb_next
+    texte = f"{nom} : {getattr(e, 'msg', None) or e}"
+    if ligne:
+        texte += f" (ligne {ligne})"
+    return {"texte": texte, "aide": AIDES.get(nom, "")}
+
+def _run(code, tests):
+    ns = {"__name__": "__main__"}
+    r = {"erreur": None, "tests": []}
+    try:
+        exec(compile(code, "<votre code>", "exec"), ns)
+    except BaseException as e:
+        r["erreur"] = _msg(e)
+        return json.dumps(r)
+    for t in tests:
+        appel, attendu = t.rsplit(" == ", 1) if " == " in t else (t, "True")
+        item = {"appel": appel.strip(), "attendu": attendu.strip(), "ok": False, "aide": ""}
+        try:
+            v = eval(appel, ns)
+            item["obtenu"] = repr(v)
+            item["ok"] = bool(v == eval(attendu, ns))
+            if v is None:
+                item["aide"] = "La fonction renvoie None : manque-t-il return ? print affiche, mais ne renvoie pas le résultat."
+        except BaseException as e:
+            m = _msg(e)
+            item["obtenu"], item["aide"] = m["texte"], m["aide"]
+        r["tests"].append(item)
+    return json.dumps(r)
+
+_run(CODE, json.loads(TESTS))
+`;
+const SOURCE_WORKER = `
+import { loadPyodide } from "${PYODIDE}pyodide.mjs";
+const pret = loadPyodide({ indexURL: "${PYODIDE}" });
+pret.then(() => postMessage({ pret: true }), err => postMessage({ echec: String(err) }));
+onmessage = async (e) => {
+  const py = await pret;
+  let sortie = "";
+  py.setStdout({ batched: s => { sortie += s + "\\n"; } });
+  py.setStderr({ batched: s => { sortie += s + "\\n"; } });
+  py.globals.set("CODE", e.data.code);
+  py.globals.set("TESTS", JSON.stringify(e.data.tests));
+  try {
+    const res = py.runPython(e.data.harness);
+    postMessage({ id: e.data.id, sortie, res: JSON.parse(res) });
+  } catch (err) {
+    postMessage({ id: e.data.id, sortie, res: { erreur: { texte: String(err), aide: "" }, tests: [] } });
+  }
+};`;
+const url = URL.createObjectURL(new Blob([SOURCE_WORKER], { type: "text/javascript" }));
+const etat = document.getElementById("py-etat");
+let worker, pret, attente = null, compteur = 0;
+
+function demarrer() {
+  worker = new Worker(url, { type: "module" });
+  worker.onerror = (e) => { etat.textContent = "Python n'a pas pu démarrer (" + (e.message || "erreur") + ") : rechargez la page."; etat.className = "py-etat ko"; };
+  pret = new Promise((ok) => {
+    worker.onmessage = (e) => {
+      if (e.data.pret) { etat.textContent = "Python est prêt."; etat.className = "py-etat ok"; ok(); return; }
+      if (e.data.echec) { etat.textContent = "Python n'a pas pu se charger : vérifiez la connexion puis rechargez la page."; etat.className = "py-etat ko"; return; }
+      if (attente && e.data.id === attente.id) { clearTimeout(attente.minuteur); attente.ok(e.data); attente = null; }
+    };
+  });
+}
+demarrer();
+
+async function executer(code, tests) {
+  await pret;
+  return new Promise((ok) => {
+    const id = ++compteur;
+    const minuteur = setTimeout(() => {
+      worker.terminate();
+      attente = null;
+      etat.textContent = "Redémarrage de Python…"; etat.className = "py-etat";
+      demarrer();
+      ok({ sortie: "", res: { erreur: { texte: "Le programme tourne depuis plus de " + DELAI_MS / 1000 + " secondes et a été arrêté.", aide: "Boucle infinie ? Vérifiez que la condition du while finit par devenir fausse (la variable testée doit changer dans la boucle)." }, tests: [] } });
+    }, DELAI_MS);
+    attente = { id, ok, minuteur };
+    worker.postMessage({ id, code, tests, harness: HARNESS });
+  });
+}
+
+function stocker(cle, valeur) { try { localStorage.setItem(cle, valeur); } catch (e) {} }
+function lire(cle) { try { return localStorage.getItem(cle); } catch (e) { return null; } }
+function texte(balise, contenu, classe) { const el = document.createElement(balise); el.textContent = contenu; if (classe) el.className = classe; return el; }
+
+const lettres = [];
+function majCoffre() {
+  document.querySelectorAll(".coffre").forEach(c => {
+    const cases = c.querySelector(".cases") || c.appendChild(texte("p", "", "cases"));
+    cases.textContent = lettres.map(l => l.ouverte ? l.valeur : "_").join(" ");
+  });
+}
+
+document.querySelectorAll(".exo-py").forEach((exo, i) => {
+  const zone = exo.querySelector("textarea");
+  const depart = zone.value;
+  const cle = "exo-py:" + location.pathname + ":" + i;
+  const sauve = lire(cle);
+  if (sauve !== null) zone.value = sauve;
+  const tests = JSON.parse(exo.querySelector("script.tests").textContent);
+  const sortie = exo.querySelector(".sortie");
+  const resultats = exo.querySelector(".resultats");
+  const lettre = { valeur: exo.dataset.lettre, ouverte: lire(cle + ":ok") === "1" };
+  if (lettre.valeur) lettres.push(lettre);
+
+  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); }
+  zone.addEventListener("input", () => stocker(cle, zone.value));
+  zone.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") { e.preventDefault(); inserer("    "); }
+    if (e.key === "Enter") {
+      const debut = zone.value.lastIndexOf("\n", zone.selectionStart - 1) + 1;
+      const ligne = zone.value.slice(debut, zone.selectionStart);
+      const retrait = ligne.match(/^ */)[0] + (ligne.trimEnd().endsWith(":") ? "    " : "");
+      e.preventDefault(); inserer("\n" + retrait);
+    }
+  });
+
+  exo.querySelector(".barre").addEventListener("click", async (e) => {
+    const action = e.target.dataset.action;
+    if (!action) return;
+    if (action === "indenter") return inserer("    ");
+    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); resultats.replaceChildren(); sortie.hidden = true; } return; }
+    resultats.replaceChildren(texte("p", "Exécution…"));
+    const { sortie: out, res } = await executer(zone.value, action === "tester" ? tests : []);
+    sortie.hidden = !out;
+    sortie.textContent = out;
+    resultats.replaceChildren();
+    if (res.erreur) {
+      resultats.append(texte("p", res.erreur.texte, "ko"));
+      if (res.erreur.aide) resultats.append(texte("p", res.erreur.aide, "aide"));
+      return;
+    }
+    if (action !== "tester") { if (!out) resultats.append(texte("p", "Programme exécuté, rien n'a été affiché.")); return; }
+    const table = document.createElement("table");
+    const entete = table.insertRow();
+    ["", "Appel", "Attendu", "Obtenu"].forEach(t => entete.append(texte("th", t)));
+    res.tests.forEach(t => {
+      const tr = table.insertRow();
+      tr.className = t.ok ? "ok" : "ko";
+      [t.ok ? "✓" : "✗", t.appel, t.attendu, t.obtenu].forEach(v => tr.insertCell().textContent = v);
+      if (t.aide) { const a = table.insertRow(); const c = a.insertCell(); c.colSpan = 4; c.textContent = t.aide; c.className = "aide"; }
+    });
+    resultats.append(table);
+    const reussis = res.tests.filter(t => t.ok).length;
+    if (reussis === res.tests.length) {
+      resultats.append(texte("p", "Tous les tests passent." + (lettre.valeur ? " Serrure ouverte : lettre « " + lettre.valeur + " »." : ""), "ok"));
+      lettre.ouverte = true; stocker(cle + ":ok", "1"); majCoffre();
+    } else {
+      resultats.append(texte("p", reussis + " test(s) sur " + res.tests.length + " : lisez la ligne ✗, corrigez, retestez.", "ko"));
+    }
+  });
+});
+majCoffre();
+})();
+</script>

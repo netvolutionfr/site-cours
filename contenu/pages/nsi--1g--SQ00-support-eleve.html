@@ -1,0 +1,1415 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Situer les grands domaines de la NSI et les parcours possibles après
+la Première.</li>
+<li>Mettre en œuvre une démarche d’observation, d’hypothèse, de test et
+d’explication.</li>
+<li>Écrire, enregistrer et exécuter un programme Python dans
+Thonny.</li>
+<li>Afficher un texte ou le résultat d’un calcul, puis mémoriser et
+modifier une valeur.</li>
+<li>Lire un programme, corriger une erreur simple, écrire un
+<code>if</code> / <code>else</code> indenté, comparer des valeurs et
+combiner des conditions avec <code>and</code>/<code>or</code>, écrire
+une boucle <code>while</code> avec une condition d’arrêt et une boucle
+<code>for</code> sur un intervalle connu à l’avance.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Aucun prérequis en programmation.</li>
+<li>Savoir lire une consigne et utiliser clavier, souris et
+fichiers.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partie 1</td>
+<td>Présentations et découverte de la spécialité NSI</td>
+</tr>
+<tr>
+<td>Partie 2</td>
+<td>Apprendre l’informatique : observer, tester, expliquer</td>
+</tr>
+<tr>
+<td>Partie 3</td>
+<td>Python, Thonny et le premier programme</td>
+</tr>
+<tr>
+<td>Partie 4</td>
+<td>Valeurs, calculs et affichage</td>
+</tr>
+<tr>
+<td>Partie 5</td>
+<td>Variables, lecture et correction</td>
+</tr>
+<tr>
+<td>Partie 6</td>
+<td>Choisir avec <code>if</code></td>
+</tr>
+<tr>
+<td>Partie 7</td>
+<td>Recopier un programme : le nombre mystère</td>
+</tr>
+<tr>
+<td>Partie 8</td>
+<td>Comparer des valeurs</td>
+</tr>
+<tr>
+<td>Partie 9</td>
+<td>Combiner des conditions avec <code>and</code> et
+<code>or</code></td>
+</tr>
+<tr>
+<td>Partie 10</td>
+<td>Répéter avec <code>while</code></td>
+</tr>
+<tr>
+<td>Partie 11</td>
+<td>Parcourir avec <code>for</code></td>
+</tr>
+<tr>
+<td>Partie 12</td>
+<td>Vrai ou faux : le type booléen</td>
+</tr>
+<tr>
+<td>Partie 13</td>
+<td>Définir une fonction</td>
+</tr>
+<tr>
+<td>Partie 14</td>
+<td>Décomposer avant de coder (méthode)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="partie-1-présentations-et-découverte-de-la-spécialité-nsi">Partie 1
+— Présentations et découverte de la spécialité NSI</h3>
+<h4 id="un-premier-temps-pour-faire-connaissance">Un premier temps pour
+faire connaissance</h4>
+<p>La première partie de la séquence installe le cadre de travail :
+l’enseignant, les élèves et la spécialité se présentent. L’enseignant
+est <strong>Stanis Humez</strong> ; son adresse de contact est
+<code>stanis.humez@ac-lille.fr</code>. Le tour de table permet de
+repérer les parcours, les habitudes et les attentes du groupe. Il n’est
+pas évalué : il sert à commencer à construire une manière de travailler
+ensemble.</p>
+<h4 id="définir-linformatique">Définir l’informatique</h4>
+<p>Avant de détailler le programme, le groupe propose une première
+définition de l’informatique. Il ne s’agit pas de trouver immédiatement
+une formule parfaite : chacun écrit une proposition, puis trois élèves
+confrontent leurs idées et conservent une définition commune accompagnée
+d’un exemple.</p>
+<p>L’informatique peut être comprise comme la science et l’ensemble des
+techniques qui permettent de <strong>représenter</strong>,
+<strong>traiter</strong>, <strong>stocker</strong> et
+<strong>transmettre</strong> automatiquement de l’information à l’aide
+de machines et de programmes. Cette définition provisoire sera enrichie
+au fil de l’année : programmer, organiser des données, concevoir un
+réseau ou comprendre le Web sont autant de façons d’aborder cette même
+question.</p>
+<blockquote>
+<p><strong>Activité.</strong> <strong>4 minutes, seul puis à trois. À
+produire :</strong> une définition courte de l’informatique, écrite au
+brouillon, ainsi qu’un exemple. Proposer d’abord une formulation
+personnelle, la comparer à trois, puis retenir une définition
+commune.</p>
+</blockquote>
+<h4 id="ce-que-lon-étudie-en-première-nsi">Ce que l’on étudie en
+Première NSI</h4>
+<p>La spécialité Numérique et sciences informatiques représente
+<strong>4 heures par semaine</strong>. Elle ne se réduit pas à apprendre
+un langage de programmation : elle étudie les idées et les outils qui
+permettent de représenter, traiter, transmettre et organiser
+l’information.</p>
+<p>Les thèmes étudiés se rencontrent et se croisent tout au long de
+l’année :</p>
+<ul>
+<li>les <strong>données</strong> : les organiser, les rechercher et les
+trier ;</li>
+<li>les <strong>algorithmes et la programmation</strong> : décrire une
+méthode, écrire puis mettre au point un programme ;</li>
+<li>le <strong>Web</strong> : comprendre les technologies qui permettent
+de construire une page interactive ;</li>
+<li>les <strong>machines et les réseaux</strong> : découvrir ce qui se
+passe « sous le capot », depuis les composants d’un ordinateur jusqu’aux
+échanges sur un réseau.</li>
+</ul>
+<p>Ces notions permettent notamment d’écrire des programmes Python, de
+réaliser une page Web, de produire une visualisation de données ou de
+comprendre comment un système d’exploitation et un réseau organisent des
+échanges. Les projets donnent un but concret aux notions étudiées : ils
+seront construits progressivement, sans confondre vitesse de réalisation
+et compréhension.</p>
+<h4 id="après-la-première">Après la Première</h4>
+<p>Les élèves qui conservent la spécialité en Terminale la suivent
+<strong>6 heures par semaine</strong>. Ils approfondissent notamment les
+graphes, la récursivité, les bases de données et SQL, et réalisent des
+projets plus ambitieux. Une spécialité arrêtée à la fin de la Première
+compte dans le contrôle continu avec un <strong>coefficient 8</strong> ;
+une spécialité conservée en Terminale donne lieu à une épreuve terminale
+de <strong>coefficient 16</strong>. Ces règles font partie de la
+répartition actuellement publiée par le ministère pour le baccalauréat
+général.</p>
+<h4 id="exercices">Exercices</h4>
+<ol type="1">
+<li><strong>À l’oral, en binôme.</strong> Citer un objet ou un service
+numérique du quotidien et l’associer à un domaine de la NSI : données,
+programmation, Web ou réseaux.</li>
+<li><strong>À l’écrit, sur papier.</strong> Relier les quatre situations
+suivantes à ces domaines : trier une playlist, créer une page
+interactive, écrire un programme et se connecter au Wi-Fi.</li>
+<li><strong>À l’oral, à trois.</strong> Imaginer un projet réalisable
+cette année ; indiquer les deux domaines de la NSI qu’il mobilise et
+justifier ce choix en une phrase.</li>
+</ol>
+<h3 id="partie-2-apprendre-linformatique-observer-tester-expliquer">Partie 2
+— Apprendre l’informatique : observer, tester, expliquer</h3>
+<h4 id="construire-des-modèles-mentaux">Construire des modèles
+mentaux</h4>
+<p>Apprendre l’informatique ne consiste pas à mémoriser une grande liste
+de commandes. Il s’agit de construire progressivement des
+<strong>modèles mentaux</strong> : des explications suffisamment simples
+et fiables pour prévoir ce que fera une machine. Plus tard, une
+affectation, une boucle, une requête HTTP ou un réseau ne seront plus
+une succession de détails ; ils pourront être compris comme des objets
+organisés, liés à un but.</p>
+<p>Une avance initiale en programmation donne parfois l’impression qu’un
+élève est « naturellement doué ». Elle correspond surtout à des modèles
+déjà rencontrés. Les compétences visées se construisent : elles ne
+constituent pas un plafond fixé à l’avance.</p>
+<h4 id="une-démarche-commune-à-toute-linformatique">Une démarche commune
+à toute l’informatique</h4>
+<p>Face à un problème, une erreur ou un résultat surprenant, suivre ce
+cycle :</p>
+<ol type="1">
+<li><strong>observer</strong> précisément ce qui se passe ;</li>
+<li>formuler une <strong>hypothèse</strong> ;</li>
+<li>imaginer le test le plus simple qui peut la confirmer ou l’infirmer
+;</li>
+<li>interpréter le résultat et modifier l’hypothèse si nécessaire ;</li>
+<li>expliquer sa démarche à quelqu’un.</li>
+</ol>
+<p>Cette démarche sert autant pour un programme qui ne fonctionne pas
+que pour un service réseau : « le serveur ne répond pas » devient
+successivement « est-il allumé ? », « a-t-il une adresse IP ? », « le
+port attendu répond-il ? », puis « l’application répond-elle ? ».
+Décomposer évite de modifier de nombreux éléments sans savoir lequel a
+eu un effet.</p>
+<h4 id="le-défi-de-la-boîte-noire">Le défi de la boîte noire</h4>
+<p>Une machine inconnue donne les résultats suivants :
+<code>3 → 10</code>, <code>5 → 26</code>, <code>8 → 65</code>. Il faut
+proposer un résultat pour l’entrée <code>10</code>, mais surtout
+expliquer la démarche de recherche. La règle <code>n² + 1</code> donne
+<code>101</code>, mais les quelques exemples ne suffisent pas à prouver
+que c’est la seule règle possible. Ce constat est utile : une bonne
+réponse en informatique est accompagnée d’un modèle, d’une hypothèse et
+d’un test.</p>
+<h4 id="erreurs-exemples-et-ia">Erreurs, exemples et IA</h4>
+<p>Un <strong>bug</strong> n’est pas un échec : c’est un désaccord entre
+ce qui était attendu et ce que fait réellement la machine. Le débogage
+commence donc par trois questions : qu’observe-t-on ? qu’attendait-on ?
+quel test minimal peut trancher ? Les exemples résolus et leur
+explication sont également utiles au début : ils permettent de
+construire des schémas avant de les réutiliser dans une situation
+nouvelle.</p>
+<p>L’intelligence artificielle peut aider à comprendre, à relire une
+hypothèse ou à proposer une piste de diagnostic. Elle ne doit pas
+exécuter à la place de l’élève la compétence qu’il est précisément en
+train d’acquérir. Une bonne demande commence donc par une tentative
+personnelle et cherche une explication, pas une réponse à recopier.</p>
+<h4 id="exercices-1">Exercices</h4>
+<ol type="1">
+<li><strong>À l’oral, en binôme.</strong> Décrire une erreur utile
+rencontrée dans un contexte quotidien : ce qui était attendu, ce qui a
+été observé, puis le test à essayer.</li>
+<li><strong>À l’écrit, sur papier.</strong> Pour la boîte noire, écrire
+une hypothèse et un test qui pourrait l’infirmer. Expliquer pourquoi les
+trois exemples ne déterminent pas nécessairement une règle unique.</li>
+<li><strong>À l’oral, à trois.</strong> Établir un plan de diagnostic en
+quatre étapes pour la situation « le service ne répond pas », en allant
+du contrôle le plus simple au plus précis.</li>
+</ol>
+<h3 id="partie-3-python-thonny-et-le-premier-programme">Partie 3 —
+Python, Thonny et le premier programme</h3>
+<h4 id="pourquoi-ce-nom">Pourquoi ce nom ?</h4>
+<p>Le nom <strong>Python</strong> est un clin d’œil de son créateur,
+Guido van Rossum, à la troupe humoristique britannique des <strong>Monty
+Python</strong>. Ce n’est ni un sigle ni une référence au serpent : le
+langage porte un nom volontairement mémorable.</p>
+<p>Guido van Rossum a étudié les mathématiques et l’informatique à
+l’université d’Amsterdam, puis a travaillé au CWI, un institut de
+recherche néerlandais. Il y a créé Python au début des années 1990. Il a
+ensuite travaillé dans plusieurs entreprises technologiques, notamment
+Google, Dropbox et Microsoft. Ce parcours rappelle qu’un langage de
+programmation n’est pas seulement une règle d’écriture : il évolue dans
+une communauté, dans des projets et dans des métiers.</p>
+<h4 id="pourquoi-apprendre-python">Pourquoi apprendre Python ?</h4>
+<p>Python sert aujourd’hui à écrire des applications Web, automatiser
+des tâches répétitives, analyser des données, réaliser des simulations
+ou développer des prototypes. Il est aussi très présent dans les projets
+d’intelligence artificielle : il permet de préparer des données,
+d’expérimenter des modèles et de tester rapidement une idée. Sa
+popularité ne signifie pas qu’il est « meilleur » dans toutes les
+situations ; elle garantit en revanche une vaste communauté, beaucoup de
+bibliothèques et de documentation.</p>
+<p>Il est choisi en NSI parce que son écriture est relativement lisible
+pour débuter, tout en étant utilisé bien au-delà du lycée. L’objectif
+n’est pas de réciter sa syntaxe, mais de formuler une instruction
+précise, d’observer son exécution et de comprendre le résultat
+obtenu.</p>
+<p>Un <strong>programme</strong> est une suite d’instructions écrites
+pour résoudre une tâche. Python est un langage interprété : un logiciel
+appelé <strong>interpréteur</strong> lit et exécute les
+instructions.</p>
+<h4 id="thonny-loutil-de-travail">Thonny : l’outil de travail</h4>
+<p>Thonny rassemble :</p>
+<ul>
+<li>un <strong>éditeur</strong> pour écrire et enregistrer le programme
+;</li>
+<li>un bouton d’<strong>exécution</strong> pour demander à Python de le
+lire ;</li>
+<li>une <strong>console</strong> pour observer le résultat ou un message
+d’erreur.</li>
+</ul>
+<figure>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgNTQwIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+CiAgPHRpdGxlIGlkPSJ0aXRsZSI+w4lkaXRldXIgZXQgY29uc29sZSBQeXRob24gZGFucyBUaG9ubnk8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5VbiBwcm9ncmFtbWUgUHl0aG9uIMOpY3JpdCBkYW5zIHVuIMOpZGl0ZXVyIGVzdCBleMOpY3V0w6kgcGFyIGwnaW50ZXJwcsOpdGV1ciBldCBhZmZpY2hlIHVuIHLDqXN1bHRhdCBkYW5zIGxhIGNvbnNvbGUuPC9kZXNjPgogIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iNTQwIiByeD0iMjgiIGZpbGw9IiNGN0Y5RkMiLz4KICA8cmVjdCB4PSIzNiIgeT0iNDIiIHdpZHRoPSI4ODgiIGhlaWdodD0iNDU2IiByeD0iMTgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0I5Q0VGMiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPHBhdGggZD0iTTM2IDExMmg4ODgiIHN0cm9rZT0iI0I5Q0VGMiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPGNpcmNsZSBjeD0iNzQiIGN5PSI3NyIgcj0iMTAiIGZpbGw9IiNEOTVDNTkiLz4KICA8Y2lyY2xlIGN4PSIxMDYiIGN5PSI3NyIgcj0iMTAiIGZpbGw9IiNFNDlBMzgiLz4KICA8Y2lyY2xlIGN4PSIxMzgiIGN5PSI3NyIgcj0iMTAiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSIxODAiIHk9Ijg0IiBmaWxsPSIjMDcxQjUzIiBmb250LWZhbWlseT0iU0YgUHJvIERpc3BsYXksIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI4IiBmb250LXdlaWdodD0iNzAwIj5ib25qb3VyLnB5IOKAlCBUaG9ubnk8L3RleHQ+CiAgPHJlY3QgeD0iNzAiIHk9IjE0NiIgd2lkdGg9IjUxMCIgaGVpZ2h0PSIyNDgiIHJ4PSIxMiIgZmlsbD0iIzExMUMzNCIvPgogIDx0ZXh0IHg9IjEwNiIgeT0iMjEzIiBmaWxsPSIjNUY4REZGIiBmb250LWZhbWlseT0iSmV0QnJhaW5zIE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIzNiI+cHJpbnQ8L3RleHQ+CiAgPHRleHQgeD0iMjE3IiB5PSIyMTMiIGZpbGw9IiNFOUYwRkYiIGZvbnQtZmFtaWx5PSJKZXRCcmFpbnMgTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjM2Ij4oPC90ZXh0PgogIDx0ZXh0IHg9IjI0MiIgeT0iMjEzIiBmaWxsPSIjN0REQzhCIiBmb250LWZhbWlseT0iSmV0QnJhaW5zIE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIzNiI+JnF1b3Q7Qm9uam91ciwgTlNJICEmcXVvdDs8L3RleHQ+CiAgPHRleHQgeD0iNTUyIiB5PSIyMTMiIGZpbGw9IiNFOUYwRkYiIGZvbnQtZmFtaWx5PSJKZXRCcmFpbnMgTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjM2Ij4pPC90ZXh0PgogIDx0ZXh0IHg9IjEwNSIgeT0iMjgwIiBmaWxsPSIjNzE4MDlGIiBmb250LWZhbWlseT0iU0YgUHJvIERpc3BsYXksIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0Ij7DiWRpdGV1ciA6IGonw6ljcmlzIGxlcyBpbnN0cnVjdGlvbnM8L3RleHQ+CiAgPHBhdGggZD0iTTYzMSAyNDZoMTg4IiBzdHJva2U9IiMyODYzQ0MiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0ibTgwOSAyMjUgMjggMjEtMjggMjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI4NjNDQyIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8dGV4dCB4PSI2MzUiIHk9IjIwMyIgZmlsbD0iIzI4NjNDQyIgZm9udC1mYW1pbHk9IlNGIFBybyBEaXNwbGF5LCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNSIgZm9udC13ZWlnaHQ9IjcwMCI+RXjDqWN1dGVyPC90ZXh0PgogIDxyZWN0IHg9IjcwIiB5PSI0MjAiIHdpZHRoPSI4MjAiIGhlaWdodD0iNDgiIHJ4PSI4IiBmaWxsPSIjRUFGMkZGIi8+CiAgPHRleHQgeD0iOTYiIHk9IjQ1NCIgZmlsbD0iIzA3MUI1MyIgZm9udC1mYW1pbHk9IkpldEJyYWlucyBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMjgiPiZndDsmZ3Q7Jmd0OyBCb25qb3VyLCBOU0kgITwvdGV4dD4KICA8dGV4dCB4PSI2MTciIHk9IjQ1NCIgZmlsbD0iIzVGNzE5OCIgZm9udC1mYW1pbHk9IlNGIFBybyBEaXNwbGF5LCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiI+Q29uc29sZSA6IGonb2JzZXJ2ZSBsZSByw6lzdWx0YXQ8L3RleHQ+Cjwvc3ZnPgo=" alt="Un premier programme est écrit dans l’éditeur puis son résultat est lu dans la console." />
+<figcaption aria-hidden="true">Un premier programme est écrit dans
+l’éditeur puis son résultat est lu dans la console.</figcaption>
+</figure>
+<p>Un premier programme peut être aussi court que ceci :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour, NSI !&quot;</span>)</span></code></pre></div>
+<p><code>print</code> est une fonction déjà disponible dans Python. Les
+parenthèses contiennent ce qu’elle doit afficher. Le texte entre
+guillemets est une <strong>chaîne de caractères</strong>.</p>
+<blockquote>
+<p><strong>Activité.</strong> <strong>5 minutes, seul. À produire
+:</strong> un fichier <code>bonjour.py</code> qui affiche un message
+personnalisé. Créer et enregistrer le fichier dans Thonny, exécuter le
+programme, puis modifier le texte, sur son propre poste.</p>
+</blockquote>
+<h4 id="exercices-2">Exercices</h4>
+<ol type="1">
+<li><strong>À l’écrit, sur papier.</strong> Associer correctement les
+mots <em>Python</em>, <em>Thonny</em> et <em>programme</em> à « langage
+», « outil » ou « instructions ».</li>
+<li><strong>À l’écrit, sur papier.</strong> Remettre dans l’ordre les
+actions suivantes : écrire, enregistrer, exécuter et lire la
+console.</li>
+<li><strong>Sur ordinateur, seul.</strong> Créer <code>bonjour.py</code>
+avec deux appels à <code>print</code>, l’enregistrer, l’exécuter et
+vérifier les deux lignes affichées.</li>
+</ol>
+<h3 id="partie-4-valeurs-calculs-et-affichage">Partie 4 — Valeurs,
+calculs et affichage</h3>
+<p>Python peut manipuler des nombres et réaliser des calculs :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">7</span> <span class="op">+</span> <span class="dv">5</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">3</span> <span class="op">*</span> <span class="dv">4</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">17</span> <span class="op">/</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>Les symboles <code>+</code>, <code>-</code>, <code>*</code> et
+<code>/</code> sont des <strong>opérateurs</strong>. Une expression est
+évaluée avant que son résultat ne soit affiché.</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Type Python</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entier</td>
+<td><code>int</code></td>
+<td><code>12</code></td>
+</tr>
+<tr>
+<td>Texte</td>
+<td><code>str</code></td>
+<td><code>&quot;Bonjour&quot;</code></td>
+</tr>
+<tr>
+<td>Booléen</td>
+<td><code>bool</code></td>
+<td><code>True</code> ou <code>False</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p><code>12</code> et <code>&quot;12&quot;</code> ne sont pas la même valeur : le
+premier est un nombre, le second est du texte. Python les traite
+différemment.</p>
+</div>
+<p>La fonction <code>type</code> permet d’observer le type d’une valeur
+:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="dv">12</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="st">&quot;12&quot;</span>))</span></code></pre></div>
+<blockquote>
+<p><strong>Activité.</strong> <strong>6 minutes, seul. À produire
+:</strong> un tableau « prévision / résultat / type » complété. Avant
+chaque exécution, prévoir ce qui apparaîtra dans la console, puis
+vérifier dans Thonny.</p>
+</blockquote>
+<h4 id="exercices-3">Exercices</h4>
+<ol type="1">
+<li><strong>À l’écrit, sur papier.</strong> Prévoir le résultat de
+<code>print(8 - 3)</code> et le justifier en une phrase.</li>
+<li><strong>À l’écrit, sur papier.</strong> Compléter un tableau «
+valeur / résultat affiché / type » pour <code>15</code>,
+<code>&quot;15&quot;</code> et <code>False</code>.</li>
+<li><strong>Sur ordinateur, seul.</strong> Créer <code>calculs.py</code>
+qui affiche <code>7 * 6</code>, puis <code>&quot;7 * 6&quot;</code>, puis le type
+de <code>42</code>. Vérifier les trois résultats dans la console.</li>
+</ol>
+<h3 id="partie-5-variables-lecture-et-correction">Partie 5 — Variables,
+lecture et correction</h3>
+<p>Une <strong>variable</strong> donne un nom à une valeur afin de
+pouvoir la réutiliser :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>prenom <span class="op">=</span> <span class="st">&quot;Ada&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>annee <span class="op">=</span> <span class="dv">2026</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour&quot;</span>, prenom)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(annee <span class="op">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>Le signe <code>=</code> signifie ici « affecter » : la valeur à
+droite est mémorisée sous le nom placé à gauche. Une variable peut
+ensuite recevoir une nouvelle valeur :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> points <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(points)</span></code></pre></div>
+<p>Après la seconde affectation, <code>points</code> vaut
+<code>15</code>.</p>
+<h4 id="prévoir-exécuter-expliquer">Prévoir, exécuter, expliquer</h4>
+<p>Avant de lancer un programme, prendre l’habitude de :</p>
+<ol type="1">
+<li><strong>prévoir</strong> ce qui devrait être affiché ;</li>
+<li><strong>exécuter</strong> dans Thonny ;</li>
+<li><strong>expliquer</strong> l’écart éventuel entre la prévision et le
+résultat.</li>
+</ol>
+<p>Un message d’erreur est une information utile. Par exemple, Python ne
+connaît pas <code>prenom</code> si le programme essaie de l’afficher
+avant de lui avoir donné une valeur : c’est une erreur de nom.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Un programme est lu instruction après
+instruction. Une variable mémorise une valeur ; l’affectation peut la
+remplacer. Tester une petite modification après chaque étape aide à
+comprendre et à corriger.</p>
+</blockquote>
+<h4 id="mélanger-les-types-une-vraie-erreur">Mélanger les types : une
+vraie erreur</h4>
+<p>Additionner un texte et un nombre avec <code>+</code> n’est pas
+autorisé en Python :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;J&#39;ai &quot;</span> <span class="op">+</span> age <span class="op">+</span> <span class="st">&quot; ans&quot;</span>)</span></code></pre></div>
+<p>Cette instruction lève systématiquement une <strong>erreur de
+type</strong> (<code>TypeError</code>) : ce n’est pas une faute de
+frappe ni un cas particulier, <code>+</code> entre un <code>str</code>
+et un <code>int</code> échoue toujours. La correction ne change pas la
+valeur, elle convertit son type avec <code>str()</code> :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;J&#39;ai &quot;</span> <span class="op">+</span> <span class="bu">str</span>(age) <span class="op">+</span> <span class="st">&quot; ans&quot;</span>)</span></code></pre></div>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p><code>+</code> entre deux textes les assemble (<code>&quot;7&quot; + &quot;6&quot;</code>
+donne <code>&quot;76&quot;</code>), <code>+</code> entre deux nombres les
+additionne (<code>7 + 6</code> donne <code>13</code>), mais
+<code>+</code> entre un texte et un nombre est toujours une erreur — il
+n’existe pas de cas où cela fonctionne.</p>
+</div>
+<h4 id="exercices-4">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier.</strong> Prévoir puis vérifier le
+résultat :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nombre <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nombre <span class="op">=</span> nombre <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nombre)</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Corriger le programme
+suivant pour qu’il affiche <code>Bonjour, Ada !</code> :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>prenom <span class="op">=</span> Ada</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour, &quot;</span> prenom <span class="st">&quot;!&quot;</span>)</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire un programme qui
+stocke votre prénom et votre année de naissance, puis affiche un message
+d’accueil et l’année suivante.</p></li>
+<li><p><strong>À l’écrit, sur papier.</strong> Prévoir la valeur finale
+de chaque variable, dans l’ordre :</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> a <span class="op">+</span> b</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a <span class="op">-</span> b</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> a <span class="op">-</span> b</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a, b)</span></code></pre></div></li>
+<li><p><strong>À l’écrit, sur papier.</strong> Pour chaque ligne, dire
+si elle s’exécute ou lève une erreur ; si elle lève une erreur, proposer
+la correction :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="st">&quot;3&quot;</span> <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">&quot;score : &quot;</span> <span class="op">+</span> <span class="dv">12</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="bu">str</span>(<span class="dv">3</span>) <span class="op">+</span> <span class="st">&quot;3&quot;</span></span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Corriger le programme
+suivant pour qu’il s’exécute sans erreur :</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>prenom <span class="op">=</span> <span class="st">&quot;Ada&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">17</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour &quot;</span> <span class="op">+</span> prenom <span class="op">+</span> <span class="st">&quot;, tu as &quot;</span> <span class="op">+</span> age <span class="op">+</span> <span class="st">&quot; ans.&quot;</span>)</span></code></pre></div></li>
+</ol>
+<h3 id="partie-6-choisir-avec-if">Partie 6 — Choisir avec
+<code>if</code></h3>
+<p>Un <code>if</code> permet à un programme de faire des choses
+différentes selon la situation. Il évalue une <strong>expression
+booléenne</strong> — une expression qui vaut <code>True</code> (vrai) ou
+<code>False</code> (faux) — et n’exécute le bloc qui suit que si elle
+est vraie :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">True</span>:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Ce message s&#39;affiche.&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">False</span>:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Ce message ne s&#39;affiche jamais.&quot;</span>)</span></code></pre></div>
+<p><code>else</code> définit ce qui se passe dans l’autre cas :</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">False</span>:</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Bloc du if.&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Bloc du else.&quot;</span>)</span></code></pre></div>
+<h4 id="lindentation-délimite-le-bloc">L’indentation délimite le
+bloc</h4>
+<p>Ce qui est décalé (indenté) après <code>if ... :</code> ou
+<code>else :</code> appartient au bloc correspondant. Une ligne ramenée
+au même niveau que <code>if</code> n’en fait plus partie :</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">True</span>:</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Dans le bloc.&quot;</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Après le bloc.&quot;</span>)</span></code></pre></div>
+<h4 id="une-condition-sur-une-variable">Une condition sur une
+variable</h4>
+<p>Le <code>if</code> peut évaluer une expression portant sur une
+variable, par exemple une comparaison :</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">17</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">18</span>:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Majeur&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Mineur&quot;</span>)</span></code></pre></div>
+<p><code>age &gt;= 18</code> est l’expression booléenne évaluée par le
+<code>if</code> : c’est elle qui vaut <code>True</code> ou
+<code>False</code>, pas <code>age</code> seule.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Un <code>if</code> évalue toujours une
+expression booléenne. Le bloc indenté qui suit ne s’exécute que si elle
+est vraie ; <code>else</code> définit le bloc exécuté sinon.</p>
+</blockquote>
+<h4 id="exercices-5">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier.</strong> Prévoir le résultat puis
+justifier :</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">False</span>:</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;X&quot;</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Y&quot;</span>)</span></code></pre></div></li>
+<li><p><strong>À l’écrit, sur papier.</strong> Pour chaque version, dire
+si elle s’exécute normalement ou provoque une erreur d’indentation :</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Version 1</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">True</span>:</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;ok&quot;</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Version 2</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">True</span>:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;erreur ?&quot;</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Version 3</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">True</span>:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;ok&quot;</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;toujours dans le bloc&quot;</span>)</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire
+<code>majorite.py</code> : créer une variable <code>age</code>, écrire
+un <code>if</code> / <code>else</code> qui affiche <code>&quot;Majeur&quot;</code>
+ou <code>&quot;Mineur&quot;</code> selon sa valeur, puis tester avec deux valeurs
+différentes de <code>age</code>.</p></li>
+</ol>
+<h3 id="partie-7-recopier-un-programme-le-nombre-mystère">Partie 7 —
+Recopier un programme : le nombre mystère</h3>
+<p>Avant Internet, des magazines comme <strong>Hebdogiciel</strong>
+publiaient chaque semaine le code complet de petits jeux, à recopier à
+la main sur son ordinateur (par exemple en BASIC sur Thomson MO5).
+Recopier plusieurs pages n’apprend pas à <em>écrire</em> du code depuis
+rien. Mais un programme assez court, on apprend à le
+<strong>lire</strong>, à <strong>corriger ses fautes de frappe</strong>,
+et à comprendre ce qu’il fait une fois qu’il tourne enfin.</p>
+<p>Le programme suivant est à recopier <strong>intégralement</strong>,
+caractère par caractère, sans le raccourcir ni le simplifier :</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>nombre_mystere <span class="op">=</span> random.randint(<span class="dv">1</span>, <span class="dv">20</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>proposition <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Devine un nombre entre 1 et 20 : &quot;</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> proposition <span class="op">==</span> nombre_mystere:</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Bravo, tu as trouvé !&quot;</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> proposition <span class="op">&lt;</span> nombre_mystere:</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;C&#39;est plus grand !&quot;</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;C&#39;est plus petit !&quot;</span>)</span></code></pre></div>
+<p><code>random.randint</code> tire un nombre entier au hasard entre les
+deux bornes données : à accepter tel quel, sans l’expliquer en détail,
+exactement comme <code>print</code> en son temps.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Recopier un programme entraîne la lecture
+et la correction, pas l’écriture. Une erreur de frappe se corrige une à
+la fois, en relisant à chaque fois le message de Thonny — une erreur
+peut en cacher une autre.</p>
+</blockquote>
+<h4 id="exercice">Exercice</h4>
+<ol type="1">
+<li><strong>Sur ordinateur, seul.</strong> Recopiez le programme
+ci-dessus dans un fichier <code>mystere.py</code>, corrigez les erreurs
+jusqu’à ce qu’il s’exécute sans erreur, puis testez-le plusieurs fois.
+Expliquez ensuite, ligne par ligne, ce que fait chaque instruction.</li>
+</ol>
+<h3 id="partie-8-comparer-des-valeurs">Partie 8 — Comparer des
+valeurs</h3>
+<p>Un programme doit souvent prendre une décision : un âge a-t-il
+atteint une limite ? un score est-il supérieur à un autre ? Pour
+répondre, Python <strong>compare</strong> deux valeurs et produit un
+résultat qui ne peut avoir que deux états : <code>True</code> ou
+<code>False</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Écriture</th>
+<th>Signification</th>
+<th>Exemple</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>==</code></td>
+<td>est égal à</td>
+<td><code>3 == 3</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>est strictement inférieur à</td>
+<td><code>2 &lt; 5</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>est strictement supérieur à</td>
+<td><code>8 &gt; 10</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>est inférieur ou égal à</td>
+<td><code>4 &lt;= 4</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>est supérieur ou égal à</td>
+<td><code>6 &gt;= 9</code></td>
+<td><code>False</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p><code>=</code> et <code>==</code> n’ont pas le même rôle :</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="dv">12</span>       <span class="co"># affectation : score reçoit 12</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>score <span class="op">==</span> <span class="dv">12</span>      <span class="co"># comparaison : score vaut-il 12 ?</span></span></code></pre></div>
+<p>Écrire <code>if score = 12:</code> provoque une erreur de syntaxe :
+un <code>if</code> attend une comparaison, pas une affectation.</p>
+</div>
+<p>Une comparaison devient utile lorsqu’elle commande un <code>if</code>
+/ <code>else</code> :</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">15</span>:</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;L&#39;inscription est possible.&quot;</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;L&#39;inscription n&#39;est pas encore possible.&quot;</span>)</span></code></pre></div>
+<h4 id="exercices-6">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier.</strong> Sans exécuter, indiquer
+<code>True</code> ou <code>False</code> pour chaque ligne :
+<code>12 == 12</code>, <code>12 &lt; 12</code>, <code>4 &lt;= 3</code>,
+<code>9 &gt;= 9</code>, <code>&quot;chat&quot; == &quot;chat&quot;</code>.</p></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Corriger le programme
+suivant pour qu’il affiche <code>Accès autorisé</code> à partir de
+<code>age = 18</code>, puis tester avec <code>age = 17</code> et
+<code>age = 18</code> :</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">18</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> age <span class="op">=</span> <span class="dv">18</span>:</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Accès autorisé&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Accès refusé&quot;</span>)</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire un programme avec
+une variable <code>score</code> qui affiche <code>Réussi</code> si
+<code>score &gt;= 10</code>, sinon <code>À renforcer</code>. Tester avec
+<code>7</code>, <code>10</code> et <code>15</code>.</p></li>
+</ol>
+<h3 id="partie-9-combiner-des-conditions-avec-and-et-or">Partie 9 —
+Combiner des conditions avec <code>and</code> et <code>or</code></h3>
+<p>Certaines décisions dépendent de <strong>plusieurs</strong>
+conditions à la fois. Python combine des comparaisons avec
+<code>and</code> (« et ») et <code>or</code> (« ou ») :</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>a_autorisation <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">16</span> <span class="kw">and</span> a_autorisation:</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Accès autorisé&quot;</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Accès refusé&quot;</span>)</span></code></pre></div>
+<p><code>and</code> exige que <strong>les deux</strong> expressions
+soient vraies pour que le tout le soit ; <code>or</code> suffit
+qu’<strong>une seule</strong> des deux le soit.</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Vrai quand…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a and b</code></td>
+<td><code>a</code> est vrai <strong>et</strong> <code>b</code> est
+vrai</td>
+</tr>
+<tr>
+<td><code>a or b</code></td>
+<td><code>a</code> est vrai <strong>ou</strong> <code>b</code> est vrai
+(ou les deux)</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>jour <span class="op">=</span> <span class="st">&quot;samedi&quot;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> jour <span class="op">==</span> <span class="st">&quot;samedi&quot;</span> <span class="kw">or</span> jour <span class="op">==</span> <span class="st">&quot;dimanche&quot;</span>:</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;C&#39;est le week-end.&quot;</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;C&#39;est un jour de semaine.&quot;</span>)</span></code></pre></div>
+<blockquote>
+<p><strong>À retenir.</strong> <code>and</code> et <code>or</code>
+combinent deux expressions booléennes (ou plus) en une seule. Le
+résultat reste toujours <code>True</code> ou <code>False</code>,
+exactement comme une comparaison simple.</p>
+</blockquote>
+<h4 id="exercices-7">Exercices</h4>
+<ol type="1">
+<li><strong>À l’écrit, sur papier.</strong> Sans exécuter, indiquer
+<code>True</code> ou <code>False</code> :
+<code>3 &gt; 1 and 3 &lt; 10</code>,
+<code>3 &gt; 1 and 3 &gt; 10</code>,
+<code>3 &gt; 10 or 3 &lt; 10</code>,
+<code>3 &gt; 10 or 3 &gt; 20</code>.</li>
+<li><strong>Sur ordinateur, seul.</strong> Écrire un programme avec deux
+variables <code>note</code> et <code>assiduite</code> (booléenne). Il
+affiche <code>Admis</code> si <code>note &gt;= 10</code>
+<strong>et</strong> <code>assiduite</code> valent vrai, sinon
+<code>Non admis</code>. Tester les quatre combinaisons possibles.</li>
+<li><strong>À l’écrit, sur papier.</strong> Une remise s’applique si le
+client est étudiant <strong>ou</strong> si le panier dépasse 50 €.
+Écrire la condition Python correspondante (variables
+<code>est_etudiant</code> et <code>montant_panier</code> au choix), puis
+vérifier son fonctionnement sur deux cas contrastés.</li>
+</ol>
+<h3 id="partie-10-répéter-avec-while">Partie 10 — Répéter avec
+<code>while</code></h3>
+<p>Une boucle <code>while</code> répète un bloc <strong>tant
+qu’</strong>une condition reste vraie :</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>compteur <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> compteur <span class="op">&lt;=</span> <span class="dv">5</span>:</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(compteur)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    compteur <span class="op">=</span> compteur <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>Ce programme affiche <code>1</code>, <code>2</code>, <code>3</code>,
+<code>4</code>, <code>5</code>. À chaque tour, Python réévalue la
+condition ; dès qu’elle devient fausse, la boucle s’arrête.</p>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Si la variable de la condition n’est jamais modifiée dans le bloc, la
+condition reste vraie pour toujours : c’est une <strong>boucle
+infinie</strong>. Toute boucle <code>while</code> doit contenir une
+instruction qui rapproche la condition de sa fin (ici,
+<code>compteur = compteur + 1</code>).</p>
+</div>
+<p><code>while</code> convient bien quand on ne sait pas à l’avance
+combien de répétitions seront nécessaires — par exemple, répéter une
+saisie tant qu’elle n’est pas valide :</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>reponse <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Le mot de passe : &quot;</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> reponse <span class="op">!=</span> <span class="st">&quot;python&quot;</span>:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    reponse <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Mot de passe incorrect, réessayez : &quot;</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Accès autorisé&quot;</span>)</span></code></pre></div>
+<h4 id="exercices-8">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier.</strong> Prévoir ce qu’affiche ce
+programme, puis vérifier :</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(n)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> n <span class="op">-</span> <span class="dv">2</span></span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Corriger la boucle infinie
+suivante (elle doit afficher les nombres de 1 à 5) :</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>compteur <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> compteur <span class="op">&lt;=</span> <span class="dv">5</span>:</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(compteur)</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire un programme qui
+redemande un nombre tant que l’utilisateur ne saisit pas un nombre
+strictement positif, puis affiche <code>Merci !</code> une fois cette
+condition satisfaite.</p></li>
+</ol>
+<h3 id="partie-11-parcourir-avec-for">Partie 11 — Parcourir avec
+<code>for</code></h3>
+<p>Quand le nombre de répétitions est <strong>connu à l’avance</strong>,
+<code>for</code> avec <code>range</code> est plus direct qu’un
+<code>while</code> :</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div>
+<p>Ce programme affiche <code>0</code>, <code>1</code>, <code>2</code>,
+<code>3</code>, <code>4</code> : <code>range(5)</code> produit cinq
+valeurs, de <code>0</code> à <code>4</code>. À chaque tour, la variable
+<code>i</code> prend la valeur suivante.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div>
+<p>Avec deux bornes, <code>range(1, 6)</code> produit <code>1</code>,
+<code>2</code>, <code>3</code>, <code>4</code>, <code>5</code> : la
+première borne est incluse, la seconde exclue.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Outil</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le nombre de répétitions est connu à l’avance</td>
+<td><code>for</code> avec <code>range</code></td>
+</tr>
+<tr>
+<td>On répète tant qu’une condition reste vraie, sans savoir combien de
+tours</td>
+<td><code>while</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>À retenir.</strong> <code>range</code> sera revu plus tard
+dans l’année, lorsque les listes (les tableaux en Python) seront
+introduites : <code>for</code> sait alors parcourir directement leurs
+éléments. Pour l’instant, <code>range</code> sert uniquement à répéter
+un nombre de fois connu.</p>
+</blockquote>
+<h4 id="exercices-9">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier.</strong> Prévoir la liste des
+valeurs affichées, puis vérifier :</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire un programme qui
+affiche les nombres de 1 à 10 avec <code>for</code> et
+<code>range</code>, puis un second programme qui produit le même
+résultat avec <code>while</code>. Comparer les deux écritures.</p></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire un programme qui
+calcule et affiche la somme des entiers de 1 à 100 à l’aide d’une boucle
+<code>for</code> et d’une variable accumulateur initialisée à
+<code>0</code>.</p></li>
+</ol>
+<h3 id="partie-12-vrai-ou-faux-le-type-booléen">Partie 12 — Vrai ou faux
+: le type booléen</h3>
+<p>Les comparaisons écrites depuis la partie 8 produisent toutes le même
+genre de résultat : une expression comme <code>age &gt;= 18</code> ne
+vaut pas « peut-être », elle vaut <strong>une seule</strong> des deux
+valeurs possibles, <code>True</code> ou <code>False</code>. C’est ce
+résultat qu’un <code>if</code> examine pour décider quel bloc
+exécuter.</p>
+<p>Ces deux valeurs forment un type à part entière, appelé
+<code>bool</code> :</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="dv">3</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="st">&quot;bonjour&quot;</span>))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="va">True</span>))</span></code></pre></div>
+<p>Ce programme affiche <code>&lt;class &#39;int&#39;&gt;</code>,
+<code>&lt;class &#39;str&#39;&gt;</code>, puis
+<code>&lt;class &#39;bool&#39;&gt;</code>. <code>bool</code> est un type au même
+titre que <code>int</code> et <code>str</code>, avec cette particularité
+qu’il ne contient que deux valeurs.</p>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p><code>True</code> et <code>False</code> s’écrivent avec une majuscule
+et sans guillemets. <code>true</code> provoque une erreur de nom ;
+<code>&quot;True&quot;</code> est un texte de quatre caractères, pas un
+booléen.</p>
+</div>
+<p>Le résultat d’une comparaison n’est pas réservé au <code>if</code> :
+c’est une valeur ordinaire, que l’on peut stocker dans une variable et
+afficher.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>note <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>est_admis <span class="op">=</span> note <span class="op">&gt;=</span> <span class="dv">10</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> est_admis:</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Admis&quot;</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Ajourné&quot;</span>)</span></code></pre></div>
+<p>Nommer une condition la rend lisible : <code>if est_admis:</code> se
+lit mieux que <code>if note &gt;= 10:</code> lorsque la condition
+devient longue.</p>
+<h4 id="examiner-tous-les-cas">Examiner tous les cas</h4>
+<p>Les opérateurs <code>and</code> et <code>or</code>, vus en partie 9,
+se résument par un tableau qui énumère toutes les situations
+possibles.</p>
+<table>
+<thead>
+<tr>
+<th><code>a</code></th>
+<th><code>b</code></th>
+<th><code>a and b</code></th>
+<th><code>a or b</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>True</code></td>
+<td><code>True</code></td>
+<td><code>True</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>True</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>False</code></td>
+<td><code>True</code></td>
+<td><code>False</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>False</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>and</code> exige que les deux expressions soient vraies ;
+<code>or</code> se contente d’une seule.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Un tableau de cas répond à une question
+précise : la condition se comporte-t-elle correctement dans
+<strong>toutes</strong> les situations, et pas seulement dans celle qui
+a servi à la tester ? C’est la démarche de mise au point d’un programme
+: ne pas se contenter du cas qui marche, chercher celui qui ne marche
+pas.</p>
+</blockquote>
+<h4 id="exercices-10">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier, puis vérification dans
+Thonny.</strong> Pour chacune de ces lignes, donner la valeur affichée —
+ou le message d’erreur attendu, avec sa raison :</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">5</span> <span class="op">==</span> <span class="dv">5</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">5</span> <span class="op">=</span> <span class="dv">5</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;5&quot;</span> <span class="op">==</span> <span class="dv">5</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">3</span> <span class="op">&gt;</span> <span class="dv">10</span>)</span></code></pre></div></li>
+<li><p><strong>Sur papier puis Thonny, seul.</strong> Un tarif réduit
+s’applique aux moins de 18 ans et aux personnes de 65 ans ou plus.
+Écrire la condition en Python pour une variable <code>age</code>,
+prédire sa valeur booléenne pour <code>age</code> valant
+<code>10</code>, <code>18</code>, <code>40</code>, <code>65</code> et
+<code>80</code>, puis vérifier chaque cas dans Thonny.</p></li>
+</ol>
+<h3 id="partie-13-définir-une-fonction">Partie 13 — Définir une
+fonction</h3>
+<p>Depuis la première séance, vous appelez des fonctions écrites par
+d’autres : <code>print</code>, <code>int</code>, <code>type</code>,
+<code>range</code>. Un nom suivi de parenthèses est un <strong>appel de
+fonction</strong>. Il s’agit maintenant d’en écrire une.</p>
+<p>Le point de départ est un code qui se répète :</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;=========&quot;</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot; Bienvenue &quot;</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;=========&quot;</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;=========&quot;</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;   Menu   &quot;</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;=========&quot;</span>)</span></code></pre></div>
+<p>Si l’on veut changer le cadre, il faut le modifier partout — et
+risquer d’en oublier un endroit. Une fonction permet d’écrire ce bloc
+une seule fois :</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> encadrer(texte):</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;=========&quot;</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(texte)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;=========&quot;</span>)</span></code></pre></div>
+<p><code>def</code> annonce une définition, <code>encadrer</code> est le
+nom de la fonction, <code>texte</code> est un <strong>paramètre</strong>
+(l’information qu’on lui transmet) et le bloc indenté forme son
+corps.</p>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Exécuter ces quatre lignes n’affiche rien. <code>def</code> range une
+recette dans la mémoire de Python ; elle ne se déroule que lorsqu’on
+l’<strong>appelle</strong> :</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>encadrer(<span class="st">&quot; Bienvenue &quot;</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>encadrer(<span class="st">&quot;   Menu   &quot;</span>)</span></code></pre></div>
+<p>Une définition, deux appels, deux résultats différents.</p>
+</div>
+<h4 id="retourner-un-résultat">Retourner un résultat</h4>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double(nombre):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nombre <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>resultat <span class="op">=</span> double(<span class="dv">21</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resultat)</span></code></pre></div>
+<p><code>return</code> renvoie la valeur à l’endroit de l’appel :
+<code>double(21)</code> vaut <code>42</code>, que l’on peut stocker,
+afficher ou réutiliser dans un calcul. C’est la différence essentielle
+avec <code>print</code>, qui écrit dans la console sans rien rendre.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>print(...)</code></th>
+<th><code>return ...</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Effet</td>
+<td>Écrit dans la console</td>
+<td>Rend une valeur à l’appelant</td>
+</tr>
+<tr>
+<td>Réutilisable ?</td>
+<td>Non, le texte est parti</td>
+<td>Oui, on peut la stocker</td>
+</tr>
+<tr>
+<td>Sans lui</td>
+<td>On ne voit rien</td>
+<td>La fonction renvoie <code>None</code></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_affiche(n):</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(n <span class="op">*</span> <span class="dv">2</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_retourne(n):</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> double_affiche(<span class="dv">5</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> double_retourne(<span class="dv">5</span>)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a, b)</span></code></pre></div>
+<p>Ce programme affiche <code>10</code>, puis <code>None 10</code> : la
+première fonction a affiché sans rien rendre, donc <code>a</code> ne
+contient aucune valeur utile.</p>
+<h4 id="ce-qui-vit-dans-une-fonction-reste-dans-la-fonction">Ce qui vit
+dans une fonction reste dans la fonction</h4>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double(nombre):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> nombre <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resultat)</span></code></pre></div>
+<p>La dernière ligne provoque une erreur de nom : <code>resultat</code>
+n’existe que pendant l’exécution de la fonction. Ce n’est pas un défaut,
+c’est l’intérêt d’une fonction — elle ne perturbe pas le reste du
+programme.</p>
+<h4 id="exercices-11">Exercices</h4>
+<ol type="1">
+<li><p><strong>À l’écrit, sur papier, puis vérification dans
+Thonny.</strong> Qu’affichent les deux dernières lignes, et pourquoi ne
+produisent-elles pas la même chose ?</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triple(n):</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> <span class="dv">3</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>triple(<span class="dv">4</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(triple(<span class="dv">4</span>))</span></code></pre></div></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire une fonction
+<code>perimetre(longueur, largeur)</code> qui <strong>retourne</strong>
+le périmètre d’un rectangle, puis afficher le résultat de trois appels
+avec des dimensions différentes. Répondre d’abord aux quatre questions
+de la partie 14 (entrées, variables, structure, sorties).</p></li>
+<li><p><strong>Sur ordinateur, seul.</strong> Écrire une fonction
+<code>est_majeur(age)</code> qui retourne <code>True</code> ou
+<code>False</code>, puis l’utiliser dans un <code>if</code> pour
+afficher un message. La fonction doit contenir un <code>return</code> et
+non un <code>print</code> : le message s’affiche à l’extérieur.</p></li>
+</ol>
+<h3 id="partie-14-décomposer-avant-de-coder-méthode">Partie 14 —
+Décomposer avant de coder (méthode)</h3>
+<p>Face à un énoncé, la page blanche n’est pas un manque de
+connaissances : c’est un manque de <strong>méthode</strong> pour passer
+de la phrase au code. Avant d’écrire la moindre ligne, répondre par
+écrit à quatre questions :</p>
+<ol type="1">
+<li><strong>Entrées</strong> : qu’est-ce que le programme doit connaître
+au départ ?</li>
+<li><strong>Variables</strong> : comment je nomme chaque information
+?</li>
+<li><strong>Structure</strong> : que doit-il répéter, et jusqu’à quand
+(une seule fois, tant qu’une condition reste vraie, un nombre de fois
+connu) ?</li>
+<li><strong>Sorties</strong> : qu’est-ce qu’il doit afficher, et à quel
+moment ?</li>
+</ol>
+<h4 id="exemple-travaillé">Exemple travaillé</h4>
+<p>Énoncé : « Écrire un programme qui redemande un nombre tant qu’il
+n’est pas positif. »</p>
+<ol type="1">
+<li>Entrées : un nombre saisi par l’utilisateur.</li>
+<li>Variables : <code>nombre</code>.</li>
+<li>Structure : je répète tant que <code>nombre</code> n’est pas positif
+→ <code>while nombre &lt;= 0</code>.</li>
+<li>Sorties : un message final une fois un nombre positif obtenu.</li>
+</ol>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>nombre <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Entrez un nombre : &quot;</span>))</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> nombre <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    nombre <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Ce n&#39;est pas positif, réessayez : &quot;</span>))</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Merci, vous avez saisi&quot;</span>, nombre)</span></code></pre></div>
+<p>Chaque ligne répond à une des quatre questions : rien n’est ajouté «
+en plus », tout était déjà décidé sur papier.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Cette méthode ne se limite pas à
+<code>while</code> : elle s’applique à tout énoncé de programme, y
+compris <code>for</code> et les fonctions.</p>
+</blockquote>
+<h4 id="exercices-12">Exercices</h4>
+<ol type="1">
+<li><strong>Sur papier puis Thonny, seul.</strong> Énoncé : écrire un
+programme qui demande un mot de passe tant qu’il n’est pas égal à
+<code>&quot;python&quot;</code>, puis affiche <code>&quot;Accès autorisé&quot;</code>.
+Répondre aux quatre questions sur papier avant de coder.</li>
+<li><strong>Sur Thonny, seul.</strong> Énoncé : écrire un programme qui
+demande un âge, et qui refuse (redemande) tant que l’âge saisi n’est pas
+compris entre 0 et 120, puis affiche l’âge validé. Répondre aux quatre
+questions sur un brouillon avant d’ouvrir Thonny.</li>
+</ol>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="partie-1">Partie 1</h3>
+<ol type="1">
+<li>Toute réponse est recevable si l’association est justifiée. Par
+exemple, une application de musique peut mobiliser des données pour
+stocker les titres, des réseaux pour les diffuser et une interface Web
+ou applicative pour les consulter.</li>
+<li>Playlist : données ; page interactive : Web ; programme :
+algorithmique et programmation ; Wi-Fi : machines et réseaux.</li>
+<li>La réponse dépend du projet choisi. Elle doit associer deux domaines
+de manière cohérente et les relier à une réalisation concrète.</li>
+</ol>
+<h3 id="partie-2">Partie 2</h3>
+<ol type="1">
+<li>La réponse dépend du cas choisi ; elle doit distinguer l’observation
+de l’attente et proposer un test concret plutôt qu’une nouvelle
+supposition.</li>
+<li><code>n² + 1</code> est une hypothèse compatible avec les trois
+exemples et donne <code>101</code> pour 10. D’autres règles peuvent
+convenir aux mêmes observations : un exemple supplémentaire permettrait
+de les départager.</li>
+<li>Un plan valable commence par vérifier que le service et sa machine
+sont accessibles, puis réduit progressivement le problème : adresse,
+réseau, port, application.</li>
+</ol>
+<h3 id="partie-3">Partie 3</h3>
+<ol type="1">
+<li>Python est un langage ; Thonny est un outil ; un programme est une
+suite d’instructions.</li>
+<li>On écrit le programme, on l’enregistre, on l’exécute, puis on lit le
+résultat dans la console.</li>
+<li>Une solution possible contient deux lignes de la forme
+<code>print(&quot;...&quot;)</code>. Les deux messages doivent apparaître à
+l’exécution.</li>
+</ol>
+<h3 id="partie-4">Partie 4</h3>
+<ol type="1">
+<li><code>print(8 - 3)</code> affiche <code>5</code> : Python évalue
+l’expression numérique avant de l’afficher.</li>
+<li><code>15</code> est un entier (<code>int</code>), <code>&quot;15&quot;</code>
+est du texte (<code>str</code>) et <code>False</code> est un booléen
+(<code>bool</code>).</li>
+<li>La console affiche successivement <code>42</code>,
+<code>7 * 6</code> et <code>&lt;class &#39;int&#39;&gt;</code>.</li>
+</ol>
+<h3 id="partie-5">Partie 5</h3>
+<ol type="1">
+<li><p>Le programme affiche <strong>16</strong> : <code>nombre</code>
+vaut d’abord 8, puis reçoit le résultat de <code>8 * 2</code>.</p></li>
+<li><p>Une correction possible est :</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>prenom <span class="op">=</span> <span class="st">&quot;Ada&quot;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour,&quot;</span>, prenom, <span class="st">&quot;!&quot;</span>)</span></code></pre></div></li>
+<li><p>Une réponse possible est :</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>prenom <span class="op">=</span> <span class="st">&quot;Ada&quot;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>annee_naissance <span class="op">=</span> <span class="dv">2010</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour,&quot;</span>, prenom)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;L&#39;année suivante sera&quot;</span>, annee_naissance <span class="op">+</span> <span class="dv">1</span>)</span></code></pre></div></li>
+<li><p>Après <code>a = a + b</code>, <code>a = 7</code> ; après
+<code>b = a - b</code>, <code>b = 7 - 2 = 5</code> ; après
+<code>a = a - b</code>, <code>a = 7 - 5 = 2</code>. Résultat final :
+<code>a = 2</code>, <code>b = 5</code>.</p></li>
+<li><p><code>a = &quot;3&quot; + 3</code> lève une <code>TypeError</code> (texte +
+nombre) ; correction : <code>a = &quot;3&quot; + str(3)</code> ou
+<code>a = int(&quot;3&quot;) + 3</code>. <code>b = &quot;score : &quot; + 12</code> lève
+aussi une <code>TypeError</code> ; correction :
+<code>b = &quot;score : &quot; + str(12)</code>. <code>c = str(3) + &quot;3&quot;</code>
+s’exécute sans erreur et donne <code>&quot;33&quot;</code> (deux textes
+assemblés).</p></li>
+<li><p>Une correction possible est :</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>prenom <span class="op">=</span> <span class="st">&quot;Ada&quot;</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">17</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Bonjour &quot;</span> <span class="op">+</span> prenom <span class="op">+</span> <span class="st">&quot;, tu as &quot;</span> <span class="op">+</span> <span class="bu">str</span>(age) <span class="op">+</span> <span class="st">&quot; ans.&quot;</span>)</span></code></pre></div></li>
+</ol>
+<h3 id="partie-6">Partie 6</h3>
+<ol type="1">
+<li><p>Le programme affiche <code>Y</code> : l’expression
+<code>False</code> est fausse, c’est donc le bloc du <code>else</code>
+qui s’exécute.</p></li>
+<li><p>Version 1 : s’exécute normalement, affiche <code>ok</code>.
+Version 2 : erreur d’indentation (<code>IndentationError</code>), la
+ligne <code>print(&quot;erreur ?&quot;)</code> n’est pas indentée après
+<code>if True:</code>. Version 3 : s’exécute normalement, affiche
+<code>ok</code> puis <code>toujours dans le bloc</code> (les deux lignes
+sont indentées au même niveau, donc dans le bloc).</p></li>
+<li><p>Une réponse possible est :</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">18</span>:</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Majeur&quot;</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Mineur&quot;</span>)</span></code></pre></div></li>
+</ol>
+<h3 id="partie-7">Partie 7</h3>
+<ol type="1">
+<li>Le programme complet corrigé est celui du listing de la partie 7
+(aucune variante attendue : l’objectif est la fidélité de la recopie).
+Explication ligne à ligne : <code>random.randint(1, 20)</code> tire un
+entier au hasard entre 1 et 20 ; <code>int(input(...))</code> lit une
+proposition au clavier et la convertit en entier ; le premier
+<code>if</code> compare la proposition au nombre mystère ; en cas
+d’inégalité, le second <code>if</code> (imbriqué dans le
+<code>else</code>) indique si la proposition est trop petite ou trop
+grande.</li>
+</ol>
+<h3 id="partie-8">Partie 8</h3>
+<ol type="1">
+<li><p><code>True</code>, <code>False</code>, <code>False</code>,
+<code>True</code>, <code>True</code>.</p></li>
+<li><p>L’opérateur d’affectation doit être remplacé par l’opérateur de
+comparaison :</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">18</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">18</span>:</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Accès autorisé&quot;</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Accès refusé&quot;</span>)</span></code></pre></div>
+<p>Avec <code>age = 17</code>, le programme affiche
+<code>Accès refusé</code> ; avec <code>age = 18</code>,
+<code>Accès autorisé</code>.</p></li>
+<li><p>Une réponse possible est :</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> score <span class="op">&gt;=</span> <span class="dv">10</span>:</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Réussi&quot;</span>)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;À renforcer&quot;</span>)</span></code></pre></div>
+<p>Le programme affiche <code>À renforcer</code> pour <code>7</code>,
+puis <code>Réussi</code> pour <code>10</code> et
+<code>15</code>.</p></li>
+</ol>
+<h3 id="partie-9">Partie 9</h3>
+<ol type="1">
+<li><p><code>True</code>, <code>False</code>, <code>True</code>,
+<code>False</code>.</p></li>
+<li><p>Une réponse possible est :</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>note <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>assiduite <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> note <span class="op">&gt;=</span> <span class="dv">10</span> <span class="kw">and</span> assiduite:</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Admis&quot;</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Non admis&quot;</span>)</span></code></pre></div>
+<p>Les quatre combinaisons (<code>note</code> ≥ 10 ou non,
+<code>assiduite</code> vraie ou fausse) ne donnent <code>Admis</code>
+que lorsque les deux conditions sont vraies en même temps.</p></li>
+<li><p>Une condition possible :
+<code>est_etudiant or montant_panier &gt; 50</code>. Elle est vraie dès
+que l’une des deux conditions l’est, y compris si les deux le
+sont.</p></li>
+</ol>
+<h3 id="partie-10">Partie 10</h3>
+<ol type="1">
+<li><p>Le programme affiche <code>10</code>, <code>8</code>,
+<code>6</code>, <code>4</code>, <code>2</code> : <code>n</code> diminue
+de 2 à chaque tour jusqu’à devenir négatif ou nul.</p></li>
+<li><p>Il manque l’instruction qui fait progresser <code>compteur</code>
+vers la fin de la condition :</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>compteur <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> compteur <span class="op">&lt;=</span> <span class="dv">5</span>:</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(compteur)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    compteur <span class="op">=</span> compteur <span class="op">+</span> <span class="dv">1</span></span></code></pre></div></li>
+<li><p>Une réponse possible est :</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>nombre <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Entrez un nombre positif : &quot;</span>))</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> nombre <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    nombre <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Ce n&#39;est pas positif, réessayez : &quot;</span>))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Merci !&quot;</span>)</span></code></pre></div></li>
+</ol>
+<h3 id="partie-11">Partie 11</h3>
+<ol type="1">
+<li><p>Le programme affiche <code>0</code>, <code>1</code>,
+<code>2</code> : <code>range(3)</code> produit trois valeurs, de
+<code>0</code> à <code>2</code>.</p></li>
+<li><p>Deux réponses possibles :</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> i <span class="op">&lt;=</span> <span class="dv">10</span>:</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>Les deux affichent les nombres de 1 à 10 ; <code>for</code> connaît
+d’avance le nombre de tours, <code>while</code> doit gérer lui-même la
+progression et l’arrêt.</p></li>
+<li><p>Une réponse possible est :</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>somme <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    somme <span class="op">=</span> somme <span class="op">+</span> i</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(somme)</span></code></pre></div></li>
+</ol>
+<h3 id="partie-12">Partie 12</h3>
+<ol type="1">
+<li><p>Ligne par ligne :</p>
+<ul>
+<li><code>print(5 == 5)</code> affiche <code>True</code> : les deux
+valeurs sont égales.</li>
+<li><code>print(5 = 5)</code> provoque une <strong>erreur de
+syntaxe</strong>. <code>=</code> sert à affecter une valeur à une
+variable ; il ne peut pas se trouver là, et <code>5</code> n’est pas un
+nom de variable.</li>
+<li><code>print(&quot;5&quot; == 5)</code> affiche <code>False</code> : le texte
+<code>&quot;5&quot;</code> et l’entier <code>5</code> ne sont pas de même type,
+donc jamais égaux. Aucune erreur ici — la comparaison est permise, c’est
+son résultat qui est faux.</li>
+<li><code>print(3 &gt; 10)</code> affiche <code>False</code>.</li>
+</ul></li>
+<li><p>La condition est <code>age &lt; 18 or age &gt;= 65</code>. Le mot
+« et » de l’énoncé français (« aux moins de 18 ans <strong>et</strong>
+aux 65 ans ou plus ») désigne deux catégories de personnes, pas deux
+conditions simultanées : un même âge ne peut pas être à la fois
+inférieur à 18 et supérieur à 65. En Python, c’est donc
+<code>or</code>.</p>
+<table>
+<thead>
+<tr>
+<th><code>age</code></th>
+<th><code>age &lt; 18</code></th>
+<th><code>age &gt;= 65</code></th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10</code></td>
+<td><code>True</code></td>
+<td><code>False</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>18</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>40</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>65</code></td>
+<td><code>False</code></td>
+<td><code>True</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>80</code></td>
+<td><code>False</code></td>
+<td><code>True</code></td>
+<td><code>True</code></td>
+</tr>
+</tbody>
+</table>
+<p>Le cas <code>age = 18</code> mérite attention : <code>&lt;</code>
+étant strict, un élève de 18 ans tout juste ne bénéficie pas du tarif
+réduit. C’est bien ce que dit l’énoncé (« moins de 18 ans »).</p></li>
+</ol>
+<h3 id="partie-13">Partie 13</h3>
+<ol type="1">
+<li><p><code>triple(4)</code> calcule bien <code>12</code> et le
+retourne, mais la valeur retournée n’est ni stockée ni affichée : elle
+est simplement perdue, et la ligne n’affiche rien.
+<code>print(triple(4))</code> récupère cette valeur et l’affiche :
+<code>12</code>. C’est la différence entre calculer un résultat et en
+faire quelque chose.</p></li>
+<li><p>Une réponse possible :</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> perimetre(longueur, largeur):</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> (longueur <span class="op">+</span> largeur)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(perimetre(<span class="dv">3</span>, <span class="dv">5</span>))</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(perimetre(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(perimetre(<span class="dv">1</span>, <span class="dv">7</span>))</span></code></pre></div>
+<p>Entrées : deux dimensions. Variables : les paramètres
+<code>longueur</code> et <code>largeur</code>. Structure : un calcul
+unique, sans répétition. Sorties : le périmètre, affiché à l’extérieur
+de la fonction.</p></li>
+<li><p>Une réponse possible :</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> est_majeur(age):</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> age <span class="op">&gt;=</span> <span class="dv">18</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>age_saisi <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Entrez un âge : &quot;</span>))</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> est_majeur(age_saisi):</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Majeur&quot;</span>)</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Mineur&quot;</span>)</span></code></pre></div>
+<p><code>return age &gt;= 18</code> suffit : la comparaison produit déjà
+<code>True</code> ou <code>False</code> (partie 12), il est inutile
+d’écrire un <code>if</code> à l’intérieur de la fonction pour retourner
+ensuite <code>True</code> ou <code>False</code> à la main.</p></li>
+</ol>
+<h3 id="partie-14">Partie 14</h3>
+<ol type="1">
+<li><p>Une réponse possible :</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>mot_de_passe <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Mot de passe : &quot;</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> mot_de_passe <span class="op">!=</span> <span class="st">&quot;python&quot;</span>:</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    mot_de_passe <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Incorrect, réessayez : &quot;</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Accès autorisé&quot;</span>)</span></code></pre></div>
+<p>Entrées : un mot de passe saisi. Variables :
+<code>mot_de_passe</code>. Structure :
+<code>while mot_de_passe != &quot;python&quot;</code>. Sorties :
+<code>&quot;Accès autorisé&quot;</code> une fois la boucle terminée.</p></li>
+<li><p>Une réponse possible :</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Entrez un âge : &quot;</span>))</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> age <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">or</span> age <span class="op">&gt;</span> <span class="dv">120</span>:</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    age <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">&quot;Âge invalide, réessayez : &quot;</span>))</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Âge validé :&quot;</span>, age)</span></code></pre></div>
+<p>Entrées : un âge saisi. Variables : <code>age</code>. Structure :
+<code>while age &lt; 0 or age &gt; 120</code> (réinvestit
+<code>or</code>, vu en P09). Sorties : l’âge validé, affiché une fois la
+condition de répétition devenue fausse.</p></li>
+</ol>
+</details>

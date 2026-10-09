@@ -1,0 +1,77 @@
+/* Thème du site : accent de DESIGN.md (Prof) et composants rendus par outils/filters/web.lua. */
+:root {
+	--sl-color-accent-low: #10393e;
+	--sl-color-accent: #3fb8c4;
+	--sl-color-accent-high: #b7e6eb;
+}
+:root[data-theme='light'] {
+	--sl-color-accent-low: #cdeef1;
+	--sl-color-accent: #087e8b;
+	--sl-color-accent-high: #064a52;
+}
+
+/* En-tête d'un support */
+.entete-support .sous-titre { font-size: var(--sl-text-lg); color: var(--sl-color-gray-2); margin: 0; }
+.entete-support .meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); }
+.entete-support .actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.entete-support { padding-bottom: 1rem; border-bottom: 1px solid var(--sl-color-hairline); }
+
+/* Listes de ressources (pages de classe) */
+ul.res { list-style: none; padding: 0; }
+.sl-markdown-content ul.res li.ressource { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .6rem; padding: .5rem 0; margin: 0; border-top: 1px solid var(--sl-color-hairline); }
+ul.res li.ressource:first-child { border-top: 0; }
+ul.res time { min-width: 5.5rem; color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); }
+ul.res .titre { flex: 1 1 14rem; }
+ul.res small { display: block; color: var(--sl-color-gray-3); font-size: var(--sl-text-xs); }
+ul.res .liens a { font-size: var(--sl-text-sm); font-weight: 600; margin-left: .4rem; }
+.sequence, .recents { border: 1px solid var(--sl-color-hairline); border-radius: .6rem; padding: .2rem 1rem .5rem; }
+.recents { background: var(--sl-color-gray-6); }
+.periode { color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); margin-top: .1rem !important; }
+
+h2.semaine { font-size: var(--sl-text-h4); color: var(--sl-color-gray-2); }
+.recents h2, .sequence :is(h2, h3) { font-size: var(--sl-text-h4); margin-top: .8rem; }
+
+/* Encadrés (> **Info.** …) */
+.callout { border-inline-start: 4px solid var(--sl-color-blue); background: var(--sl-color-blue-low); padding: .5rem 1rem; border-radius: 0 .5rem .5rem 0; }
+.callout.summary { border-color: var(--sl-color-green); background: var(--sl-color-green-low); }
+.callout.warning { border-color: var(--sl-color-red); background: var(--sl-color-red-low); }
+.callout.activity { border-color: var(--sl-color-orange); background: var(--sl-color-orange-low); }
+.callout.note { border-color: var(--sl-color-orange); background: var(--sl-color-gray-6); }
+.sequence-overview, .question, .question-context, .slide { border: 1px solid var(--sl-color-hairline); border-radius: .6rem; padding: .3rem 1rem .6rem; }
+.sequence-overview { background: var(--sl-color-gray-6); }
+
+/* QCM auto-corrigé */
+fieldset.qcm { border: 1px solid var(--sl-color-hairline); border-radius: .6rem; background: var(--sl-color-gray-6); padding: .5rem 1rem .8rem; }
+fieldset.qcm label { display: flex; gap: .5rem; align-items: baseline; padding: .35rem .3rem; margin: 0; border-radius: .4rem; cursor: pointer; }
+fieldset.qcm label:hover { background: var(--sl-color-bg); }
+.fb { min-height: 1.2em; font-weight: 600; }
+.fb.ok { color: var(--sl-color-green); }
+.fb.ko { color: var(--sl-color-red); }
+
+/* Corrigés repliés */
+details.corriges { margin-top: 2.5rem; border: 2px solid var(--sl-color-hairline); border-radius: .6rem; padding: .6rem 1rem; }
+details.corriges > summary { cursor: pointer; font-weight: 700; font-size: var(--sl-text-lg); color: var(--sl-color-accent); }
+
+/* Exercice Python (Pyodide) */
+.exo-py { border: 1px solid var(--sl-color-hairline); border-radius: .6rem; padding: .2rem 1rem 1rem; }
+.editeur textarea { width: 100%; min-height: 9.5em; font: 15px/1.45 var(--sl-font-mono); background: var(--sl-color-bg-inline-code); color: var(--sl-color-white); border: 1px solid var(--sl-color-hairline); border-radius: .5rem; padding: 10px; tab-size: 4; resize: vertical; }
+.editeur .barre { display: flex; flex-wrap: wrap; gap: .4rem; }
+.editeur button { font: inherit; font-size: var(--sl-text-sm); padding: .45rem .8rem; border-radius: .5rem; border: 1px solid var(--sl-color-blue); background: var(--sl-color-blue-low); color: var(--sl-color-white); cursor: pointer; }
+.editeur button[data-action='tester'] { background: var(--sl-color-blue); color: var(--sl-color-black); }
+.editeur .sortie { white-space: pre-wrap; }
+.resultats td { font-family: var(--sl-font-mono); word-break: break-word; }
+.resultats tr.ok td:first-child, .resultats p.ok { color: var(--sl-color-green); font-weight: 600; }
+.resultats tr.ko td:first-child, .resultats p.ko { color: var(--sl-color-red); font-weight: 600; }
+.resultats .aide { color: var(--sl-color-gray-3); font-family: inherit; }
+.py-etat { position: sticky; bottom: 0; background: var(--sl-color-orange-low); border-top: 1px solid var(--sl-color-orange); padding: .4rem 1rem; font-size: var(--sl-text-sm); text-align: center; }
+.py-etat.ok { background: var(--sl-color-green-low); border-color: var(--sl-color-green); }
+.py-etat.ko { background: var(--sl-color-red-low); border-color: var(--sl-color-red); }
+.coffre { border: 2px dashed var(--sl-color-accent); border-radius: .6rem; padding: .4rem 1rem; text-align: center; }
+.coffre .cases { font: 700 1.8rem/1.2 var(--sl-font-mono); letter-spacing: .15em; color: var(--sl-color-accent); }
+
+/* Médias et tableaux larges */
+.sl-markdown-content img, .sl-markdown-content svg { max-width: 100%; height: auto; }
+.sl-markdown-content figure { text-align: center; }
+.sl-markdown-content figcaption { font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
+.sl-markdown-content table { display: block; overflow-x: auto; }
+.sequence-overview h2 { font-size: var(--sl-text-h4); }

@@ -1,0 +1,137 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Calculer l’empreinte d’un fichier avec un outil simple et la
+comparer à une référence.</li>
+<li>Conclure sur l’intégrité d’un document reçu.</li>
+<li>Expliquer ce qu’une signature électronique ajoute à une
+empreinte.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Partie 3 : principe de l’empreinte, ses trois propriétés, ce qu’elle
+ne prouve pas.</li>
+<li>Savoir ouvrir un terminal et s’y déplacer (Bloc 1, découverte de la
+ligne de commande).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Étape 1</td>
+<td>Vérifier les deux devis (25 min)</td>
+</tr>
+<tr>
+<td>Étape 2</td>
+<td>Ce que la signature ajoute (15 min)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Compétence <strong>B3.2</strong>, sous-compétence « Déployer les
+moyens appropriés de preuve électronique ». Le référentiel demande de «
+comprendre les principes et mettre en œuvre des outils simples » : on
+utilise ici un outil de hachage, rien de plus.</p>
+</div>
+<h3 id="consignes-générales">Consignes générales</h3>
+<p><strong>En binôme, en autonomie, durée totale : 40 minutes
+environ.</strong> Aucune aide extérieure (IA, recherche Internet). Les
+commandes nécessaires sont données ci-dessous : l’objectif n’est pas de
+les retenir par cœur, mais de savoir <strong>lire et comparer</strong>
+ce qu’elles produisent.</p>
+<h3 id="la-situation">La situation</h3>
+<p>Soft-Tech a envoyé un devis à M. Delcourt et a <strong>publié son
+empreinte sur son site</strong>, à part du courriel. M. Delcourt a reçu
+deux fichiers de sources différentes et ne sait plus lequel est le
+bon.</p>
+<p>Vous disposez de :</p>
+<ul>
+<li><code>devis-2026-0912-a.pdf</code> et
+<code>devis-2026-0912-b.pdf</code> — les deux fichiers reçus ;</li>
+<li><code>empreinte-publiee.txt</code> — l’empreinte publiée par
+Soft-Tech sur son site.</li>
+</ul>
+<h3 id="calculer-une-empreinte">Calculer une empreinte</h3>
+<p>Ouvrez un terminal dans le dossier contenant les fichiers, puis :</p>
+<pre class="text"><code>sha256sum devis-2026-0912-a.pdf</code></pre>
+<p>La sortie affiche une longue suite de caractères suivie du nom du
+fichier : cette suite est l’empreinte. Vous pouvez aussi passer les deux
+fichiers à la fois :</p>
+<pre class="text"><code>sha256sum devis-2026-0912-a.pdf devis-2026-0912-b.pdf</code></pre>
+<p><code>sha256sum</code> fait partie des outils de base du système :
+aucune installation n’est nécessaire.</p>
+<h3 id="étape-1-vérifier-les-deux-devis">Étape 1 — Vérifier les deux
+devis</h3>
+<p><strong>25 minutes.</strong></p>
+<ol type="1">
+<li>Calculez l’empreinte de <code>devis-2026-0912-a.pdf</code>, puis
+celle de <code>devis-2026-0912-b.pdf</code>.</li>
+<li>Ouvrez <code>empreinte-publiee.txt</code> et comparez.
+<strong>Comparez les premiers caractères, puis les derniers</strong> —
+inutile de lire les 64 caractères un à un.</li>
+<li>Concluez : lequel des deux fichiers est celui qu’a réellement émis
+Soft-Tech ?</li>
+<li>Ouvrez les deux PDF et <strong>trouvez ce qui diffère</strong> entre
+eux.</li>
+<li>Notez la réponse à cette question : combien de caractères diffèrent
+entre les deux empreintes, à votre œil — quelques-uns, ou la plupart
+?</li>
+</ol>
+<p><strong>À produire :</strong> les deux empreintes relevées (les 8
+premiers caractères suffisent), le nom du fichier authentique, et ce qui
+a été modifié dans l’autre.</p>
+<p><strong>Critère de réussite de l’étape 1 :</strong> vous désignez le
+bon fichier, vous savez dire ce qui a été modifié dans l’autre, et vous
+constatez qu’une modification d’un seul montant change l’empreinte
+<strong>en entier</strong>, pas en partie.</p>
+<h3 id="étape-2-ce-que-la-signature-ajoute">Étape 2 — Ce que la
+signature ajoute</h3>
+<p><strong>15 minutes.</strong></p>
+<p>Pas de manipulation ici : on raisonne, et on referme le cas de la
+fausse facture.</p>
+<p>Répondez par écrit, en quelques lignes chacune :</p>
+<ol type="1">
+<li>L’empreinte publiée par Soft-Tech se trouvait <strong>sur son
+site</strong>, pas dans le courriel. Pourquoi est-ce important ? Que se
+passerait-il si elle avait été jointe au message ?</li>
+<li>Une <strong>signature électronique</strong> lie le document à celui
+qui l’a émis, grâce à un secret que lui seul détient. Qu’est-ce qu’elle
+prouve <strong>en plus</strong> de l’empreinte ?</li>
+<li>Revenons à la fausse facture du début de séquence. Si Soft-Tech
+avait signé électroniquement toutes ses factures, qu’est-ce que le
+client aurait pu vérifier avant de payer ?</li>
+</ol>
+<p><strong>Critère de réussite de l’étape 2 :</strong> vos trois
+réponses distinguent clairement ce qui relève de
+l’<strong>intégrité</strong> (le document n’a pas changé) et ce qui
+relève de l’<strong>origine</strong> (il vient bien de cet
+émetteur).</p>
+<h3 id="vérification-avant-de-rendre">Vérification avant de rendre</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>J’ai relevé les deux empreintes et
+désigné le fichier authentique.</label></li>
+<li><label><input type="checkbox"></input>J’ai trouvé ce qui diffère entre les
+deux devis.</label></li>
+<li><label><input type="checkbox"></input>J’ai constaté que l’empreinte change
+en entier, pas seulement là où le fichier a changé.</label></li>
+<li><label><input type="checkbox"></input>J’explique pourquoi l’empreinte de
+référence ne doit pas voyager avec le fichier.</label></li>
+<li><label><input type="checkbox"></input>Je distingue par écrit ce que prouve
+l’empreinte et ce que prouve la signature.</label></li>
+</ul>
+<p>Si l’un de ces points manque, reprenez votre travail avant de le
+rendre.</p>

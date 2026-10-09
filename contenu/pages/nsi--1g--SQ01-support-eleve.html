@@ -1,0 +1,198 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<p>À la fin de cette séquence, vous saurez :</p>
+<ul>
+<li>relier une information à deux états à son écriture binaire ;</li>
+<li>expliquer le poids d’une position dans une numération ;</li>
+<li>convertir des entiers simples entre les bases 2 et 10.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Écriture positionnelle d’un entier en base 10.</li>
+<li>Puissances de 10 et additions simples.</li>
+<li>Vocabulaire : information, machine, instruction.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partie 1</td>
+<td>Deux états pour commander une machine</td>
+</tr>
+<tr>
+<td>Partie 2</td>
+<td>Le poids des positions binaires</td>
+</tr>
+<tr>
+<td>Partie 3</td>
+<td>Convertir entre les bases 2 et 10</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="le-problème">Le problème</h3>
+<p>Une manufacture textile veut qu’un métier à tisser reproduise
+automatiquement un motif complexe, toujours identique, sur des centaines
+de mètres de tissu. Comment donner cette instruction à une machine ?</p>
+<p>Au début du XIX<sup>e</sup> siècle, Joseph Marie Jacquard répond à ce
+problème avec une <strong>carte perforée</strong> : à chaque position de
+la carte, il y a un trou ou pas de trou. Cette information commande le
+passage des fils, motif après motif.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Une carte perforée ne code pas directement notre écriture binaire
+actuelle — mais le principe est le même : <strong>deux états
+suffisent</strong> à commander une mécanique aussi complexe
+soit-elle.</p>
+</div>
+<figure>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgMzQwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjM0MCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jYXJkIHsgZmlsbDogI0Y3RjhGQTsgc3Ryb2tlOiAjMTcyMDMzOyBzdHJva2Utd2lkdGg6IDM7IH0KICAgICAgLmN1dCAgeyBmaWxsOiAjMTcyMDMzOyB9CiAgICAgIC5ob2xlIHsgZmlsbDogI0Y3RjhGQTsgc3Ryb2tlOiAjMzU2OEQ0OyBzdHJva2Utd2lkdGg6IDQ7IH0KICAgICAgLmJpdCAgeyBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywnSUJNIFBsZXggTW9ubycsbW9ub3NwYWNlOyBmb250LXNpemU6IDI4cHg7IGZpbGw6ICMxNzIwMzM7IH0KICAgICAgLmxibCAgeyBmb250LWZhbWlseTogJ0ludGVyJywnU291cmNlIFNhbnMgMycsc2Fucy1zZXJpZjsgZm9udC1zaXplOiAyMHB4OyBmaWxsOiAjNjg3Mzg2OyB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KCiAgPCEtLSBjb3JwcyBkZSBsYSBjYXJ0ZSwgY29pbiBjb3Vww6kgKHJlcMOocmUgZCdvcmllbnRhdGlvbiBKYWNxdWFyZCkgLS0+CiAgPHBhdGggY2xhc3M9ImNhcmQiIGQ9Ik00MCwyMCBIODIwIGE0MCw0MCAwIDAgMSA0MCw0MCBWMzAwIGEyMCwyMCAwIDAgMSAtMjAsMjAgSDYwIGEyMCwyMCAwIDAgMSAtMjAsLTIwIFYyMCBaIiAvPgoKICA8IS0tIDggcG9zaXRpb25zIDogbW90aWYgMCAxIDAgMCAxIDEgMCAxID0gNzcgZW4gYmFzZSAxMCAtLT4KICA8Zz4KICAgIDwhLS0gcG9zaXRpb24gMSA6IDAgLS0+CiAgICA8cmVjdCBjbGFzcz0iY3V0IiB4PSI5MCIgIHk9IjEyMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiAvPgogICAgPCEtLSBwb3NpdGlvbiAyIDogMSAtLT4KICAgIDxjaXJjbGUgY2xhc3M9ImhvbGUiIGN4PSIyMjAiIGN5PSIxNTAiIHI9IjMwIiAvPgogICAgPCEtLSBwb3NpdGlvbiAzIDogMCAtLT4KICAgIDxyZWN0IGNsYXNzPSJjdXQiIHg9IjI4MCIgeT0iMTIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIC8+CiAgICA8IS0tIHBvc2l0aW9uIDQgOiAwIC0tPgogICAgPHJlY3QgY2xhc3M9ImN1dCIgeD0iMzgwIiB5PSIxMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgLz4KICAgIDwhLS0gcG9zaXRpb24gNSA6IDEgLS0+CiAgICA8Y2lyY2xlIGNsYXNzPSJob2xlIiBjeD0iNTEwIiBjeT0iMTUwIiByPSIzMCIgLz4KICAgIDwhLS0gcG9zaXRpb24gNiA6IDEgLS0+CiAgICA8Y2lyY2xlIGNsYXNzPSJob2xlIiBjeD0iNjAwIiBjeT0iMTUwIiByPSIzMCIgLz4KICAgIDwhLS0gcG9zaXRpb24gNyA6IDAgLS0+CiAgICA8cmVjdCBjbGFzcz0iY3V0IiB4PSI2NTAiIHk9IjEyMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiAvPgogICAgPCEtLSBwb3NpdGlvbiA4IDogMSAtLT4KICAgIDxjaXJjbGUgY2xhc3M9ImhvbGUiIGN4PSI3NzAiIGN5PSIxNTAiIHI9IjMwIiAvPgogIDwvZz4KCiAgPCEtLSBsZWN0dXJlIGJpbmFpcmUgc291cyBsYSBjYXJ0ZSAtLT4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIxMDUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIyMDUiIHk9IjI1MCI+MTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIyOTUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIzOTUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI0OTUiIHk9IjI1MCI+MTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI1ODUiIHk9IjI1MCI+MTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI2NjUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI3NTUiIHk9IjI1MCI+MTwvdGV4dD4KCiAgPHRleHQgY2xhc3M9ImxibCIgeD0iNjAiIHk9IjI5MCI+dHJvdSA9IDEgKGJpdCBsdSk8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImxibCIgeD0iNjAiIHk9IjMxNiI+cGFzIGRlIHRyb3UgPSAwPC90ZXh0Pgo8L3N2Zz4K" alt="Une carte perforée représente huit positions binaires : trou pour 1, absence de trou pour 0." />
+<figcaption aria-hidden="true">Une carte perforée représente huit
+positions binaires : trou pour 1, absence de trou pour 0.</figcaption>
+</figure>
+<h3 id="le-bit">Le bit</h3>
+<p>trou / pas de trou → deux états → <strong>0 / 1</strong></p>
+<p>Un de ces deux états s’appelle un <strong>bit</strong> (contraction
+de l’anglais <em>binary digit</em>). C’est la plus petite unité
+d’information qu’une machine puisse représenter.</p>
+<blockquote>
+<p><strong>Activité.</strong> Avec une seule feuille de papier (vous
+pouvez écrire, découper, plier — rien d’autre), fabriquez en binôme une
+machine capable de représenter les entiers de 0 à 255, sans jamais rien
+écrire ni effacer pour changer de nombre représenté.</p>
+<p>Vous devrez ensuite expliquer : comment un nombre est mémorisé par
+votre machine, et combien d’éléments de votre machine ont deux états
+possibles.</p>
+</blockquote>
+<h3 id="le-poids-dune-position">Le poids d’une position</h3>
+<p>Une écriture en base 10 fonctionne par position : dans 61027, le
+chiffre 6 ne vaut pas 6, il vaut 60000, parce qu’il est en position des
+dizaines de milliers.</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>10⁴</th>
+<th>10³</th>
+<th>10²</th>
+<th>10¹</th>
+<th>10⁰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chiffre</td>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Valeur</td>
+<td>60000</td>
+<td>1000</td>
+<td>0</td>
+<td>20</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>C’est exactement le même principe en base 2 : chaque position a un
+<strong>poids</strong>, qui est une puissance de 2 au lieu d’une
+puissance de 10.</p>
+<table>
+<thead>
+<tr>
+<th>Position (poids)</th>
+<th>2⁷</th>
+<th>2⁶</th>
+<th>2⁵</th>
+<th>2⁴</th>
+<th>2³</th>
+<th>2²</th>
+<th>2¹</th>
+<th>2⁰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valeur du poids</td>
+<td>128</td>
+<td>64</td>
+<td>32</td>
+<td>16</td>
+<td>8</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Bit (exemple)</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>La valeur en base 10 est la <strong>somme des poids des positions à
+1</strong> :</p>
+<p>64 + 8 + 4 + 1 = <strong>77</strong></p>
+<p>L’écriture binaire 01001101 représente donc le nombre 77.</p>
+<blockquote>
+<p><strong>À retenir.</strong> 1. Deux états (bit) suffisent à coder
+n’importe quelle information. 2. Chaque position d’une écriture binaire
+a un poids, qui est une puissance de 2. 3. La valeur en base 10 est la
+somme des poids des positions valant 1.</p>
+</blockquote>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Le nombre de bits disponibles limite le plus grand nombre
+représentable. Avec <em>n</em> bits, on peut représenter les entiers de
+0 à 2ⁿ − 1 (par exemple, 0 à 255 avec 8 bits — un octet).</p>
+</div>
+<h3 id="exercices">Exercices</h3>
+<ol type="1">
+<li>Quelle est l’écriture décimale du nombre d’écriture binaire
+<code>10101100</code> ?</li>
+<li>Décomposer 57 à l’aide des puissances de 2 pour retrouver son
+écriture binaire sur un octet.</li>
+<li>Combien de bits faut-il au minimum pour représenter le nombre 200
+?</li>
+<li>Vrai ou faux : une écriture binaire de 4 bits permet de coder les
+entiers de 0 à 16.</li>
+</ol>
+<h3 id="la-suite">La suite</h3>
+<p>Nous outillerons dans les séances suivantes une méthode systématique
+(divisions successives, soustractions successives) pour convertir dans
+les deux sens entre les bases 2, 10 et 16 — plus besoin de deviner la
+décomposition.</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<ol type="1">
+<li><code>10101100</code> vaut 128 + 32 + 8 + 4, soit
+<strong>172</strong> en base 10.</li>
+<li>57 = 32 + 16 + 8 + 1 ; sur un octet, son écriture est donc
+<strong>00111001</strong>.</li>
+<li>7 bits permettent d’aller jusqu’à 127. Il faut donc <strong>8
+bits</strong> pour représenter 200.</li>
+<li><strong>Faux.</strong> Avec 4 bits, les valeurs possibles vont de 0
+à 15 inclus.</li>
+</ol>
+</details>

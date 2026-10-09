@@ -1,0 +1,726 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Situer le Bloc 3 : contexte métier, degré d’autonomie, les 4
+compétences communes.</li>
+<li>Distinguer sécurité et sûreté, et nommer avec justesse les 4
+principes DICP.</li>
+<li>Face à un incident concret, identifier le pilier D, I ou C menacé et
+proposer une réaction immédiate. (La Preuve est traitée dans une
+séquence ultérieure.)</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Aucun prérequis technique.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partie 1</td>
+<td>Pourquoi un bloc à part ?</td>
+</tr>
+<tr>
+<td>Partie 2</td>
+<td>Sécurité ≠ sûreté, principes DICP</td>
+</tr>
+<tr>
+<td>Partie 3</td>
+<td>Activité : D, I ou C ?</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="partie-1-pourquoi-un-bloc-à-part">Partie 1 — Pourquoi un bloc à
+part ?</h3>
+<h4 id="le-cadre-légal-avant-tout-le-reste">Le cadre légal, avant tout
+le reste</h4>
+<p>Tout ce qui se pratique en cybersécurité — attaque comme défense —
+s’exerce à l’intérieur d’un cadre pénal strict. Le Code pénal, articles
+<strong>323-1 et suivants</strong> (chapitre « Des atteintes aux
+systèmes de traitement automatisé de données », issu de la loi Godfrain
+de 1988, régulièrement renforcé depuis — dernière révision majeure : la
+LOPMI, loi n°2023-22 du 24 janvier 2023), définit ce qui est interdit.
+Texte intégral de l’article central du chapitre, à titre d’exemple de ce
+à quoi ressemble un article de loi :</p>
+<blockquote>
+<p>« Le fait d’accéder ou de se maintenir, frauduleusement, dans tout ou
+partie d’un système de traitement automatisé de données est puni de
+trois ans d’emprisonnement et de 100 000 € d’amende.</p>
+<p>Lorsqu’il en est résulté soit la suppression ou la modification de
+données contenues dans le système, soit une altération du fonctionnement
+de ce système, la peine est de cinq ans d’emprisonnement et de 150 000 €
+d’amende.</p>
+<p>Lorsque les infractions prévues aux deux premiers alinéas ont été
+commises à l’encontre d’un système de traitement automatisé de données à
+caractère personnel mis en œuvre par l’État, la peine est portée à sept
+ans d’emprisonnement et à 300 000 € d’amende. »</p>
+<p>— Article 323-1 du Code pénal, version en vigueur depuis le 26
+janvier 2023.</p>
+</blockquote>
+<p>Le reste du chapitre, dans ses grandes lignes :</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Article</th>
+<th>Ce qu’il punit</th>
+<th>Peine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>323-2</td>
+<td>Entraver ou fausser le fonctionnement d’un système (ex. déni de
+service)</td>
+<td>5 ans, 150 000 € (7 ans, 300 000 € si système d’État)</td>
+</tr>
+<tr>
+<td>323-3</td>
+<td>Introduire, extraire, détenir, transmettre, supprimer ou modifier
+frauduleusement des données</td>
+<td>5 ans, 150 000 € (7 ans, 300 000 € si système d’État)</td>
+</tr>
+<tr>
+<td>323-3-1</td>
+<td>Fournir un outil conçu pour commettre ces infractions</td>
+<td>Peines de l’infraction visée — <strong>sauf motif légitime,
+notamment de recherche ou de sécurité informatique</strong></td>
+</tr>
+<tr>
+<td>323-3-2</td>
+<td>(Depuis 2025) Plateforme en ligne facilitant sciemment des
+opérations manifestement illicites</td>
+<td>7 ans, 500 000 € (10 ans, 1 000 000 € en bande organisée)</td>
+</tr>
+<tr>
+<td>323-4</td>
+<td>Participer à un groupement formé pour préparer ces infractions</td>
+<td>Peines de l’infraction visée</td>
+</tr>
+<tr>
+<td>323-4-1</td>
+<td>Circonstance aggravante : bande organisée</td>
+<td>10 ans, 300 000 €</td>
+</tr>
+<tr>
+<td>323-4-2</td>
+<td>Circonstance aggravante : mise en danger d’autrui ou obstacle aux
+secours</td>
+<td>10 ans, 300 000 €</td>
+</tr>
+<tr>
+<td>323-5</td>
+<td>Peines complémentaires (personnes physiques)</td>
+<td>Interdiction de droits, d’exercer, confiscation, fermeture
+d’établissement, exclusion des marchés publics…</td>
+</tr>
+<tr>
+<td>323-6</td>
+<td>Responsabilité pénale des personnes morales (entreprises)</td>
+<td>Amende + peines de l’art. 131-39</td>
+</tr>
+<tr>
+<td>323-7</td>
+<td>Tentative des délits prévus par 323-1 à 323-3-1</td>
+<td>Mêmes peines que l’infraction accomplie</td>
+</tr>
+<tr>
+<td>323-8</td>
+<td>Exception : services de renseignement de l’État agissant hors du
+territoire national</td>
+<td>Chapitre non applicable</td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Ce cadre ne se discute jamais : c’est la limite absolue de tout ce
+qui sera appris dans ce bloc, y compris pour un test ou un exercice «
+juste pour voir ». L’exception de l’article 323-3-1 (motif légitime de
+recherche ou de sécurité informatique) est précieuse pour un futur
+professionnel SISR ou SLAM — mais elle ne dispense jamais d’une
+autorisation explicite avant d’intervenir sur un système qui n’est pas
+le vôtre.</p>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Texte vérifié sur Légifrance (consultation directe, article par
+article).</p>
+</div>
+<h4 id="la-cybersécurité-aujourdhui">La cybersécurité aujourd’hui</h4>
+<p>Quelques traits qui caractérisent le paysage actuel, et qui
+justifient l’existence de ce bloc de compétences :</p>
+<ul>
+<li>une <strong>surface d’attaque en expansion constante</strong> :
+cloud, mobile, objets connectés multiplient les points d’entrée
+possibles ;</li>
+<li>des <strong>rançongiciels en hausse continue</strong>, y compris
+contre des cibles autrefois peu visées (hôpitaux, collectivités,
+établissements scolaires) ;</li>
+<li>des <strong>attaques de plus en plus automatisées</strong>, parfois
+assistées par l’IA, tant côté attaque que côté défense ;</li>
+<li>un <strong>cadre réglementaire qui se durcit</strong> (RGPD,
+directive européenne NIS2) ;</li>
+<li>une <strong>pénurie de compétences</strong> reconnue dans le secteur
+— un vrai débouché professionnel pour les diplômés SISR comme SLAM.</li>
+</ul>
+<h4 id="le-vocabulaire-de-ces-deux-années">Le vocabulaire de ces deux
+années</h4>
+<p>Les mots suivants seront rencontrés et définis au fil du Bloc 3, sur
+les deux années de BTS. Ils ne sont pas définis ici : les nommer une
+première fois suffit à préparer leur rencontre.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Menaces et risques</th>
+<th>Protection technique</th>
+<th>Preuve et gouvernance</th>
+<th>Vers la spécialisation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Menace</td>
+<td>Chiffrement</td>
+<td>Preuve</td>
+<td>Pare-feu <em>(SISR)</em></td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>Authentification</td>
+<td>Signature électronique</td>
+<td>Test d’intrusion <em>(SISR)</em></td>
+</tr>
+<tr>
+<td>Analyse de risque</td>
+<td>Identification</td>
+<td>Non-répudiation</td>
+<td>Durcissement <em>(SISR)</em></td>
+</tr>
+<tr>
+<td>Ingénierie sociale</td>
+<td>Certificat</td>
+<td>Journalisation</td>
+<td>Vulnérabilité applicative, OWASP <em>(SLAM)</em></td>
+</tr>
+<tr>
+<td>Fuite de données</td>
+<td>Hachage</td>
+<td>Politique de sécurité</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Le Bloc 3 forme à la cybersécurité des services informatiques.
+D’après le référentiel, la personne titulaire du diplôme « exerce des
+activités pour répondre aux besoins de sécurité des services
+informatiques d’une organisation cliente notamment au regard du
+développement des menaces et attaques en provenance du cybermonde ».</p>
+<p>Elle peut travailler pour l’entité informatique interne d’une
+organisation, une entreprise de services du numérique, une société de
+conseil ou un éditeur de logiciels.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Le Bloc 3 comprend 4 compétences communes aux deux options (SISR et
+SLAM), puis une 5ᵉ compétence spécifique à chaque option, travaillée à
+partir du semestre 2.</p>
+</div>
+<p>Les 4 compétences communes :</p>
+<ol type="1">
+<li>Protéger les données à caractère personnel</li>
+<li>Préserver l’identité numérique de l’organisation</li>
+<li>Sécuriser les équipements et les usages des utilisateurs</li>
+<li>Garantir la disponibilité, l’intégrité et la confidentialité des
+services et des données de l’organisation face à des cyberattaques</li>
+</ol>
+<h3 id="partie-2-sécurité-sûreté-principes-dicp">Partie 2 — Sécurité ≠
+sûreté, principes DICP</h3>
+<h4 id="construire-la-grille-en-classe-entière">Construire la grille en
+classe entière</h4>
+<p><strong>Sur feuille, d’abord seul puis en mise en commun.</strong>
+Répondez aux situations avant de consulter la synthèse ci-dessous. L’IA
+et la recherche Internet ne sont pas utilisées.</p>
+<p><strong>Situation d’entrée.</strong> L’application du lycée s’ouvre
+normalement, mais des notes ont été modifiées sans autorisation. Écrivez
+deux phrases : peut-on accéder au service ? Peut-on faire confiance aux
+données ?</p>
+<p><strong>Quatre besoins à faire émerger.</strong> Pour chaque cas,
+indiquez le besoin à garantir et les mots du récit qui justifient votre
+réponse.</p>
+<ul>
+<li>A : l’ENT est inaccessible au moment de déposer un devoir.</li>
+<li>B : un montant de facture a été modifié sans autorisation.</li>
+<li>C : une personne non autorisée lit un dossier médical.</li>
+<li>D : deux personnes se contredisent sur une modification : qui l’a
+faite, quand ?</li>
+</ul>
+<p>Construisez ensuite au tableau et sur votre feuille une grille
+<strong>principe / question à poser / exemple</strong>, avec une ligne
+pour D, I, C et P. Pour D, demandez-vous notamment ce qui permettrait
+d’établir les faits : de quelles traces aurait-on besoin, et pourrait-on
+leur faire confiance ? Ici « cas D » désigne la quatrième situation, pas
+la disponibilité.</p>
+<p><strong>Comparer les frontières.</strong> À l’oral, expliquez l’effet
+commun d’une panne électrique et d’une attaque bloquant le même service,
+puis leur différence de cause. Sur feuille, justifiez le principe
+atteint dans ces deux autres cas : un fichier copié sans autorisation
+dont l’original reste intact et accessible ; une application qui
+fonctionne mais affiche des stocks falsifiés.</p>
+<p><strong>Vérification individuelle, sans la synthèse.</strong>
+Inventez un incident en deux phrases : une situation concrète, puis le
+principe atteint avec sa justification. Quelques propositions sont
+discutées collectivement. La correction des situations est regroupée
+après les exercices.</p>
+<h4 id="sécurité-sûreté-deux-mots-deux-périmètres">Sécurité, sûreté :
+deux mots, deux périmètres</h4>
+<p>La <strong>sûreté</strong> concerne la continuité et la résilience
+d’un service face aux pannes et aux aléas (déjà abordée en Bloc 1 et
+Bloc 2 : sauvegarde, plan de continuité). La <strong>sécurité</strong>
+concerne la protection face à la <strong>malveillance</strong> : c’est
+l’objet du Bloc 3. La cybersécurité n’a de sens que dans un
+environnement dont la sûreté est déjà assurée.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Dans le vocabulaire de ce cours,
+distinguez la cause (panne, erreur, malveillance) du besoin atteint. Une
+panne et une attaque peuvent toutes deux rendre un service indisponible
+; une erreur d’envoi peut porter atteinte à la confidentialité.</p>
+</blockquote>
+<h4 id="les-quatre-principes-dicp">Les quatre principes DICP</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Principe menacé</th>
+<th>Ce qu’il garantit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L’ENT tombe en panne</td>
+<td><strong>Disponibilité</strong></td>
+<td>Un service accessible quand on en a besoin</td>
+</tr>
+<tr>
+<td>Une note trafiquée dans la base</td>
+<td><strong>Intégrité</strong></td>
+<td>Des données correctes, non altérées</td>
+</tr>
+<tr>
+<td>Un dossier médical consulté par un tiers</td>
+<td><strong>Confidentialité</strong></td>
+<td>Un accès réservé aux personnes autorisées</td>
+</tr>
+<tr>
+<td>Qui a fait quoi, quand ?</td>
+<td><strong>Preuve</strong></td>
+<td>La capacité d’établir et de démontrer une action</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Principe</th>
+<th>Question à poser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disponibilité</td>
+<td>Peut-on accéder au service quand on en a besoin ?</td>
+</tr>
+<tr>
+<td>Intégrité</td>
+<td>Les données ont-elles été altérées sans autorisation ?</td>
+</tr>
+<tr>
+<td>Confidentialité</td>
+<td>Qui est autorisé à accéder aux données ?</td>
+</tr>
+<tr>
+<td>Preuve</td>
+<td>Peut-on établir et démontrer ce qui s’est passé ?</td>
+</tr>
+</tbody>
+</table>
+<p>Des traces datées et fiables peuvent aider à reconstituer une action.
+Un compte mentionné dans un journal ne suffit pas à identifier avec
+certitude la personne qui l’a utilisé. Les mécanismes de preuve seront
+approfondis dans une séquence ultérieure.</p>
+<figure>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNDYwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQ2MCI+CiAgPGRlZnM+CiAgICA8Y2xpcFBhdGggaWQ9InNoaWVsZC1jbGlwIj4KICAgICAgPHBhdGggZD0iTTIwMCAxMiBMMzcwIDcwIFYyMTAgQzM3MCAzMjAgMzAwIDQwMCAyMDAgNDQ4IEMxMDAgNDAwIDMwIDMyMCAzMCAyMTAgVjcwIFoiLz4KICAgIDwvY2xpcFBhdGg+CiAgPC9kZWZzPgoKICA8ZyBjbGlwLXBhdGg9InVybCgjc2hpZWxkLWNsaXApIj4KICAgIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjMwIiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8cmVjdCB4PSIyMDAiIHk9IjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjMwIiBmaWxsPSIjRTQ5QTM4Ii8+CiAgICA8cmVjdCB4PSIwIiB5PSIyMzAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjMwIiBmaWxsPSIjRDk1QzU5Ii8+CiAgICA8cmVjdCB4PSIyMDAiIHk9IjIzMCIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMzAiIGZpbGw9IiMxRTg0NDkiLz4KICA8L2c+CgogIDxwYXRoIGQ9Ik0yMDAgMTIgTDM3MCA3MCBWMjEwIEMzNzAgMzIwIDMwMCA0MDAgMjAwIDQ0OCBDMTAwIDQwMCAzMCAzMjAgMzAgMjEwIFY3MCBaIgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSI4Ii8+CiAgPGxpbmUgeDE9IjMwIiB5MT0iMjMwIiB4Mj0iMzcwIiB5Mj0iMjMwIiBzdHJva2U9IiNGN0Y4RkEiIHN0cm9rZS13aWR0aD0iNiIvPgogIDxsaW5lIHgxPSIyMDAiIHkxPSIxMiIgeDI9IjIwMCIgeTI9IjQ0OCIgc3Ryb2tlPSIjRjdGOEZBIiBzdHJva2Utd2lkdGg9IjYiLz4KCiAgPGcgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsJ0lCTSBQbGV4IE1vbm8nLG1vbm9zcGFjZSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Y3RjhGQSI+CiAgICA8dGV4dCB4PSIxMDAiIHk9IjEzMCIgZm9udC1zaXplPSI2NCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMTMwIiBmb250LXNpemU9IjY0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JPC90ZXh0PgogICAgPHRleHQgeD0iMTAwIiB5PSIzNDUiIGZvbnQtc2l6ZT0iNjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkM8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjM0NSIgZm9udC1zaXplPSI2NCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UDwvdGV4dD4KICA8L2c+Cjwvc3ZnPgo=" alt="Les quatre principes DICP : Disponibilité, Intégrité, Confidentialité, Preuve." />
+<figcaption aria-hidden="true">Les quatre principes DICP :
+Disponibilité, Intégrité, Confidentialité, Preuve.</figcaption>
+</figure>
+<blockquote>
+<p><strong>À retenir.</strong> DICP n’est pas une liste à réciter :
+c’est une grille de lecture. Face à tout incident, la première question
+est « quel principe est menacé ? », avant de chercher une solution
+technique.</p>
+</blockquote>
+<h4 id="deux-organismes-de-référence">Deux organismes de référence</h4>
+<p><strong>Repères documentaires pour la suite :</strong> leur
+présentation n’est pas nécessaire au déroulement de l’activité DICP de
+cette séance.</p>
+<ul>
+<li><strong>CNIL</strong> (Commission Nationale de l’Informatique et des
+Libertés) : autorité administrative indépendante française. Informe et
+protège les citoyens, contrôle les organismes, sanctionne en cas de
+non-respect du RGPD.</li>
+<li><strong>ANSSI</strong> (Agence Nationale de la Sécurité des Systèmes
+d’Information) : dépend du Premier ministre. Défend l’État et les
+opérateurs vitaux, diffuse des guides et bonnes pratiques, aide en cas
+d’incident grave.</li>
+</ul>
+<h4 id="la-suite-deux-chemins">La suite : deux chemins</h4>
+<p>À partir du semestre 2, le Bloc 3 se spécialise :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>SISR</th>
+<th>SLAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assurer la cybersécurité d’une infrastructure réseau, d’un système,
+d’un service</td>
+<td>Assurer la cybersécurité d’une solution applicative et de son
+développement</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partie-3-activité-d-i-ou-c">Partie 3 — Activité : D, I ou C
+?</h3>
+<blockquote>
+<p><strong>Activité.</strong> Demi-groupe · sur feuille · d’abord seul,
+puis en binôme. <strong>Ordre de travail : exercice 1 → exercice 3 →
+exercice 2 en restitution.</strong> <strong>À produire :</strong> les
+classements, un compte rendu individuel relu en binôme, des réactions
+justifiées à l’oral et une réponse individuelle de sortie. Le cours est
+autorisé ; l’IA et la recherche sur Internet ne le sont pas. Aucun
+logiciel ni manipulation informatique n’est nécessaire. La
+<strong>Preuve</strong> sera travaillée ultérieurement.</p>
+</blockquote>
+<p><strong>Votre méthode :</strong> repérez le service ou les données
+concernés ; soulignez le fait observé ; choisissez D, I ou C et
+expliquez le lien. Plusieurs principes peuvent être touchés, mais chaque
+réponse doit s’appuyer sur un fait du récit. Distinguez <strong>ce qui
+est constaté</strong> de <strong>ce qui pourrait arriver</strong>.</p>
+<h4 id="exercice-1-même-effet-causes-différentes">Exercice 1 — Même
+effet, causes différentes</h4>
+<p><strong>Seul, puis comparaison à deux.</strong> Pour chaque
+situation, indiquez le principe principalement touché et recopiez les
+mots qui justifient votre réponse. Pour A et B seulement, précisez si
+l’origine relève de la sûreté (panne/aléa) ou de la sécurité
+(malveillance), selon le vocabulaire du cours.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cas</th>
+<th>Situation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Une panne électrique arrête le serveur de réservation du lycée.
+Personne ne peut réserver une salle.</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Une personne bloque volontairement ce même serveur. Personne ne peut
+réserver une salle.</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Une personne remplace sans autorisation le numéro de compte bancaire
+sur une facture. Le fichier reste lisible.</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Un fichier contenant les coordonnées des étudiants est envoyé par
+erreur à une personne extérieure non autorisée.</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Une personne sans autorisation consulte les notes d’une classe, sans
+les modifier.</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Un programme malveillant modifie les quantités du stock.
+L’application continue de fonctionner.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Phrase à compléter :</strong> « Les cas A et B ont le même
+effet sur …, mais leur cause diffère car … » Discutez ensuite une
+réponse sur laquelle vous n’étiez pas d’accord ; chacun corrige sa
+feuille. Si vous êtes d’accord sur tout, expliquez le cas qui vous a
+semblé le plus difficile. La correction collective porte sur les
+désaccords restants. Passez ensuite à l’exercice 3.</p>
+<h4 id="exercice-3-un-incident-plusieurs-conséquences">Exercice 3 — Un
+incident, plusieurs conséquences</h4>
+<p><strong>Seul, puis mise en commun à deux.</strong> Le secrétariat
+utilise un dossier partagé pour organiser les stages. À 9 h, le tableau
+de suivi ne s’ouvre plus : un message indique que le fichier est chiffré
+et réclame une rançon. Le responsable constate aussi qu’une copie des
+conventions, contenant des coordonnées personnelles, est publiée sur une
+page accessible à tous.</p>
+<p>Sur un autre document resté lisible, deux dates de stage ont été
+modifiées sans autorisation. La cause exacte et l’identité de l’auteur
+ne sont pas encore établies.</p>
+<ol type="1">
+<li>Rédigez <strong>trois lignes</strong> : fait constaté → principe
+touché → conséquence concrète pour les utilisateurs.</li>
+<li>Rédigez un <strong>signalement de trois phrases</strong> au service
+informatique : heure et service concernés, faits observés, aide
+demandée. N’inventez ni cause, ni auteur, ni manipulation déjà
+effectuée.</li>
+<li>L’équipe habilitée rétablit ensuite l’accès au tableau depuis une
+copie saine. Est-ce suffisant pour dire que <strong>toutes</strong> les
+conséquences sont résolues ? Justifiez avec les deux autres faits.</li>
+</ol>
+<p><strong>Relecture croisée.</strong> Échangez votre compte rendu avec
+un voisin. Vérifiez les liens entre faits et principes, l’heure, le
+service et l’aide demandée. Repérez une cause ou un auteur inventé.
+Proposez une amélioration précise, puis chacun reprend son texte. Deux
+comptes rendus seront comparés en restitution, avant la discussion des
+réactions de l’exercice 2.</p>
+<p><strong>Pour aller plus loin :</strong> proposez une mesure
+préventive par principe et expliquez son effet. Une mesure peut réduire
+un risque sans garantir qu’aucun incident ne surviendra.</p>
+<h4 id="exercice-2-choisir-une-réaction-et-lexpliquer">Exercice 2 —
+Choisir une réaction et l’expliquer</h4>
+<p><strong>En restitution collective, après l’exercice 3 ; à préparer
+seul si vous terminez plus vite.</strong> Pour chaque cas : indiquez le
+principe menacé ou atteint, choisissez la réaction adaptée et expliquez
+en une phrase pourquoi l’autre aggraverait la situation. Vous êtes
+utilisateur du service, sans droit d’administration.</p>
+<p><strong>A. Message suspect.</strong> Un courriel demande de saisir
+votre mot de passe sur un site inconnu. Vous n’avez ni cliqué ni saisi
+d’information.</p>
+<ul>
+<li><strong>Réaction 1 :</strong> saisir un faux mot de passe pour
+tester le site.</li>
+<li><strong>Réaction 2 :</strong> ne pas suivre le lien et signaler le
+message au service informatique par le canal habituel.</li>
+</ul>
+<p>La confidentialité est-elle déjà compromise, ou seulement menacée
+d’après le récit ?</p>
+<p><strong>B. Facture modifiée.</strong> Le compte bancaire d’une
+facture a été remplacé sans autorisation. Le paiement n’est pas encore
+parti.</p>
+<ul>
+<li><strong>Réaction 1 :</strong> suspendre le paiement, prévenir le
+responsable et faire vérifier les coordonnées par un contact déjà
+connu.</li>
+<li><strong>Réaction 2 :</strong> payer tout de suite, puis demander une
+vérification.</li>
+</ul>
+<p><strong>C. Dossiers bloqués.</strong> Un message de rançon apparaît
+et les dossiers partagés sont devenus inaccessibles.</p>
+<ul>
+<li><strong>Réaction 1 :</strong> brancher immédiatement le disque de
+sauvegarde au poste suspect pour recopier les dossiers.</li>
+<li><strong>Réaction 2 :</strong> cesser les manipulations et alerter
+immédiatement le service informatique, en décrivant les faits.</li>
+</ul>
+<p><strong>À expliquer :</strong> une sauvegarde suffit-elle à annuler
+la divulgation d’un fichier à une personne non autorisée ?</p>
+<h4 id="avant-de-partir-vérification-individuelle">Avant de partir —
+Vérification individuelle</h4>
+<p><strong>Sans le cours, en deux phrases.</strong> « Un dossier a été
+copié par une personne non autorisée. L’original est toujours accessible
+et n’a pas changé. » Quel principe est atteint ? Pourquoi le fait de
+pouvoir encore ouvrir l’original ne résout-il pas le problème ?</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="classe-entière-construire-la-grille">Classe entière — Construire
+la grille</h3>
+<p><strong>Entrée :</strong> le service reste accessible (D), mais les
+notes ont été altérées sans autorisation (I). Une application qui
+s’ouvre n’est donc pas nécessairement fiable.</p>
+<p><strong>Quatre situations :</strong> A → disponibilité, B →
+intégrité, C → confidentialité, D → besoin de preuve. La quatrième
+situation ne démontre pas qu’une trace a disparu : elle fait apparaître
+le besoin de disposer d’éléments fiables pour établir les actions. La
+grille de questions de la partie 2 constitue la synthèse attendue.</p>
+<p><strong>Frontières :</strong> panne et attaque ont le même effet sur
+D, mais diffèrent par leur origine. Copier sans autorisation atteint C
+même si l’original reste intact ; falsifier les stocks atteint I même si
+l’application fonctionne.</p>
+<p><strong>Incident inventé :</strong> accepter toute situation
+cohérente dont le principe est justifié par un fait précis. Demander une
+reformulation si l’étudiant ne fournit qu’un mot (« piratage », « virus
+»).</p>
+<h3 id="exercice-1-identifier-à-partir-des-faits">Exercice 1 —
+Identifier à partir des faits</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cas</th>
+<th>Principe principal</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>D — Disponibilité</td>
+<td>Impossible de réserver ; panne électrique : sûreté.</td>
+</tr>
+<tr>
+<td>B</td>
+<td>D — Disponibilité</td>
+<td>Impossible de réserver ; blocage volontaire : sécurité.</td>
+</tr>
+<tr>
+<td>C</td>
+<td>I — Intégrité</td>
+<td>Le numéro de compte a été remplacé sans autorisation.</td>
+</tr>
+<tr>
+<td>D</td>
+<td>C — Confidentialité</td>
+<td>Les coordonnées sont transmises à une personne non autorisée.</td>
+</tr>
+<tr>
+<td>E</td>
+<td>C — Confidentialité</td>
+<td>Des notes sont consultées sans autorisation, même sans
+modification.</td>
+</tr>
+<tr>
+<td>F</td>
+<td>I — Intégrité</td>
+<td>Les quantités sont modifiées ; le fonctionnement de l’application ne
+garantit pas leur exactitude.</td>
+</tr>
+</tbody>
+</table>
+<p>Les cas A et B empêchent l’accès au même service, mais la panne est
+accidentelle et le blocage est volontaire. <strong>Le principe décrit le
+besoin atteint ; il ne suffit pas à identifier la cause.</strong> La
+confidentialité peut aussi être atteinte par une erreur, comme dans
+D.</p>
+<h3 id="exercice-3-relier-chaque-principe-à-une-conséquence">Exercice 3
+— Relier chaque principe à une conséquence</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fait constaté</th>
+<th>Principe</th>
+<th>Conséquence possible pour les utilisateurs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le tableau ne s’ouvre plus.</td>
+<td>D</td>
+<td>Le secrétariat ne peut plus consulter le suivi des stages.</td>
+</tr>
+<tr>
+<td>Les conventions sont publiées.</td>
+<td>C</td>
+<td>Des personnes non autorisées peuvent consulter les coordonnées.</td>
+</tr>
+<tr>
+<td>Deux dates ont été changées.</td>
+<td>I</td>
+<td>Le secrétariat risque d’organiser les stages sur des dates
+erronées.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exemple de signalement :</strong> « À 9 h, le secrétariat ne
+peut plus ouvrir le tableau partagé de suivi des stages. Un message
+réclame une rançon, des copies de conventions sont accessibles
+publiquement et deux dates ont été modifiées sans autorisation dans un
+autre document. Merci de prendre en charge l’incident et de nous
+indiquer les consignes à suivre. »</p>
+<p><strong>Après restauration :</strong> l’accès au tableau est rétabli,
+mais la publication des conventions et les deux dates modifiées
+nécessitent encore un traitement. Même retirer la page publique ne
+permet pas de garantir que personne n’en a conservé une copie. Une
+origine commune aux trois faits reste une hypothèse, pas une conclusion
+démontrée.</p>
+<p><strong>Extension — réponses possibles :</strong> copies de
+sauvegarde isolées et restauration testée (D) ; limitation des droits de
+modification et validation des changements sensibles (I) ; limitation
+des accès et vérification des destinataires/partages (C). Accepter toute
+mesure pertinente dont le lien avec le risque est expliqué ; ne pas
+exiger un nom de produit.</p>
+<h3 id="exercice-2-réagir-sans-aggraver">Exercice 2 — Réagir sans
+aggraver</h3>
+<p><strong>A : C menacée ; réaction 2.</strong> Le message cherche à
+obtenir un secret. Le récit ne permet pas d’affirmer qu’un identifiant a
+déjà été divulgué. Visiter le site pour le tester constitue une
+interaction inutile avec un site suspect ; transmettre un faux mot de
+passe ne prouve pas sa fiabilité.</p>
+<p><strong>B : I atteinte ; réaction 1.</strong> Le paiement utiliserait
+une donnée falsifiée. Suspendre et faire vérifier évite d’agir sur cette
+donnée. Utiliser un contact déjà connu évite de faire confirmer les
+coordonnées par le canal potentiellement frauduleux. L’utilisateur ne
+corrige pas arbitrairement le document.</p>
+<p><strong>C : D atteinte ; réaction 2.</strong> Le service est
+inaccessible. Brancher la sauvegarde au poste suspect risque de
+l’exposer à l’incident. L’équipe habilitée organise le confinement, la
+vérification et la restauration ; restaurer n’est pas une première
+manipulation à improviser par l’utilisateur. Le récit ne démontre pas
+une fuite de données : ne pas l’affirmer sans information
+supplémentaire.</p>
+<p><strong>Sauvegarde et divulgation : non.</strong> Une copie saine
+peut aider à retrouver des données disponibles et fiables, mais elle ne
+retire pas une copie déjà reçue par une personne non autorisée.</p>
+<h3 id="vérification-individuelle">Vérification individuelle</h3>
+<p><strong>La confidentialité est atteinte :</strong> une personne non
+autorisée détient une copie. L’accès à l’original relève de la
+disponibilité ; son maintien ne retire pas la copie divulguée.</p>
+</details>

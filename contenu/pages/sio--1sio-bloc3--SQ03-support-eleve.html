@@ -1,0 +1,506 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Caractériser l’identité numérique d’une organisation et recenser ses
+sources de présence en ligne.</li>
+<li>Identifier les menaces qui pèsent sur cette identité et leur opposer
+une mesure.</li>
+<li>Vérifier l’intégrité d’un fichier à partir de son empreinte.</li>
+<li>Expliquer ce qu’une signature électronique apporte de plus.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>DICP : disponibilité, intégrité, confidentialité, preuve (séquence
+1).</li>
+<li>Données à caractère personnel et RGPD (séquence 2).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partie 1</td>
+<td>L’identité numérique d’une organisation</td>
+</tr>
+<tr>
+<td>Partie 2</td>
+<td>Quand on se fait passer pour vous</td>
+</tr>
+<tr>
+<td>Partie 3</td>
+<td>Prouver qu’un fichier n’a pas changé</td>
+</tr>
+<tr>
+<td>Partie 4</td>
+<td>Vérifier un devis, signer un document</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Compétence <strong>B3.2 — Préserver l’identité numérique de
+l’organisation</strong>. Les parties 1 et 2 couvrent « protéger
+l’identité numérique d’une organisation » ; les parties 3 et 4 couvrent
+« déployer les moyens appropriés de preuve électronique ».</p>
+</div>
+<h3 id="le-fil-de-la-séquence">Le fil de la séquence</h3>
+<p>Un client de Soft-Tech reçoit une facture par courriel : en-tête
+Soft-Tech, logo correct, signature au nom de la responsable, et un RIB.
+Il paie. Soft-Tech n’a jamais envoyé cette facture.</p>
+<p>Trois questions traversent la séquence :</p>
+<ol type="1">
+<li>Qu’est-ce qui a été attaqué, alors qu’aucun ordinateur de Soft-Tech
+n’a été piraté ?</li>
+<li>Le client aurait-il pu s’en rendre compte ?</li>
+<li>Comment Soft-Tech peut-elle prouver que cette facture n’est pas la
+sienne ?</li>
+</ol>
+<h3 id="partie-1-lidentité-numérique-dune-organisation">Partie 1 —
+L’identité numérique d’une organisation</h3>
+<p>L’<strong>identité numérique d’une organisation</strong> est
+l’ensemble des éléments par lesquels elle est reconnue en ligne : son
+nom, son nom de domaine, ses adresses de courriel, ses comptes, ses
+publications, et les traces qui s’y rattachent.</p>
+<p>Ce n’est pas un compte unique. Une organisation a des
+<strong>identités multiples</strong>, chacune avec ses données
+associées.</p>
+<h4 id="trois-notions-à-ne-pas-confondre">Trois notions à ne pas
+confondre</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>De quoi on parle</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identité numérique <strong>de l’organisation</strong></td>
+<td>Ce par quoi l’entreprise est reconnue en ligne</td>
+<td>Le domaine <code>soft-tech.fr</code></td>
+</tr>
+<tr>
+<td>Identité numérique <strong>d’une personne</strong></td>
+<td>Ce par quoi un individu est reconnu</td>
+<td>Le compte personnel de la responsable</td>
+</tr>
+<tr>
+<td><strong>E-réputation</strong></td>
+<td>Ce que les autres disent de l’organisation</td>
+<td>Les avis clients, les commentaires</td>
+</tr>
+</tbody>
+</table>
+<p>Une organisation peut avoir une identité numérique bien protégée et
+une mauvaise e-réputation : ce sont deux sujets distincts.</p>
+<h4 id="les-sources-de-la-présence-en-ligne">Les sources de la présence
+en ligne</h4>
+<ul>
+<li>Le <strong>nom de domaine</strong> et les adresses de courriel qui
+en dépendent.</li>
+<li>Le <strong>site web</strong> institutionnel et les applications
+web.</li>
+<li>Les <strong>applications mobiles</strong> publiées au nom de
+l’organisation.</li>
+<li>Les <strong>réseaux sociaux</strong> et les traces qui s’y
+accumulent.</li>
+<li>Les <strong>messageries instantanées</strong> professionnelles.</li>
+</ul>
+<blockquote>
+<p><strong>À retenir.</strong> Recenser ces sources, c’est aussi
+désigner <strong>qui en a la clé</strong>. Une source sans propriétaire
+identifié est une source que personne ne surveille — et c’est par là que
+l’usurpation passe.</p>
+</blockquote>
+<h4 id="exercice">Exercice</h4>
+<p>Pour chacun, dire s’il relève de l’identité numérique de
+l’organisation, de l’e-réputation, ou d’aucune des deux : le domaine
+<code>soft-tech.fr</code> ; un avis client trois étoiles ; l’adresse
+<code>contact@soft-tech.fr</code> ; le compte personnel de la
+responsable sur un réseau social ; la page « Nos services » du site.</p>
+<h3 id="partie-2-quand-on-se-fait-passer-pour-vous">Partie 2 — Quand on
+se fait passer pour vous</h3>
+<p>Une <strong>usurpation d’identité</strong> ne suppose aucun piratage
+: il suffit d’imiter de façon crédible. Ce qui est exploité, ce n’est
+pas une faille technique, c’est la <strong>confiance</strong> attachée à
+un nom.</p>
+<h4 id="les-indices-dun-courriel-frauduleux">Les indices d’un courriel
+frauduleux</h4>
+<ul>
+<li>Le <strong>domaine de l’expéditeur</strong> : un domaine qui
+<em>ressemble</em> n’est pas le même domaine. N’importe qui peut acheter
+un nom approchant.</li>
+<li>Une <strong>adresse de réponse</strong> différente de l’adresse
+d’expédition.</li>
+<li>L’<strong>urgence</strong> et la menace : elles servent à empêcher
+la vérification.</li>
+<li>Un <strong>changement de coordonnées bancaires</strong> annoncé par
+courriel : c’est le motif classique de la fraude au virement.</li>
+<li>Un <strong>horaire d’envoi</strong> ou une formulation qui ne
+correspondent pas à l’organisation.</li>
+</ul>
+<h4 id="menaces-et-mesures-de-protection">Menaces et mesures de
+protection</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Menace</th>
+<th>Ce que c’est</th>
+<th>Une mesure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hameçonnage</td>
+<td>Imiter une organisation de confiance pour obtenir un paiement ou un
+mot de passe</td>
+<td>SPF, DKIM, DMARC sur le domaine</td>
+</tr>
+<tr>
+<td>Défacement</td>
+<td>Modifier l’apparence ou le contenu du site public</td>
+<td>Mise à jour et sauvegarde du site</td>
+</tr>
+<tr>
+<td>Fausse application mobile</td>
+<td>Publier une application au nom de l’organisation</td>
+<td>Veille sur l’usage du nom</td>
+</tr>
+<tr>
+<td>Ingénierie sociale</td>
+<td>Manipuler une personne plutôt qu’un système</td>
+<td>Authentification forte, procédure de vérification</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>À retenir.</strong> <strong>SPF, DKIM et DMARC</strong> sont
+trois réglages publiés sur le nom de domaine. Ils permettent au serveur
+qui <strong>reçoit</strong> un message de vérifier qu’il a bien été
+envoyé par un serveur autorisé pour ce domaine. On retient ce qu’ils
+vérifient ; leur configuration n’est pas au programme de première
+année.</p>
+</blockquote>
+<h3 id="partie-3-prouver-quun-fichier-na-pas-changé">Partie 3 — Prouver
+qu’un fichier n’a pas changé</h3>
+<p>Un programme lit un fichier <strong>entier</strong> et en calcule une
+suite de caractères de <strong>longueur fixe</strong> : son
+<strong>empreinte</strong> (aussi appelée <em>condensat</em>, ou
+<em>hash</em>). Un fichier de 2 Ko et un fichier de 2 Go donnent une
+empreinte de même longueur.</p>
+<h4 id="trois-propriétés">Trois propriétés</h4>
+<ol type="1">
+<li><strong>Déterministe</strong> — le même fichier donne toujours la
+même empreinte, sur n’importe quelle machine et à n’importe quel
+moment.</li>
+<li><strong>À sens unique</strong> — on ne remonte pas au fichier depuis
+son empreinte : l’information n’est pas cachée, elle est perdue.</li>
+<li><strong>Sensible</strong> — la moindre modification change
+l’empreinte <strong>en entier</strong>, pas seulement en partie.</li>
+</ol>
+<pre class="text"><code>Devis : 340,00 EUR   →  e3f1a7c9...b204
+Devis : 940,00 EUR   →  7b52d0e4...c81f</code></pre>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Une empreinte n’est <strong>pas</strong> un chiffrement. Un fichier
+chiffré se déchiffre : l’information est là, protégée par une clé. Une
+empreinte ne se « déchiffre » pas — il n’y a rien à retrouver, et aucune
+clé n’intervient. Publier l’empreinte d’un devis ne révèle rien de son
+contenu, mais ne le protège pas non plus.</p>
+</div>
+<h4 id="comment-on-sen-sert">Comment on s’en sert</h4>
+<p>L’émetteur calcule l’empreinte du document et la <strong>publie à
+part</strong> (sur son site, ou de vive voix). Le destinataire recalcule
+l’empreinte de son côté et compare. Identiques : le fichier reçu est
+exactement celui qui a été envoyé. Différentes : il a changé.</p>
+<h4 id="ce-quune-empreinte-ne-prouve-pas">Ce qu’une empreinte ne prouve
+pas</h4>
+<p>Si le document <strong>et</strong> son empreinte arrivent par le même
+canal, celui qui modifie le fichier peut recalculer l’empreinte et
+remplacer les deux : la vérification passera sans rien signaler.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Une empreinte prouve
+l’<strong>intégrité</strong> par rapport à une référence — à condition
+que cette référence ait voyagé autrement. Elle ne dit rien de
+l’<strong>origine</strong> du document.</p>
+</blockquote>
+<h4 id="exercice-1">Exercice</h4>
+<p>Vrai ou faux, en justifiant : deux fichiers différents peuvent avoir
+la même empreinte ; à partir de l’empreinte d’un devis on peut retrouver
+son montant ; si l’empreinte calculée correspond à l’empreinte publiée
+le fichier est intact ; une empreinte prouve qui a envoyé le
+fichier.</p>
+<h3 id="partie-4-vérifier-un-devis-signer-un-document">Partie 4 —
+Vérifier un devis, signer un document</h3>
+<h4 id="calculer-une-empreinte">Calculer une empreinte</h4>
+<pre class="text"><code>sha256sum devis-2026-0912-a.pdf
+sha256sum devis-2026-0912-a.pdf devis-2026-0912-b.pdf</code></pre>
+<p><code>sha256sum</code> fait partie des outils de base du système,
+aucune installation n’est nécessaire. Pour comparer deux empreintes,
+inutile de lire les 64 caractères : vérifier les premiers et les
+derniers suffit.</p>
+<h4 id="la-signature-électronique">La signature électronique</h4>
+<p>Une <strong>signature électronique</strong> lie un document à celui
+qui l’a émis, grâce à un secret que lui seul détient. Si la vérification
+réussit, le document n’a pas changé <strong>et</strong> il vient bien de
+cet émetteur : les deux garanties d’un seul geste.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Ce que ça prouve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empreinte seule</td>
+<td>Le document n’a pas changé, par rapport à une référence fiable</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>Le document n’a pas changé <strong>et</strong> il vient bien de cet
+émetteur</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>À retenir.</strong> Si Soft-Tech avait signé électroniquement
+ses factures, le client aurait pu vérifier la signature avant de payer :
+la fausse facture n’en aurait eu aucune de valide, l’escroc ne détenant
+pas le secret de Soft-Tech.</p>
+</blockquote>
+<blockquote>
+<p><strong>Ce qui reste à voir.</strong> Nous avons décrit un principe
+et manipulé un outil de hachage. Comment une signature est fabriquée et
+vérifiée — clés, certificats, autorités de certification — relève de la
+deuxième année.</p>
+</blockquote>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="partie-1-exercice">Partie 1 — Exercice</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le domaine <code>soft-tech.fr</code></td>
+<td>Identité numérique de l’organisation</td>
+</tr>
+<tr>
+<td>Un avis client trois étoiles</td>
+<td>E-réputation</td>
+</tr>
+<tr>
+<td><code>contact@soft-tech.fr</code></td>
+<td>Identité numérique de l’organisation</td>
+</tr>
+<tr>
+<td>Le compte personnel de la responsable</td>
+<td>Aucune des deux — identité numérique d’une personne</td>
+</tr>
+<tr>
+<td>La page « Nos services »</td>
+<td>Identité numérique de l’organisation</td>
+</tr>
+</tbody>
+</table>
+<p>Le quatrième cas est le plus discuté : le compte est bien une
+identité numérique, mais celle d’un <strong>individu</strong>. Le
+référentiel insiste sur la distinction.</p>
+<h3 id="partie-2-le-courriel-frauduleux">Partie 2 — Le courriel
+frauduleux</h3>
+<p>Neuf indices étaient présents dans le message. Cinq suffisaient ;
+celui sur le domaine était attendu de tous.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ce qu’on repère</th>
+<th>Pourquoi c’est un indice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Domaine <code>soft-tech-facturation.fr</code></strong></td>
+<td>Ce n’est <strong>pas</strong> <code>soft-tech.fr</code>. Un domaine
+qui ressemble n’est pas le même : n’importe qui peut acheter un nom
+approchant. <strong>L’indice décisif.</strong></td>
+</tr>
+<tr>
+<td>Adresse de réponse différente</td>
+<td>La réponse partirait vers <code>mail-pro.net</code>, un troisième
+domaine sans rapport</td>
+</tr>
+<tr>
+<td>Objet en majuscules, « RÈGLEMENT IMMÉDIAT REQUIS »</td>
+<td>Une entreprise réelle n’écrit pas ses objets de facture ainsi</td>
+</tr>
+<tr>
+<td>Envoi un samedi à 22h47</td>
+<td>Le service comptabilité d’une TPE n’émet pas de facture à cette
+heure</td>
+</tr>
+<tr>
+<td>Changement de coordonnées bancaires annoncé par courriel</td>
+<td>Le motif classique de la fraude au virement : c’est <strong>le
+but</strong> du message</td>
+</tr>
+<tr>
+<td>Délai de 48 h, majoration, matériel non restitué</td>
+<td>L’urgence et la menace servent à empêcher la vérification</td>
+</tr>
+<tr>
+<td>Absence totale d’accents</td>
+<td>Indice faible seul, révélateur avec le reste</td>
+</tr>
+<tr>
+<td>Aucune référence à une intervention précise</td>
+<td>Le vrai atelier saurait quel matériel a été réparé, et quand</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Le point essentiel :</strong> aucun système informatique de
+Soft-Tech n’a été attaqué. Ce qui a été exploité, c’est la
+<strong>confiance attachée à son nom</strong>. Un pare-feu n’y aurait
+rien changé.</p>
+<h4 id="menaces-et-mesures">Menaces et mesures</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Menace</th>
+<th>Ce que c’est</th>
+<th>Mesure attendue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hameçonnage</strong></td>
+<td>Un message imite une organisation de confiance pour obtenir un
+paiement ou un mot de passe</td>
+<td><strong>SPF, DKIM, DMARC</strong> : le serveur destinataire vérifie
+que le message vient bien du domaine annoncé</td>
+</tr>
+<tr>
+<td><strong>Défacement</strong></td>
+<td>Un attaquant modifie l’apparence ou le contenu du site public</td>
+<td><strong>Mise à jour et sauvegarde</strong> : corriger la faille,
+restaurer une version saine</td>
+</tr>
+<tr>
+<td><strong>Fausse application mobile</strong></td>
+<td>Une application publiée au nom de l’organisation, qu’elle n’a pas
+produite</td>
+<td><strong>Veille</strong> sur l’usage du nom : on ne retire que ce
+qu’on a repéré</td>
+</tr>
+<tr>
+<td><strong>Ingénierie sociale</strong></td>
+<td>Manipuler une personne plutôt qu’un système</td>
+<td><strong>Authentification forte</strong> et procédure de
+vérification</td>
+</tr>
+</tbody>
+</table>
+<p>Plusieurs associations se défendent : c’est la
+<strong>justification</strong> qui compte, pas la correspondance exacte
+avec ce tableau.</p>
+<h3 id="partie-3-exercice">Partie 3 — Exercice</h3>
+<ol type="1">
+<li><strong>Vrai</strong>, en théorie : deux fichiers différents peuvent
+donner la même empreinte, c’est une <em>collision</em>. Avec les
+algorithmes utilisés aujourd’hui, c’est si improbable qu’on raisonne
+comme si cela n’arrivait pas. Répondre « faux » en expliquant que c’est
+négligeable en pratique est accepté ; répondre « faux » sans explication
+ne l’est pas.</li>
+<li><strong>Faux.</strong> L’empreinte est à sens unique : l’information
+du document est perdue, pas cachée.</li>
+<li><strong>Vrai</strong>, à une condition : que l’empreinte publiée
+soit fiable, c’est-à-dire qu’elle provienne d’un canal que l’attaquant
+ne contrôle pas.</li>
+<li><strong>Faux.</strong> L’empreinte prouve l’intégrité, pas
+l’origine. N’importe qui peut calculer une empreinte ; c’est la
+signature qui atteste de l’émetteur.</li>
+</ol>
+<h3 id="partie-4-vérification-des-devis">Partie 4 — Vérification des
+devis</h3>
+<p>Le fichier authentique est
+<strong><code>devis-2026-0912-a.pdf</code></strong> : son empreinte
+correspond à celle publiée par Soft-Tech. Celle de
+<code>devis-2026-0912-b.pdf</code> n’y correspond pas.</p>
+<p>La différence porte sur le <strong>total TTC</strong> :
+<strong>340,00 €</strong> dans le fichier authentique, <strong>940,00
+€</strong> dans le fichier altéré. Tout le reste est identique — les
+lignes de prestation, le total HT (283,33 €) et la TVA (56,67 €) n’ont
+pas été touchés.</p>
+<blockquote>
+<p><strong>Le détail à remarquer.</strong> Dans le fichier altéré, le
+total TTC ne correspond plus à la somme du total HT et de la TVA. On
+pouvait s’en apercevoir <strong>sans outil</strong> — mais il fallait
+refaire le calcul. L’empreinte, elle, signale la modification
+immédiatement, sans dépendre de la vigilance du lecteur.</p>
+</blockquote>
+<p>La <strong>quasi-totalité</strong> des caractères de l’empreinte
+diffère entre les deux fichiers : un seul chiffre modifié suffit. Il
+n’existe pas d’empreinte « presque identique ».</p>
+<h4 id="ce-que-la-signature-ajoute">Ce que la signature ajoute</h4>
+<p><strong>1. Pourquoi l’empreinte était publiée sur le site, et pas
+jointe au courriel.</strong> Si l’empreinte voyageait avec le fichier,
+celui qui modifie le fichier pourrait recalculer l’empreinte et
+remplacer les deux : la vérification passerait sans rien signaler.
+L’empreinte de référence n’a de valeur que si elle vient d’un canal que
+l’attaquant ne contrôle pas.</p>
+<p><strong>2. Ce que la signature prouve en plus.</strong> L’empreinte
+prouve que le document n’a pas changé par rapport à une référence — mais
+n’importe qui peut calculer une empreinte. La signature ne peut être
+produite qu’avec un secret détenu par une seule personne : elle atteste
+donc aussi de l’<strong>origine</strong>.</p>
+<p><strong>3. Retour sur la fausse facture.</strong> Le client aurait pu
+vérifier que la facture portait une signature valide de Soft-Tech. La
+fausse facture n’en aurait eu aucune — l’escroc ne détenant pas le
+secret de Soft-Tech. C’est la réponse à la troisième question de la
+séquence, et elle boucle avec la première : ce qui avait été attaqué,
+c’était la confiance attachée au nom. La signature est ce qui permet
+d’attacher cette confiance à autre chose qu’à une apparence.</p>
+</details>

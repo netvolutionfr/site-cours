@@ -1,0 +1,116 @@
+<section id="le-dom-la-page-vue-comme-un-arbre-cours" class="slide title">
+<h2>Le DOM : la page vue comme un arbre — cours</h2>
+<h3 id="retrouver-un-élément-html-pour-le-lire-ou-le-faire-évoluer">Retrouver
+un élément HTML pour le lire ou le faire évoluer</h3>
+<p><em>Avant le CSS : comprendre ce que les sélecteurs
+désignent.</em></p>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Expliquer pourquoi le navigateur construit une représentation de la
+page.</li>
+<li>Distinguer id et class pour repérer des éléments HTML.</li>
+<li>Lire une modification simple déclenchée par un clic.</li>
+</ul>
+<p><strong>Prérequis :</strong> structure HTML, balises, attributs et
+indentation.</p>
+</section>
+<section id="le-problème" class="slide warning" data-layout="single">
+<h2>Le problème</h2>
+<p>Le code HTML de Soft-Tech décrit une page. Mais lorsqu’un utilisateur
+clique sur un bouton, <strong>comment le navigateur sait-il quel texte
+modifier ?</strong></p>
+<p>Il lui faut une représentation exploitable de la page, pas seulement
+une suite de caractères dans un fichier.</p>
+</section>
+<section id="du-fichier-html-à-larbre-dom" class="slide full-image" data-layout="single">
+<h2>Du fichier HTML à l’arbre DOM</h2>
+<figure>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDgzMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgo8dGl0bGUgaWQ9InRpdGxlIj5BcmJyZSBET00gc2ltcGxpZmnDqSBkZSBTb2Z0LVRlY2g8L3RpdGxlPgo8ZGVzYyBpZD0iZGVzYyI+ZG9jdW1lbnQgY29udGllbnQgaHRtbC4gaHRtbCBjb250aWVudCBoZWFkIGV0IGJvZHkuIGhlYWQgY29udGllbnQgdGl0bGUuIGJvZHkgY29udGllbnQgbWFpbi4gbWFpbiBjb250aWVudCBub3RhbW1lbnQgaDEsIHAgZXQgYnV0dG9uLCBxdWkgc29udCBkZXMgw6lsw6ltZW50cyBmcsOocmVzLjwvZGVzYz4KPHN0eWxlPi5ub2Rle2ZpbGw6d2hpdGU7c3Ryb2tlOiMyNDM0NGQ7c3Ryb2tlLXdpZHRoOjN9LmFjY2VudHtmaWxsOiNlOGYyZmY7c3Ryb2tlOiMxNjc3Yzg7c3Ryb2tlLXdpZHRoOjN9LmxpbmV7c3Ryb2tlOiM2MDczOGE7c3Ryb2tlLXdpZHRoOjM7ZmlsbDpub25lfS5jb2Rle2ZvbnQ6NjAwIDIzcHggbW9ub3NwYWNlO2ZpbGw6IzE0NGI3N30ubm90ZXtmb250OjUwMCAxOHB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojNGY2MTcyfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjgzMCIgZmlsbD0iI2Y3ZmFmZiIvPgo8dGV4dCB4PSI2MCIgeT0iNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMTgyNjM4Ij5MZSBuYXZpZ2F0ZXVyIGNvbnN0cnVpdCB1biBhcmJyZSDDoCBwYXJ0aXIgZHUgSFRNTDwvdGV4dD4KPHBhdGggY2xhc3M9ImxpbmUiIGQ9Ik02MDAgMTYwIFYyMDAgTTYwMCAyNzAgVjMwMCBIMjQwIFYzMzAgTTYwMCAzMDAgSDgwMCBWMzMwIE0yNDAgNDAwIFY0NjAgTTgwMCA0MDAgVjQ2MCBNODAwIDUzMCBWNTgwIEgzODAgVjY0MCBNODAwIDU4MCBINzMwIFY2NDAgTTgwMCA1ODAgSDEwNTAgVjY0MCIvPgo8cmVjdCBjbGFzcz0iYWNjZW50IiB4PSI0NjUuMCIgeT0iOTAiIHdpZHRoPSIyNzAiIGhlaWdodD0iNzAiIHJ4PSIxNiIvPjx0ZXh0IHg9IjYwMCIgeT0iMTMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0iY29kZSI+ZG9jdW1lbnQ8L3RleHQ+CjxyZWN0IGNsYXNzPSJub2RlIiB4PSI0NzUuMCIgeT0iMjAwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjcwIiByeD0iMTYiLz48dGV4dCB4PSI2MDAiIHk9IjI0MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImNvZGUiPiZsdDtodG1sJmd0OzwvdGV4dD4KPHJlY3QgY2xhc3M9Im5vZGUiIHg9IjExNS4wIiB5PSIzMzAiIHdpZHRoPSIyNTAiIGhlaWdodD0iNzAiIHJ4PSIxNiIvPjx0ZXh0IHg9IjI0MCIgeT0iMzczIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0iY29kZSI+Jmx0O2hlYWQmZ3Q7PC90ZXh0Pgo8cmVjdCBjbGFzcz0iYWNjZW50IiB4PSI2NzUuMCIgeT0iMzMwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjcwIiByeD0iMTYiLz48dGV4dCB4PSI4MDAiIHk9IjM3MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImNvZGUiPiZsdDtib2R5Jmd0OzwvdGV4dD4KPHJlY3QgY2xhc3M9Im5vZGUiIHg9IjEwMC4wIiB5PSI0NjAiIHdpZHRoPSIyODAiIGhlaWdodD0iOTAiIHJ4PSIxNiIvPjx0ZXh0IHg9IjI0MCIgeT0iNTAzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0iY29kZSI+Jmx0O3RpdGxlJmd0OzwvdGV4dD4KPHRleHQgeD0iMjQwIiB5PSI1MzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub3RlIj50aXRyZSBkZSBs4oCZb25nbGV0PC90ZXh0Pgo8cmVjdCBjbGFzcz0iYWNjZW50IiB4PSI2NzUuMCIgeT0iNDYwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjcwIiByeD0iMTYiLz48dGV4dCB4PSI4MDAiIHk9IjUwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImNvZGUiPiZsdDttYWluJmd0OzwvdGV4dD4KPHJlY3QgY2xhc3M9Im5vZGUiIHg9IjI2MC4wIiB5PSI2NDAiIHdpZHRoPSIyNDAiIGhlaWdodD0iMTAwIiByeD0iMTYiLz48dGV4dCB4PSIzODAiIHk9IjY4MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImNvZGUiPiZsdDtoMSZndDs8L3RleHQ+Cjx0ZXh0IHg9IjM4MCIgeT0iNzE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm90ZSI+dGl0cmUgdmlzaWJsZTwvdGV4dD4KPHJlY3QgY2xhc3M9ImFjY2VudCIgeD0iNTg1LjAiIHk9IjY0MCIgd2lkdGg9IjI5MCIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIvPjx0ZXh0IHg9IjczMCIgeT0iNjgzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0iY29kZSI+Jmx0O3AgaWQ9JnF1b3Q7Y29uc2VpbCZxdW90OyZndDs8L3RleHQ+Cjx0ZXh0IHg9IjczMCIgeT0iNzE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm90ZSI+bGUgY29uc2VpbDwvdGV4dD4KPHJlY3QgY2xhc3M9ImFjY2VudCIgeD0iOTEwLjAiIHk9IjY0MCIgd2lkdGg9IjI4MCIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIvPjx0ZXh0IHg9IjEwNTAiIHk9IjY4MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImNvZGUiPiZsdDtidXR0b24mZ3Q7PC90ZXh0Pgo8dGV4dCB4PSIxMDUwIiB5PSI3MTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub3RlIj5pZD0mcXVvdDtib3V0b24tY29uc2VpbCZxdW90OzwvdGV4dD4KPHRleHQgeD0iNjAiIHk9Ijc5MCIgY2xhc3M9Im5vdGUiPkFyYnJlIHNpbXBsaWZpw6kgOiBsZXMgYXV0cmVzIHRpdHJlcywgbGVzIHByZXN0YXRpb25zIGV0IGxlIHNlY29uZCBib3V0b24gbmUgc29udCBwYXMgcmVwcsOpc2VudMOpcy48L3RleHQ+Cjwvc3ZnPgo=" alt="Le document HTML devient un arbre d’objets : chaque élément garde sa place et ses attributs, comme id ou class." />
+<figcaption aria-hidden="true">Le document HTML devient un arbre
+d’objets : chaque élément garde sa place et ses attributs, comme id ou
+class.</figcaption>
+</figure>
+</section>
+<section id="id-ou-class" class="slide compare" data-layout="single">
+<h2>id ou class ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Attribut</th>
+<th>Idée</th>
+<th>Pour le retrouver</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id=“conseil”</td>
+<td>une étiquette unique dans la page</td>
+<td>#conseil</td>
+</tr>
+<tr>
+<td>class=“prestation”</td>
+<td>une étiquette partagée par plusieurs éléments</td>
+<td>.prestation</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;p id=&quot;conseil&quot;&gt;Pensez à sauvegarder vos données.&lt;/p&gt;
+&lt;li class=&quot;prestation&quot;&gt;Diagnostic&lt;/li&gt;</code></pre>
+<p>Le CSS utilisera les mêmes sélecteurs : .prestation signifie « les
+éléments de la classe prestation ». Ici, nous les utilisons seulement
+pour les repérer.</p>
+</section>
+<section id="cibler-puis-modifier-un-texte" class="slide code" data-layout="single">
+<h2>Cibler, puis modifier un texte</h2>
+<pre><code>const conseil = document.querySelector(&quot;#conseil&quot;);
+conseil.textContent = &quot;Pensez à sauvegarder vos données.&quot;;</code></pre>
+<ol type="1">
+<li>querySelector cherche le premier élément correspondant au
+sélecteur.</li>
+<li>textContent remplace son texte, sans interpréter ce texte comme du
+HTML.</li>
+</ol>
+<p>On privilégie textContent : le programme modifie un texte, pas la
+structure de la page.</p>
+</section>
+<section id="réagir-à-un-clic" class="slide code" data-layout="single">
+<h2>Réagir à un clic</h2>
+<pre><code>const bouton = document.querySelector(&quot;#bouton-conseil&quot;);
+
+bouton.addEventListener(&quot;click&quot;, () =&gt; {
+  conseil.classList.toggle(&quot;masque&quot;);
+});</code></pre>
+<p>addEventListener attend un événement. Au clic, le programme ajoute ou
+retire la classe masque. La règle CSS qui cache l’élément est fournie :
+nous observons le lien avec une classe, sans apprendre encore à écrire
+du CSS.</p>
+</section>
+<section id="à-vous-rendre-la-page-interactive" class="slide activity" data-layout="single">
+<h2>À vous : rendre la page interactive</h2>
+<h3 id="min---en-binôme-sur-poste">35 min - en binôme, sur poste</h3>
+<p><strong>À produire :</strong> une page Soft-Tech où un bouton masque
+ou réaffiche un conseil, puis met en évidence une prestation.</p>
+<p>Suivez la fiche d’activité. À chaque étape :
+<strong>prévoir</strong>, modifier, enregistrer, rafraîchir et
+observer.</p>
+</section>
+<section id="ce-que-nous-retenons" class="slide summary" data-layout="single">
+<h2>Ce que nous retenons</h2>
+<ol type="1">
+<li>Le DOM est l’arbre que le navigateur construit à partir du
+HTML.</li>
+<li>Un sélecteur désigne un élément dans cet arbre : # pour un id, .
+pour une classe.</li>
+<li>JavaScript peut attendre un clic et modifier l’état d’un
+élément.</li>
+</ol>
+<p><strong>Prochaine étape :</strong> écrire des règles CSS qui ciblent
+cette même structure.</p>
+</section>

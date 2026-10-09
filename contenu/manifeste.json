@@ -1,0 +1,1617 @@
+{
+ "annee": "2026-2027",
+ "supports": [
+  {
+   "slug": "nsi/1g/SQ00-distanciel-afficher-ou-renvoyer",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ00",
+   "titre": "Afficher ou renvoyer ?",
+   "sousTitre": "Activité à distance — prévoir, exécuter et réutiliser le résultat d'une fonction",
+   "nature": "À distance",
+   "date": "2026-10-05",
+   "pdf": "/nsi/1g/SQ00-distanciel-afficher-ou-renvoyer.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "même-nombre-à-lécran-résultat-différent",
+     "text": "1. Même nombre à l’écran, résultat différent"
+    },
+    {
+     "depth": 3,
+     "slug": "réparer-la-billetterie",
+     "text": "2. Réparer la billetterie"
+    },
+    {
+     "depth": 3,
+     "slug": "une-fonction-peut-en-appeler-une-autre",
+     "text": "3. Une fonction peut en appeler une autre"
+    },
+    {
+     "depth": 3,
+     "slug": "pour-conclure",
+     "text": "Pour conclure"
+    },
+    {
+     "depth": 3,
+     "slug": "même-nombre-à-lécran-résultat-différent-1",
+     "text": "1. Même nombre à l’écran, résultat différent"
+    },
+    {
+     "depth": 3,
+     "slug": "réparer-la-billetterie-1",
+     "text": "2. Réparer la billetterie"
+    },
+    {
+     "depth": 3,
+     "slug": "une-fonction-peut-en-appeler-une-autre-1",
+     "text": "3. Une fonction peut en appeler une autre"
+    }
+   ]
+  },
+  {
+   "slug": "nsi/1g/SQ00-distanciel-coffre-fort-python",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ00",
+   "titre": "Le coffre-fort de la salle NSI",
+   "sousTitre": "Travail à distance — six fonctions Python à écrire et tester dans la page",
+   "nature": "À distance",
+   "date": "2026-10-02",
+   "pdf": "/nsi/1g/SQ00-distanciel-coffre-fort-python.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "serrure-1-le-périmètre",
+     "text": "Serrure 1 — Le périmètre"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-2-le-tarif-du-musée",
+     "text": "Serrure 2 — Le tarif du musée"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-3-lescape-game",
+     "text": "Serrure 3 — L’escape game"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-4-la-somme-des-entiers",
+     "text": "Serrure 4 — La somme des entiers"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-5-les-bactéries",
+     "text": "Serrure 5 — Les bactéries"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-6-une-ligne-détoiles",
+     "text": "Serrure 6 — Une ligne d’étoiles"
+    },
+    {
+     "depth": 3,
+     "slug": "bonus-des-étoiles-espacées",
+     "text": "Bonus — Des étoiles espacées"
+    },
+    {
+     "depth": 3,
+     "slug": "avant-lundi",
+     "text": "Avant lundi"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-1",
+     "text": "Serrure 1"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-2",
+     "text": "Serrure 2"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-3",
+     "text": "Serrure 3"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-4",
+     "text": "Serrure 4"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-5",
+     "text": "Serrure 5"
+    },
+    {
+     "depth": 3,
+     "slug": "serrure-6",
+     "text": "Serrure 6"
+    },
+    {
+     "depth": 3,
+     "slug": "bonus",
+     "text": "Bonus"
+    }
+   ]
+  },
+  {
+   "slug": "nsi/1g/SQ00-support-eleve",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ00",
+   "titre": "Premiers programmes Python",
+   "sousTitre": "Écrire, exécuter, observer et corriger avec Thonny",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/nsi/1g/SQ00-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "partie-1-présentations-et-découverte-de-la-spécialité-nsi",
+     "text": "Partie 1 — Présentations et découverte de la spécialité NSI"
+    },
+    {
+     "depth": 4,
+     "slug": "un-premier-temps-pour-faire-connaissance",
+     "text": "Un premier temps pour faire connaissance"
+    },
+    {
+     "depth": 4,
+     "slug": "définir-linformatique",
+     "text": "Définir l’informatique"
+    },
+    {
+     "depth": 4,
+     "slug": "ce-que-lon-étudie-en-première-nsi",
+     "text": "Ce que l’on étudie en Première NSI"
+    },
+    {
+     "depth": 4,
+     "slug": "après-la-première",
+     "text": "Après la Première"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-apprendre-linformatique-observer-tester-expliquer",
+     "text": "Partie 2 — Apprendre l’informatique : observer, tester, expliquer"
+    },
+    {
+     "depth": 4,
+     "slug": "construire-des-modèles-mentaux",
+     "text": "Construire des modèles mentaux"
+    },
+    {
+     "depth": 4,
+     "slug": "une-démarche-commune-à-toute-linformatique",
+     "text": "Une démarche commune à toute l’informatique"
+    },
+    {
+     "depth": 4,
+     "slug": "le-défi-de-la-boîte-noire",
+     "text": "Le défi de la boîte noire"
+    },
+    {
+     "depth": 4,
+     "slug": "erreurs-exemples-et-ia",
+     "text": "Erreurs, exemples et IA"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-1",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-python-thonny-et-le-premier-programme",
+     "text": "Partie 3 — Python, Thonny et le premier programme"
+    },
+    {
+     "depth": 4,
+     "slug": "pourquoi-ce-nom",
+     "text": "Pourquoi ce nom ?"
+    },
+    {
+     "depth": 4,
+     "slug": "pourquoi-apprendre-python",
+     "text": "Pourquoi apprendre Python ?"
+    },
+    {
+     "depth": 4,
+     "slug": "thonny-loutil-de-travail",
+     "text": "Thonny : l’outil de travail"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-2",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-4-valeurs-calculs-et-affichage",
+     "text": "Partie 4 — Valeurs, calculs et affichage"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-3",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-5-variables-lecture-et-correction",
+     "text": "Partie 5 — Variables, lecture et correction"
+    },
+    {
+     "depth": 4,
+     "slug": "prévoir-exécuter-expliquer",
+     "text": "Prévoir, exécuter, expliquer"
+    },
+    {
+     "depth": 4,
+     "slug": "mélanger-les-types-une-vraie-erreur",
+     "text": "Mélanger les types : une vraie erreur"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-4",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-6-choisir-avec-if",
+     "text": "Partie 6 — Choisir avec if"
+    },
+    {
+     "depth": 4,
+     "slug": "lindentation-délimite-le-bloc",
+     "text": "L’indentation délimite le bloc"
+    },
+    {
+     "depth": 4,
+     "slug": "une-condition-sur-une-variable",
+     "text": "Une condition sur une variable"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-5",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-7-recopier-un-programme-le-nombre-mystère",
+     "text": "Partie 7 — Recopier un programme : le nombre mystère"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice",
+     "text": "Exercice"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-8-comparer-des-valeurs",
+     "text": "Partie 8 — Comparer des valeurs"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-6",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-9-combiner-des-conditions-avec-and-et-or",
+     "text": "Partie 9 — Combiner des conditions avec and et or"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-7",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-10-répéter-avec-while",
+     "text": "Partie 10 — Répéter avec while"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-8",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-11-parcourir-avec-for",
+     "text": "Partie 11 — Parcourir avec for"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-9",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-12-vrai-ou-faux-le-type-booléen",
+     "text": "Partie 12 — Vrai ou faux : le type booléen"
+    },
+    {
+     "depth": 4,
+     "slug": "examiner-tous-les-cas",
+     "text": "Examiner tous les cas"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-10",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-13-définir-une-fonction",
+     "text": "Partie 13 — Définir une fonction"
+    },
+    {
+     "depth": 4,
+     "slug": "retourner-un-résultat",
+     "text": "Retourner un résultat"
+    },
+    {
+     "depth": 4,
+     "slug": "ce-qui-vit-dans-une-fonction-reste-dans-la-fonction",
+     "text": "Ce qui vit dans une fonction reste dans la fonction"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-11",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-14-décomposer-avant-de-coder-méthode",
+     "text": "Partie 14 — Décomposer avant de coder (méthode)"
+    },
+    {
+     "depth": 4,
+     "slug": "exemple-travaillé",
+     "text": "Exemple travaillé"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-12",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1",
+     "text": "Partie 1"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2",
+     "text": "Partie 2"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3",
+     "text": "Partie 3"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-4",
+     "text": "Partie 4"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-5",
+     "text": "Partie 5"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-6",
+     "text": "Partie 6"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-7",
+     "text": "Partie 7"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-8",
+     "text": "Partie 8"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-9",
+     "text": "Partie 9"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-10",
+     "text": "Partie 10"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-11",
+     "text": "Partie 11"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-12",
+     "text": "Partie 12"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-13",
+     "text": "Partie 13"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-14",
+     "text": "Partie 14"
+    }
+   ]
+  },
+  {
+   "slug": "nsi/1g/SQ01-support-eleve",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Du métier Jacquard au binaire",
+   "sousTitre": "Représenter une information avec deux états",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/nsi/1g/SQ01-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "le-problème",
+     "text": "Le problème"
+    },
+    {
+     "depth": 3,
+     "slug": "le-bit",
+     "text": "Le bit"
+    },
+    {
+     "depth": 3,
+     "slug": "le-poids-dune-position",
+     "text": "Le poids d’une position"
+    },
+    {
+     "depth": 3,
+     "slug": "exercices",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "la-suite",
+     "text": "La suite"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ01-support-eleve",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ01",
+   "titre": "Bloc 1 — Support et mise à disposition de services",
+   "sousTitre": "Découvrir le bloc, tout est programme (même le shell)",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/sio/1sio-bloc1/SQ01-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "partie-1-découvrir-le-bloc-1",
+     "text": "Partie 1 — Découvrir le Bloc 1"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-tout-est-programme-même-le-shell",
+     "text": "Partie 2 — Tout est programme, même le shell"
+    },
+    {
+     "depth": 4,
+     "slug": "le-problème",
+     "text": "Le problème"
+    },
+    {
+     "depth": 4,
+     "slug": "les-commandes-de-base",
+     "text": "Les commandes de base"
+    },
+    {
+     "depth": 4,
+     "slug": "activités",
+     "text": "Activités"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-qui-a-le-droit-de-faire-quoi",
+     "text": "Partie 3 — Qui a le droit de faire quoi ?"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Découvrir Soft-Tech avec VSCode",
+   "sousTitre": "Activité en autonomie — explorer puis modifier un site existant",
+   "nature": "Activité",
+   "date": "2026-09-17",
+   "pdf": "/sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes-générales",
+     "text": "Consignes générales"
+    },
+    {
+     "depth": 3,
+     "slug": "rappel-express",
+     "text": "Rappel express"
+    },
+    {
+     "depth": 3,
+     "slug": "le-projet-soft-tech",
+     "text": "Le projet : Soft-Tech"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-explorer-avant-de-modifier",
+     "text": "Étape 1 — Explorer avant de modifier"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-modifier-le-contenu",
+     "text": "Étape 2 — Modifier le contenu"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-terminer",
+     "text": "Vérification avant de terminer"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P03-cours-dom",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Soft-Tech : faire réagir une page",
+   "sousTitre": "Jeudi 8 octobre — classe entière sur poste, puis demi-groupe",
+   "nature": "Cours",
+   "date": "2026-10-08",
+   "pdf": "/sio/1sio-bloc1/SQ03-P03-cours-dom.pdf",
+   "pieces": [
+    "/sio/1sio-bloc1/dom-soft-tech.zip"
+   ],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "votre-mission",
+     "text": "Votre mission"
+    },
+    {
+     "depth": 3,
+     "slug": "commencer-classe-entière",
+     "text": "Commencer — classe entière"
+    },
+    {
+     "depth": 3,
+     "slug": "clore-la-classe-entière-dix-dernières-minutes",
+     "text": "Clore la classe entière — dix dernières minutes"
+    },
+    {
+     "depth": 3,
+     "slug": "reprendre-demi-groupe",
+     "text": "Reprendre — demi-groupe"
+    },
+    {
+     "depth": 3,
+     "slug": "le-cours-à-relire-après-avoir-cherché",
+     "text": "Le cours — à relire après avoir cherché"
+    },
+    {
+     "depth": 3,
+     "slug": "ressources-et-impression",
+     "text": "Ressources et impression"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P03-distanciel-dom",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Le DOM : la page vue comme un arbre — activité à distance",
+   "sousTitre": "Travail à distance - le DOM, la page vue comme un arbre",
+   "nature": "À distance",
+   "date": "2026-10-01",
+   "pdf": null,
+   "pieces": [],
+   "lien": "/sio/1sio-bloc1/SQ03-P03-distanciel-dom.html",
+   "titres": []
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P03-dom",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Le DOM : la page vue comme un arbre — cours",
+   "sousTitre": "Découvrir le DOM avant le CSS",
+   "nature": "Diaporama",
+   "date": "2026-10-01",
+   "pdf": "/sio/1sio-bloc1/SQ03-P03-dom.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "retrouver-un-élément-html-pour-le-lire-ou-le-faire-évoluer",
+     "text": "Retrouver un élément HTML pour le lire ou le faire évoluer"
+    },
+    {
+     "depth": 3,
+     "slug": "min---en-binôme-sur-poste",
+     "text": "35 min - en binôme, sur poste"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P03-tp-dom-soft-tech",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Un peu d'interactivité avec le DOM",
+   "sousTitre": "Activité complémentaire - faire réagir une page Soft-Tech",
+   "nature": "Activité",
+   "date": "2026-10-01",
+   "pdf": "/sio/1sio-bloc1/SQ03-P03-tp-dom-soft-tech.pdf",
+   "pieces": [
+    "/sio/1sio-bloc1/dom-soft-tech.zip"
+   ],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes",
+     "text": "Consignes"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1---observer-les-repères",
+     "text": "Étape 1 - Observer les repères"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2---modifier-un-texte",
+     "text": "Étape 2 - Modifier un texte"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3---masquer-puis-réafficher-le-conseil",
+     "text": "Étape 3 - Masquer puis réafficher le conseil"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4---défi-mettre-une-prestation-en-évidence",
+     "text": "Étape 4 - Défi : mettre une prestation en évidence"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-terminer",
+     "text": "Vérification avant de terminer"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-support-eleve",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Le web, les bases du HTML et Soft-Tech",
+   "sousTitre": "Comprendre, lire et modifier un site existant",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/sio/1sio-bloc1/SQ03-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "partie-1-le-web-et-les-bases-du-html",
+     "text": "Partie 1 — Le web et les bases du HTML"
+    },
+    {
+     "depth": 4,
+     "slug": "le-problème-du-jour",
+     "text": "Le problème du jour"
+    },
+    {
+     "depth": 4,
+     "slug": "quest-ce-que-le-web",
+     "text": "Qu’est-ce que le web ?"
+    },
+    {
+     "depth": 4,
+     "slug": "quest-ce-que-le-html",
+     "text": "Qu’est-ce que le HTML ?"
+    },
+    {
+     "depth": 4,
+     "slug": "structure-basique-dun-document",
+     "text": "Structure basique d’un document"
+    },
+    {
+     "depth": 4,
+     "slug": "syntaxe-dune-balise",
+     "text": "Syntaxe d’une balise"
+    },
+    {
+     "depth": 4,
+     "slug": "les-balises-courantes",
+     "text": "Les balises courantes"
+    },
+    {
+     "depth": 4,
+     "slug": "relier-une-feuille-de-style-css",
+     "text": "Relier une feuille de style CSS"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-lire-avant-décrire",
+     "text": "Exercice — Lire avant d’écrire"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-découvrir-soft-tech-avec-vscode",
+     "text": "Partie 2 — Découvrir Soft-Tech avec VSCode"
+    },
+    {
+     "depth": 4,
+     "slug": "vscode-en-deux-zones-utiles-aujourdhui",
+     "text": "VSCode en deux zones utiles aujourd’hui"
+    },
+    {
+     "depth": 4,
+     "slug": "larborescence-de-soft-tech",
+     "text": "L’arborescence de Soft-Tech"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-1-explorer-avant-de-modifier",
+     "text": "Exercice 1 — Explorer avant de modifier"
+    },
+    {
+     "depth": 4,
+     "slug": "modifier-sans-casser-la-structure",
+     "text": "Modifier sans casser la structure"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-2-modifier-le-contenu",
+     "text": "Exercice 2 — Modifier le contenu"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-lire-avant-décrire",
+     "text": "Partie 1 — Lire avant d’écrire"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-exercice-1-exploration",
+     "text": "Partie 2 — Exercice 1 (exploration)"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-exercice-2-modification",
+     "text": "Partie 2 — Exercice 2 (modification)"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ01-support-eleve",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ01",
+   "titre": "Cybersécurité — Bloc 3",
+   "sousTitre": "Découvrir le bloc, nommer les bons principes",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/sio/1sio-bloc3/SQ01-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "partie-1-pourquoi-un-bloc-à-part",
+     "text": "Partie 1 — Pourquoi un bloc à part ?"
+    },
+    {
+     "depth": 4,
+     "slug": "le-cadre-légal-avant-tout-le-reste",
+     "text": "Le cadre légal, avant tout le reste"
+    },
+    {
+     "depth": 4,
+     "slug": "la-cybersécurité-aujourdhui",
+     "text": "La cybersécurité aujourd’hui"
+    },
+    {
+     "depth": 4,
+     "slug": "le-vocabulaire-de-ces-deux-années",
+     "text": "Le vocabulaire de ces deux années"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-sécurité-sûreté-principes-dicp",
+     "text": "Partie 2 — Sécurité ≠ sûreté, principes DICP"
+    },
+    {
+     "depth": 4,
+     "slug": "construire-la-grille-en-classe-entière",
+     "text": "Construire la grille en classe entière"
+    },
+    {
+     "depth": 4,
+     "slug": "sécurité-sûreté-deux-mots-deux-périmètres",
+     "text": "Sécurité, sûreté : deux mots, deux périmètres"
+    },
+    {
+     "depth": 4,
+     "slug": "les-quatre-principes-dicp",
+     "text": "Les quatre principes DICP"
+    },
+    {
+     "depth": 4,
+     "slug": "deux-organismes-de-référence",
+     "text": "Deux organismes de référence"
+    },
+    {
+     "depth": 4,
+     "slug": "la-suite-deux-chemins",
+     "text": "La suite : deux chemins"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-activité-d-i-ou-c",
+     "text": "Partie 3 — Activité : D, I ou C ?"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-1-même-effet-causes-différentes",
+     "text": "Exercice 1 — Même effet, causes différentes"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-3-un-incident-plusieurs-conséquences",
+     "text": "Exercice 3 — Un incident, plusieurs conséquences"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-2-choisir-une-réaction-et-lexpliquer",
+     "text": "Exercice 2 — Choisir une réaction et l’expliquer"
+    },
+    {
+     "depth": 4,
+     "slug": "avant-de-partir-vérification-individuelle",
+     "text": "Avant de partir — Vérification individuelle"
+    },
+    {
+     "depth": 3,
+     "slug": "classe-entière-construire-la-grille",
+     "text": "Classe entière — Construire la grille"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-1-identifier-à-partir-des-faits",
+     "text": "Exercice 1 — Identifier à partir des faits"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3-relier-chaque-principe-à-une-conséquence",
+     "text": "Exercice 3 — Relier chaque principe à une conséquence"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2-réagir-sans-aggraver",
+     "text": "Exercice 2 — Réagir sans aggraver"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-individuelle",
+     "text": "Vérification individuelle"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ02-P02-tp-reperer-sensibiliser",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ02",
+   "titre": "Repérer et sensibiliser",
+   "sousTitre": "Activité en autonomie — données personnelles, cas Auto-école Permis+",
+   "nature": "Activité",
+   "date": "2026-09-24",
+   "pdf": "/sio/1sio-bloc3/SQ02-P02-tp-reperer-sensibiliser.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes-générales",
+     "text": "Consignes générales"
+    },
+    {
+     "depth": 3,
+     "slug": "rappel-express",
+     "text": "Rappel express"
+    },
+    {
+     "depth": 3,
+     "slug": "le-cas-auto-école-permis",
+     "text": "Le cas : Auto-école Permis+"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-repérer-les-données",
+     "text": "Étape 1 — Repérer les données"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-produire-un-support-de-sensibilisation",
+     "text": "Étape 2 — Produire un support de sensibilisation"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-rendre",
+     "text": "Vérification avant de rendre"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ02-support-eleve",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ02",
+   "titre": "Données à caractère personnel & RGPD",
+   "sousTitre": "Reconnaître une donnée personnelle, appliquer le RGPD, sensibiliser",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/sio/1sio-bloc3/SQ02-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "partie-1-une-donnée-qui-engage",
+     "text": "Partie 1 — Une donnée qui engage"
+    },
+    {
+     "depth": 4,
+     "slug": "le-cas-du-jour",
+     "text": "Le cas du jour"
+    },
+    {
+     "depth": 4,
+     "slug": "une-donnée-à-caractère-personnel",
+     "text": "Une donnée à caractère personnel"
+    },
+    {
+     "depth": 4,
+     "slug": "des-données-sensibles-un-régime-renforcé",
+     "text": "Des données sensibles, un régime renforcé"
+    },
+    {
+     "depth": 4,
+     "slug": "pourquoi-ce-nest-pas-quune-question-dicp",
+     "text": "Pourquoi ce n’est pas qu’une question DICP"
+    },
+    {
+     "depth": 4,
+     "slug": "les-grands-principes-du-rgpd",
+     "text": "Les grands principes du RGPD"
+    },
+    {
+     "depth": 4,
+     "slug": "le-rôle-de-la-cnil",
+     "text": "Le rôle de la CNIL"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-vérification-individuelle",
+     "text": "Exercice — Vérification individuelle"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-repérer-et-sensibiliser-auto-école-permis",
+     "text": "Partie 2 — Repérer et sensibiliser : Auto-école Permis+"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-1-repérer-les-données",
+     "text": "Exercice 1 — Repérer les données"
+    },
+    {
+     "depth": 4,
+     "slug": "construire-un-support-de-sensibilisation",
+     "text": "Construire un support de sensibilisation"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-2-produire-le-support",
+     "text": "Exercice 2 — Produire le support"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-vérification-individuelle",
+     "text": "Partie 1 — Vérification individuelle"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-exercice-1-repérage",
+     "text": "Partie 2 — Exercice 1 (repérage)"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-exercice-2-exemple-de-support",
+     "text": "Partie 2 — Exercice 2 (exemple de support)"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Vérifier une facture Soft-Tech",
+   "sousTitre": "Jeudi 8 octobre — classe entière sur poste, puis demi-groupe",
+   "nature": "Cours",
+   "date": "2026-10-08",
+   "pdf": "/sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "votre-mission",
+     "text": "Votre mission"
+    },
+    {
+     "depth": 3,
+     "slug": "enquêter-classe-entière",
+     "text": "Enquêter — classe entière"
+    },
+    {
+     "depth": 3,
+     "slug": "clore-la-classe-entière-dix-dernières-minutes",
+     "text": "Clore la classe entière — dix dernières minutes"
+    },
+    {
+     "depth": 3,
+     "slug": "approfondir-demi-groupe",
+     "text": "Approfondir — demi-groupe"
+    },
+    {
+     "depth": 3,
+     "slug": "le-cours-à-relire-après-lenquête",
+     "text": "Le cours — à relire après l’enquête"
+    },
+    {
+     "depth": 3,
+     "slug": "ressources-et-impression",
+     "text": "Ressources et impression"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Quand on se fait passer pour Soft-Tech",
+   "sousTitre": "Travail à distance - identité numérique d'une organisation et usurpation",
+   "nature": "À distance",
+   "date": "2026-10-01",
+   "pdf": null,
+   "pieces": [],
+   "lien": "/sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique.html",
+   "titres": []
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-P01-identite-numerique",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "L'identité numérique d'une organisation",
+   "sousTitre": "L'identité numérique d'une organisation",
+   "nature": "Diaporama",
+   "date": "2026-10-01",
+   "pdf": "/sio/1sio-bloc3/SQ03-P01-identite-numerique.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "ce-quelle-est-où-elle-se-trouve-ce-quelle-risque",
+     "text": "Ce qu’elle est, où elle se trouve, ce qu’elle risque"
+    },
+    {
+     "depth": 3,
+     "slug": "min-à-la-cantonade",
+     "text": "5 min · à la cantonade"
+    },
+    {
+     "depth": 3,
+     "slug": "min-en-binôme-papier",
+     "text": "10 min · en binôme · papier"
+    },
+    {
+     "depth": 3,
+     "slug": "min-seul",
+     "text": "5 min · seul"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-P02-tp-usurpation",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Quand on se fait passer pour vous",
+   "sousTitre": "Activité en autonomie — repérer une usurpation, y opposer une mesure",
+   "nature": "Activité",
+   "date": "2026-10-01",
+   "pdf": "/sio/1sio-bloc3/SQ03-P02-tp-usurpation.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes-générales",
+     "text": "Consignes générales"
+    },
+    {
+     "depth": 3,
+     "slug": "rappel-express",
+     "text": "Rappel express"
+    },
+    {
+     "depth": 3,
+     "slug": "le-courriel-reçu-par-le-client",
+     "text": "Le courriel reçu par le client"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-analyser-le-courriel",
+     "text": "Étape 1 — Analyser le courriel"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-menaces-et-mesures",
+     "text": "Étape 2 — Menaces et mesures"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-rendre",
+     "text": "Vérification avant de rendre"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Vérifier un devis, signer un document",
+   "sousTitre": "Activité en autonomie — empreinte, comparaison, principe de la signature",
+   "nature": "Activité",
+   "date": null,
+   "pdf": "/sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes-générales",
+     "text": "Consignes générales"
+    },
+    {
+     "depth": 3,
+     "slug": "la-situation",
+     "text": "La situation"
+    },
+    {
+     "depth": 3,
+     "slug": "calculer-une-empreinte",
+     "text": "Calculer une empreinte"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-vérifier-les-deux-devis",
+     "text": "Étape 1 — Vérifier les deux devis"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-ce-que-la-signature-ajoute",
+     "text": "Étape 2 — Ce que la signature ajoute"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-rendre",
+     "text": "Vérification avant de rendre"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-support-eleve",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Identité numérique & preuve électronique",
+   "sousTitre": "Protéger le nom de l'organisation, prouver l'intégrité d'un document",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/sio/1sio-bloc3/SQ03-support-eleve.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "le-fil-de-la-séquence",
+     "text": "Le fil de la séquence"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-lidentité-numérique-dune-organisation",
+     "text": "Partie 1 — L’identité numérique d’une organisation"
+    },
+    {
+     "depth": 4,
+     "slug": "trois-notions-à-ne-pas-confondre",
+     "text": "Trois notions à ne pas confondre"
+    },
+    {
+     "depth": 4,
+     "slug": "les-sources-de-la-présence-en-ligne",
+     "text": "Les sources de la présence en ligne"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice",
+     "text": "Exercice"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-quand-on-se-fait-passer-pour-vous",
+     "text": "Partie 2 — Quand on se fait passer pour vous"
+    },
+    {
+     "depth": 4,
+     "slug": "les-indices-dun-courriel-frauduleux",
+     "text": "Les indices d’un courriel frauduleux"
+    },
+    {
+     "depth": 4,
+     "slug": "menaces-et-mesures-de-protection",
+     "text": "Menaces et mesures de protection"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-prouver-quun-fichier-na-pas-changé",
+     "text": "Partie 3 — Prouver qu’un fichier n’a pas changé"
+    },
+    {
+     "depth": 4,
+     "slug": "trois-propriétés",
+     "text": "Trois propriétés"
+    },
+    {
+     "depth": 4,
+     "slug": "comment-on-sen-sert",
+     "text": "Comment on s’en sert"
+    },
+    {
+     "depth": 4,
+     "slug": "ce-quune-empreinte-ne-prouve-pas",
+     "text": "Ce qu’une empreinte ne prouve pas"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-1",
+     "text": "Exercice"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-4-vérifier-un-devis-signer-un-document",
+     "text": "Partie 4 — Vérifier un devis, signer un document"
+    },
+    {
+     "depth": 4,
+     "slug": "calculer-une-empreinte",
+     "text": "Calculer une empreinte"
+    },
+    {
+     "depth": 4,
+     "slug": "la-signature-électronique",
+     "text": "La signature électronique"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-exercice",
+     "text": "Partie 1 — Exercice"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-le-courriel-frauduleux",
+     "text": "Partie 2 — Le courriel frauduleux"
+    },
+    {
+     "depth": 4,
+     "slug": "menaces-et-mesures",
+     "text": "Menaces et mesures"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-exercice",
+     "text": "Partie 3 — Exercice"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-4-vérification-des-devis",
+     "text": "Partie 4 — Vérification des devis"
+    },
+    {
+     "depth": 4,
+     "slug": "ce-que-la-signature-ajoute",
+     "text": "Ce que la signature ajoute"
+    }
+   ]
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "DNS : analyser un incident",
+   "sousTitre": "Continuité pédagogique · lundi 5 octobre 2026 · Bloc 3",
+   "nature": "À distance",
+   "date": "2026-10-05",
+   "pdf": "/sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "situation",
+     "text": "1. Situation"
+    },
+    {
+     "depth": 4,
+     "slug": "document-a-extrait-de-configuration-en-place",
+     "text": "Document A — Extrait de configuration en place"
+    },
+    {
+     "depth": 4,
+     "slug": "document-b-résultats-observés",
+     "text": "Document B — Résultats observés"
+    },
+    {
+     "depth": 3,
+     "slug": "questions-danalyse",
+     "text": "2. Questions d’analyse"
+    },
+    {
+     "depth": 3,
+     "slug": "restitution-note-dincident",
+     "text": "3. Restitution : note d’incident"
+    }
+   ]
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "DNS : corriger et vérifier une zone",
+   "sousTitre": "Continuité pédagogique · mardi 6 octobre 2026 · Bloc 2",
+   "nature": "À distance",
+   "date": "2026-10-06",
+   "pdf": "/sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel.pdf",
+   "pieces": [],
+   "lien": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "demande-de-léquipe",
+     "text": "1. Demande de l’équipe"
+    },
+    {
+     "depth": 4,
+     "slug": "document-a-extrait-de-la-zone-avant-intervention",
+     "text": "Document A — Extrait de la zone avant intervention"
+    },
+    {
+     "depth": 3,
+     "slug": "corriger-et-contrôler",
+     "text": "2. Corriger et contrôler"
+    },
+    {
+     "depth": 3,
+     "slug": "restitution",
+     "text": "3. Restitution"
+    }
+   ]
+  }
+ ],
+ "sequences": [
+  {
+   "id": "nsi/1g/SQ00",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "rubriqueLibelle": "Général",
+   "code": "SQ00",
+   "titre": "Premiers programmes Python avec Thonny",
+   "debut": "2026-09-04",
+   "fin": "2026-10-05",
+   "supports": [
+    "nsi/1g/SQ00-support-eleve",
+    "nsi/1g/SQ00-distanciel-coffre-fort-python",
+    "nsi/1g/SQ00-distanciel-afficher-ou-renvoyer"
+   ]
+  },
+  {
+   "id": "nsi/1g/SQ01",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "rubriqueLibelle": "Général",
+   "code": "SQ01",
+   "titre": "Représentation des entiers",
+   "debut": "2026-10-05",
+   "fin": "2026-10-09",
+   "supports": [
+    "nsi/1g/SQ01-support-eleve"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc1/SQ01",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "rubriqueLibelle": "Bloc 1",
+   "code": "SQ01",
+   "titre": "Découvrir le Bloc 1, tout est programme (même le shell)",
+   "debut": "2026-09-03",
+   "fin": "2026-09-03",
+   "supports": [
+    "sio/1sio-bloc1/SQ01-support-eleve"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc1/SQ03",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "rubriqueLibelle": "Bloc 1",
+   "code": "SQ03",
+   "titre": "Le web, HTML, DOM et projet Soft-Tech",
+   "debut": "2026-09-17",
+   "fin": "2026-10-15",
+   "supports": [
+    "sio/1sio-bloc1/SQ03-support-eleve",
+    "sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode",
+    "sio/1sio-bloc1/SQ03-P03-dom",
+    "sio/1sio-bloc1/SQ03-P03-tp-dom-soft-tech",
+    "sio/1sio-bloc1/SQ03-P03-distanciel-dom",
+    "sio/1sio-bloc1/SQ03-P03-cours-dom"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc3/SQ01",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "rubriqueLibelle": "Bloc 3",
+   "code": "SQ01",
+   "titre": "Cybersécurité : découvrir le bloc, nommer les bons principes",
+   "debut": "2026-09-03",
+   "fin": "2026-09-10",
+   "supports": [
+    "sio/1sio-bloc3/SQ01-support-eleve"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc3/SQ02",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "rubriqueLibelle": "Bloc 3",
+   "code": "SQ02",
+   "titre": "Données à caractère personnel & RGPD",
+   "debut": "2026-09-17",
+   "fin": "2026-09-24",
+   "supports": [
+    "sio/1sio-bloc3/SQ02-support-eleve",
+    "sio/1sio-bloc3/SQ02-P02-tp-reperer-sensibiliser"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc3/SQ03",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "rubriqueLibelle": "Bloc 3",
+   "code": "SQ03",
+   "titre": "Identité numérique de l'organisation & preuve électronique",
+   "debut": "2026-10-01",
+   "fin": "2026-10-08",
+   "supports": [
+    "sio/1sio-bloc3/SQ03-support-eleve",
+    "sio/1sio-bloc3/SQ03-P01-identite-numerique",
+    "sio/1sio-bloc3/SQ03-P02-tp-usurpation",
+    "sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique",
+    "sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation",
+    "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature"
+   ]
+  },
+  {
+   "id": "sio/2sisr-fil-rouge/",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "rubriqueLibelle": "Fil rouge",
+   "code": "",
+   "titre": "Fil rouge",
+   "debut": "2026-10-05",
+   "fin": "2026-10-06",
+   "supports": [
+    "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
+    "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel"
+   ]
+  }
+ ]
+}

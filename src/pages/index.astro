@@ -1,0 +1,35 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { annee, classes, jourFr, MATIERES } from '../lib/manifeste';
+
+const parMatiere = Object.entries(MATIERES)
+	.map(([m, libelle]) => ({ m, libelle, liste: classes().filter((c) => c.matiere === m) }))
+	.filter((g) => g.liste.length);
+const derniere = (c: ReturnType<typeof classes>[number]) =>
+	c.supports.map((s) => s.date).filter(Boolean).sort().at(-1);
+---
+
+<StarlightPage
+	frontmatter={{ title: 'Supports de cours', description: `Supports de cours de Stanis Humez, année ${annee}` }}
+	headings={parMatiere.map((g) => ({ depth: 2, slug: g.m, text: g.libelle }))}
+>
+	<p>Année {annee}. Choisissez votre classe : vous y trouverez les supports par séquence ou dans l'ordre chronologique, avec leur version PDF.</p>
+	{parMatiere.map((g) => (
+		<>
+			<h2 id={g.m}>{g.libelle}</h2>
+			<CardGrid>
+				{g.liste.map((c) => {
+					const d = derniere(c);
+					return (
+						<LinkCard
+							title={c.classe.toUpperCase()}
+							description={`${c.supports.length} ressource${c.supports.length > 1 ? 's' : ''}${d ? ` · dernière : ${jourFr(d)}` : ''}`}
+							href={`/${c.matiere}/${c.classe}/`}
+						/>
+					);
+				})}
+			</CardGrid>
+		</>
+	))}
+</StarlightPage>

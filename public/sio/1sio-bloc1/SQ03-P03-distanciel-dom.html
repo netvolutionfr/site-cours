@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<!--
+type: support
+format: web
+title: "Bloc 1 - Web"
+subtitle: "Travail à distance - le DOM, la page vue comme un arbre"
+niveau: "BTS SIO 1ère année"
+auteur: Stanis Humez
+annee: 2026-2027
+groupe: 1sio
+matiere: SIO
+sequence: SQ03
+parties: [P03]
+competences: ["B1.3 - Développer la présence en ligne de l'organisation"]
+ia: interdite
+publie: true
+support: activite-distance
+date: 2026-10-01
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le DOM à distance</title>
+<style>
+:root{--ink:#172033;--muted:#566573;--bg:#ffffff;--paper:#F7F8FA;--line:#CBD6E2;--accent:#087E8B;--blue:#2471A3;--blue-bg:#EAF4FB;--green:#1E8449;--green-bg:#EAFAF1;--red:#C0392B;--red-bg:#FDEDEC;--amber:#CA6F1E;--amber-bg:#FEF9E7;--code:#F4F6F8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#E6EAF0;--muted:#A9B4C2;--bg:#12161D;--paper:#1A2029;--line:#2E3845;--accent:#3FB8C4;--blue:#6FA8DC;--blue-bg:#16283A;--green:#58C184;--green-bg:#15291F;--red:#E57368;--red-bg:#33191A;--amber:#E5A55C;--amber-bg:#2F2517;--code:#1E2530}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{background:var(--accent);color:#fff;padding:20px 16px}
+header div{max-width:760px;margin:0 auto}
+header p{margin:.2rem 0;opacity:.92}
+h1{font-size:1.5rem;margin:.3rem 0}
+h2{font-size:1.25rem;margin:2.2rem 0 .6rem;padding-top:.6rem;border-top:2px solid var(--line)}
+h3{font-size:1.05rem;margin:1.4rem 0 .4rem}
+code,pre{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;font-size:.88em}
+code{background:var(--code);padding:.05em .3em;border-radius:4px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;width:100%;margin:.6rem 0;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--paper)}
+.box{border-left:4px solid var(--blue);background:var(--blue-bg);padding:10px 14px;border-radius:0 8px 8px 0;margin:1rem 0}
+.box.retenir{border-color:var(--green);background:var(--green-bg)}
+.box.activite{border-color:var(--amber);background:var(--amber-bg)}
+.box p{margin:.3rem 0}
+.steps{padding-left:1.2rem}
+.tree,.tree ul{list-style:none;margin:0;padding-left:1.1rem}
+.tree{padding-left:0}
+.tree li{position:relative;margin:.25rem 0;padding-left:.9rem}
+.tree li::before{content:"";position:absolute;left:0;top:.8em;width:.6rem;border-top:2px solid var(--line)}
+.tree ul{border-left:2px solid var(--line);margin-left:.35rem}
+.node{display:inline-block;border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:0 .45rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+.node b{color:var(--accent)}
+.demo{border:2px solid var(--accent);border-radius:10px;padding:12px 16px;background:var(--bg);margin:.8rem 0}
+.demo .bar{font-size:.8rem;color:var(--muted);border-bottom:1px solid var(--line);margin:-4px 0 8px;padding-bottom:4px}
+.demo h4{margin:.4rem 0;font-size:1.15rem}.demo h5{margin:.6rem 0 .2rem;font-size:1rem}
+.demo [data-el]{cursor:pointer}
+.demo .masque{display:none}
+.demo .selectionnee{outline:3px solid var(--blue);background:var(--blue-bg)}
+.demo .inspecte{box-shadow:0 0 0 2px var(--amber)}
+button{font:inherit;font-size:.95rem;padding:.5rem .85rem;border-radius:8px;border:1px solid var(--blue);background:var(--blue-bg);color:var(--ink);cursor:pointer;margin:.25rem .4rem .25rem 0}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.inspect{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:var(--code);border:1px dashed var(--line);border-radius:8px;padding:8px 10px;min-height:2.6em}
+.q{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:.8rem 0;background:var(--paper)}
+.q p{margin:.2rem 0 .5rem}
+.q label{display:block;padding:.35rem .2rem;border-radius:6px;cursor:pointer}
+.q label:hover{background:var(--bg)}
+.q input[type=text]{font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;padding:.3rem .5rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:11rem;max-width:100%}
+.fb{margin-top:.4rem;font-size:.95rem;min-height:1.2em}
+.fb.ok{color:var(--green)}.fb.ko{color:var(--red)}
+.toc{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 16px}
+.toc ol{margin:.3rem 0;padding-left:1.2rem}
+a{color:var(--blue)}
+footer{color:var(--muted);font-size:.85rem;margin-top:2.5rem;border-top:1px solid var(--line);padding-top:.8rem}
+</style>
+</head>
+<body>
+<header><div>
+<p>BTS SIO 1re année · Bloc 1 · Travail à distance du jeudi 1er octobre</p>
+<h1>Le DOM : la page vue comme un arbre — activité à distance</h1>
+<p>Environ 45 minutes · téléphone ou ordinateur · rien à installer · sans IA</p>
+</div></header>
+<main>
+
+<div class="toc">
+<p><strong>Le lycée est fermé aujourd'hui : voici votre travail.</strong> Suivez les étapes dans l'ordre. Les exercices se corrigent tout seuls : répondez d'abord, puis lisez la correction.</p>
+<ol>
+<li><a href="#cours">Comprendre le DOM</a> (10 min)</li>
+<li><a href="#manip">Manipuler une page Soft-Tech</a> (10 min)</li>
+<li><a href="#ex1">Exercice 1 : lire des sélecteurs</a> (10 min)</li>
+<li><a href="#ex2">Exercice 2 : prévoir l'effet d'un script</a> (10 min)</li>
+<li><a href="#envoi">À garder pour la prochaine séance</a> (5 min)</li>
+</ol>
+</div>
+
+<h2 id="cours">1. Comprendre le DOM</h2>
+
+<h3>Le problème</h3>
+<p>Vous avez écrit et modifié le code HTML de la page Soft-Tech. Mais quand un visiteur clique sur un bouton, <strong>comment le navigateur sait-il quel texte modifier ?</strong> Un fichier HTML n'est qu'une suite de caractères : le navigateur a besoin d'une représentation plus facile à parcourir.</p>
+
+<h3>Du fichier HTML à l'arbre</h3>
+<p>Voici une partie simplifiée de la page Soft-Tech :</p>
+<pre><code>&lt;main&gt;
+  &lt;h1&gt;Soft-Tech&lt;/h1&gt;
+  &lt;p id="conseil"&gt;Pensez à sauvegarder…&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li class="prestation"&gt;Diagnostic&lt;/li&gt;
+    &lt;li class="prestation"&gt;Réparation&lt;/li&gt;
+    &lt;li class="prestation"&gt;Entretien&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/main&gt;</code></pre>
+<p>En lisant ce fichier, le navigateur construit un <strong>arbre</strong> : chaque élément devient un nœud, rangé sous son parent, avec ses attributs. Cet arbre s'appelle le <strong>DOM</strong> (<em>Document Object Model</em>).</p>
+<ul class="tree" aria-label="Arbre DOM de l'extrait">
+<li><span class="node"><b>main</b></span>
+<ul>
+<li><span class="node"><b>h1</b> « Soft-Tech »</span></li>
+<li><span class="node"><b>p</b> id="conseil"</span></li>
+<li><span class="node"><b>ul</b></span>
+<ul>
+<li><span class="node"><b>li</b> class="prestation" « Diagnostic »</span></li>
+<li><span class="node"><b>li</b> class="prestation" « Réparation »</span></li>
+<li><span class="node"><b>li</b> class="prestation" « Entretien »</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>L'indentation du code HTML reflète déjà cet arbre : un élément indenté sous un autre est son <strong>enfant</strong>.</p>
+
+<h3>Repérer un élément : id ou class</h3>
+<table>
+<tr><th>Attribut</th><th>Idée</th><th>Sélecteur</th></tr>
+<tr><td><code>id="conseil"</code></td><td>Étiquette <strong>unique</strong> dans la page</td><td><code>#conseil</code></td></tr>
+<tr><td><code>class="prestation"</code></td><td>Étiquette <strong>partagée</strong> par plusieurs éléments</td><td><code>.prestation</code></td></tr>
+</table>
+<p>Le <code>#</code> désigne un id, le <code>.</code> désigne une classe. Le CSS, que nous verrons bientôt, utilise exactement les mêmes sélecteurs.</p>
+
+<h3>Modifier un élément avec JavaScript</h3>
+<pre><code>const conseil = document.querySelector("#conseil");
+conseil.textContent = "Faites vos mises à jour.";</code></pre>
+<ol class="steps">
+<li><code>querySelector</code> cherche dans l'arbre le <strong>premier</strong> élément qui correspond au sélecteur.</li>
+<li><code>textContent</code> remplace le texte de cet élément.</li>
+</ol>
+<pre><code>const bouton = document.querySelector("#bouton-conseil");
+bouton.addEventListener("click", () =&gt; {
+  conseil.classList.toggle("masque");
+});</code></pre>
+<p><code>addEventListener</code> attend un événement, ici un clic. À chaque clic, <code>toggle</code> <strong>ajoute</strong> la classe <code>masque</code> si elle est absente, et la <strong>retire</strong> si elle est présente. Une règle CSS déjà écrite cache les éléments qui ont cette classe.</p>
+
+<div class="box retenir">
+<p><strong>À retenir</strong></p>
+<p>Le DOM est l'arbre que le navigateur construit à partir du HTML. Un sélecteur désigne un ou plusieurs éléments de cet arbre : <code>#</code> pour un id, <code>.</code> pour une classe. JavaScript peut attendre un clic et modifier un élément.</p>
+</div>
+
+<h2 id="manip">2. Manipuler une page Soft-Tech</h2>
+<div class="box activite">
+<p><strong>Activité · 10 min · seul</strong></p>
+<p>Le cadre ci-dessous est une vraie petite page, avec le script vu plus haut.</p>
+<ol class="steps">
+<li><strong>Inspecter :</strong> touchez un élément de la page (titre, conseil, prestation). Sa fiche s'affiche sous le cadre : balise, id, classe, sélecteur possible.</li>
+<li><strong>Prévoir, puis cliquer :</strong> avant d'appuyer sur « Masquer le conseil », dites-vous ce qui va se passer. Appuyez une fois, puis une deuxième fois.</li>
+<li>Même démarche avec « Mettre en avant une prestation » : quelle prestation est mise en avant, et pourquoi celle-là ?</li>
+</ol>
+</div>
+
+<div class="demo" id="demo">
+<div class="bar">soft-tech.fr — aperçu</div>
+<h4 data-el>Soft-Tech</h4>
+<h5 data-el>Conseil pratique</h5>
+<p id="conseil" data-el>Pensez à sauvegarder vos données avant de déposer un appareil.</p>
+<button id="bouton-conseil" type="button">Masquer le conseil</button>
+<h5 data-el>Nos prestations</h5>
+<ul>
+<li class="prestation" data-el>Diagnostic</li>
+<li class="prestation" data-el>Réparation</li>
+<li class="prestation" data-el>Entretien</li>
+</ul>
+<button id="bouton-prestation" type="button">Mettre en avant une prestation</button>
+</div>
+<div class="inspect" id="inspect" aria-live="polite">Touchez un élément de la page pour l'inspecter.</div>
+
+<p>Le script de la page :</p>
+<pre><code>const conseil = document.querySelector("#conseil");
+const bouton = document.querySelector("#bouton-conseil");
+bouton.addEventListener("click", () =&gt; {
+  conseil.classList.toggle("masque");
+});
+
+const bouton2 = document.querySelector("#bouton-prestation");
+bouton2.addEventListener("click", () =&gt; {
+  const p = document.querySelector(".prestation");
+  p.classList.toggle("selectionnee");
+});</code></pre>
+
+<h2 id="ex1">3. Exercice 1 : lire des sélecteurs</h2>
+<p>Répondez en vous appuyant sur la page Soft-Tech ci-dessus. La correction s'affiche dès que vous choisissez.</p>
+<div id="ex1-questions"></div>
+
+<h2 id="ex2">4. Exercice 2 : prévoir l'effet d'un script</h2>
+<p>La page est rechargée : le conseil est visible. Le visiteur appuie plusieurs fois sur « Masquer le conseil ». Répondez <strong>sans</strong> tester, puis vérifiez avec la page plus haut.</p>
+<div id="ex2-questions"></div>
+
+<h3>Compléter une instruction</h3>
+<p>On veut remplacer le texte du conseil par « Faites vos mises à jour. ». Complétez les deux trous, puis appuyez sur « Vérifier ».</p>
+<div class="q">
+<pre><code>document.querySelector("<input type="text" id="trou1" aria-label="Premier trou : sélecteur" autocomplete="off" autocapitalize="off" spellcheck="false">")
+  .<input type="text" id="trou2" aria-label="Second trou : propriété" autocomplete="off" autocapitalize="off" spellcheck="false"> = "Faites vos mises à jour.";</code></pre>
+<button type="button" id="verif-trous">Vérifier</button>
+<div class="fb" id="fb-trous" aria-live="polite"></div>
+</div>
+
+<h2 id="envoi">5. À garder pour la prochaine séance</h2>
+<div class="box activite">
+<p><strong>Rien à envoyer.</strong> Notez vos réponses sur papier ou dans un document, avec vos mots, sans IA, et apportez-les à la prochaine séance de Bloc 1 :</p>
+<ol class="steps">
+<li>Expliquez la différence entre un <code>id</code> et une <code>class</code>, avec un exemple pris dans la page Soft-Tech.</li>
+<li>Expliquez pourquoi le bouton « Mettre en avant une prestation » met toujours en évidence « Diagnostic ».</li>
+</ol>
+</div>
+<p>Nous repartirons de cette activité en début de séance : vos notes vous feront gagner du temps.</p>
+
+<footer>Stanis Humez · BTS SIO 1re année · Bloc 1 · SQ03 Web, HTML & DOM · 2026-2027</footer>
+</main>
+
+<script>
+// Page de démonstration : même script que celui affiché.
+const conseil = document.querySelector("#conseil");
+document.querySelector("#bouton-conseil").addEventListener("click", () => {
+  conseil.classList.toggle("masque");
+});
+document.querySelector("#bouton-prestation").addEventListener("click", () => {
+  document.querySelector("#demo .prestation").classList.toggle("selectionnee");
+});
+
+// Inspecteur simplifié (les outils de développement n'existent pas sur téléphone).
+const inspect = document.querySelector("#inspect");
+let courant = null;
+document.querySelectorAll("#demo [data-el]").forEach(el => {
+  el.addEventListener("click", () => {
+    if (courant) courant.classList.remove("inspecte");
+    courant = el;
+    el.classList.add("inspecte");
+    const tag = el.tagName.toLowerCase();
+    const classes = [...el.classList].filter(c => !["inspecte", "masque", "selectionnee"].includes(c));
+    const sel = el.id ? "#" + el.id : classes.length ? "." + classes[0] : tag;
+    const nb = document.querySelectorAll("#demo " + sel).length;
+    inspect.textContent = `balise : <${tag}> · id : ${el.id || "aucun"} · class : ${classes.join(" ") || "aucune"} · sélecteur : ${sel} (${nb} élément${nb > 1 ? "s" : ""} dans la page)`;
+  });
+});
+
+// QCM à correction immédiate.
+function qcm(conteneur, questions) {
+  const zone = document.querySelector(conteneur);
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "q";
+    const nom = conteneur.slice(1) + "-" + i;
+    div.innerHTML = `<p><strong>Question ${i + 1}.</strong> ${q.texte}</p>` +
+      q.choix.map((c, j) => `<label><input type="radio" name="${nom}" value="${j}"> ${c}</label>`).join("") +
+      `<div class="fb" aria-live="polite"></div>`;
+    const fb = div.querySelector(".fb");
+    div.querySelectorAll("input").forEach(inp => inp.addEventListener("change", () => {
+      const ok = Number(inp.value) === q.bonne;
+      fb.className = "fb " + (ok ? "ok" : "ko");
+      fb.textContent = (ok ? "Juste. " : "Pas tout à fait. ") + q.explication;
+    }));
+    zone.appendChild(div);
+  });
+}
+
+qcm("#ex1-questions", [
+  { texte: "Que désigne le sélecteur <code>#conseil</code> ?",
+    choix: ["Le paragraphe du conseil pratique", "Toutes les prestations", "Le bouton « Masquer le conseil »"],
+    bonne: 0, explication: "Le # vise l'élément dont l'id vaut « conseil » : le paragraphe <p id=\"conseil\">." },
+  { texte: "Combien d'éléments de la page correspondent au sélecteur <code>.prestation</code> ?",
+    choix: ["Aucun", "1", "3"],
+    bonne: 2, explication: "Diagnostic, Réparation et Entretien portent tous les trois class=\"prestation\" : une classe peut être partagée." },
+  { texte: "Quel sélecteur désigne le bouton « Masquer le conseil » ?",
+    choix: ["<code>.bouton-conseil</code>", "<code>#bouton-conseil</code>", "<code>bouton-conseil</code>"],
+    bonne: 1, explication: "Le bouton a l'attribut id=\"bouton-conseil\" : on le vise avec #. Le . viserait une classe, et sans symbole on viserait une balise <bouton-conseil> qui n'existe pas." },
+  { texte: "Pourquoi le conseil porte-t-il un <code>id</code> alors que les prestations portent une <code>class</code> ?",
+    choix: ["Le conseil est unique dans la page, les prestations forment un groupe d'éléments semblables", "Un id s'affiche en gras", "Les classes sont réservées aux listes"],
+    bonne: 0, explication: "Un id est unique dans la page ; une classe regroupe plusieurs éléments qui jouent le même rôle." },
+  { texte: "Que renvoie <code>document.querySelector(\".prestation\")</code> ?",
+    choix: ["Les trois prestations", "La première prestation : Diagnostic", "Rien, car il y en a plusieurs"],
+    bonne: 1, explication: "querySelector renvoie le premier élément trouvé dans l'arbre, en le parcourant dans l'ordre du document." }
+]);
+
+qcm("#ex2-questions", [
+  { texte: "Après <strong>un</strong> clic, le conseil est :",
+    choix: ["visible", "masqué"], bonne: 1,
+    explication: "La classe masque est absente au départ : toggle l'ajoute, et le CSS cache l'élément." },
+  { texte: "Après <strong>deux</strong> clics, le conseil est :",
+    choix: ["visible", "masqué"], bonne: 0,
+    explication: "Au deuxième clic, la classe masque est présente : toggle la retire, le conseil réapparaît." },
+  { texte: "Après <strong>sept</strong> clics, le conseil est :",
+    choix: ["visible", "masqué"], bonne: 1,
+    explication: "Un nombre impair de clics laisse la classe masque ajoutée." },
+  { texte: "Le texte du bouton change-t-il pour indiquer « Afficher le conseil » ?",
+    choix: ["Oui, automatiquement", "Non, le script ne modifie que le paragraphe"], bonne: 1,
+    explication: "Le script ne touche qu'à la classe du paragraphe. Changer le texte du bouton demanderait une instruction de plus, avec textContent sur le bouton." }
+]);
+
+document.querySelector("#verif-trous").addEventListener("click", () => {
+  const t1 = document.querySelector("#trou1").value.trim().replace(/^["']|["']$/g, "");
+  const t2 = document.querySelector("#trou2").value.trim();
+  const fb = document.querySelector("#fb-trous");
+  const ok1 = t1 === "#conseil", ok2 = t2 === "textContent";
+  fb.className = "fb " + (ok1 && ok2 ? "ok" : "ko");
+  if (ok1 && ok2) fb.textContent = "Juste : on cible l'élément d'id conseil, puis on remplace son texte.";
+  else fb.textContent = [
+    ok1 ? "Premier trou juste." : "Premier trou : il faut le sélecteur de l'élément d'id « conseil » (pensez au symbole des id).",
+    ok2 ? "Second trou juste." : "Second trou : la propriété qui contient le texte d'un élément (attention aux majuscules)."
+  ].join(" ");
+});
+</script>
+</body>
+</html>

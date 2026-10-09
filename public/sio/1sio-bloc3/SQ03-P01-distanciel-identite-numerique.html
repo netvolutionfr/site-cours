@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<!--
+type: support
+format: web
+title: "Bloc 3 - Cybersécurité"
+subtitle: "Travail à distance - identité numérique d'une organisation et usurpation"
+niveau: "BTS SIO 1ère année"
+auteur: Stanis Humez
+annee: 2026-2027
+groupe: 1sio
+matiere: SIO
+sequence: SQ03
+parties: [P01, P02]
+competences: ["B3.2 - Préserver l'identité numérique de l'organisation"]
+ia: interdite
+publie: true
+support: activite-distance
+date: 2026-10-01
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identité numérique à distance</title>
+<style>
+:root{--ink:#172033;--muted:#566573;--bg:#ffffff;--paper:#F7F8FA;--line:#CBD6E2;--accent:#087E8B;--blue:#2471A3;--blue-bg:#EAF4FB;--green:#1E8449;--green-bg:#EAFAF1;--red:#C0392B;--red-bg:#FDEDEC;--amber:#CA6F1E;--amber-bg:#FEF9E7;--code:#F4F6F8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#E6EAF0;--muted:#A9B4C2;--bg:#12161D;--paper:#1A2029;--line:#2E3845;--accent:#3FB8C4;--blue:#6FA8DC;--blue-bg:#16283A;--green:#58C184;--green-bg:#15291F;--red:#E57368;--red-bg:#33191A;--amber:#E5A55C;--amber-bg:#2F2517;--code:#1E2530}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{background:var(--accent);color:#fff;padding:20px 16px}
+header div{max-width:760px;margin:0 auto}
+header p{margin:.2rem 0;opacity:.92}
+h1{font-size:1.5rem;margin:.3rem 0}
+h2{font-size:1.25rem;margin:2.2rem 0 .6rem;padding-top:.6rem;border-top:2px solid var(--line)}
+h3{font-size:1.05rem;margin:1.4rem 0 .4rem}
+code,pre{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;font-size:.88em}
+code{background:var(--code);padding:.05em .3em;border-radius:4px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;width:100%;margin:.6rem 0;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--paper)}
+.box{border-left:4px solid var(--blue);background:var(--blue-bg);padding:10px 14px;border-radius:0 8px 8px 0;margin:1rem 0}
+.box.retenir{border-color:var(--green);background:var(--green-bg)}
+.box.activite{border-color:var(--amber);background:var(--amber-bg)}
+.box p{margin:.3rem 0}
+.steps{padding-left:1.2rem}
+.tree,.tree ul{list-style:none;margin:0;padding-left:1.1rem}
+.tree{padding-left:0}
+.tree li{position:relative;margin:.25rem 0;padding-left:.9rem}
+.tree li::before{content:"";position:absolute;left:0;top:.8em;width:.6rem;border-top:2px solid var(--line)}
+.tree ul{border-left:2px solid var(--line);margin-left:.35rem}
+.node{display:inline-block;border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:0 .45rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+.node b{color:var(--accent)}
+.demo{border:2px solid var(--accent);border-radius:10px;padding:12px 16px;background:var(--bg);margin:.8rem 0}
+.demo .bar{font-size:.8rem;color:var(--muted);border-bottom:1px solid var(--line);margin:-4px 0 8px;padding-bottom:4px}
+.demo h4{margin:.4rem 0;font-size:1.15rem}.demo h5{margin:.6rem 0 .2rem;font-size:1rem}
+.demo [data-el]{cursor:pointer}
+.demo .masque{display:none}
+.demo .selectionnee{outline:3px solid var(--blue);background:var(--blue-bg)}
+.demo .inspecte{box-shadow:0 0 0 2px var(--amber)}
+button{font:inherit;font-size:.95rem;padding:.5rem .85rem;border-radius:8px;border:1px solid var(--blue);background:var(--blue-bg);color:var(--ink);cursor:pointer;margin:.25rem .4rem .25rem 0}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.inspect{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:var(--code);border:1px dashed var(--line);border-radius:8px;padding:8px 10px;min-height:2.6em}
+.q{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:.8rem 0;background:var(--paper)}
+.q p{margin:.2rem 0 .5rem}
+.q label{display:block;padding:.35rem .2rem;border-radius:6px;cursor:pointer}
+.q label:hover{background:var(--bg)}
+.q input[type=text]{font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;padding:.3rem .5rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:11rem;max-width:100%}
+.fb{margin-top:.4rem;font-size:.95rem;min-height:1.2em}
+.fb.ok{color:var(--green)}.fb.ko{color:var(--red)}
+.toc{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 16px}
+.toc ol{margin:.3rem 0;padding-left:1.2rem}
+a{color:var(--blue)}
+footer{color:var(--muted);font-size:.85rem;margin-top:2.5rem;border-top:1px solid var(--line);padding-top:.8rem}
+.mail{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:8px;margin:.8rem 0}
+.mail hr{border:0;border-top:1px solid var(--line);margin:6px 0}
+.ligne{display:block;width:100%;text-align:left;margin:3px 0;border:1px solid transparent;background:none;border-radius:6px;padding:.35rem .5rem;font-size:.92rem}
+.ligne.tech{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;color:var(--muted)}
+.ligne[aria-pressed=true]{background:var(--amber-bg);border-color:var(--amber);color:var(--ink)}
+.ligne.ok{background:var(--green-bg);border-color:var(--green)}
+.ligne.manque{border:1px dashed var(--red)}
+.ligne.neutre{background:var(--paper);border-color:var(--line);text-decoration:line-through}
+.corr{padding-left:1.1rem}.corr li{margin:.5rem 0}.corr li.manque strong{color:var(--red)}.corr li.ok strong{color:var(--green)}
+</style>
+</head>
+<body>
+<header><div>
+<p>BTS SIO 1re année · Bloc 3 · Travail à distance du jeudi 1er octobre</p>
+<h1>Quand on se fait passer pour Soft-Tech</h1>
+<p>Environ 45 minutes · téléphone ou ordinateur · rien à installer · sans IA ni recherche Internet</p>
+</div></header>
+<main>
+
+<div class="toc">
+<p><strong>Le lycée est fermé aujourd'hui : voici votre travail.</strong> Suivez les étapes dans l'ordre. Les exercices se corrigent tout seuls : répondez d'abord, puis lisez la correction.</p>
+<ol>
+<li><a href="#cas">Le cas du jour</a> (5 min)</li>
+<li><a href="#cours">L'identité numérique d'une organisation</a> (10 min)</li>
+<li><a href="#ex1">Exercice 1 : identité, e-réputation ou aucune des deux</a> (5 min)</li>
+<li><a href="#ex2">Exercice 2 : analyser le courriel reçu</a> (15 min)</li>
+<li><a href="#envoi">À garder pour la prochaine séance</a> (10 min)</li>
+</ol>
+</div>
+
+<h2 id="cas">1. Le cas du jour</h2>
+<p>Un client de <strong>Soft-Tech</strong> reçoit une facture par courriel : nom de l'entreprise, signature du service comptabilité, un RIB pour le virement. Il paie.</p>
+<p><strong>Soft-Tech n'a jamais envoyé cette facture.</strong> Et aucun ordinateur de Soft-Tech n'a été piraté.</p>
+<div class="box">
+<p><strong>Question à vous poser avant de continuer :</strong> si rien n'a été piraté, qu'est-ce qui a été attaqué, au juste ?</p>
+</div>
+
+<h2 id="cours">2. L'identité numérique d'une organisation</h2>
+<p>L'<strong>identité numérique d'une organisation</strong> est l'ensemble des éléments par lesquels elle est reconnue en ligne : son nom, son nom de domaine, ses adresses de courriel, son site, ses comptes sur les réseaux sociaux, ses applications.</p>
+<p>Chez Soft-Tech : le domaine <code>soft-tech.fr</code>, les adresses en <code>@soft-tech.fr</code>, le site, le compte sur un réseau social, la fiche sur un moteur de recherche.</p>
+
+<h3>Trois notions à ne pas confondre</h3>
+<table>
+<tr><th></th><th>De quoi on parle</th><th>Exemple Soft-Tech</th></tr>
+<tr><td>Identité numérique <strong>de l'organisation</strong></td><td>Ce par quoi l'entreprise est reconnue en ligne</td><td>Le domaine <code>soft-tech.fr</code></td></tr>
+<tr><td>Identité numérique <strong>d'une personne</strong></td><td>Ce par quoi un individu est reconnu</td><td>Le compte personnel de la responsable</td></tr>
+<tr><td><strong>E-réputation</strong></td><td>Ce que les autres disent de l'organisation</td><td>Les avis clients, les commentaires</td></tr>
+</table>
+<p>Une entreprise peut avoir une identité numérique bien protégée et une mauvaise e-réputation : ce sont deux sujets différents.</p>
+
+<h3>L'usurpation</h3>
+<p>Dans le cas du jour, l'attaque vise <strong>la confiance</strong> qu'on accorde au nom de Soft-Tech. Il suffit d'imiter ce nom de façon crédible : un domaine qui <em>ressemble</em> à <code>soft-tech.fr</code>, une signature, une mise en forme. C'est une <strong>usurpation d'identité</strong> : elle ne demande aucun piratage.</p>
+
+<div class="box retenir">
+<p><strong>À retenir</strong></p>
+<p>L'identité numérique d'une organisation, c'est ce par quoi elle est reconnue en ligne ; l'e-réputation, c'est ce qu'on en dit. Un domaine qui ressemble à un autre n'est pas le même domaine. Une identité numérique se protège avant l'incident : chaque compte, domaine ou site doit avoir un responsable identifié.</p>
+</div>
+
+<h2 id="ex1">3. Exercice 1 : identité, e-réputation ou aucune des deux</h2>
+<p>Pour chaque élément, choisissez s'il relève de l'identité numérique de Soft-Tech, de son e-réputation, ou d'aucune des deux.</p>
+<div id="ex1-questions"></div>
+
+<h2 id="ex2">4. Exercice 2 : analyser le courriel reçu</h2>
+<div class="box activite">
+<p><strong>Activité · 15 min · seul</strong></p>
+<p>Voici le courriel reçu par M. Delcourt, client de Soft-Tech. Le vrai domaine de Soft-Tech est <code>soft-tech.fr</code>.</p>
+<ol class="steps">
+<li>Touchez chaque ligne qui vous paraît suspecte : elle se colore. Touchez de nouveau pour l'enlever.</li>
+<li>Relisez une deuxième fois, informations techniques comprises.</li>
+<li>Appuyez sur « Vérifier ». Objectif : <strong>au moins cinq indices</strong>, dont celui qui porte sur le domaine de l'expéditeur.</li>
+</ol>
+</div>
+
+<div class="mail" id="mail" role="group" aria-label="Courriel à analyser"></div>
+<button type="button" id="verif-mail">Vérifier</button>
+<button type="button" id="reset-mail">Recommencer</button>
+<div class="fb" id="fb-mail" aria-live="polite"></div>
+<div id="corr-mail"></div>
+
+<h3>Le bon réflexe</h3>
+<div id="ex3-questions"></div>
+
+<h2 id="envoi">5. À garder pour la prochaine séance</h2>
+<div class="box activite">
+<p><strong>Rien à envoyer.</strong> Notez vos réponses sur papier ou dans un document, avec vos mots, sans IA, et apportez-les à la prochaine séance de Bloc 3 :</p>
+<ol class="steps">
+<li>Qu'est-ce qui a été attaqué dans le cas Soft-Tech, alors qu'aucun ordinateur n'a été piraté ?</li>
+<li>Les <strong>trois indices</strong> du courriel qui vous paraissent les plus convaincants, chacun expliqué en une phrase.</li>
+<li>Le réflexe de vérification que M. Delcourt aurait dû avoir, et pourquoi ce canal est fiable.</li>
+</ol>
+</div>
+<p>Nous repartirons de cette activité en début de séance, puis nous chercherons les mesures de protection que Soft-Tech peut mettre en place.</p>
+
+<footer>Stanis Humez · BTS SIO 1re année · Bloc 3 · SQ03 Identité numérique & preuve électronique · 2026-2027</footer>
+</main>
+
+<script>
+function qcm(conteneur, questions) {
+  const zone = document.querySelector(conteneur);
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "q";
+    const nom = conteneur.slice(1) + "-" + i;
+    div.innerHTML = `<p><strong>${q.titre || "Question " + (i + 1)}.</strong> ${q.texte}</p>` +
+      q.choix.map((c, j) => `<label><input type="radio" name="${nom}" value="${j}"> ${c}</label>`).join("") +
+      `<div class="fb" aria-live="polite"></div>`;
+    const fb = div.querySelector(".fb");
+    div.querySelectorAll("input").forEach(inp => inp.addEventListener("change", () => {
+      const ok = Number(inp.value) === q.bonne;
+      fb.className = "fb " + (ok ? "ok" : "ko");
+      fb.textContent = (ok ? "Juste. " : "Pas tout à fait. ") + q.explication;
+    }));
+    zone.appendChild(div);
+  });
+}
+
+const trois = ["Identité numérique de Soft-Tech", "E-réputation de Soft-Tech", "Aucune des deux"];
+qcm("#ex1-questions", [
+  { texte: "Le nom de domaine <code>soft-tech.fr</code>", choix: trois, bonne: 0,
+    explication: "Le domaine est l'identifiant central de Soft-Tech en ligne : le site et les adresses en dépendent." },
+  { texte: "Un avis client trois étoiles sur un moteur de recherche", choix: trois, bonne: 1,
+    explication: "C'est ce qu'un client dit de Soft-Tech : Soft-Tech ne le contrôle pas." },
+  { texte: "L'adresse <code>contact@soft-tech.fr</code>", choix: trois, bonne: 0,
+    explication: "Une adresse en @soft-tech.fr identifie l'entreprise : c'est pour cela qu'un fraudeur cherche à l'imiter." },
+  { texte: "Le compte personnel de la responsable sur un réseau social", choix: trois, bonne: 2,
+    explication: "Il relève de l'identité numérique d'une personne, pas de celle de l'organisation." },
+  { texte: "La page « Nos services » du site Soft-Tech", choix: trois, bonne: 0,
+    explication: "Le site officiel et ses pages font partie de la présence en ligne de l'organisation." }
+]);
+
+// Courriel : chaque ligne est soit un indice (avec son explication), soit neutre.
+const lignes = [
+  { t: "De : Soft-Tech Comptabilité <compta@soft-tech-facturation.fr>", tech: true,
+    indice: "Le domaine de l'expéditeur est soft-tech-facturation.fr, pas soft-tech.fr : il ressemble au vrai, mais c'est un autre domaine, que n'importe qui peut acheter.", cle: true },
+  { t: "Répondre à : reglement.softtech@mail-pro.net", tech: true,
+    indice: "L'adresse de réponse est encore différente, sur un service de messagerie quelconque : les réponses n'iront pas à Soft-Tech." },
+  { t: "À : m.delcourt@example.com", tech: true },
+  { t: "Objet : Facture n°2026-0912 - REGLEMENT IMMEDIAT REQUIS", tech: true,
+    indice: "L'objet en majuscules crée un sentiment d'urgence : c'est une technique de pression classique." },
+  { t: "Date : samedi 12 septembre 2026, 22h47", tech: true,
+    indice: "Un envoi un samedi soir à 22h47 est inhabituel pour un service comptabilité." },
+  { t: "Bonjour," },
+  { t: "Suite a votre passage en atelier, veuillez trouver la facture n°2026-0912 d'un montant de 340,00 EUR.",
+    indice: "Les accents manquent (« Suite a ») : un courriel officiel est normalement relu. Seul, cet indice ne suffit pas, mais il s'ajoute aux autres." },
+  { t: "ATTENTION : nos coordonnees bancaires ont change. Merci d'utiliser uniquement le RIB ci-dessous.",
+    indice: "Un changement de coordonnées bancaires annoncé par courriel est le cœur de la fraude : il se vérifie toujours par un autre canal." },
+  { t: "IBAN : FR76 3000 1000 0100 0000 0000 123",
+    indice: "C'est le RIB du fraudeur : rien ne prouve qu'il appartient à Soft-Tech." },
+  { t: "Le reglement doit etre effectue sous 48 heures, faute de quoi des frais de majoration seront appliques et votre materiel ne pourra etre restitue.",
+    indice: "Délai très court et menaces (majoration, matériel retenu) : on pousse le client à agir sans réfléchir." },
+  { t: "Cordialement," },
+  { t: "Le service comptabilite - Soft-Tech" },
+  { t: "www.soft-tech-facturation.fr",
+    indice: "Le site indiqué utilise le même faux domaine : le visiter ne prouve rien, il appartient au fraudeur." }
+];
+
+const mail = document.querySelector("#mail");
+lignes.forEach((l, i) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "ligne" + (l.tech ? " tech" : "");
+  b.textContent = l.t;
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => {
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", String(on));
+  });
+  mail.appendChild(b);
+  if (i === 4) { const sep = document.createElement("hr"); mail.appendChild(sep); }
+});
+
+document.querySelector("#verif-mail").addEventListener("click", () => {
+  const boutons = [...mail.querySelectorAll(".ligne")];
+  let trouves = 0, fauxPositifs = 0, cle = false;
+  const corr = [];
+  boutons.forEach((b, i) => {
+    const l = lignes[i], coche = b.getAttribute("aria-pressed") === "true";
+    b.classList.remove("ok", "manque", "neutre");
+    if (l.indice && coche) { trouves++; b.classList.add("ok"); if (l.cle) cle = true; }
+    else if (l.indice) b.classList.add("manque");
+    else if (coche) { fauxPositifs++; b.classList.add("neutre"); }
+    if (l.indice) corr.push(`<li class="${coche ? "ok" : "manque"}"><strong>${coche ? "Trouvé" : "Manqué"} :</strong> <code>${l.t.replace(/</g, "&lt;")}</code><br>${l.indice}</li>`);
+  });
+  const total = lignes.filter(l => l.indice).length;
+  const fb = document.querySelector("#fb-mail");
+  const reussi = trouves >= 5 && cle;
+  fb.className = "fb " + (reussi ? "ok" : "ko");
+  fb.textContent = `${trouves} indice${trouves > 1 ? "s" : ""} sur ${total}. ` +
+    (reussi ? "Objectif atteint. " : cle ? "Objectif : au moins cinq indices. " : "Vous n'avez pas relevé le domaine de l'expéditeur : c'est l'indice principal. ") +
+    (fauxPositifs ? `${fauxPositifs} ligne${fauxPositifs > 1 ? "s" : ""} cochée${fauxPositifs > 1 ? "s" : ""} sans être suspecte${fauxPositifs > 1 ? "s" : ""} (en gris) : une formule de politesse ou votre propre adresse ne prouvent rien.` : "");
+  document.querySelector("#corr-mail").innerHTML = `<h3>Correction</h3><ul class="corr">${corr.join("")}</ul>`;
+});
+
+document.querySelector("#reset-mail").addEventListener("click", () => {
+  mail.querySelectorAll(".ligne").forEach(b => { b.setAttribute("aria-pressed", "false"); b.classList.remove("ok", "manque", "neutre"); });
+  document.querySelector("#fb-mail").textContent = "";
+  document.querySelector("#corr-mail").innerHTML = "";
+});
+
+qcm("#ex3-questions", [
+  { titre: "Question", texte: "M. Delcourt a un doute sur ce courriel. Que doit-il faire avant de payer ?",
+    choix: ["Répondre au courriel pour demander confirmation",
+            "Visiter le site indiqué en bas du courriel",
+            "Appeler Soft-Tech au numéro qu'il connaît déjà (facture précédente, site officiel tapé lui-même)",
+            "Payer, puis vérifier ensuite"],
+    bonne: 2,
+    explication: "Il faut vérifier par un canal indépendant du message. Répondre au courriel ou visiter le site indiqué, c'est demander confirmation au fraudeur lui-même." }
+]);
+</script>
+</body>
+</html>

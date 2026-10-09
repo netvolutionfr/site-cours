@@ -1,0 +1,425 @@
+<p>Dans le coffre-fort Python du 2 octobre, la fonction
+<code>tarif(age)</code> devait donner un prix. Mais comment faire si un
+autre calcul a besoin de ce prix ? Une valeur affichée à l’écran ne
+suffit pas : le programme doit pouvoir la récupérer.</p>
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Distinguer ce qui <strong>s’affiche</strong> de la valeur
+<strong>renvoyée</strong> par une fonction.</li>
+<li>Écrire une fonction de calcul avec <code>return</code>, puis
+utiliser son résultat ailleurs.</li>
+<li>Décrire simplement les valeurs qu’une fonction accepte et celles
+qu’elle renvoie.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Savoir définir et appeler une fonction simple avec
+<code>def</code>.</li>
+<li>Savoir affecter une valeur à une variable.</li>
+<li>Un crayon suffit pour la version papier ; la page HTML interactive
+demande une connexion Internet au premier chargement de Python.</li>
+</ul>
+</section>
+<section id="parcours-environ-1-heure" class="outline">
+<h3>Parcours (environ 1 heure)</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Travail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Prévoir ce qui s’affiche et ce qui est récupéré</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Réparer un calcul de prix pour pouvoir le réutiliser</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Composer deux fonctions et expliquer son choix</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Travail personnel, sans IA. <strong>Prévoyez d’abord</strong> les
+réponses sur papier, puis utilisez <strong>Exécuter</strong> pour voir
+les affichages et <strong>Tester</strong> pour vérifier les valeurs
+renvoyées. Python fonctionne directement dans la page HTML : rien à
+installer. Si vous n’avez pas de connexion, faites l’activité sur papier
+avec le PDF. Gardez vos réponses pour la reprise en classe ; consultez
+les corrigés seulement après votre tentative.</p>
+</div>
+<h3 id="même-nombre-à-lécran-résultat-différent">1. Même nombre à
+l’écran, résultat différent</h3>
+<p>Voici deux fonctions. Lisez-les <strong>sans cliquer tout de
+suite</strong> sur les boutons.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def double_affiche(n):
+    print(2 * n)
+
+def double(n):
+    return 2 * n
+
+a = double_affiche(4)
+b = double(4)
+print(&quot;a =&quot;, a)
+print(&quot;b =&quot;, b)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["double(4) == 8","double_affiche(4) == 8"]</script></section>
+<p>Le programme exécute les lignes <strong>dans cet ordre</strong>. Le
+deuxième test échoue au départ : c’est normal, nous allons comprendre
+pourquoi.</p>
+<ol type="1">
+<li><p>Que voit-on à l’écran après l’appel de
+<code>double_affiche(4)</code> ? Et après celui de
+<code>double(4)</code> ?</p></li>
+<li><p>Complétez, sans exécuter : <code>a = …</code> et
+<code>b = …</code>.</p></li>
+<li><p>Écrivez les trois lignes qui apparaissent finalement à l’écran,
+dans l’ordre.</p></li>
+<li><p>Parmi <code>a + 3</code> et <code>b + 3</code>, quelle expression
+permet d’obtenir <code>11</code> ? Pourquoi ?</p></li>
+</ol>
+<p>Cliquez sur <strong>Exécuter</strong> pour confronter vos prévisions
+aux trois lignes affichées, puis sur <strong>Tester</strong>. Dans la
+ligne qui échoue, que lit-on dans la colonne « Obtenu » ? Remplacez
+ensuite, dans <code>double_affiche</code>, <code>print</code> par
+<code>return</code> et relancez les tests. Quelle valeur prend
+maintenant <code>a</code> ?</p>
+<blockquote>
+<p><strong>À retenir.</strong> <code>print</code> montre une valeur à
+une personne. <code>return</code> remet une valeur au code qui a appelé
+la fonction. Sans <code>return</code> exécuté, Python renvoie
+<code>None</code> : ce n’est pas un nombre utilisable pour la suite d’un
+calcul.</p>
+</blockquote>
+<h3 id="réparer-la-billetterie">2. Réparer la billetterie</h3>
+<p>Le coffre-fort du 2 octobre utilisait déjà un tarif de musée. Ici, un
+élève veut calculer le prix de plusieurs billets identiques, puis
+ajouter 2 € de frais de réservation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prix_billets(prix_unitaire, quantite):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(prix_unitaire <span class="op">*</span> quantite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sous_total <span class="op">=</span> prix_billets(<span class="dv">7</span>, <span class="dv">3</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> sous_total <span class="op">+</span> <span class="dv">2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Total :&quot;</span>, total, <span class="st">&quot;€&quot;</span>)</span></code></pre></div>
+<ol type="1">
+<li><p>Quel montant la fonction affiche-t-elle ? Quelle valeur est
+placée dans <code>sous_total</code> ? La ligne
+<code>total = sous_total + 2</code> peut-elle fonctionner ?</p></li>
+<li><p>Cliquez sur <strong>Tester</strong> dans l’éditeur ci-dessous,
+puis réécrivez <strong>seulement la fonction</strong>
+<code>prix_billets</code> pour que les trois tests passent. Laissez
+l’affichage final <strong>en dehors</strong> de cette fonction.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def prix_billets(prix_unitaire, quantite):
+    print(prix_unitaire * quantite)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["prix_billets(7, 3) == 21","prix_billets(5, 2) == 10","prix_billets(10, 0) == 0"]</script></section></li>
+<li><p>Avec votre version, complétez :</p>
+<table>
+<thead>
+<tr>
+<th>Appel</th>
+<th>Valeur renvoyée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prix_billets(7, 3)</code></td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>prix_billets(5, 2)</code></td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>prix_billets(10, 0)</code></td>
+<td>…</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Après correction, qu’affiche la dernière ligne du programme
+?</p></li>
+</ol>
+<p>Dans la page HTML, vous pouvez aussi ajouter <strong>après la
+fonction</strong> les trois lignes du programme de billetterie pour le
+vérifier avec <strong>Exécuter</strong>.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>En mathématiques, une fonction prend une valeur dans un
+<strong>ensemble de départ</strong> et donne une valeur dans un
+<strong>ensemble d’arrivée</strong>. Ici, la valeur de départ est un
+couple de nombres entiers (<code>prix_unitaire</code> et
+<code>quantite</code>) ; la fonction renvoie un nombre entier (un prix
+en euros). En Python, on peut dire :
+<code>prix_billets : (int, int) → int</code>. Cette écriture décrit les
+<strong>types</strong> des valeurs attendues et du résultat ; elle ne
+remplace pas le calcul.</p>
+</div>
+<h3 id="une-fonction-peut-en-appeler-une-autre">3. Une fonction peut en
+appeler une autre</h3>
+<p>On retrouve la fonction <code>tarif(age)</code> du coffre-fort : elle
+<strong>renvoie</strong> 5 € si l’âge est inférieur à 12 ans, 7 € à
+partir de 65 ans, et 10 € dans les autres cas. Vous n’avez pas besoin de
+la réécrire ici.</p>
+<p>Écrivez <code>prix_pour_deux(age1, age2)</code> qui
+<strong>renvoie</strong> le prix total pour deux personnes en utilisant
+<strong>deux appels</strong> à <code>tarif</code>. Elle n’affiche rien.
+Dans l’éditeur HTML, <code>tarif</code> est déjà fourni : complétez
+seulement <code>prix_pour_deux</code>, puis cliquez sur
+<strong>Tester</strong>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def tarif(age):
+    if age &lt; 12:
+        return 5
+    if age &gt;= 65:
+        return 7
+    return 10
+
+def prix_pour_deux(age1, age2):
+    # À compléter
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["prix_pour_deux(10, 70) == 12","prix_pour_deux(14, 20) == 20","prix_pour_deux(11, 12) == 15"]</script></section>
+<p>Vérifiez votre idée sur papier : <code>prix_pour_deux(10, 70)</code>
+doit renvoyer <code>12</code> et <code>prix_pour_deux(14, 20)</code>
+doit renvoyer <code>20</code>.</p>
+<p>Complétez ensuite la phrase : « <code>prix_pour_deux</code> prend
+deux valeurs de type … dans son ensemble de départ et renvoie une valeur
+de type … dans son ensemble d’arrivée. »</p>
+<p>Enfin, écrivez <strong>une ligne à l’extérieur</strong> de la
+fonction pour afficher le prix de deux personnes de 10 et 70 ans sous la
+forme <code>Prix : 12 €</code>.</p>
+<h3 id="pour-conclure">Pour conclure</h3>
+<p>Un camarade propose de remplacer le <code>return</code> de
+<code>prix_pour_deux</code> par un <code>print</code> : « On verrait le
+bon prix, donc ça marcherait. » Répondez-lui en deux phrases : dans quel
+cas a-t-il raison, et qu’est-ce qu’on ne pourrait plus faire facilement
+?</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="même-nombre-à-lécran-résultat-différent-1">1. Même nombre à
+l’écran, résultat différent</h3>
+<p><code>double_affiche(4)</code> affiche <code>8</code>, mais ne
+renvoie pas de résultat utile : <code>a</code> vaut <code>None</code>.
+<code>double(4)</code> renvoie <code>8</code>, sans rien afficher au
+moment de son appel : <code>b</code> vaut <code>8</code>. Les lignes
+visibles sont, dans l’ordre :</p>
+<pre class="text"><code>8
+a = None
+b = 8</code></pre>
+<p><code>b + 3</code> vaut <code>11</code>. <code>a + 3</code> produit
+une erreur, car <code>None</code> n’est pas un nombre. Le deuxième test
+obtient donc <code>None</code> au lieu de <code>8</code>. Après avoir
+remplacé <code>print</code> par <code>return</code> dans
+<code>double_affiche</code>, <code>a</code> vaut <code>8</code> lors
+d’une nouvelle exécution.</p>
+<h3 id="réparer-la-billetterie-1">2. Réparer la billetterie</h3>
+<p>La première version affiche <code>21</code>, mais
+<code>sous_total</code> vaut <code>None</code> : l’addition avec
+<code>2</code> échoue. Il faut renvoyer le résultat :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prix_billets(prix_unitaire, quantite):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> prix_unitaire <span class="op">*</span> quantite</span></code></pre></div>
+<p>Les appels renvoient respectivement <code>21</code>, <code>10</code>
+et <code>0</code>. La dernière ligne affiche
+<code>Total : 23 €</code>.</p>
+<h3 id="une-fonction-peut-en-appeler-une-autre-1">3. Une fonction peut
+en appeler une autre</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prix_pour_deux(age1, age2):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tarif(age1) <span class="op">+</span> tarif(age2)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Prix :&quot;</span>, prix_pour_deux(<span class="dv">10</span>, <span class="dv">70</span>), <span class="st">&quot;€&quot;</span>)</span></code></pre></div>
+<p>Les deux paramètres sont de type <code>int</code> (des âges entiers)
+; le résultat est de type <code>int</code> (un prix entier). Afficher le
+prix peut convenir si l’on veut seulement le montrer à l’écran. Mais si
+une autre fonction doit ajouter des frais, comparer deux prix ou
+calculer une réduction, il lui faut la valeur
+<strong>renvoyée</strong>.</p>
+</details>
+<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python… (quelques secondes, une seule fois)</div>
+<script>
+// Exercices Python : Pyodide dans un worker (module, exigé par Pyodide ≥ 314), pour pouvoir arrêter une boucle infinie.
+(() => {
+const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+const DELAI_MS = 4000;
+const HARNESS = String.raw`
+import json, sys
+
+AIDES = {
+    "IndentationError": "Vérifiez les espaces en début de ligne : le bloc sous def, if, for ou while doit être décalé de 4 espaces.",
+    "SyntaxError": "Python ne comprend pas cette ligne : deux-points oubliés après if/for/while/def, parenthèse ou guillemet non fermé ?",
+    "NameError": "Un nom est inconnu : faute de frappe, variable utilisée avant d'avoir reçu une valeur, ou fonction mal nommée ?",
+    "TypeError": "Opération entre types incompatibles (texte et nombre ?) ou mauvais nombre de paramètres.",
+    "ZeroDivisionError": "Division par zéro.",
+    "UnboundLocalError": "Variable utilisée avant d'avoir reçu une valeur dans la fonction : initialisez-la avant la boucle.",
+}
+
+def _msg(e):
+    nom = type(e).__name__
+    ligne = getattr(e, "lineno", None)
+    if ligne is None:
+        tb = e.__traceback__
+        while tb:
+            if tb.tb_frame.f_code.co_filename == "<votre code>":
+                ligne = tb.tb_lineno
+            tb = tb.tb_next
+    texte = f"{nom} : {getattr(e, 'msg', None) or e}"
+    if ligne:
+        texte += f" (ligne {ligne})"
+    return {"texte": texte, "aide": AIDES.get(nom, "")}
+
+def _run(code, tests):
+    ns = {"__name__": "__main__"}
+    r = {"erreur": None, "tests": []}
+    try:
+        exec(compile(code, "<votre code>", "exec"), ns)
+    except BaseException as e:
+        r["erreur"] = _msg(e)
+        return json.dumps(r)
+    for t in tests:
+        appel, attendu = t.rsplit(" == ", 1) if " == " in t else (t, "True")
+        item = {"appel": appel.strip(), "attendu": attendu.strip(), "ok": False, "aide": ""}
+        try:
+            v = eval(appel, ns)
+            item["obtenu"] = repr(v)
+            item["ok"] = bool(v == eval(attendu, ns))
+            if v is None:
+                item["aide"] = "La fonction renvoie None : manque-t-il return ? print affiche, mais ne renvoie pas le résultat."
+        except BaseException as e:
+            m = _msg(e)
+            item["obtenu"], item["aide"] = m["texte"], m["aide"]
+        r["tests"].append(item)
+    return json.dumps(r)
+
+_run(CODE, json.loads(TESTS))
+`;
+const SOURCE_WORKER = `
+import { loadPyodide } from "${PYODIDE}pyodide.mjs";
+const pret = loadPyodide({ indexURL: "${PYODIDE}" });
+pret.then(() => postMessage({ pret: true }), err => postMessage({ echec: String(err) }));
+onmessage = async (e) => {
+  const py = await pret;
+  let sortie = "";
+  py.setStdout({ batched: s => { sortie += s + "\\n"; } });
+  py.setStderr({ batched: s => { sortie += s + "\\n"; } });
+  py.globals.set("CODE", e.data.code);
+  py.globals.set("TESTS", JSON.stringify(e.data.tests));
+  try {
+    const res = py.runPython(e.data.harness);
+    postMessage({ id: e.data.id, sortie, res: JSON.parse(res) });
+  } catch (err) {
+    postMessage({ id: e.data.id, sortie, res: { erreur: { texte: String(err), aide: "" }, tests: [] } });
+  }
+};`;
+const url = URL.createObjectURL(new Blob([SOURCE_WORKER], { type: "text/javascript" }));
+const etat = document.getElementById("py-etat");
+let worker, pret, attente = null, compteur = 0;
+
+function demarrer() {
+  worker = new Worker(url, { type: "module" });
+  worker.onerror = (e) => { etat.textContent = "Python n'a pas pu démarrer (" + (e.message || "erreur") + ") : rechargez la page."; etat.className = "py-etat ko"; };
+  pret = new Promise((ok) => {
+    worker.onmessage = (e) => {
+      if (e.data.pret) { etat.textContent = "Python est prêt."; etat.className = "py-etat ok"; ok(); return; }
+      if (e.data.echec) { etat.textContent = "Python n'a pas pu se charger : vérifiez la connexion puis rechargez la page."; etat.className = "py-etat ko"; return; }
+      if (attente && e.data.id === attente.id) { clearTimeout(attente.minuteur); attente.ok(e.data); attente = null; }
+    };
+  });
+}
+demarrer();
+
+async function executer(code, tests) {
+  await pret;
+  return new Promise((ok) => {
+    const id = ++compteur;
+    const minuteur = setTimeout(() => {
+      worker.terminate();
+      attente = null;
+      etat.textContent = "Redémarrage de Python…"; etat.className = "py-etat";
+      demarrer();
+      ok({ sortie: "", res: { erreur: { texte: "Le programme tourne depuis plus de " + DELAI_MS / 1000 + " secondes et a été arrêté.", aide: "Boucle infinie ? Vérifiez que la condition du while finit par devenir fausse (la variable testée doit changer dans la boucle)." }, tests: [] } });
+    }, DELAI_MS);
+    attente = { id, ok, minuteur };
+    worker.postMessage({ id, code, tests, harness: HARNESS });
+  });
+}
+
+function stocker(cle, valeur) { try { localStorage.setItem(cle, valeur); } catch (e) {} }
+function lire(cle) { try { return localStorage.getItem(cle); } catch (e) { return null; } }
+function texte(balise, contenu, classe) { const el = document.createElement(balise); el.textContent = contenu; if (classe) el.className = classe; return el; }
+
+const lettres = [];
+function majCoffre() {
+  document.querySelectorAll(".coffre").forEach(c => {
+    const cases = c.querySelector(".cases") || c.appendChild(texte("p", "", "cases"));
+    cases.textContent = lettres.map(l => l.ouverte ? l.valeur : "_").join(" ");
+  });
+}
+
+document.querySelectorAll(".exo-py").forEach((exo, i) => {
+  const zone = exo.querySelector("textarea");
+  const depart = zone.value;
+  const cle = "exo-py:" + location.pathname + ":" + i;
+  const sauve = lire(cle);
+  if (sauve !== null) zone.value = sauve;
+  const tests = JSON.parse(exo.querySelector("script.tests").textContent);
+  const sortie = exo.querySelector(".sortie");
+  const resultats = exo.querySelector(".resultats");
+  const lettre = { valeur: exo.dataset.lettre, ouverte: lire(cle + ":ok") === "1" };
+  if (lettre.valeur) lettres.push(lettre);
+
+  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); }
+  zone.addEventListener("input", () => stocker(cle, zone.value));
+  zone.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") { e.preventDefault(); inserer("    "); }
+    if (e.key === "Enter") {
+      const debut = zone.value.lastIndexOf("\n", zone.selectionStart - 1) + 1;
+      const ligne = zone.value.slice(debut, zone.selectionStart);
+      const retrait = ligne.match(/^ */)[0] + (ligne.trimEnd().endsWith(":") ? "    " : "");
+      e.preventDefault(); inserer("\n" + retrait);
+    }
+  });
+
+  exo.querySelector(".barre").addEventListener("click", async (e) => {
+    const action = e.target.dataset.action;
+    if (!action) return;
+    if (action === "indenter") return inserer("    ");
+    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); resultats.replaceChildren(); sortie.hidden = true; } return; }
+    resultats.replaceChildren(texte("p", "Exécution…"));
+    const { sortie: out, res } = await executer(zone.value, action === "tester" ? tests : []);
+    sortie.hidden = !out;
+    sortie.textContent = out;
+    resultats.replaceChildren();
+    if (res.erreur) {
+      resultats.append(texte("p", res.erreur.texte, "ko"));
+      if (res.erreur.aide) resultats.append(texte("p", res.erreur.aide, "aide"));
+      return;
+    }
+    if (action !== "tester") { if (!out) resultats.append(texte("p", "Programme exécuté, rien n'a été affiché.")); return; }
+    const table = document.createElement("table");
+    const entete = table.insertRow();
+    ["", "Appel", "Attendu", "Obtenu"].forEach(t => entete.append(texte("th", t)));
+    res.tests.forEach(t => {
+      const tr = table.insertRow();
+      tr.className = t.ok ? "ok" : "ko";
+      [t.ok ? "✓" : "✗", t.appel, t.attendu, t.obtenu].forEach(v => tr.insertCell().textContent = v);
+      if (t.aide) { const a = table.insertRow(); const c = a.insertCell(); c.colSpan = 4; c.textContent = t.aide; c.className = "aide"; }
+    });
+    resultats.append(table);
+    const reussis = res.tests.filter(t => t.ok).length;
+    if (reussis === res.tests.length) {
+      resultats.append(texte("p", "Tous les tests passent." + (lettre.valeur ? " Serrure ouverte : lettre « " + lettre.valeur + " »." : ""), "ok"));
+      lettre.ouverte = true; stocker(cle + ":ok", "1"); majCoffre();
+    } else {
+      resultats.append(texte("p", reussis + " test(s) sur " + res.tests.length + " : lisez la ligne ✗, corrigez, retestez.", "ko"));
+    }
+  });
+});
+majCoffre();
+})();
+</script>

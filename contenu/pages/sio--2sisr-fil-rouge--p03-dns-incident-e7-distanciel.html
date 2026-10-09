@@ -1,0 +1,147 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Distinguer le fonctionnement normal d’un DNS de deux défauts de
+sécurité.</li>
+<li>Appuyer un diagnostic et une remédiation sur des éléments
+fournis.</li>
+<li>Rédiger une réponse courte et précise, dans l’esprit de l’épreuve
+E7.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Savoir qu’une zone publie des enregistrements DNS.</li>
+<li>Avoir rencontré le serveur DNS du laboratoire le 29 septembre.</li>
+<li>Aucun ordinateur, compte ou accès à une VM n’est nécessaire.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Situation et documents techniques</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Questions : constater, expliquer, remédier</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Note à transmettre à l’administratrice</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<p><strong>Travail individuel, environ 1 heure.</strong> Lire la fiche
+sur papier ou sur téléphone, rédiger les réponses sur une feuille ou
+dans un document texte. Aucune commande à exécuter. Garder les numéros
+des questions ; rendre la production par le canal habituel de la classe.
+Sans IA ni recherche : les informations nécessaires sont ici.</p>
+<p><strong>Temps conseillé :</strong> 10 min de lecture, 30 min
+d’analyse, 10 min de note de synthèse, 10 min de relecture et de
+marge.</p>
+<h3 id="situation">1. Situation</h3>
+<p>Le laboratoire de formation héberge la zone <code>lab.test</code>.
+Son serveur DNS <code>dns.lab.test</code> porte l’adresse
+<code>10.77.1.10</code>. Les postes autorisés sont dans le réseau
+<code>10.77.1.0/24</code>. Le serveur est censé <strong>faire autorité
+pour <code>lab.test</code></strong> : il répond aux questions sur cette
+zone, sans chercher les réponses pour d’autres domaines. Aucun transfert
+complet de zone n’est prévu.</p>
+<p>Une administratrice constate que la machine <code>10.77.2.50</code>,
+située sur un autre réseau de test non autorisé mais pouvant joindre
+<code>10.77.1.10</code>, a interrogé le serveur. Elle demande une
+analyse fondée sur les documents ci-dessous, sans supposer d’autres
+faits.</p>
+<p><strong>Repère.</strong> Un serveur faisant autorité publie les
+réponses de sa propre zone. Un résolveur récursif cherche des réponses
+pour ses clients auprès d’autres serveurs. Un transfert de zone
+(<code>AXFR</code>) fournit l’ensemble des enregistrements d’une
+zone.</p>
+<h4 id="document-a-extrait-de-configuration-en-place">Document A —
+Extrait de configuration en place</h4>
+<pre class="text"><code>options {
+    listen-on { 10.77.1.10; };
+    allow-query { any; };
+    allow-recursion { any; };
+    recursion yes;
+    allow-transfer { any; };
+};</code></pre>
+<h4 id="document-b-résultats-observés">Document B — Résultats
+observés</h4>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Heure</th>
+<th>Source</th>
+<th>Demande</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>09:10</td>
+<td><code>10.77.1.20</code></td>
+<td><code>web.lab.test A</code></td>
+<td><code>10.77.1.30</code>, réponse faisant autorité</td>
+</tr>
+<tr>
+<td>09:13</td>
+<td><code>10.77.2.50</code></td>
+<td>nom extérieur à <code>lab.test</code></td>
+<td>réponse obtenue par récursion</td>
+</tr>
+<tr>
+<td>09:14</td>
+<td><code>10.77.2.50</code></td>
+<td>transfert <code>AXFR lab.test</code></td>
+<td>transfert accepté ; zone transmise</td>
+</tr>
+</tbody>
+</table>
+<h3 id="questions-danalyse">2. Questions d’analyse</h3>
+<p><strong>1. Constater.</strong> Quelle ligne du document B montre un
+service normal pour les postes autorisés ? Citer la source, la demande
+et le résultat utile. Cette réponse est indépendante des questions
+suivantes.</p>
+<p><strong>2. Qualifier.</strong> Pour les lignes de 09:13 et 09:14,
+associer chaque résultat aux directives qui l’ont permis dans le
+document A. Expliquer en une phrase pourquoi chacun ne correspond pas au
+rôle prévu du serveur.</p>
+<p><strong>3. Mesurer le risque.</strong> Citer une information ou une
+capacité donnée à la machine non autorisée par <strong>chaque</strong>
+défaut. Ne pas prétendre qu’une attaque ultérieure a eu lieu : les
+documents ne le montrent pas.</p>
+<p><strong>4. Remédier.</strong> Proposer trois protections précises.
+Pour chacune, indiquer un test depuis le client adapté et le résultat
+attendu. Conserver la possibilité pour <code>10.77.1.20</code> d’obtenir
+<code>web.lab.test</code>.</p>
+<h3 id="restitution-note-dincident">3. Restitution : note
+d’incident</h3>
+<p>Rédiger <strong>5 à 7 lignes</strong> pour l’administratrice :
+constat vérifiable, risque, mesures recommandées et tests après
+changement. Une phrase qui distingue « le nom se résout » de « le
+service web fonctionne » terminera la note.</p>
+<blockquote>
+<p><strong>Critère de réussite.</strong> Votre note relie chaque
+recommandation à un fait de la document B et annonce un test qui permet
+de vérifier la correction.</p>
+</blockquote>
