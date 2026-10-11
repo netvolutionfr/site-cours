@@ -624,7 +624,7 @@
    "titre": "Soft-Tech : faire réagir une page",
    "sousTitre": "Jeudi 8 octobre — classe entière sur poste, puis demi-groupe",
    "nature": "Cours",
-   "date": "2026-10-01",
+   "date": "2026-10-08",
    "pdf": "/sio/1sio-bloc1/SQ03-P03-cours-dom.pdf",
    "pieces": [
     "/sio/1sio-bloc1/dom-soft-tech.zip"
@@ -1120,7 +1120,7 @@
    "titre": "Vérifier une facture Soft-Tech",
    "sousTitre": "Jeudi 8 octobre — classe entière sur poste, puis demi-groupe",
    "nature": "Cours",
-   "date": "2026-10-01",
+   "date": "2026-10-08",
    "pdf": "/sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation.pdf",
    "pieces": [],
    "brut": null,
@@ -1596,9 +1596,9 @@
     "sio/1sio-bloc1/SQ03-support-eleve",
     "sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode",
     "sio/1sio-bloc1/SQ03-P03-dom",
-    "sio/1sio-bloc1/SQ03-P03-cours-dom",
     "sio/1sio-bloc1/SQ03-P03-tp-dom-soft-tech",
-    "sio/1sio-bloc1/SQ03-P03-distanciel-dom"
+    "sio/1sio-bloc1/SQ03-P03-distanciel-dom",
+    "sio/1sio-bloc1/SQ03-P03-cours-dom"
    ]
   },
   {
@@ -1643,9 +1643,9 @@
    "supports": [
     "sio/1sio-bloc3/SQ03-support-eleve",
     "sio/1sio-bloc3/SQ03-P01-identite-numerique",
-    "sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation",
     "sio/1sio-bloc3/SQ03-P02-tp-usurpation",
     "sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique",
+    "sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation",
     "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature"
    ]
   },
