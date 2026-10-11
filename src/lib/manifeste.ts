@@ -5,7 +5,7 @@ export interface Titre { depth: number; slug: string; text: string }
 export interface Support {
 	slug: string; matiere: string; classe: string; rubrique: string; sequence: string;
 	titre: string; sousTitre: string; nature: string; date: string | null;
-	pdf: string | null; pieces: string[]; brut: string | null; titres: Titre[];
+	pdf: string | null; pieces: string[]; brut: string | null; composant?: string; titres: Titre[];
 }
 export interface Sequence {
 	id: string; matiere: string; classe: string; rubrique: string; rubriqueLibelle: string;

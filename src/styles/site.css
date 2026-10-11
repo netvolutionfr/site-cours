@@ -72,6 +72,7 @@ details.corriges > summary { cursor: pointer; font-weight: 700; font-size: var(-
 /* Médias et tableaux larges */
 .sl-markdown-content img, .sl-markdown-content svg { max-width: 100%; height: auto; }
 .sl-markdown-content figure { text-align: center; }
+.sl-markdown-content :is(pre, textarea) { text-align: left; }
 .sl-markdown-content figcaption { font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
 .sl-markdown-content table { display: block; overflow-x: auto; }
 .sequence-overview h2 { font-size: var(--sl-text-h4); }

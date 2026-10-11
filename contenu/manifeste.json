@@ -506,6 +506,24 @@
    ]
   },
   {
+   "slug": "nsi/1g/SQ01-tp-binaire",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "La machine des nombres",
+   "sousTitre": "Manipuler un octet, convertir, puis programmer",
+   "nature": "Activité",
+   "date": "2026-10-12",
+   "pdf": null,
+   "pieces": [
+    "/nsi/1g/SQ01-tp-binaire-python.zip"
+   ],
+   "brut": null,
+   "titres": [],
+   "composant": "Binaire"
+  },
+  {
    "slug": "sio/1sio-bloc1/SQ01-support-eleve",
    "matiere": "sio",
    "classe": "1sio",
@@ -1484,6 +1502,38 @@
      "text": "3. Restitution"
     }
    ]
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p05-dns-securiser-prouver",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "DNS : sécuriser et prouver",
+   "sousTitre": "Projet fil rouge · lundi 12 octobre 2026 · Bloc 3",
+   "nature": "Activité",
+   "date": "2026-10-12",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p06-web-publier-diagnostiquer",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Web : publier et diagnostiquer",
+   "sousTitre": "Projet fil rouge · mardi 13 octobre 2026 · Bloc 2",
+   "nature": "Activité",
+   "date": "2026-10-13",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
   }
  ],
  "sequences": [
@@ -1512,9 +1562,10 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-10-09",
+   "fin": "2026-10-12",
    "supports": [
-    "nsi/1g/SQ01-support-eleve"
+    "nsi/1g/SQ01-support-eleve",
+    "nsi/1g/SQ01-tp-binaire"
    ]
   },
   {
@@ -1607,10 +1658,12 @@
    "code": "",
    "titre": "Fil rouge",
    "debut": "2026-10-05",
-   "fin": "2026-10-06",
+   "fin": "2026-10-13",
    "supports": [
     "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
-    "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel"
+    "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
+    "sio/2sisr-fil-rouge/p05-dns-securiser-prouver",
+    "sio/2sisr-fil-rouge/p06-web-publier-diagnostiquer"
    ]
   }
  ]
