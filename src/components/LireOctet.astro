@@ -1,0 +1,72 @@
+---
+// Animation « lire_octet pas à pas » (source : Prof/NSI/supports/2026-2027/1g/lire-octet-cinematic).
+// Le moteur est src/scripts/lire-octet.js ; ce composant porte le cadre, les styles et le thème Starlight.
+---
+<div class="lo-embed not-content" tabindex="0" role="region" aria-label="Animation : exécution pas à pas de lire_octet. Flèches gauche et droite pour naviguer.">
+	<div id="frame">
+		<header><span class="brand">LIRE_OCTET <i> / </i> PAS À PAS</span><span>PREMIÈRE NSI</span></header>
+		<div id="outgoing" aria-hidden="true" inert></div>
+		<div id="scene" aria-live="polite" aria-atomic="true"></div>
+		<footer>
+			<nav id="chapters" aria-label="Chapitres"></nav>
+			<div class="controls"><button id="notes-button" aria-label="Notes (N)" title="Notes · N">N</button><button id="fullscreen" aria-label="Plein écran (F)" title="Plein écran · F">⛶</button><span id="counter"></span><button id="previous" aria-label="Étape précédente" title="← / Page précédente">←</button><button id="next" aria-label="Étape suivante" title="→ / Espace / Page suivante">→</button></div>
+		</footer>
+		<div id="progress" role="progressbar" aria-label="Progression" aria-valuemin="1"></div>
+	</div>
+	<dialog id="notes"><button id="close-notes" aria-label="Fermer les notes">×</button><p class="eyebrow">NOTES DE L’ÉTAPE</p><h2 id="note-title"></h2><p id="note-text"></p><p id="note-time"></p><div class="shortcuts">→ / Espace : avancer · ← : revenir · Début / Fin : premier / dernier<br>N : notes · F : plein écran · Échap : fermer</div></dialog>
+</div>
+<p class="lo-aide">Cliquez sur l’animation puis utilisez les flèches ← → (ou les boutons). F : plein écran.</p>
+<script src="../scripts/lire-octet.js"></script>
+<style is:global>
+@font-face{font-family:LoInter;src:url(../assets/lire-octet/Inter-400.woff2)}
+@font-face{font-family:LoInter;src:url(../assets/lire-octet/Inter-700.woff2);font-weight:700}
+@font-face{font-family:LoMono;src:url(../assets/lire-octet/JetBrainsMono-400.woff2)}
+.lo-embed{--ink:#121718;--paper:#eeece6;--lime:#ffd46c;--blue:#86dce8;--muted:#a3b0ad;--peach:#ffb69a;--done:#5d6b67;--line:#52615c;--surface:#1b2523;
+	position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--ink);color:var(--paper);font-family:LoInter,sans-serif;border-radius:.5rem;margin:1rem 0 .4rem}
+.lo-embed:focus-visible{outline:3px solid var(--sl-color-accent);outline-offset:3px}
+.lo-embed:fullscreen{border-radius:0;aspect-ratio:auto}
+.lo-embed *{box-sizing:border-box}
+.lo-aide{font-size:var(--sl-text-sm);color:var(--sl-color-gray-3)}
+.lo-embed #frame{width:1600px;height:900px;position:absolute;left:50%;top:50%;background:var(--ink);overflow:hidden;transform:translate(-50%,-50%) scale(var(--scale,1));transform-origin:center}
+.lo-embed header{position:absolute;top:35px;left:64px;right:64px;display:flex;justify-content:space-between;font-size:15px;letter-spacing:2px;color:var(--muted);z-index:2}
+.lo-embed .brand{color:var(--paper)}.lo-embed header i{font-style:normal;color:var(--lime);margin:0 8px}
+.lo-embed #scene,.lo-embed #outgoing{position:absolute;inset:0}.lo-embed #outgoing{pointer-events:none}.lo-embed #outgoing svg{position:absolute;inset:0}
+.lo-embed svg{width:100%;height:100%;display:block}
+.lo-embed svg text{font-family:LoInter,sans-serif;fill:var(--paper)}
+.lo-embed svg .mono{font-family:LoMono,monospace}
+.lo-embed svg .mono,.lo-embed svg tspan{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+.lo-embed svg .dim{fill:var(--muted)}.lo-embed svg .lime,.lo-embed svg .num{fill:var(--lime)}.lo-embed svg .blue,.lo-embed svg .kw{fill:var(--blue)}.lo-embed svg .peach,.lo-embed svg .str{fill:var(--peach)}
+.lo-embed svg .heavy{font-weight:700;letter-spacing:-3px}.lo-embed svg .label{letter-spacing:2px;font-size:16px}
+.lo-embed svg [data-motion]{transform-box:view-box;transform-origin:0 0}
+.lo-embed footer{position:absolute;left:64px;right:64px;bottom:33px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.lo-embed nav{display:flex;gap:22px}
+.lo-embed button{margin:0;font-family:inherit;cursor:pointer;color:var(--paper);background:transparent;border:1px solid var(--line);transition:background .18s}
+.lo-embed button:hover{background:color-mix(in srgb,var(--paper) 10%,transparent)}
+.lo-embed button:focus-visible{outline:3px solid var(--lime);outline-offset:5px}
+.lo-embed button:disabled{opacity:.25;cursor:default}
+.lo-embed nav button{font-size:15px;letter-spacing:1px;padding:12px 0;color:var(--muted);border:0;background:transparent;border-bottom:2px solid transparent}
+.lo-embed nav button.active{color:var(--lime);border-color:var(--lime)}
+.lo-embed .controls{display:flex;align-items:center;gap:12px}
+.lo-embed .controls button{width:44px;height:44px;font-size:22px;border-radius:50%;padding:0}
+.lo-embed #notes-button{font-size:16px}
+.lo-embed #counter{font:16px LoMono,monospace;min-width:92px;text-align:center}
+.lo-embed #progress{position:absolute;bottom:0;height:3px;left:0;background:var(--lime);transition:width .5s}
+.lo-embed dialog{width:min(720px,92vw);max-height:85dvh;overflow:auto;background:var(--surface);color:var(--paper);border:1px solid var(--line);padding:40px}
+.lo-embed dialog::backdrop{background:#0008}
+.lo-embed dialog h2{font-size:28px;margin:0 0 .5em}.lo-embed dialog p{line-height:1.6;font-size:18px}
+.lo-embed .eyebrow,.lo-embed .shortcuts,.lo-embed #note-time{font-size:14px;color:var(--muted);letter-spacing:1px}
+.lo-embed #close-notes{position:absolute;right:18px;top:12px;border:0;font-size:30px}
+.lo-embed .shortcuts{border-top:1px solid var(--line);padding-top:20px;line-height:1.8}
+@media(prefers-reduced-motion:reduce){.lo-embed *{transition:none!important;animation:none!important}}
+/* Thème clair de Starlight : mêmes correspondances que le thème clair de la présentation. */
+:root[data-theme='light'] .lo-embed{--ink:#f7f5ef;--paper:#172022;--muted:#56625e;--lime:#8a5d00;--blue:#0a6878;--peach:#ad4320;--done:#a3aca8;--line:#b5beb9;--surface:#fff;border:1px solid var(--line)}
+:root[data-theme='light'] .lo-embed svg :is([fill="#1b2523"],[fill="#1c2625"]){fill:var(--surface)}
+:root[data-theme='light'] .lo-embed svg :is([stroke="#52615c"],[stroke="#596b60"]){stroke:var(--line)}
+:root[data-theme='light'] .lo-embed svg [stroke="#a3b0ad"]{stroke:#8d9894}
+:root[data-theme='light'] .lo-embed svg [stroke="#ffd46c"]{stroke:#d9a520}
+:root[data-theme='light'] .lo-embed svg [stroke="#86dce8"]{stroke:var(--blue)}
+:root[data-theme='light'] .lo-embed svg [fill="#86dce8"]{fill:var(--blue)}
+:root[data-theme='light'] .lo-embed svg [fill="#ffb69a"]{fill:var(--peach)}
+:root[data-theme='light'] .lo-embed svg [fill="#86dce822"]{fill:#0a68781f}
+:root[data-theme='light'] .lo-embed svg [fill="#ffb69a22"]{fill:#ad43201c}
+</style>
