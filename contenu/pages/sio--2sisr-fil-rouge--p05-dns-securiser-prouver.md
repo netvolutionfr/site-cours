@@ -1,6 +1,9 @@
 ---
 type: support
-format: web
+format: handout
+niveau: "BTS SIO 2e année SISR"
+theme: "Sécurisation du DNS du laboratoire"
+auteur: "Stanis Humez"
 nature: Activité
 composant: Markdown
 title: "DNS : sécuriser et prouver"
@@ -47,9 +50,12 @@ Relevez le statut, les drapeaux et la réponse. `aa` signifie que la réponse fa
 Sur le DNS, sauvegardez les fichiers **avant** toute modification. Le suffixe ci-dessous ne doit pas déjà exister : vérifiez-le et choisissez-en un autre si nécessaire.
 
 ```bash
-sudo cp -n /etc/bind/named.conf.options /etc/bind/named.conf.options.avant-12oct
-sudo cp -n /etc/bind/named.conf.local /etc/bind/named.conf.local.avant-12oct
-sudo cp -n /etc/bind/db.lab.test /etc/bind/db.lab.test.avant-12oct
+sudo cp -n /etc/bind/named.conf.options \
+  /etc/bind/named.conf.options.avant-12oct
+sudo cp -n /etc/bind/named.conf.local \
+  /etc/bind/named.conf.local.avant-12oct
+sudo cp -n /etc/bind/db.lab.test \
+  /etc/bind/db.lab.test.avant-12oct
 ```
 
 Vérifiez la présence des copies. Dans **le bloc `options` existant** de `/etc/bind/named.conf.options`, adaptez ces directives ; ne créez pas un second bloc et ne dupliquez pas une directive :
