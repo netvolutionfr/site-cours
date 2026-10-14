@@ -1,0 +1,277 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Repérer, avec les outils du navigateur, les données qu’une page
+envoie à des tiers.</li>
+<li>Relier chaque défaut constaté au DICP ou à un principe du RGPD,
+preuve à l’appui.</li>
+<li>Corriger soi-même le code livré et vérifier que la correction
+fonctionne.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>DICP et RGPD (Bloc 3, SQ01 et SQ02).</li>
+<li>Lire du HTML, ouvrir les outils de développement, sélectionner un
+élément du DOM (Bloc 1, SQ03).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Matin — Bloc 3</td>
+<td>Auditer le site livré (étapes 1 à 5)</td>
+</tr>
+<tr>
+<td>Après-midi — Bloc 1</td>
+<td>Corriger le site (étapes 6 à 9)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="le-contexte">Le contexte</h3>
+<p><strong>Vermand Prévention Ingénierie (VPI)</strong> est un bureau
+d’études de Saint-Quentin : il analyse les postes de travail dans
+l’industrie, conçoit des dispositifs de prévention et forme les équipes.
+VPI a confié son nouveau site vitrine à <strong>Soft-Tech</strong>. Un
+alternant de Soft-Tech l’a fait générer par un <strong>agent
+IA</strong>, en quelques minutes.</p>
+<p>Le client est ravi, mais sa responsable qualité demande : « Est-ce
+qu’on est vraiment en règle ? » Soft-Tech vous confie la vérification
+<strong>avant la mise en ligne</strong>.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>VPI, ses clients et ses coordonnées sont fictifs. Le site ne
+fonctionne qu’en local : rien n’est réellement envoyé à VPI.</p>
+</div>
+<h3 id="consignes-générales">Consignes générales</h3>
+<p><strong>En binôme sur un poste, trace individuelle sur
+papier.</strong> L’un manipule, l’autre note et vérifie ; inversez à
+chaque étape. <strong>IA interdite</strong> : vous êtes justement là
+pour vérifier ce qu’une IA a produit.</p>
+<p>Téléchargez et décompressez <code>site-livre-ia.zip</code>. Il
+contient le site (<code>index.html</code>, <code>style.css</code>,
+<code>script.js</code>) et <code>LIVRAISON.md</code>, l’échange entre
+l’alternant et l’agent.</p>
+<h2 id="matin-auditer-le-site-livré">Matin — Auditer le site livré</h2>
+<h3 id="étape-1-lire-la-livraison">Étape 1 — Lire la livraison</h3>
+<p><strong>5 minutes.</strong> Ouvrez <code>LIVRAISON.md</code>, puis
+<code>index.html</code> dans le navigateur.</p>
+<p>Relevez <strong>trois promesses</strong> de l’agent que vous allez
+devoir vérifier. Notez aussi ce que la demande de l’alternant contenait
+de risqué : l’IA a-t-elle fait seulement ce qu’on lui a demandé ?</p>
+<h3 id="étape-2-ce-que-la-page-envoie-ailleurs">Étape 2 — Ce que la page
+envoie ailleurs</h3>
+<p><strong>12 minutes.</strong> Ouvrez les outils de développement
+(<code>F12</code>), onglet <strong>Réseau</strong>, puis rechargez la
+page (<code>Ctrl + Maj + R</code>).</p>
+<p>Chaque ligne est un fichier demandé par la page. Triez par
+<strong>domaine</strong>. Pour chaque domaine qui n’est pas le site
+lui-même, complétez :</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Domaine contacté</th>
+<th>Service rendu</th>
+<th>Ce qui part au minimum chez ce tiers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Aide si vous bloquez.</strong> Une requête vers un serveur
+lui révèle toujours au moins <strong>l’adresse IP</strong> du visiteur,
+la page visitée et le navigateur utilisé. Une adresse IP est-elle une
+donnée personnelle ?</p>
+</blockquote>
+<h3 id="étape-3-le-formulaire-de-contact">Étape 3 — Le formulaire de
+contact</h3>
+<p><strong>12 minutes.</strong> Remplissez le formulaire avec une
+<strong>identité inventée</strong> (jamais vos vraies données), puis
+envoyez-le. La page d’erreur est normale : le serveur de VPI n’existe
+pas.</p>
+<ol type="1">
+<li>Regardez la <strong>barre d’adresse</strong>. Où se trouvent vos
+données ? Comment circulent-elles ?</li>
+<li>Revenez en arrière. Onglet <strong>Console</strong> : qu’est-ce qui
+est affiché ?</li>
+<li>Onglet <strong>Application</strong> (Chrome) ou
+<strong>Stockage</strong> (Firefox), puis <strong>Stockage
+local</strong> : qu’est-ce qui est conservé dans le navigateur ?</li>
+<li>Rechargez la page. Imaginez ce poste à l’accueil d’un salon
+professionnel : que voit le visiteur suivant ?</li>
+<li>Relisez chaque champ et la case à cocher : tout est-il
+<strong>nécessaire</strong> pour rappeler un prospect ? Le consentement
+est-il <strong>libre</strong> ?</li>
+</ol>
+<h3 id="étape-4-lire-le-code-source">Étape 4 — Lire le code source</h3>
+<p><strong>8 minutes.</strong> Ouvrez les trois fichiers dans VS Code.
+Cherchez (<code>Ctrl + F</code>) ce qu’un développeur n’aurait jamais dû
+laisser dans du code destiné à être publié.</p>
+<blockquote>
+<p><strong>Aide si vous bloquez.</strong> Cherchez les mots
+<code>TODO</code>, <code>mot de passe</code>, <code>KEY</code>. Puis
+demandez-vous : qui peut lire ces fichiers une fois le site en ligne
+?</p>
+</blockquote>
+<h3 id="étape-5-le-rapport-daudit">Étape 5 — Le rapport d’audit</h3>
+<p><strong>8 minutes, puis mise en commun.</strong> Rassemblez vos
+constats dans un tableau. Chaque ligne doit avoir une
+<strong>preuve</strong> : l’onglet, le fichier ou la ligne où vous
+l’avez vu.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Constat</th>
+<th>Preuve (où)</th>
+<th>DICP ou principe RGPD</th>
+<th>Gravité (1 à 3)</th>
+<th>Correction proposée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Puis rédigez pour la responsable qualité <strong>trois
+phrases</strong> : peut-on mettre le site en ligne aujourd’hui ? Quels
+sont les deux défauts à corriger en premier, et pourquoi ?</p>
+<p><strong>Critère de réussite du matin :</strong> au moins <strong>six
+constats</strong> prouvés, reliés au DICP ou au RGPD, et une
+recommandation argumentée au client.</p>
+<blockquote>
+<p><strong>Pour aller plus loin.</strong> Onglet Réseau, clic droit sur
+la ligne <code>jquery</code> puis <strong>Bloquer l’URL de la
+requête</strong> (Chrome) ou <strong>Bloquer l’URL</strong> (Firefox).
+Rechargez la page en largeur de téléphone et essayez le menu. Quel
+critère du DICP est touché quand un service extérieur tombe en panne
+?</p>
+</blockquote>
+<h2 id="après-midi-corriger-le-site">Après-midi — Corriger le site</h2>
+<h3 id="consignes">Consignes</h3>
+<p>Travaillez sur une <strong>copie</strong> du dossier
+(<code>site-corrige/</code>) : gardez l’original pour comparer. Après
+chaque étape, rechargez la page et vérifiez qu’elle fonctionne
+encore.</p>
+<h3 id="étape-6-supprimer-les-secrets">Étape 6 — Supprimer les
+secrets</h3>
+<p><strong>5 minutes.</strong> Retirez le commentaire du back-office et
+la clé de l’API.</p>
+<p>Supprimer la ligne suffit-il ? Si ces fichiers avaient déjà été en
+ligne, que faudrait-il faire en plus avec le mot de passe et la clé
+?</p>
+<h3 id="étape-7-plus-aucun-tiers-au-chargement">Étape 7 — Plus aucun
+tiers au chargement</h3>
+<p><strong>12 minutes.</strong></p>
+<ol type="1">
+<li>Supprimez le code de Google Analytics <strong>et</strong> la
+fonction qui l’utilise dans <code>script.js</code>.</li>
+<li>Supprimez les polices Google. Dans <code>style.css</code>, remplacez
+les deux polices par une pile de polices système :
+<code>system-ui, sans-serif</code>.</li>
+<li>Remplacez la carte Google Maps par un <strong>lien</strong> « Voir
+le plan d’accès » : la carte ne se charge que si le visiteur le
+décide.</li>
+</ol>
+<p><strong>Vérification :</strong> onglet Réseau, rechargement forcé. Il
+ne reste que des fichiers du site… et jQuery. On s’en occupe à l’étape
+9.</p>
+<h3 id="étape-8-un-formulaire-conforme">Étape 8 — Un formulaire
+conforme</h3>
+<p><strong>15 minutes.</strong></p>
+<ol type="1">
+<li>Retirez les champs qui ne servent pas à <strong>rappeler un
+prospect</strong>.</li>
+<li>Décochez la case newsletter et séparez-la des offres des partenaires
+: un consentement par finalité.</li>
+<li>Passez le formulaire en <code>method=&quot;post&quot;</code> et l’adresse
+d’envoi en <code>https://</code>.</li>
+<li>Remplacez la phrase sous le bouton par une <strong>mention
+d’information</strong> (à adapter) :</li>
+</ol>
+<blockquote>
+<p>Les informations recueillies sont utilisées par Vermand Prévention
+Ingénierie pour répondre à votre demande de diagnostic. Elles sont
+conservées trois ans après notre dernier contact. Vous pouvez y accéder,
+les faire rectifier ou effacer en écrivant à
+rgpd@vermand-ingenierie.example. En cas de difficulté, vous pouvez
+saisir la CNIL.</p>
+</blockquote>
+<ol start="5" type="1">
+<li>Dans <code>script.js</code>, supprimez l’enregistrement dans le
+stockage local, l’affichage dans la console et le pré-remplissage.</li>
+</ol>
+<h3 id="étape-9-se-passer-de-jquery">Étape 9 — Se passer de jQuery</h3>
+<p><strong>Si vous avez le temps ; sinon, au prochain jalon.</strong>
+jQuery ne sert plus qu’au menu mobile et au défilement. Remplacez-le par
+ce que vous connaissez du DOM :</p>
+<ol type="1">
+<li>Défilement fluide : une seule ligne CSS suffit,
+<code>html { scroll-behavior: smooth; }</code>.</li>
+<li>Menu mobile : sélectionner le bouton <code>.burger</code>, écouter
+le clic, et basculer la classe <code>ouvert</code> sur
+<code>.menu</code>.</li>
+<li>Supprimez la balise <code>&lt;script&gt;</code> de jQuery et tout le
+code <code>$(…)</code>.</li>
+</ol>
+<blockquote>
+<p><strong>Aide si vous bloquez.</strong> Les trois mots utiles :
+<code>document.querySelector</code>, <code>addEventListener</code>,
+<code>classList.toggle</code>. Retrouvez-les dans le TP du DOM.</p>
+</blockquote>
+<p><strong>Critère de réussite de l’après-midi :</strong> au
+rechargement, l’onglet Réseau ne montre plus aucune requête vers un
+tiers en dehors de jQuery, et le formulaire ne demande que le
+nécessaire. L’étape 9 retire ce dernier tiers.</p>
+<h3 id="vérification-avant-de-montrer-votre-travail">Vérification avant
+de montrer votre travail</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Aucun mot de passe ni aucune clé ne
+reste dans les trois fichiers.</label></li>
+<li><label><input type="checkbox"></input>Au rechargement, aucune requête ne
+part vers Google ou MailPulse ; la carte attend un clic.</label></li>
+<li><label><input type="checkbox"></input>Le formulaire : champs utiles
+seulement, case non pré-cochée, POST en HTTPS, mention
+d’information.</label></li>
+<li><label><input type="checkbox"></input>Rien n’est conservé dans le stockage
+local ni affiché dans la console.</label></li>
+<li><label><input type="checkbox"></input>Je sais expliquer chaque correction
+avec un critère du DICP ou un principe du RGPD.</label></li>
+</ul>
+<p>Conservez le dossier <code>site-corrige/</code> : c’est lui qui sera
+mis en ligne sur votre serveur Apache dans les prochains jalons.</p>

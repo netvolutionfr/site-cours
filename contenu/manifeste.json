@@ -1427,6 +1427,99 @@
    ]
   },
   {
+   "slug": "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/1sio-fil-rouge/fil-rouge-vpi",
+   "titre": "Le site livré par l'IA est-il en règle ?",
+   "sousTitre": "Fil rouge VPI — jalon 0 : auditer puis corriger un site généré par un agent IA",
+   "nature": "Activité",
+   "date": "2026-10-15",
+   "pdf": "/sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia.pdf",
+   "pieces": [
+    "/sio/1sio-fil-rouge/site-livre-ia.zip"
+   ],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "le-contexte",
+     "text": "Le contexte"
+    },
+    {
+     "depth": 3,
+     "slug": "consignes-générales",
+     "text": "Consignes générales"
+    },
+    {
+     "depth": 2,
+     "slug": "matin-auditer-le-site-livré",
+     "text": "Matin — Auditer le site livré"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-lire-la-livraison",
+     "text": "Étape 1 — Lire la livraison"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-ce-que-la-page-envoie-ailleurs",
+     "text": "Étape 2 — Ce que la page envoie ailleurs"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3-le-formulaire-de-contact",
+     "text": "Étape 3 — Le formulaire de contact"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4-lire-le-code-source",
+     "text": "Étape 4 — Lire le code source"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-5-le-rapport-daudit",
+     "text": "Étape 5 — Le rapport d’audit"
+    },
+    {
+     "depth": 2,
+     "slug": "après-midi-corriger-le-site",
+     "text": "Après-midi — Corriger le site"
+    },
+    {
+     "depth": 3,
+     "slug": "consignes",
+     "text": "Consignes"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-6-supprimer-les-secrets",
+     "text": "Étape 6 — Supprimer les secrets"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-7-plus-aucun-tiers-au-chargement",
+     "text": "Étape 7 — Plus aucun tiers au chargement"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-8-un-formulaire-conforme",
+     "text": "Étape 8 — Un formulaire conforme"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-9-se-passer-de-jquery",
+     "text": "Étape 9 — Se passer de jQuery"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-montrer-votre-travail",
+     "text": "Vérification avant de montrer votre travail"
+    }
+   ]
+  },
+  {
    "slug": "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
    "matiere": "sio",
    "classe": "2sisr",
@@ -1647,6 +1740,20 @@
     "sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique",
     "sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation",
     "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature"
+   ]
+  },
+  {
+   "id": "sio/1sio-fil-rouge/fil-rouge-vpi",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "fil-rouge",
+   "rubriqueLibelle": "Fil rouge",
+   "code": "fil-rouge-vpi",
+   "titre": "Fil rouge VPI — du site généré par IA au service web sécurisé",
+   "debut": "2026-10-15",
+   "fin": "2026-10-15",
+   "supports": [
+    "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia"
    ]
   },
   {
