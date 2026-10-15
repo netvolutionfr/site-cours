@@ -185,8 +185,8 @@ function actualiser() {
   const total = valeurs.reduce((a, b) => a + b, 0);
   document.getElementById('valeur').textContent = bits.map(b => b.querySelector('strong').textContent).join('') + '₂ = ' + (valeurs.filter(Boolean).join(' + ') || '0') + ' = ' + total + '₁₀';
 }
+if (bits.length) actualiser();
 bits.forEach(b => b.addEventListener('click', () => { const actif = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(actif)); b.querySelector('strong').textContent = actif ? '1' : '0'; actualiser(); }));
-actualiser();
 document.querySelectorAll('[data-answer]').forEach(b => b.addEventListener('click', () => {
   const q = b.closest('.question'), valeur = q.querySelector('input').value.trim(), fb = q.querySelector('.fb');
   const valide = (b.dataset.kind === 'binary' ? /^[01]{8}$/ : /^[0-9]+$/).test(valeur);
