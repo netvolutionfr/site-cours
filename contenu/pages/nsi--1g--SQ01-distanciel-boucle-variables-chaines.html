@@ -1,0 +1,803 @@
+<p>Lundi, la fonction <code>lire_octet</code> de la machine des nombres
+a résisté. Ce n’est pas un hasard : elle demande <strong>trois idées
+nouvelles en même temps</strong>. Une boucle qui fait évoluer
+<strong>deux variables</strong>, une boucle <code>for</code> qui
+parcourt <strong>les caractères d’un texte</strong>, et un
+<code>if</code> <strong>à l’intérieur</strong> de la boucle.
+Aujourd’hui, on apprend ces idées une par une, puis on revient à la
+machine.</p>
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Suivre, tour par tour, les valeurs d’une variable modifiée dans une
+boucle.</li>
+<li>Initialiser <strong>avant</strong> la boucle et modifier
+<strong>dans</strong> la boucle un accumulateur ou un compteur.</li>
+<li>Parcourir une chaîne caractère par caractère avec
+<code>for c in texte</code>.</li>
+<li>Placer un <code>if</code> dans une boucle, puis écrire
+<code>lire_octet</code> seul.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Boucle <code>for</code> avec <code>range</code>, conditions
+<code>if</code>, fonctions avec <code>return</code>.</li>
+<li>Poids des bits d’un octet : 128, 64, 32, 16, 8, 4, 2, 1.</li>
+<li>Un téléphone ou un ordinateur avec Internet : rien à installer. Une
+feuille et un crayon.</li>
+</ul>
+</section>
+<section id="parcours-environ-1-h-30" class="outline">
+<h3>Parcours (environ 1 h 30)</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Travail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Une variable qui se souvient : l’accumulateur</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Deux variables qui changent à chaque tour</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Parcourir un texte caractère par caractère</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Un <code>if</code> dans la boucle : le compteur</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Retour à la machine : <code>lire_octet</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Écrivez votre code dans la zone grise, puis appuyez sur <strong>▶
+Tester</strong> : Python s’exécute dans la page et vérifie votre
+fonction sur plusieurs exemples. <strong>Exécuter</strong> lance le code
+sans les tests, pour voir les <code>print</code>. Votre code reste
+enregistré sur cet appareil. Sur téléphone, <strong>⇥ Indenter</strong>
+insère 4 espaces. Chaque fonction correcte révèle une lettre du
+<strong>mot du coffre</strong>.</p>
+</div>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Travail personnel, <strong>sans IA</strong>. Les tableaux de suivi se
+remplissent <strong>sur papier, avant</strong> d’exécuter : c’est là que
+se construit la compréhension. Si vous bloquez plus de 10 minutes,
+ouvrez l’indice dans les corrigés en bas de page, puis réessayez.</p>
+</div>
+<div class="coffre">
+<p><strong>Mot du coffre</strong></p>
+</div>
+<h3 id="partie-1-une-boucle-des-variables-un-texte">Partie 1 — Une
+boucle, des variables, un texte</h3>
+<h4 id="a.-une-variable-qui-se-souvient">A. Une variable qui se
+souvient</h4>
+<h5 id="a1.-suivre-la-variable-à-la-main">A1. Suivre la variable à la
+main</h5>
+<p>Lisez ce programme <strong>sans l’exécuter</strong>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">total = 0
+for i in range(4):
+    total = total + 3
+print(total)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<ol type="1">
+<li><p>Recopiez et complétez le tableau : une ligne par tour de boucle,
+avec la valeur de <code>total</code> <strong>à la fin</strong> du
+tour.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>i</code></th>
+<th style="text-align: right;"><code>total</code> à la fin du tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Qu’affiche le programme ? Vérifiez avec
+<strong>Exécuter</strong>.</p></li>
+<li><p>Déplacez la ligne <code>total = 0</code> <strong>dans</strong> la
+boucle, juste au-dessus de <code>total = total + 3</code>. Prévoyez le
+nouvel affichage, puis vérifiez. Pourquoi l’initialisation doit-elle
+être faite <strong>avant</strong> la boucle ?</p></li>
+</ol>
+<blockquote>
+<p><strong>À retenir.</strong> Un <strong>accumulateur</strong> est une
+variable <strong>initialisée avant</strong> la boucle et
+<strong>modifiée dans</strong> la boucle, en partant de sa propre valeur
+: <code>total = total + …</code>. À la fin de chaque tour, il « se
+souvient » de tout ce qui a été ajouté.</p>
+</blockquote>
+<h5 id="a2.-la-tirelire">A2. La tirelire</h5>
+<p>Léa a déjà 20 € dans sa tirelire. Chaque semaine, elle y ajoute 5 €.
+Écrivez <code>tirelire(semaines)</code> qui renvoie la somme dans la
+tirelire après ce nombre de semaines, <strong>avec une boucle</strong>
+(sans écrire directement <code>20 + 5 * semaines</code>).</p>
+<section class="exo-py" data-lettre="O">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def tirelire(semaines):
+    somme = 20
+    ...
+    return somme</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["tirelire(0) == 20","tirelire(1) == 25","tirelire(4) == 40","tirelire(10) == 70"]</script></section>
+<h4 id="b.-deux-variables-qui-changent-à-chaque-tour">B. Deux variables
+qui changent à chaque tour</h4>
+<h5 id="b1.-suivre-deux-variables-à-la-main">B1. Suivre deux variables à
+la main</h5>
+<p>Dans ce programme, <strong>deux</strong> variables évoluent à chaque
+tour. L’ordre des lignes compte.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">argent = 0
+mise = 1
+for i in range(4):
+    argent = argent + mise
+    mise = mise * 2
+print(argent, mise)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<ol type="1">
+<li><p>Complétez sur papier, <strong>sans exécuter</strong> :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>argent</code> à la fin du tour</th>
+<th style="text-align: right;"><code>mise</code> à la fin du tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Qu’affiche le programme ? Vérifiez avec
+<strong>Exécuter</strong>.</p></li>
+<li><p>Inversez les deux lignes de la boucle (<code>mise</code> est
+doublée <strong>avant</strong> d’être ajoutée). Refaites le tableau,
+puis vérifiez. Pourquoi le résultat change-t-il ?</p></li>
+</ol>
+<h5 id="b2.-la-légende-de-léchiquier">B2. La légende de l’échiquier</h5>
+<p>Selon une légende, le sage qui inventa les échecs demanda une
+récompense : 1 grain de riz sur la première case de l’échiquier, 2 sur
+la deuxième, 4 sur la troisième, et ainsi de suite en doublant à chaque
+case. Écrivez <code>grains(cases)</code> qui renvoie le <strong>nombre
+total</strong> de grains posés sur les premières cases.</p>
+<p>Deux variables : <code>total</code> (tous les grains déjà posés) et
+<code>sur_la_case</code> (les grains de la case en cours). Inspirez-vous
+de B1.</p>
+<section class="exo-py" data-lettre="C">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def grains(cases):
+    total = 0
+    sur_la_case = 1
+    for i in range(cases):
+        ...
+    return total</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["grains(1) == 1","grains(2) == 3","grains(3) == 7","grains(4) == 15","grains(8) == 255"]</script></section>
+<p>Vous avez déjà vu <code>255</code> quelque part cette semaine… Où ?
+Gardez votre réponse pour la partie 2.</p>
+<h4 id="c.-parcourir-un-texte-caractère-par-caractère">C. Parcourir un
+texte caractère par caractère</h4>
+<h5 id="c1.-for-sait-lire-un-texte">C1. <code>for</code> sait lire un
+texte</h5>
+<p>Jusqu’ici, <code>for</code> parcourait les nombres produits par
+<code>range</code>. Il peut aussi parcourir <strong>directement</strong>
+une chaîne de caractères : à chaque tour, la variable reçoit le
+caractère suivant, de gauche à droite.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">for lettre in &quot;NSI&quot;:
+    print(lettre)
+
+for c in &quot;101&quot;:
+    print(c, c == &quot;1&quot;, c == 1)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<ol type="1">
+<li>Prévoyez ce qu’affiche la première boucle. Combien de tours
+fait-elle ?</li>
+<li>Prévoyez la deuxième boucle, ligne par ligne. Vérifiez avec
+<strong>Exécuter</strong>.</li>
+<li>Pourquoi <code>c == 1</code> est-il toujours faux ? Que contient
+vraiment <code>c</code> : un nombre ou un texte ?</li>
+</ol>
+<blockquote>
+<p><strong>À retenir.</strong> <code>for c in texte:</code> fait
+<strong>un tour par caractère</strong>. <code>c</code> est lui-même un
+texte d’un caractère : <code>&quot;1&quot;</code> et non <code>1</code>. On le
+compare donc avec <code>c == &quot;1&quot;</code>, entre guillemets.</p>
+</blockquote>
+<h5 id="c2.-compter-les-caractères">C2. Compter les caractères</h5>
+<p>Écrivez <code>longueur(mot)</code> qui renvoie le nombre de
+caractères de <code>mot</code> <strong>sans utiliser
+<code>len</code></strong> : parcourez le texte et ajoutez 1 à chaque
+tour. La variable <code>i</code> de A1 ne servait à rien dans le calcul
+: ici, c’est pareil pour le caractère lu.</p>
+<section class="exo-py" data-lettre="T">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def longueur(mot):
+    nb = 0
+    ...
+    return nb</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["longueur(\"NSI\") == 3","longueur(\"octet\") == 5","longueur(\"\") == 0","longueur(\"01001101\") == 8"]</script></section>
+<h4 id="d.-un-if-dans-la-boucle">D. Un <code>if</code> dans la
+boucle</h4>
+<h5 id="d1.-ne-compter-que-certains-caractères">D1. Ne compter que
+certains caractères</h5>
+<p>Maintenant, on ne compte <strong>que</strong> les caractères qui
+vérifient une condition. Le <code>if</code> est <strong>dans</strong> la
+boucle (décalé une fois), la ligne qui compte est <strong>dans</strong>
+le <code>if</code> (décalée deux fois). Écrivez
+<code>compte(mot, lettre)</code> qui renvoie le nombre de fois où
+<code>lettre</code> apparaît dans <code>mot</code>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def compte(mot, lettre):
+    nb = 0
+    for c in mot:
+        ...
+    return nb</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["compte(\"ananas\", \"a\") == 3","compte(\"ananas\", \"n\") == 2","compte(\"NSI\", \"z\") == 0","compte(\"\", \"a\") == 0"]</script></section>
+<h5 id="d2.-combien-de-bits-allumés">D2. Combien de bits allumés ?</h5>
+<p>Écrivez <code>nb_uns(bits)</code> qui renvoie le nombre de
+<code>&quot;1&quot;</code> dans une écriture binaire. Par exemple,
+<code>&quot;01001101&quot;</code> contient quatre <code>1</code>.</p>
+<section class="exo-py" data-lettre="E">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def nb_uns(bits):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["nb_uns(\"01001101\") == 4","nb_uns(\"00000000\") == 0","nb_uns(\"11111111\") == 8","nb_uns(\"1\") == 1"]</script></section>
+<h3 id="partie-2-retour-à-la-machine-des-nombres">Partie 2 — Retour à la
+machine des nombres</h3>
+<h4 id="e1.-lire-quatre-bits-à-la-main">E1. Lire quatre bits à la
+main</h4>
+<p>On veut lire un <strong>quartet</strong> (4 bits) : les poids sont 8,
+4, 2, 1. Voici la fonction complète. Elle réunit tout ce qui précède :
+un accumulateur <code>total</code>, une seconde variable
+<code>poids</code> qui change à chaque tour, un parcours du texte et un
+<code>if</code>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def lire_quartet(bits):
+    total = 0
+    poids = 8
+    for bit in bits:
+        if bit == &quot;1&quot;:
+            total = total + poids
+        poids = poids // 2
+    return total
+
+print(lire_quartet(&quot;1011&quot;))</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<p><code>poids // 2</code> est la <strong>division entière</strong> :
+<code>8 // 2</code> vaut <code>4</code>, <code>1 // 2</code> vaut
+<code>0</code>. Le poids reste un nombre entier.</p>
+<ol type="1">
+<li><p>Complétez sur papier, <strong>sans exécuter</strong>, pour
+<code>lire_quartet(&quot;1011&quot;)</code> :</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: center;"><code>bit</code> lu</th>
+<th style="text-align: center;"><code>bit == &quot;1&quot;</code> ?</th>
+<th style="text-align: right;"><code>total</code> à la fin du tour</th>
+<th style="text-align: right;"><code>poids</code> à la fin du tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;"><code>&quot;1&quot;</code></td>
+<td style="text-align: center;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Quelle valeur la fonction renvoie-t-elle ? Vérifiez à la main :
+<code>1011₂ = 8 + 2 + 1</code>. Puis avec
+<strong>Exécuter</strong>.</p></li>
+<li><p>La ligne <code>poids = poids // 2</code> est-elle
+<strong>dans</strong> le <code>if</code> ou seulement
+<strong>dans</strong> la boucle ? Que se passerait-il si on la décalait
+d’un cran de plus, dans le <code>if</code> ? Testez avec
+<code>&quot;0011&quot;</code>.</p></li>
+</ol>
+<h4 id="e2.-lire-un-octet">E2. Lire un octet</h4>
+<p>Écrivez maintenant <code>lire_octet(bits)</code> <strong>sans
+regarder</strong> la fonction précédente : un octet a huit bits, le
+premier caractère est le bit de poids 128. N’utilisez pas
+<code>int(bits, 2)</code>. Si vous bloquez, relisez votre tableau de E1
+plutôt que le code.</p>
+<section class="exo-py" data-lettre="T">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def lire_octet(bits):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["lire_octet(\"00000000\") == 0","lire_octet(\"00000001\") == 1","lire_octet(\"10000000\") == 128","lire_octet(\"01001101\") == 77","lire_octet(\"10101100\") == 172","lire_octet(\"11111111\") == 255"]</script></section>
+<p>Retour à la question de B2 : <code>lire_octet(&quot;11111111&quot;)</code> et
+<code>grains(8)</code> valent tous deux <code>255</code>. Expliquez en
+une phrase pourquoi ce n’est pas une coïncidence.</p>
+<h3 id="pour-la-reprise-en-classe">Pour la reprise en classe</h3>
+<p>Rien à envoyer. Gardez sur votre feuille le <strong>mot du
+coffre</strong>, vos tableaux de suivi et, en trois phrases, la réponse
+à ces questions sur <code>lire_octet</code> : que contient
+<code>total</code> ? que contient <code>poids</code> ? à quoi sert le
+<code>if</code> ? Nous repartirons de vos réponses au retour des
+vacances.</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<p>Ouvrez d’abord l’indice, réessayez, puis seulement la solution.</p>
+<h3 id="a1">A1</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>i</code></th>
+<th style="text-align: right;"><code>total</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">12</td>
+</tr>
+</tbody>
+</table>
+<p>Le programme affiche <code>12</code>. Si <code>total = 0</code> est
+dans la boucle, la variable est remise à zéro à chaque tour : on affiche
+<code>3</code>. Elle « oublie » ce qui a été ajouté avant.</p>
+<h3 id="a2">A2</h3>
+<p>Indice : la boucle doit faire <code>semaines</code> tours ; à chaque
+tour, on ajoute 5 à <code>somme</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tirelire(semaines):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    somme <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(semaines):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        somme <span class="op">=</span> somme <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> somme</span></code></pre></div>
+<h3 id="b1">B1</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>argent</code></th>
+<th style="text-align: right;"><code>mise</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">16</td>
+</tr>
+</tbody>
+</table>
+<p>Affichage : <code>15 16</code>. Avec les lignes inversées, la mise
+est doublée avant d’être ajoutée : <code>argent</code> vaut 2, 6, 14
+puis 30, et l’on affiche <code>30 16</code>. Dans une boucle, chaque
+ligne utilise les valeurs <strong>laissées par la ligne
+précédente</strong>.</p>
+<h3 id="b2">B2</h3>
+<p>Indice : c’est exactement B1, avec <code>total</code> à la place
+d’<code>argent</code> et <code>sur_la_case</code> à la place de
+<code>mise</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grains(cases):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    sur_la_case <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cases):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> total <span class="op">+</span> sur_la_case</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        sur_la_case <span class="op">=</span> sur_la_case <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total</span></code></pre></div>
+<p><code>255</code> est la valeur maximale d’un octet.</p>
+<h3 id="c1">C1</h3>
+<p>La première boucle fait 3 tours et affiche <code>N</code>,
+<code>S</code>, <code>I</code> sur trois lignes. La deuxième affiche
+:</p>
+<pre class="text"><code>1 True False
+0 False False
+1 True False</code></pre>
+<p><code>c</code> contient le <strong>texte</strong> <code>&quot;1&quot;</code> ou
+<code>&quot;0&quot;</code>, jamais le nombre <code>1</code> : la comparaison avec
+un nombre est toujours fausse.</p>
+<h3 id="c2">C2</h3>
+<p>Indice : <code>for c in mot:</code>, puis <code>nb = nb + 1</code>
+dans la boucle. On n’utilise pas <code>c</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> longueur(mot):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> mot:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        nb <span class="op">=</span> nb <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nb</span></code></pre></div>
+<h3 id="d1">D1</h3>
+<p>Indice : la condition est <code>c == lettre</code>. Seule la ligne
+<code>nb = nb + 1</code> est dans le <code>if</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compte(mot, lettre):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> mot:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> c <span class="op">==</span> lettre:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            nb <span class="op">=</span> nb <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nb</span></code></pre></div>
+<h3 id="d2">D2</h3>
+<p>Indice : c’est <code>compte</code> avec la lettre <code>&quot;1&quot;</code>.
+Attention aux guillemets : <code>bit == 1</code> est toujours faux.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nb_uns(bits):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bit <span class="kw">in</span> bits:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> bit <span class="op">==</span> <span class="st">&quot;1&quot;</span>:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            nb <span class="op">=</span> nb <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nb</span></code></pre></div>
+<h3 id="e1">E1</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: center;"><code>bit</code></th>
+<th style="text-align: center;"><code>bit == &quot;1&quot;</code> ?</th>
+<th style="text-align: right;"><code>total</code></th>
+<th style="text-align: right;"><code>poids</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;"><code>&quot;1&quot;</code></td>
+<td style="text-align: center;">oui</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: center;"><code>&quot;0&quot;</code></td>
+<td style="text-align: center;">non</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: center;"><code>&quot;1&quot;</code></td>
+<td style="text-align: center;">oui</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: center;"><code>&quot;1&quot;</code></td>
+<td style="text-align: center;">oui</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>La fonction renvoie <code>11</code>. La ligne
+<code>poids = poids // 2</code> est dans la boucle mais
+<strong>pas</strong> dans le <code>if</code> : le poids diminue à chaque
+position, que le bit soit allumé ou non. Si on la place dans le
+<code>if</code>, un <code>0</code> ne fait plus avancer le poids :
+<code>lire_quartet(&quot;0011&quot;)</code> renverrait <code>8 + 4 = 12</code> au
+lieu de <code>3</code>.</p>
+<h3 id="e2">E2</h3>
+<p>Indice : partez de <code>lire_quartet</code> en ne changeant qu’un
+nombre.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lire_octet(bits):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    poids <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bit <span class="kw">in</span> bits:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> bit <span class="op">==</span> <span class="st">&quot;1&quot;</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            total <span class="op">=</span> total <span class="op">+</span> poids</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        poids <span class="op">=</span> poids <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total</span></code></pre></div>
+<p><code>11111111</code> additionne tous les poids :
+<code>128 + 64 + … + 1</code>. L’échiquier additionne les mêmes nombres,
+de 1 à 128, sur huit cases : les deux valent <code>255</code>, soit
+<code>2⁸ − 1</code>.</p>
+<p>Mot du coffre : <strong>OCTET</strong>.</p>
+</details>
+<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python… (quelques secondes, une seule fois)</div>
+<script>
+// Exercices Python : Pyodide dans un worker (module, exigé par Pyodide ≥ 314), pour pouvoir arrêter une boucle infinie.
+(() => {
+const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+const DELAI_MS = 4000;
+const HARNESS = String.raw`
+import json, sys
+
+AIDES = {
+    "IndentationError": "Vérifiez les espaces en début de ligne : le bloc sous def, if, for ou while doit être décalé de 4 espaces.",
+    "SyntaxError": "Python ne comprend pas cette ligne : deux-points oubliés après if/for/while/def, parenthèse ou guillemet non fermé ?",
+    "NameError": "Un nom est inconnu : faute de frappe, variable utilisée avant d'avoir reçu une valeur, ou fonction mal nommée ?",
+    "TypeError": "Opération entre types incompatibles (texte et nombre ?) ou mauvais nombre de paramètres.",
+    "ZeroDivisionError": "Division par zéro.",
+    "UnboundLocalError": "Variable utilisée avant d'avoir reçu une valeur dans la fonction : initialisez-la avant la boucle.",
+}
+
+def _msg(e):
+    nom = type(e).__name__
+    ligne = getattr(e, "lineno", None)
+    if ligne is None:
+        tb = e.__traceback__
+        while tb:
+            if tb.tb_frame.f_code.co_filename == "<votre code>":
+                ligne = tb.tb_lineno
+            tb = tb.tb_next
+    texte = f"{nom} : {getattr(e, 'msg', None) or e}"
+    if ligne:
+        texte += f" (ligne {ligne})"
+    return {"texte": texte, "aide": AIDES.get(nom, "")}
+
+def _run(code, tests):
+    ns = {"__name__": "__main__"}
+    r = {"erreur": None, "tests": []}
+    try:
+        exec(compile(code, "<votre code>", "exec"), ns)
+    except BaseException as e:
+        r["erreur"] = _msg(e)
+        return json.dumps(r)
+    for t in tests:
+        appel, attendu = t.rsplit(" == ", 1) if " == " in t else (t, "True")
+        item = {"appel": appel.strip(), "attendu": attendu.strip(), "ok": False, "aide": ""}
+        try:
+            v = eval(appel, ns)
+            item["obtenu"] = repr(v)
+            item["ok"] = bool(v == eval(attendu, ns))
+            if v is None:
+                item["aide"] = "La fonction renvoie None : manque-t-il return ? print affiche, mais ne renvoie pas le résultat."
+        except BaseException as e:
+            m = _msg(e)
+            item["obtenu"], item["aide"] = m["texte"], m["aide"]
+        r["tests"].append(item)
+    return json.dumps(r)
+
+_run(CODE, json.loads(TESTS))
+`;
+const SOURCE_WORKER = `
+import { loadPyodide } from "${PYODIDE}pyodide.mjs";
+const pret = loadPyodide({ indexURL: "${PYODIDE}" });
+pret.then(() => postMessage({ pret: true }), err => postMessage({ echec: String(err) }));
+onmessage = async (e) => {
+  const py = await pret;
+  let sortie = "";
+  py.setStdout({ batched: s => { sortie += s + "\\n"; } });
+  py.setStderr({ batched: s => { sortie += s + "\\n"; } });
+  py.globals.set("CODE", e.data.code);
+  py.globals.set("TESTS", JSON.stringify(e.data.tests));
+  try {
+    const res = py.runPython(e.data.harness);
+    postMessage({ id: e.data.id, sortie, res: JSON.parse(res) });
+  } catch (err) {
+    postMessage({ id: e.data.id, sortie, res: { erreur: { texte: String(err), aide: "" }, tests: [] } });
+  }
+};`;
+const url = URL.createObjectURL(new Blob([SOURCE_WORKER], { type: "text/javascript" }));
+const etat = document.getElementById("py-etat");
+let worker, pret, attente = null, compteur = 0;
+
+function demarrer() {
+  worker = new Worker(url, { type: "module" });
+  worker.onerror = (e) => { etat.textContent = "Python n'a pas pu démarrer (" + (e.message || "erreur") + ") : rechargez la page."; etat.className = "py-etat ko"; };
+  pret = new Promise((ok) => {
+    worker.onmessage = (e) => {
+      if (e.data.pret) { etat.textContent = "Python est prêt."; etat.className = "py-etat ok"; ok(); return; }
+      if (e.data.echec) { etat.textContent = "Python n'a pas pu se charger : vérifiez la connexion puis rechargez la page."; etat.className = "py-etat ko"; return; }
+      if (attente && e.data.id === attente.id) { clearTimeout(attente.minuteur); attente.ok(e.data); attente = null; }
+    };
+  });
+}
+demarrer();
+
+async function executer(code, tests) {
+  await pret;
+  return new Promise((ok) => {
+    const id = ++compteur;
+    const minuteur = setTimeout(() => {
+      worker.terminate();
+      attente = null;
+      etat.textContent = "Redémarrage de Python…"; etat.className = "py-etat";
+      demarrer();
+      ok({ sortie: "", res: { erreur: { texte: "Le programme tourne depuis plus de " + DELAI_MS / 1000 + " secondes et a été arrêté.", aide: "Boucle infinie ? Vérifiez que la condition du while finit par devenir fausse (la variable testée doit changer dans la boucle)." }, tests: [] } });
+    }, DELAI_MS);
+    attente = { id, ok, minuteur };
+    worker.postMessage({ id, code, tests, harness: HARNESS });
+  });
+}
+
+function stocker(cle, valeur) { try { localStorage.setItem(cle, valeur); } catch (e) {} }
+function lire(cle) { try { return localStorage.getItem(cle); } catch (e) { return null; } }
+function texte(balise, contenu, classe) { const el = document.createElement(balise); el.textContent = contenu; if (classe) el.className = classe; return el; }
+
+const lettres = [];
+function majCoffre() {
+  document.querySelectorAll(".coffre").forEach(c => {
+    const cases = c.querySelector(".cases") || c.appendChild(texte("p", "", "cases"));
+    cases.textContent = lettres.map(l => l.ouverte ? l.valeur : "_").join(" ");
+  });
+}
+
+document.querySelectorAll(".exo-py").forEach((exo, i) => {
+  const zone = exo.querySelector("textarea");
+  const depart = zone.value;
+  const cle = "exo-py:" + location.pathname + ":" + i;
+  const sauve = lire(cle);
+  if (sauve !== null) zone.value = sauve;
+  const tests = JSON.parse(exo.querySelector("script.tests").textContent);
+  const sortie = exo.querySelector(".sortie");
+  const resultats = exo.querySelector(".resultats");
+  const lettre = { valeur: exo.dataset.lettre, ouverte: lire(cle + ":ok") === "1" };
+  if (lettre.valeur) lettres.push(lettre);
+
+  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); }
+  zone.addEventListener("input", () => stocker(cle, zone.value));
+  zone.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") { e.preventDefault(); inserer("    "); }
+    if (e.key === "Enter") {
+      const debut = zone.value.lastIndexOf("\n", zone.selectionStart - 1) + 1;
+      const ligne = zone.value.slice(debut, zone.selectionStart);
+      const retrait = ligne.match(/^ */)[0] + (ligne.trimEnd().endsWith(":") ? "    " : "");
+      e.preventDefault(); inserer("\n" + retrait);
+    }
+  });
+
+  exo.querySelector(".barre").addEventListener("click", async (e) => {
+    const action = e.target.dataset.action;
+    if (!action) return;
+    if (action === "indenter") return inserer("    ");
+    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); resultats.replaceChildren(); sortie.hidden = true; } return; }
+    resultats.replaceChildren(texte("p", "Exécution…"));
+    const { sortie: out, res } = await executer(zone.value, action === "tester" ? tests : []);
+    sortie.hidden = !out;
+    sortie.textContent = out;
+    resultats.replaceChildren();
+    if (res.erreur) {
+      resultats.append(texte("p", res.erreur.texte, "ko"));
+      if (res.erreur.aide) resultats.append(texte("p", res.erreur.aide, "aide"));
+      return;
+    }
+    if (action !== "tester") { if (!out) resultats.append(texte("p", "Programme exécuté, rien n'a été affiché.")); return; }
+    const table = document.createElement("table");
+    const entete = table.insertRow();
+    ["", "Appel", "Attendu", "Obtenu"].forEach(t => entete.append(texte("th", t)));
+    res.tests.forEach(t => {
+      const tr = table.insertRow();
+      tr.className = t.ok ? "ok" : "ko";
+      [t.ok ? "✓" : "✗", t.appel, t.attendu, t.obtenu].forEach(v => tr.insertCell().textContent = v);
+      if (t.aide) { const a = table.insertRow(); const c = a.insertCell(); c.colSpan = 4; c.textContent = t.aide; c.className = "aide"; }
+    });
+    resultats.append(table);
+    const reussis = res.tests.filter(t => t.ok).length;
+    if (reussis === res.tests.length) {
+      resultats.append(texte("p", "Tous les tests passent." + (lettre.valeur ? " Serrure ouverte : lettre « " + lettre.valeur + " »." : ""), "ok"));
+      lettre.ouverte = true; stocker(cle + ":ok", "1"); majCoffre();
+    } else {
+      resultats.append(texte("p", reussis + " test(s) sur " + res.tests.length + " : lisez la ligne ✗, corrigez, retestez.", "ko"));
+    }
+  });
+});
+majCoffre();
+})();
+</script>

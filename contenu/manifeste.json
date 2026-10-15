@@ -465,6 +465,117 @@
    ]
   },
   {
+   "slug": "nsi/1g/SQ01-distanciel-boucle-variables-chaines",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Ce que la boucle retient",
+   "sousTitre": "Travail à distance — variables dans une boucle, parcours d'une chaîne, retour à la machine des nombres",
+   "nature": "À distance",
+   "date": "2026-10-16",
+   "pdf": "/nsi/1g/SQ01-distanciel-boucle-variables-chaines.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "partie-1-une-boucle-des-variables-un-texte",
+     "text": "Partie 1 — Une boucle, des variables, un texte"
+    },
+    {
+     "depth": 4,
+     "slug": "a.-une-variable-qui-se-souvient",
+     "text": "A. Une variable qui se souvient"
+    },
+    {
+     "depth": 4,
+     "slug": "b.-deux-variables-qui-changent-à-chaque-tour",
+     "text": "B. Deux variables qui changent à chaque tour"
+    },
+    {
+     "depth": 4,
+     "slug": "c.-parcourir-un-texte-caractère-par-caractère",
+     "text": "C. Parcourir un texte caractère par caractère"
+    },
+    {
+     "depth": 4,
+     "slug": "d.-un-if-dans-la-boucle",
+     "text": "D. Un if dans la boucle"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-2-retour-à-la-machine-des-nombres",
+     "text": "Partie 2 — Retour à la machine des nombres"
+    },
+    {
+     "depth": 4,
+     "slug": "e1.-lire-quatre-bits-à-la-main",
+     "text": "E1. Lire quatre bits à la main"
+    },
+    {
+     "depth": 4,
+     "slug": "e2.-lire-un-octet",
+     "text": "E2. Lire un octet"
+    },
+    {
+     "depth": 3,
+     "slug": "pour-la-reprise-en-classe",
+     "text": "Pour la reprise en classe"
+    },
+    {
+     "depth": 3,
+     "slug": "a1",
+     "text": "A1"
+    },
+    {
+     "depth": 3,
+     "slug": "a2",
+     "text": "A2"
+    },
+    {
+     "depth": 3,
+     "slug": "b1",
+     "text": "B1"
+    },
+    {
+     "depth": 3,
+     "slug": "b2",
+     "text": "B2"
+    },
+    {
+     "depth": 3,
+     "slug": "c1",
+     "text": "C1"
+    },
+    {
+     "depth": 3,
+     "slug": "c2",
+     "text": "C2"
+    },
+    {
+     "depth": 3,
+     "slug": "d1",
+     "text": "D1"
+    },
+    {
+     "depth": 3,
+     "slug": "d2",
+     "text": "D2"
+    },
+    {
+     "depth": 3,
+     "slug": "e1",
+     "text": "E1"
+    },
+    {
+     "depth": 3,
+     "slug": "e2",
+     "text": "E2"
+    }
+   ]
+  },
+  {
    "slug": "nsi/1g/SQ01-support-eleve",
    "matiere": "nsi",
    "classe": "1g",
@@ -1655,10 +1766,11 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-10-12",
+   "fin": "2026-10-16",
    "supports": [
     "nsi/1g/SQ01-support-eleve",
-    "nsi/1g/SQ01-tp-binaire"
+    "nsi/1g/SQ01-tp-binaire",
+    "nsi/1g/SQ01-distanciel-boucle-variables-chaines"
    ]
   },
   {
