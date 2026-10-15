@@ -155,7 +155,7 @@ souvient » de tout ce qui a été ajouté.</p>
 Écrivez <code>tirelire(semaines)</code> qui renvoie la somme dans la
 tirelire après ce nombre de semaines, <strong>avec une boucle</strong>
 (sans écrire directement <code>20 + 5 * semaines</code>).</p>
-<section class="exo-py" data-lettre="O">
+<section class="exo-py" data-lettre="T">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def tirelire(semaines):
     somme = 20
     ...
@@ -226,7 +226,7 @@ total</strong> de grains posés sur les premières cases.</p>
 <p>Deux variables : <code>total</code> (tous les grains déjà posés) et
 <code>sur_la_case</code> (les grains de la case en cours). Inspirez-vous
 de B1.</p>
-<section class="exo-py" data-lettre="C">
+<section class="exo-py" data-lettre="R">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def grains(cases):
     total = 0
     sur_la_case = 1
@@ -269,7 +269,7 @@ caractères de <code>mot</code> <strong>sans utiliser
 <code>len</code></strong> : parcourez le texte et ajoutez 1 à chaque
 tour. La variable <code>i</code> de A1 ne servait à rien dans le calcul
 : ici, c’est pareil pour le caractère lu.</p>
-<section class="exo-py" data-lettre="T">
+<section class="exo-py" data-lettre="A">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def longueur(mot):
     nb = 0
     ...
@@ -294,7 +294,7 @@ le <code>if</code> (décalée deux fois). Écrivez
 <p>Écrivez <code>nb_uns(bits)</code> qui renvoie le nombre de
 <code>&quot;1&quot;</code> dans une écriture binaire. Par exemple,
 <code>&quot;01001101&quot;</code> contient quatre <code>1</code>.</p>
-<section class="exo-py" data-lettre="E">
+<section class="exo-py" data-lettre="C">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def nb_uns(bits):
     ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["nb_uns(\"01001101\") == 4","nb_uns(\"00000000\") == 0","nb_uns(\"11111111\") == 8","nb_uns(\"1\") == 1"]</script></section>
 <h3 id="partie-2-retour-à-la-machine-des-nombres">Partie 2 — Retour à la
@@ -393,7 +393,7 @@ regarder</strong> la fonction précédente : un octet a huit bits, le
 premier caractère est le bit de poids 128. N’utilisez pas
 <code>int(bits, 2)</code>. Si vous bloquez, relisez votre tableau de E1
 plutôt que le code.</p>
-<section class="exo-py" data-lettre="T">
+<section class="exo-py" data-lettre="E">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def lire_octet(bits):
     ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["lire_octet(\"00000000\") == 0","lire_octet(\"00000001\") == 1","lire_octet(\"10000000\") == 128","lire_octet(\"01001101\") == 77","lire_octet(\"10101100\") == 172","lire_octet(\"11111111\") == 255"]</script></section>
 <p>Retour à la question de B2 : <code>lire_octet(&quot;11111111&quot;)</code> et
@@ -617,7 +617,7 @@ nombre.</p>
 <code>128 + 64 + … + 1</code>. L’échiquier additionne les mêmes nombres,
 de 1 à 128, sur huit cases : les deux valent <code>255</code>, soit
 <code>2⁸ − 1</code>.</p>
-<p>Mot du coffre : <strong>OCTET</strong>.</p>
+<p>Mot du coffre : <strong>TRACE</strong>.</p>
 </details>
 <div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python… (quelques secondes, une seule fois)</div>
 <script>
