@@ -1,0 +1,1136 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Situer chaque étape du cycle DevOps et son responsable.</li>
+<li>Intégrer le travail de plusieurs personnes par branches et pull
+requests.</li>
+<li>Relire le code d’un pair et argumenter une demande de
+modification.</li>
+<li>Résoudre un conflit de fusion en expliquant la version retenue.</li>
+<li>Démarrer l’application et sa base avec Docker Compose.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Ligne de commande et bases de Git : <code>clone</code>,
+<code>add</code>, <code>commit</code>, <code>push</code>.</li>
+<li>Un compte GitHub, invité sur le dépôt
+<code>voyages-scolaires</code>.</li>
+<li>Les trois branches produites le matin en Laravel.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Culture DevOps et diagnostic</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Collaborer avec Git et GitHub : PR, revue, conflits</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Conteneuriser l’application avec Docker Compose</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="culture-devops-et-diagnostic">1. Culture DevOps et
+diagnostic</h3>
+<h4 id="le-cycle-rappel-de-la-présentation-du-module">Le cycle, rappel
+de la présentation du module</h4>
+<p>DevOps réunit ceux qui <strong>développent</strong> une application
+et ceux qui <strong>l’exploitent</strong> autour d’une même chaîne,
+automatisée autant que possible, et d’une responsabilité partagée sur le
+résultat en production.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Question</th>
+<th>Outil dans ce module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coder</td>
+<td>Comment travailler à plusieurs sur le même code ?</td>
+<td>Git, GitHub, pull requests</td>
+</tr>
+<tr>
+<td>Construire</td>
+<td>L’application tourne-t-elle partout de la même façon ?</td>
+<td>Docker, Docker Compose</td>
+</tr>
+<tr>
+<td>Tester</td>
+<td>Une modification casse-t-elle l’existant ?</td>
+<td>Tests Laravel, GitHub Actions</td>
+</tr>
+<tr>
+<td>Déployer</td>
+<td>Comment livrer sans geste manuel risqué ?</td>
+<td>GitHub Actions, Kubernetes (k3d)</td>
+</tr>
+<tr>
+<td>Décrire l’infrastructure</td>
+<td>Comment recréer un environnement à l’identique ?</td>
+<td>Terraform</td>
+</tr>
+<tr>
+<td>Surveiller</td>
+<td>Comment savoir qu’elle tombe avant les utilisateurs ?</td>
+<td>Journaux, contrôle de disponibilité, alerte</td>
+</tr>
+</tbody>
+</table>
+<p>Tout commence par la première ligne : <strong>une chaîne automatique
+ne vaut que si le code qui y entre est intégré proprement.</strong>
+C’est l’objet de la partie 2.</p>
+<figure>
+<img role="img" aria-label="Cycle DevOps appliqué au fil rouge : quatre étapes côté développement, quatre côté exploitation, une boucle de rétroaction de la surveillance vers la planification ; iN indique l’intervention du module." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDU2MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNTYwIj4KICA8cmVjdCB3aWR0aD0iMTEwMCIgaGVpZ2h0PSI1NjAiIGZpbGw9IiNGRkZGRkYiLz4KCiAgPCEtLSBib3VjbGVzIC0tPgogIDxwYXRoIGQ9Ik01NTAsMjUwIEM0NTAsOTUgMTMwLDk1IDEzMCwyNTAgQzEzMCw0MDUgNDUwLDQwNSA1NTAsMjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik01NTAsMjUwIEM2NTAsOTUgOTcwLDk1IDk3MCwyNTAgQzk3MCw0MDUgNjUwLDQwNSA1NTAsMjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwb2x5Z29uIHBvaW50cz0iMTE3LDIzNiAxNDMsMjM2IDEzMCwyNjIiIGZpbGw9IiMzNTY4RDQiLz4KICA8cG9seWdvbiBwb2ludHM9Ijk1NywyMzYgOTgzLDIzNiA5NzAsMjYyIiBmaWxsPSIjNkI1QkI1Ii8+CgogIDwhLS0gY2VudHJlcyAtLT4KICA8dGV4dCB4PSIzMzAiIHk9IjI0NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRldjwvdGV4dD4KICA8dGV4dCB4PSIzMzAiIHk9IjI3MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNoYW5nZXIgdml0ZSBldCBzb3V2ZW50PC90ZXh0PgogIDx0ZXh0IHg9Ijc3MCIgeT0iMjQ0IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0MCIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3BzPC90ZXh0PgogIDx0ZXh0IHg9Ijc3MCIgeT0iMjcyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Z2FyZGVyIGxlIHNlcnZpY2Ugc3RhYmxlPC90ZXh0PgoKICA8IS0tIMOpdGFwZXMgRGV2IC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIj4KICAgIDxyZWN0IHg9IjM2NSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI0NTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGxhbjwvdGV4dD4KICAgIDx0ZXh0IHg9IjQ1MCIgeT0iMTY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5pc3N1ZXMgR2l0SHViIMK3IGkyPC90ZXh0PgoKICAgIDxyZWN0IHg9IjEyNSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSIyMTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29kZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIxMCIgeT0iMTY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HaXQsIFBSLCByZXZ1ZSDCtyBpMjwvdGV4dD4KCiAgICA8cmVjdCB4PSIxMjUiIHk9IjMxOCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHRleHQgeD0iMjEwIiB5PSIzNDMiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJ1aWxkPC90ZXh0PgogICAgPHRleHQgeD0iMjEwIiB5PSIzNjYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmltYWdlIERvY2tlciDCtyBpMzwvdGV4dD4KCiAgICA8cmVjdCB4PSIzNjUiIHk9IjMxOCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHRleHQgeD0iNDUwIiB5PSIzNDMiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlRlc3Q8L3RleHQ+CiAgICA8dGV4dCB4PSI0NTAiIHk9IjM2NiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+dGVzdHMgYXV0bywgQ0kgwrcgaTQ8L3RleHQ+CiAgPC9nPgoKICA8IS0tIMOpdGFwZXMgT3BzIC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIj4KICAgIDxyZWN0IHg9IjU2NSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2NTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmVsZWFzZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjY1MCIgeT0iMTY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50YWcsIGltYWdlIMK3IGk0PC90ZXh0PgoKICAgIDxyZWN0IHg9IjgwNSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI4OTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RGVwbG95PC90ZXh0PgogICAgPHRleHQgeD0iODkwIiB5PSIxNjYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnBpcGVsaW5lLCBrM2QgwrcgaTQsIGk2PC90ZXh0PgoKICAgIDxyZWN0IHg9IjgwNSIgeT0iMzE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI4OTAiIHk9IjM0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3BlcmF0ZTwvdGV4dD4KICAgIDx0ZXh0IHg9Ijg5MCIgeT0iMzY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LdWJlcm5ldGVzLCBJYUMgwrcgaTUsIGk2PC90ZXh0PgoKICAgIDxyZWN0IHg9IjU2NSIgeT0iMzE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2NTAiIHk9IjM0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TW9uaXRvcjwvdGV4dD4KICAgIDx0ZXh0IHg9IjY1MCIgeT0iMzY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5qb3VybmF1eCwgYWxlcnRlIMK3IGk3PC90ZXh0PgogIDwvZz4KCiAgPCEtLSByw6l0cm9hY3Rpb24gLS0+CiAgPHBhdGggZD0iTTY1MCwzODQgTDY1MCw0MjYgUTY1MCw0NDAgNjM2LDQ0MCBMNzQsNDQwIFE2MCw0NDAgNjAsNDI2IEw2MCwxMDYgUTYwLDkyIDc0LDkyIEw0NTAsOTIgTDQ1MCwxMDgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPgogIDxwb2x5Z29uIHBvaW50cz0iNDQzLDEwNiA0NTcsMTA2IDQ1MCwxMTgiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSIzNjAiIHk9IjQ2MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPnVuZSBhbGVydGUgZGV2aWVudCB1bmUgaXNzdWU8L3RleHQ+CgogIDwhLS0gc8OpY3VyaXTDqSB0cmFuc3ZlcnNhbGUgLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjIwIiB3aWR0aD0iMTAyMCIgaGVpZ2h0PSI0MCIgcng9IjEwIiBmaWxsPSIjRkRFQ0VDIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjU1MCIgeT0iNDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Q5NUM1OSI+U8OpY3VyaXTDqSDDoCBjaGFxdWUgw6l0YXBlPC90c3Bhbj4gwrcgc2VjcmV0cyBob3JzIGR1IGTDqXDDtHQsIGRyb2l0cyBtaW5pbWF1eCBkdSBwaXBlbGluZSwgaW1hZ2UgdsOpcmlmacOpZSDCtyBpNCwgaTc8L3RleHQ+CgogIDwhLS0gc3ludGjDqHNlIC0tPgogIDxyZWN0IHg9IjQwIiB5PSI0NzgiIHdpZHRoPSIxMDIwIiBoZWlnaHQ9IjYyIiByeD0iMTAiIGZpbGw9IiNFOEY0RUMiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSI1NTAiIHk9IjUwMyIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlVuZSBzZXVsZSBjaGHDrm5lLCBhdXRvbWF0aXPDqWUsIGRvbnQgbCfDqXF1aXBlIGVudGnDqHJlIGVzdCByZXNwb25zYWJsZS48L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1MjYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZpbCByb3VnZSDCqyBWb3lhZ2VzIHNjb2xhaXJlcyDCuyDCtyBpTiA9IGludGVydmVudGlvbiBkdSBtb2R1bGUgb8O5IGwnw6l0YXBlIGVzdCB0cmF2YWlsbMOpZTwvdGV4dD4KPC9zdmc+Cg==" alt="Cycle DevOps appliqué au fil rouge : quatre étapes côté développement, quatre côté exploitation, une boucle de rétroaction de la surveillance vers la planification ; iN indique l’intervention du module." />
+<figcaption aria-hidden="true">Cycle DevOps appliqué au fil rouge :
+quatre étapes côté développement, quatre côté exploitation, une boucle
+de rétroaction de la surveillance vers la planification ; iN indique
+l’intervention du module.</figcaption>
+</figure>
+<h4 id="pourquoi-devops">Pourquoi DevOps</h4>
+<p>Développement et exploitation ont longtemps eu des objectifs opposés
+: livrer du nouveau d’un côté, éviter les pannes de l’autre. Le code
+était « jeté par-dessus le mur » ; les livraisons, rares, devenaient
+grosses et risquées. Le mouvement DevOps naît en 2009 (conférence
+Velocity, premiers <em>DevOpsDays</em> à Gand) pour réunir les deux
+métiers autour d’une chaîne commune. Ses piliers se résument par
+<strong>CALMS</strong> : culture de responsabilité partagée,
+automatisation, petits lots livrés souvent (<em>lean</em>), mesure,
+partage des outils et des connaissances.</p>
+<h4 id="trois-niveaux-dautomatisation">Trois niveaux
+d’automatisation</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Pratique</th>
+<th>Ce qui est automatique</th>
+<th>Ce qui reste humain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intégration continue (CI)</td>
+<td>Chaque modification fusionnée est construite et testée</td>
+<td>La revue de code</td>
+</tr>
+<tr>
+<td>Livraison continue</td>
+<td>Chaque version validée est prête à partir en production</td>
+<td>La décision de livrer</td>
+</tr>
+<tr>
+<td>Déploiement continu (CD)</td>
+<td>Chaque version validée part en production</td>
+<td>Rien dans la chaîne ; la surveillance prend le relais</td>
+</tr>
+</tbody>
+</table>
+<h4 id="mesurer-les-quatre-indicateurs-dora">Mesurer : les quatre
+indicateurs DORA</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Indicateur</th>
+<th>Mesure</th>
+<th>Famille</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fréquence de déploiement</td>
+<td>Nombre de livraisons en production sur une période</td>
+<td>Rapidité</td>
+</tr>
+<tr>
+<td>Délai de mise en production</td>
+<td>Temps entre un commit et sa présence en production</td>
+<td>Rapidité</td>
+</tr>
+<tr>
+<td>Taux d’échec des changements</td>
+<td>Part des livraisons qui provoquent un incident</td>
+<td>Stabilité</td>
+</tr>
+<tr>
+<td>Temps de rétablissement</td>
+<td>Durée pour revenir à un service normal après un incident</td>
+<td>Stabilité</td>
+</tr>
+</tbody>
+</table>
+<p>Les études DORA (<em>Accelerate</em>, 2018) montrent que les équipes
+les plus performantes progressent <strong>sur les deux familles à la
+fois</strong> : livrer souvent, par petits lots, rend chaque livraison
+moins risquée.</p>
+<h4 id="exercices">Exercices</h4>
+<p><strong>Exercice 1 — Placer sur le cycle.</strong> Seul, sur papier.
+Pour chaque action, donnez l’étape du cycle et dites si elle relève de
+Dev, d’Ops ou des deux.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Étape</th>
+<th>Dev, Ops, les deux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a. Ouvrir l’issue « Afficher le prix en euros »</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>b. Fusionner une PR après revue</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>c. Construire l’image Docker de l’application</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>d. Lancer <code>php artisan test</code> à chaque push</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>e. Étiqueter la version <code>v0.1.0</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>f. Appliquer le manifeste Kubernetes de la nouvelle version</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>g. Redémarrer automatiquement un conteneur tombé</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>h. Recevoir une alerte quand <code>/api/voyages</code> ne répond
+plus</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exercice 2 — Analyser l’incident du vendredi.</strong> Seul,
+puis confrontation à trois.</p>
+<blockquote>
+<p>Vendredi 17 h 30, le développeur dépose par FTP la nouvelle version
+de « Voyages scolaires » et part en week-end. Il a oublié d’exécuter une
+migration : la liste des voyages renvoie une erreur 500. Personne ne
+s’en aperçoit avant lundi 9 h, quand les parents appellent le lycée. Il
+faut ensuite trois heures pour retrouver quelle version tournait
+vendredi midi et la remettre en ligne.</p>
+</blockquote>
+<p>Relevez au moins trois défaillances. Pour chacune : la pratique
+DevOps qui l’aurait évitée, l’étape du cycle concernée et l’indicateur
+DORA dégradé.</p>
+<p><strong>Exercice 3 — La chaîne de Voyages scolaires.</strong> À
+trois, une seule production. Décrivez en six étapes au plus la chaîne
+cible du projet, de la PR à l’alerte : pour chaque étape, ce qui se
+passe automatiquement, l’outil, et qui est prévenu si elle échoue.
+Confrontez ensuite votre chaîne au déroulé du module : quelle étape
+aviez-vous oubliée ?</p>
+<h4 id="diagnostic">Diagnostic</h4>
+<p><strong>Seul, sans aide, 10 minutes.</strong> Ce questionnaire n’est
+pas noté : il sert à adapter les prochaines interventions à ce que vous
+savez déjà.</p>
+<fieldset class="qcm">
+<ol type="1">
+<li>Après <code>git commit</code>, les modifications sont
+enregistrées…</li>
+</ol>
+<label><input type="radio" name="qcm-1" value="1"> <span>
+sur GitHub
+</span></label>
+<label><input type="radio" name="qcm-1" value="2" data-ok> <span>
+dans le dépôt local
+</span></label>
+<label><input type="radio" name="qcm-1" value="3"> <span>
+dans la branche <code>main</code> du dépôt distant
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="2" type="1">
+<li>Quelle commande récupère les nouveautés du dépôt distant
+<strong>sans</strong> les fusionner dans votre branche ?</li>
+</ol>
+<label><input type="radio" name="qcm-2" value="1" data-ok> <span>
+<code>git fetch</code>
+</span></label>
+<label><input type="radio" name="qcm-2" value="2"> <span>
+<code>git pull</code>
+</span></label>
+<label><input type="radio" name="qcm-2" value="3"> <span>
+<code>git clone</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="3" type="1">
+<li>Après <code>git switch -c feature/x</code> puis
+<code>git commit</code>, le commit appartient…</li>
+</ol>
+<label><input type="radio" name="qcm-3" value="1"> <span>
+à <code>main</code>
+</span></label>
+<label><input type="radio" name="qcm-3" value="2" data-ok> <span>
+à <code>feature/x</code>
+</span></label>
+<label><input type="radio" name="qcm-3" value="3"> <span>
+aux deux branches
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="4" type="1">
+<li>Pourquoi le fichier <code>.env</code> figure-t-il dans
+<code>.gitignore</code> ?</li>
+</ol>
+<label><input type="radio" name="qcm-4" value="1"> <span>
+Pour accélérer Git
+</span></label>
+<label><input type="radio" name="qcm-4" value="2" data-ok> <span>
+Parce qu’il contient des secrets et des réglages propres à chaque poste
+</span></label>
+<label><input type="radio" name="qcm-4" value="3"> <span>
+Parce que Laravel ne le lit pas
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="5" type="1">
+<li>Après <code>chmod 600 .env</code>, qui peut lire le fichier ?</li>
+</ol>
+<label><input type="radio" name="qcm-5" value="1" data-ok> <span>
+Son propriétaire seulement
+</span></label>
+<label><input type="radio" name="qcm-5" value="2"> <span>
+Son propriétaire et son groupe
+</span></label>
+<label><input type="radio" name="qcm-5" value="3"> <span>
+Tout le monde, sans pouvoir l’écrire
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="6" type="1">
+<li>Quelle commande affiche en continu les nouvelles lignes d’un journal
+?</li>
+</ol>
+<label><input type="radio" name="qcm-6" value="1"> <span>
+<code>cat storage/logs/laravel.log</code>
+</span></label>
+<label><input type="radio" name="qcm-6" value="2" data-ok> <span>
+<code>tail -f storage/logs/laravel.log</code>
+</span></label>
+<label><input type="radio" name="qcm-6" value="3"> <span>
+<code>less storage/logs/laravel.log</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="7" type="1">
+<li>Quelle phrase décrit le mieux la relation entre une image et un
+conteneur Docker ?</li>
+</ol>
+<label><input type="radio" name="qcm-7" value="1"> <span>
+Ce sont deux noms de la même chose
+</span></label>
+<label><input type="radio" name="qcm-7" value="2" data-ok> <span>
+Le conteneur est une exécution d’une image, qui sert de modèle
+</span></label>
+<label><input type="radio" name="qcm-7" value="3"> <span>
+L’image est une sauvegarde d’un conteneur arrêté
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<fieldset class="qcm">
+<ol start="8" type="1">
+<li>Que fait <code>docker compose up -d</code> ?</li>
+</ol>
+<label><input type="radio" name="qcm-8" value="1"> <span>
+Télécharge Docker
+</span></label>
+<label><input type="radio" name="qcm-8" value="2" data-ok> <span>
+Démarre en arrière-plan les services décrits dans le fichier Compose
+</span></label>
+<label><input type="radio" name="qcm-8" value="3"> <span>
+Construit une machine virtuelle
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+</div></fieldset>
+<h3 id="collaborer-avec-git-et-github">2. Collaborer avec Git et
+GitHub</h3>
+<h4 id="le-problème">Le problème</h4>
+<p>Ce matin, trois personnes ont travaillé sur trois branches du même
+dépôt. Deux d’entre elles ont modifié les <strong>mêmes
+fichiers</strong> (<code>routes/web.php</code>,
+<code>VoyageController.php</code>, <code>index.blade.php</code>). Il
+faut maintenant tout réunir dans <code>main</code>, sans perdre le
+travail de quiconque et sans jamais laisser <code>main</code> dans un
+état cassé.</p>
+<h4 id="le-github-flow">Le GitHub flow</h4>
+<figure>
+<img role="img" aria-label="GitHub flow appliqué aux trois parts du matin : trois branches courtes partent de main, chacune revient par une pull request relue ; la dernière intègre d’abord main et résout le conflit." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDU2MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNTYwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZjIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0byI+CiAgICAgIDxwYXRoIGQ9Ik0wLDAgTDEwLDUgTDAsMTAgeiIgZmlsbD0iI0Q5NUM1OSIvPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJmYSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiBvcmllbnQ9ImF1dG8iPgogICAgICA8cGF0aCBkPSJNMCwwIEwxMCw1IEwwLDEwIHoiIGZpbGw9IiNFNDlBMzgiLz4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTEwMCIgaGVpZ2h0PSI1NjAiIGZpbGw9IiNGRkZGRkYiLz4KCiAgPCEtLSBQdXNoIGRpcmVjdCByZWZ1c8OpIC0tPgogIDxyZWN0IHg9IjMwMCIgeT0iMTQiIHdpZHRoPSIxOTAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjM5NSIgeT0iMzkiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Z2l0IHB1c2ggb3JpZ2luIG1haW48L3RleHQ+CiAgPGxpbmUgeDE9IjM5NSIgeTE9IjU2IiB4Mj0iMzk1IiB5Mj0iOTYiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNCIgbWFya2VyLWVuZD0idXJsKCNmYykiLz4KICA8ZyBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSIzODUiIHkxPSI2NiIgeDI9IjQwNSIgeTI9Ijg2Ii8+PGxpbmUgeDE9IjQwNSIgeTE9IjY2IiB4Mj0iMzg1IiB5Mj0iODYiLz4KICA8L2c+CiAgPHRleHQgeD0iNDE1IiB5PSI4MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNEOTVDNTkiPnJlZnVzw6kgOiByw6hnbGUgZGUgcHJvdGVjdGlvbjwvdGV4dD4KCiAgPCEtLSBtYWluIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI4OCIgd2lkdGg9IjEwNjAiIGhlaWdodD0iNDQiIHJ4PSIyMiIgZmlsbD0iI0VFRjNGQyIvPgogIDxsaW5lIHgxPSI2MCIgeTE9IjExMCIgeDI9IjEwNTAiIHkyPSIxMTAiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgPHRleHQgeD0iMjYiIHk9IjgwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiPm1haW48L3RleHQ+CiAgPCEtLSBjYWRlbmFzIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0MCw2MikiPgogICAgPHBhdGggZD0iTTQsOCBWNCBhNiw2IDAgMCAxIDEyLDAgVjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyLjIiLz4KICAgIDxyZWN0IHg9IjAiIHk9IjgiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNCIgcng9IjMiIGZpbGw9IiMxNzIwMzMiLz4KICA8L2c+CiAgPHRleHQgeD0iNjY4IiB5PSI4MCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPnByb3TDqWfDqWUgOiBQUiArIDEgYXBwcm9iYXRpb248L3RleHQ+CgogIDwhLS0gY29tbWl0cyBkdSBtYXRpbiAtLT4KICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMTAiIHI9IjExIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjE5MCIgY3k9IjExMCIgcj0iMTEiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxNTIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm1vZMOobGUsIEFQSSw8L3RleHQ+CiAgPHRleHQgeD0iMTAwIiB5PSIxNjciIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmxpc3RlPC90ZXh0PgogIDx0ZXh0IHg9IjE5MCIgeT0iODAiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Wb3lhZ2VSZXF1ZXN0PC90ZXh0PgoKICA8IS0tIGJyYW5jaGUgQVBJIChibGV1KSAtLT4KICA8cGF0aCBkPSJNMTkwLDExMCBDMjE1LDExMCAyMTUsMjIwIDI1MCwyMjAgTDQ3MCwyMjAgQzUyMCwyMjAgNTIwLDExMCA1NjAsMTEwIiBmaWxsPSJub25lIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjMyMCIgY3k9IjIyMCIgcj0iOSIgZmlsbD0iIzM1NjhENCIvPgogIDxjaXJjbGUgY3g9IjQyMCIgY3k9IjIyMCIgcj0iOSIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjI2MCIgeT0iMjA4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNTY4RDQiPmZlYXR1cmUvYXBpLXZhbGlkYXRpb248L3RleHQ+CiAgPHRleHQgeD0iMzIwIiB5PSIyNDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5tZXNzYWdlcyBGUjwvdGV4dD4KICA8dGV4dCB4PSI0MjAiIHk9IjI0NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJFQURNRTwvdGV4dD4KCiAgPCEtLSBicmFuY2hlIENyw6lhdGlvbiAodmVydCkgLS0+CiAgPHBhdGggZD0iTTE5MCwxMTAgQzIyNSwxMTAgMjE1LDMyMCAyNjAsMzIwIEw2MzAsMzIwIEM2OTAsMzIwIDY4MCwxMTAgNzIwLDExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8Y2lyY2xlIGN4PSIzMzAiIGN5PSIzMjAiIHI9IjkiIGZpbGw9IiMxRTg0NDkiLz4KICA8Y2lyY2xlIGN4PSI0NDAiIGN5PSIzMjAiIHI9IjkiIGZpbGw9IiMxRTg0NDkiLz4KICA8Y2lyY2xlIGN4PSI1NTAiIGN5PSIzMjAiIHI9IjkiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSIyNzAiIHk9IjMwOCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUU4NDQ5Ij5mZWF0dXJlL2NyZWF0aW9uLXZveWFnZTwvdGV4dD4KICA8dGV4dCB4PSIzMzAiIHk9IjM0NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnJvdXRlczwvdGV4dD4KICA8dGV4dCB4PSI0NDAiIHk9IjM0NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmZvcm11bGFpcmU8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzNDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5saWVuICsgZmxhc2g8L3RleHQ+CgogIDwhLS0gYnJhbmNoZSBNb2RpZmljYXRpb24gKHZpb2xldCkgLS0+CiAgPHBhdGggZD0iTTE5MCwxMTAgQzIzNSwxMTAgMjE1LDQyMCAyNzAsNDIwIEw5MDAsNDIwIEM5NTAsNDIwIDkzMCwxMTAgOTcwLDExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNkI1QkI1IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8Y2lyY2xlIGN4PSIzNDAiIGN5PSI0MjAiIHI9IjkiIGZpbGw9IiM2QjVCQjUiLz4KICA8Y2lyY2xlIGN4PSI0NzAiIGN5PSI0MjAiIHI9IjkiIGZpbGw9IiM2QjVCQjUiLz4KICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSI0MjAiIHI9IjkiIGZpbGw9IiM2QjVCQjUiLz4KICA8dGV4dCB4PSIyODAiIHk9IjQwOCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNkI1QkI1Ij5mZWF0dXJlL21vZGlmaWNhdGlvbi12b3lhZ2U8L3RleHQ+CiAgPHRleHQgeD0iMzQwIiB5PSI0NDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5yb3V0ZXM8L3RleHQ+CiAgPHRleHQgeD0iNDcwIiB5PSI0NDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5mb3JtdWxhaXJlPC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iNDQ2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzVDNjg3QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YWN0aW9ucyArIGZsYXNoPC90ZXh0PgoKICA8IS0tIGludMOpZ3JhdGlvbiBkZSBtYWluIGRhbnMgTW9kaWZpY2F0aW9uIDogY29uZmxpdCAtLT4KICA8cGF0aCBkPSJNNzIwLDExMCBDNzYwLDExMCA3OTAsMzAwIDgyMCw0MTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U0OUEzOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtZGFzaGFycmF5PSI4IDUiIG1hcmtlci1lbmQ9InVybCgjZmEpIi8+CiAgPGNpcmNsZSBjeD0iODMwIiBjeT0iNDIwIiByPSIxMyIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjRTQ5QTM4IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8dGV4dCB4PSI4MzAiIHk9IjQyNSIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNFNDlBMzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiE8L3RleHQ+CiAgPHJlY3QgeD0iNzQyIiB5PSI0NDgiIHdpZHRoPSIyNTAiIGhlaWdodD0iNTgiIHJ4PSI4IiBmaWxsPSIjRkZGNkVBIiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijc1NiIgeT0iNDcwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPmdpdCBtZXJnZSBvcmlnaW4vbWFpbjwvdGV4dD4KICA8dGV4dCB4PSI3NTYiIHk9IjQ5NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPmNvbmZsaXQgOiB3ZWIucGhwLCBpbmRleC5ibGFkZS5waHA8L3RleHQ+CgogIDwhLS0gZnVzaW9ucyBzdXIgbWFpbiAtLT4KICA8Y2lyY2xlIGN4PSI1NjAiIGN5PSIxMTAiIHI9IjEzIiBmaWxsPSIjMzU2OEQ0IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxjaXJjbGUgY3g9IjcyMCIgY3k9IjExMCIgcj0iMTMiIGZpbGw9IiMxRTg0NDkiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPGNpcmNsZSBjeD0iOTcwIiBjeT0iMTEwIiByPSIxMyIgZmlsbD0iIzZCNUJCNSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjMiLz4KCiAgPCEtLSBiYWRnZXMgUFIgLS0+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZm9udC13ZWlnaHQ9IjcwMCI+CiAgICA8cmVjdCB4PSI0OTIiIHk9IjE0NiIgd2lkdGg9IjExNiIgaGVpZ2h0PSIyNiIgcng9IjEzIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPHRleHQgeD0iNTUwIiB5PSIxNjQiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBSIDEgwrcgcmV2dWUg4pyTPC90ZXh0PgogICAgPHJlY3QgeD0iNjQyIiB5PSIyMzYiIHdpZHRoPSIxMTYiIGhlaWdodD0iMjYiIHJ4PSIxMyIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDx0ZXh0IHg9IjcwMCIgeT0iMjU0IiBmaWxsPSIjMUU4NDQ5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QUiAyIMK3IHJldnVlIOKckzwvdGV4dD4KICAgIDxyZWN0IHg9IjkwMCIgeT0iMjM2IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8dGV4dCB4PSI5NTgiIHk9IjI1NCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UFIgMyDCtyByZXZ1ZSDinJM8L3RleHQ+CiAgPC9nPgoKICA8IS0tIMOpdGlxdWV0dGUgLS0+CiAgPHBhdGggZD0iTTEwMTAsOTYgTDEwNjYsOTYgTDEwODAsMTEwIEwxMDY2LDEyNCBMMTAxMCwxMjQgWiIgZmlsbD0iIzE3MjAzMyIvPgogIDx0ZXh0IHg9IjEwNDAiIHk9IjExNSIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjEyIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj52MC4xLjA8L3RleHQ+CgogIDwhLS0gb3JkcmUgZXQgc3ludGjDqHNlIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI1MzAiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNUM2ODdDIj5PcmRyZSBkZXMgZnVzaW9ucyA6IDEuIEFQSSDCtyAyLiBDcsOpYXRpb24gwrcgMy4gTW9kaWZpY2F0aW9uIChkZXJuacOocmUgOiBlbGxlIGludMOoZ3JlIGQnYWJvcmQgbWFpbik8L3RleHQ+CiAgPHJlY3QgeD0iMjAiIHk9IjQ2MCIgd2lkdGg9IjcwMCIgaGVpZ2h0PSI0NiIgcng9IjEwIiBmaWxsPSIjRThGNEVDIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjM3MCIgeT0iNDg5IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiPlVuZSBwYXJ0ID0gdW5lIGJyYW5jaGUgY291cnRlID0gdW5lIFBSIHJlbHVlLjwvdHNwYW4+IG1haW4gcmVzdGUgdG91am91cnMgZm9uY3Rpb25uZWxsZS48L3RleHQ+Cjwvc3ZnPgo=" alt="GitHub flow appliqué aux trois parts du matin : trois branches courtes partent de main, chacune revient par une pull request relue ; la dernière intègre d’abord main et résout le conflit." />
+<figcaption aria-hidden="true">GitHub flow appliqué aux trois parts du
+matin : trois branches courtes partent de main, chacune revient par une
+pull request relue ; la dernière intègre d’abord main et résout le
+conflit.</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Règle</th>
+<th>Raison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main</code> fonctionne toujours</td>
+<td>C’est elle qui sera testée, construite et déployée
+automatiquement.</td>
+</tr>
+<tr>
+<td>Une branche courte par changement</td>
+<td>Moins elle vit longtemps, moins elle diverge de
+<code>main</code>.</td>
+</tr>
+<tr>
+<td>Toute fusion passe par une <strong>pull request</strong> (PR)</td>
+<td>La PR est le lieu de la discussion, de la revue et, bientôt, des
+tests automatiques.</td>
+</tr>
+<tr>
+<td>Une approbation au moins avant fusion</td>
+<td>Deux personnes au moins comprennent chaque ligne livrée.</td>
+</tr>
+<tr>
+<td>La branche est supprimée après fusion</td>
+<td>Son histoire est désormais dans <code>main</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Le <strong>Gitflow</strong> des supports de l’an dernier ajoute une
+branche <code>develop</code> et des branches de version. Il convient à
+des livraisons espacées et numérotées ; pour une petite équipe qui livre
+en continu, le GitHub flow suffit et laisse moins de branches à
+synchroniser.</p>
+<h4 id="protéger-main">Protéger <code>main</code></h4>
+<p>L’enseignant, propriétaire du dépôt, crée la règle en direct :
+<strong>Settings → Rules → Rulesets → New branch ruleset</strong>, cible
+<em>Default branch</em>, avec :</p>
+<ul>
+<li><em>Restrict deletions</em> et <em>Block force pushes</em> ;</li>
+<li><em>Require a pull request before merging</em>, <em>Required
+approvals</em> : 1.</li>
+</ul>
+<p>Le dépôt est <strong>public</strong> : avec un compte GitHub gratuit,
+ces règles ne s’appliquent qu’aux dépôts publics. Le code ne contient
+aucun secret, puisque <code>.env</code> reste hors du dépôt.</p>
+<p><strong>Vérifiez la règle.</strong> Sur votre poste, sur
+<code>main</code>, faites un commit sans importance et tentez
+<code>git push</code>. Le refus doit mentionner une violation de règle
+du dépôt. Annulez ensuite ce commit local avec
+<code>git reset --hard origin/main</code>.</p>
+<h4 id="ouvrir-sa-pull-request">Ouvrir sa pull request</h4>
+<p>Votre branche a été publiée ce matin
+(<code>git push -u origin &lt;branche&gt;</code>). Sur GitHub, ouvrez
+une PR de votre branche vers <code>main</code>. Sa description suit ce
+modèle :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quoi</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Ce que la branche ajoute, en deux ou trois phrases.</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pourquoi</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Le besoin ou le problème réglé.</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comment tester</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Les commandes et les gestes pour vérifier,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>y compris une saisie invalide.</span></code></pre></div>
+<h4 id="relire-la-pull-request-dun-autre">Relire la pull request d’un
+autre</h4>
+<p>Chacun relit une PR, en cercle : <strong>API relit Création, Création
+relit Modification, Modification relit API.</strong> Récupérez la
+branche pour la tester réellement :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> fetch origin</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch feature/creation-voyage</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan serve</span></code></pre></div>
+<p>Dans l’onglet <em>Files changed</em> de la PR, vérifiez :</p>
+<ul>
+<li>le code fait ce qu’annonce la description, et le test décrit
+fonctionne ;</li>
+<li>vous comprenez chaque ligne, sinon vous posez la question ;</li>
+<li>aucun fichier n’est en trop : <code>.env</code>,
+<code>vendor/</code>, base SQLite, fichiers d’éditeur ;</li>
+<li>les noms de variables, routes et vues sont explicites et cohérents
+avec le reste.</li>
+</ul>
+<p>Un commentaire utile tient en trois temps : <strong>constat, raison,
+proposition.</strong></p>
+<blockquote>
+<p>« <code>store()</code> utilise <code>$request-&gt;all()</code> : un
+champ non prévu serait enregistré. Proposition :
+<code>$request-&gt;validated()</code>, comme dans l’API. »</p>
+</blockquote>
+<p>Terminez par <em>Review changes</em> : <strong>Request
+changes</strong> pour au moins un point justifié, puis
+<strong>Approve</strong> quand l’auteur l’a corrigé. La correction se
+fait par un nouveau commit sur la même branche : la PR se met à jour
+toute seule.</p>
+<h4 id="fusionner-puis-résoudre-un-conflit">Fusionner, puis résoudre un
+conflit</h4>
+<p>Ordre de fusion du premier tour : <strong>1. API, 2. Création, 3.
+Modification.</strong> Après chaque fusion, chacun met à jour son
+<code>main</code> local avec <code>git switch main</code> puis
+<code>git pull</code>.</p>
+<p>Quand vient son tour, la PR « Modification » affiche <em>This branch
+has conflicts that must be resolved</em> : <code>main</code> a reçu la
+Création, qui a touché les mêmes lignes. On intègre <code>main</code>
+dans la branche, <strong>sur son poste</strong>, pour pouvoir tester le
+résultat :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch feature/modification-voyage</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> fetch origin</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge origin/main</span></code></pre></div>
+<pre class="text"><code>CONFLICT (content): Merge conflict in routes/web.php
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+<p>Git a fusionné tout ce qu’il pouvait et a laissé, dans chaque fichier
+en conflit, les deux versions des lignes concurrentes :</p>
+<pre class="text"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Route::get(&#39;/voyages/{voyage}/edit&#39;, ...);
+Route::put(&#39;/voyages/{voyage}&#39;, ...);
+Route::delete(&#39;/voyages/{voyage}&#39;, ...);
+=======
+Route::get(&#39;/voyages/create&#39;, ...);
+Route::post(&#39;/voyages&#39;, ...);
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+<p><code>HEAD</code> désigne votre branche ; la partie après
+<code>=======</code> vient de <code>main</code>. Résoudre, ce n’est
+<strong>pas choisir un camp</strong> : c’est écrire la version qui
+respecte les deux intentions. Ici, garder les cinq routes ; ailleurs,
+garder un seul exemplaire d’un bloc ajouté des deux côtés, comme
+l’affichage du message flash.</p>
+<ol type="1">
+<li><code>git status</code> liste les fichiers en conflit.</li>
+<li>Éditez chacun : version finale écrite, marqueurs
+<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>,
+<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> supprimés.</li>
+<li><strong>Testez</strong> :
+<code>php artisan route:list --path=voyages</code>, puis liste,
+création, modification et suppression dans le navigateur.</li>
+<li><code>git add</code> des fichiers résolus, puis
+<code>git commit</code> pour conclure la fusion.</li>
+<li><code>git push</code> : la PR redevient fusionnable.</li>
+</ol>
+<p>Lisez enfin l’histoire produite :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span> <span class="at">--graph</span> <span class="at">--all</span></span></code></pre></div>
+<h4 id="second-tour-de-lissue-à-la-fusion">Second tour : de l’issue à la
+fusion</h4>
+<p>L’enseignant a ouvert trois issues sur le dépôt. Chacune fait l’objet
+d’une branche, d’une PR qui contient <code>Closes #&lt;numéro&gt;</code>
+dans sa description, et d’une revue dans le même cercle.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Prise par</th>
+<th>Indication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Afficher le départ au format français (15/03/2027)</td>
+<td>Modification</td>
+<td><code>$voyage-&gt;depart-&gt;format(&#39;d/m/Y&#39;)</code></td>
+</tr>
+<tr>
+<td>Afficher le prix en euros (420,00 €)</td>
+<td>API</td>
+<td><code>number_format($voyage-&gt;prix, 2, &#39;,&#39;, &#39; &#39;)</code></td>
+</tr>
+<tr>
+<td>Afficher les places, et « Aucun voyage prévu » si la liste est
+vide</td>
+<td>Création</td>
+<td><code>@forelse … @empty … @endforelse</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ordre de fusion : <strong>Modification, API, Création.</strong> Les
+trois issues touchent des lignes voisines de la liste : à ce tour, l’API
+puis la Création intègrent <code>main</code> et résolvent leur conflit.
+À la fin de l’après-midi, chacun en a donc résolu un.</p>
+<p><strong>Critère de réussite :</strong> chacun a ouvert une PR relue,
+demandé une modification argumentée et résolu un conflit ;
+<code>main</code> contient toutes les fonctions et l’application démarre
+depuis un clone neuf.</p>
+<h4 id="restitution">Restitution</h4>
+<p>Chacun, sur son poste projeté :</p>
+<ol type="1">
+<li>présente sa PR : description, commentaire reçu, commentaire donné
+;</li>
+<li>montre son conflit : les deux versions, celle retenue et pourquoi
+;</li>
+<li>commente <code>git log --oneline --graph</code> autour de sa
+fusion.</li>
+</ol>
+<p>Pour finir, l’enseignant clone le dépôt dans un dossier neuf et
+installe l’application devant l’équipe. Comptez les commandes
+nécessaires et notez ce qui pourrait différer d’un poste à l’autre :
+version de PHP, extensions, base de données. <strong>C’est le problème
+de l’intervention 3.</strong></p>
+<h4 id="extensions">Extensions</h4>
+<ul>
+<li><strong>Annuler une fusion fautive.</strong> Sur une branche,
+<code>git revert -m 1 &lt;commit-de-fusion&gt;</code>, puis PR. Pourquoi
+ne pas réécrire l’histoire de <code>main</code> à la place ?</li>
+<li><strong>Marquer une version.</strong>
+<code>git tag -a v0.1.0 -m &quot;Liste, API et formulaires&quot;</code>, puis
+<code>git push origin v0.1.0</code>, et une <em>release</em> GitHub qui
+résume les PR fusionnées.</li>
+<li><strong>Modèle de PR.</strong> Placez le modèle de description dans
+<code>.github/pull_request_template.md</code>, par une PR : GitHub le
+proposera à chaque nouvelle PR.</li>
+</ul>
+<h3 id="conteneuriser-lapplication">3. Conteneuriser l’application</h3>
+<h4 id="le-problème-1">Le problème</h4>
+<p>Le clone neuf de la partie 2 a demandé une dizaine de commandes et
+suppose, sur chaque poste, la bonne version de PHP, les bonnes
+extensions, Composer, une base et un <code>.env</code>. Un conteneur
+embarque le système et les dépendances de l’application : le démarrage
+ne dépend plus du poste.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Terme</th>
+<th>Ce que c’est</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Image</strong></td>
+<td>Un modèle en lecture seule, fait de couches empilées : système,
+extensions, dépendances, code.</td>
+</tr>
+<tr>
+<td><strong>Conteneur</strong></td>
+<td>Une instance de l’image qui s’exécute. On le supprime et on le
+recrée sans regret.</td>
+</tr>
+<tr>
+<td><strong>Registre</strong></td>
+<td>Le dépôt où l’on publie et récupère des images : Docker Hub, GitHub
+Container Registry.</td>
+</tr>
+<tr>
+<td><strong>Volume</strong></td>
+<td>Un stockage géré par Docker, qui survit à la suppression du
+conteneur.</td>
+</tr>
+</tbody>
+</table>
+<p>Contrairement à une machine virtuelle, un conteneur n’embarque pas de
+système complet : il partage le noyau de l’hôte, démarre en quelques
+secondes et pèse bien moins lourd.</p>
+<figure>
+<img role="img" aria-label="Le dépôt fournit Dockerfile et compose.yaml ; l’image de l’application est construite à partir de php:8.3-apache ; Compose lance les services app et db sur un réseau interne, la base écrit dans le volume db_data, le .env est injecté au démarrage." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDYwMCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNjAwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZ2IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjNkI1QkI1Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZyIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjRDk1QzU5Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjNUM2ODdDIi8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjExMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjRkZGRkZGIi8+CgogIDwhLS0gUmVnaXN0cmUgLS0+CiAgPHJlY3QgeD0iMzAwIiB5PSIyMCIgd2lkdGg9IjMzMCIgaGVpZ2h0PSI2NCIgcng9IjEwIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjQ2NSIgeT0iNDQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNkI1QkI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5SZWdpc3RyZSDCtyBEb2NrZXIgSHViPC90ZXh0PgogIDx0ZXh0IHg9IjQ2NSIgeT0iNjgiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5waHA6OC4zLWFwYWNoZSDCtyBjb21wb3NlcjoyIMK3IG1hcmlhZGI6MTEuNDwvdGV4dD4KCiAgPCEtLSBEw6lww7R0IC0tPgogIDxyZWN0IHg9IjIwIiB5PSIxMjAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMjUwIiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjIwIiB5PSIxMjAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzAiIHJ4PSI4IiBmaWxsPSIjMTcyMDMzIi8+CiAgPHJlY3QgeD0iMjAiIHk9IjE0MCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzE3MjAzMyIvPgogIDx0ZXh0IHg9IjEzNSIgeT0iMTQxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RMOpcMO0dCB2b3lhZ2VzLXNjb2xhaXJlczwvdGV4dD4KICA8ZyBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPgogICAgPHRleHQgeD0iMzYiIHk9IjE3OCI+YXBwLyByb3V0ZXMvIOKApjwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyMDIiPmNvbXBvc2VyLmxvY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzNiIgeT0iMjI2IiBmb250LXdlaWdodD0iNzAwIj5Eb2NrZXJmaWxlPC90ZXh0PgogICAgPHRleHQgeD0iMzYiIHk9IjI1MCIgZm9udC13ZWlnaHQ9IjcwMCI+LmRvY2tlcmlnbm9yZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyNzQiIGZvbnQtd2VpZ2h0PSI3MDAiPmNvbXBvc2UueWFtbDwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyOTgiPi5lbnYuZXhhbXBsZTwvdGV4dD4KICA8L2c+CiAgPGxpbmUgeDE9IjMyIiB5MT0iMzE0IiB4Mj0iMjM4IiB5Mj0iMzE0IiBzdHJva2U9IiNENURBRTMiLz4KICA8dGV4dCB4PSIzNiIgeT0iMzM4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNEOTVDNTkiPi5lbnY8L3RleHQ+CiAgPHRleHQgeD0iODAiIHk9IjMzOCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iI0Q5NUM1OSI+amFtYWlzIGNvbW1pdMOpPC90ZXh0PgogIDx0ZXh0IHg9IjM2IiB5PSIzNTgiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIj5zZWNyZXRzLCBwcm9wcmUgw6AgY2hhcXVlIHBvc3RlPC90ZXh0PgoKICA8IS0tIEltYWdlIC0tPgogIDx0ZXh0IHg9IjQxNSIgeT0iMTQyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SW1hZ2Ugdm95YWdlcy1hcHA8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8cmVjdCB4PSIzMDAiIHk9IjE1MiIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIzOCIgcng9IjQiIGZpbGw9IiNFRUYyRkIiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDx0ZXh0IHg9IjMxMiIgeT0iMTc2Ij5jb2RlIGRlIGwnYXBwbGljYXRpb248L3RleHQ+CiAgICA8cmVjdCB4PSIzMDAiIHk9IjE5NCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIzOCIgcng9IjQiIGZpbGw9IiNFRUYyRkIiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDx0ZXh0IHg9IjMxMiIgeT0iMjE4Ij52ZW5kb3IvIGZpZ8OpIHBhciBjb21wb3Nlci5sb2NrPC90ZXh0PgogICAgPHJlY3QgeD0iMzAwIiB5PSIyMzYiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzgiIHJ4PSI0IiBmaWxsPSIjRUVGMkZCIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8dGV4dCB4PSIzMTIiIHk9IjI2MCI+RG9jdW1lbnRSb290IOKGkiBwdWJsaWMvPC90ZXh0PgogICAgPHJlY3QgeD0iMzAwIiB5PSIyNzgiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzgiIHJ4PSI0IiBmaWxsPSIjRUVGMkZCIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8dGV4dCB4PSIzMTIiIHk9IjMwMiI+ZXh0ZW5zaW9ucyBwZG9fbXlzcWwsIHppcDwvdGV4dD4KICAgIDxyZWN0IHg9IjMwMCIgeT0iMzIwIiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjM4IiByeD0iNCIgZmlsbD0iI0RDRTVGOCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHRleHQgeD0iMzEyIiB5PSIzNDQiIGZvbnQtd2VpZ2h0PSI3MDAiPkZST00gcGhwOjguMy1hcGFjaGU8L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9IjQxNSIgeT0iMzc2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzVDNjg3QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Y291Y2hlcyBlbXBpbMOpZXMsIGVuIGxlY3R1cmUgc2V1bGU8L3RleHQ+CgogIDwhLS0gLmVudiBpbmplY3TDqSAtLT4KICA8cmVjdCB4PSIzMDAiIHk9IjM5NiIgd2lkdGg9IjIzMCIgaGVpZ2h0PSI0NCIgcng9IjgiIGZpbGw9IiNGREVDRUMiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI2IDQiLz4KICA8dGV4dCB4PSI0MTUiIHk9IjQxNSIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiNEOTVDNTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmVudl9maWxlOiAuZW52PC90ZXh0PgogIDx0ZXh0IHg9IjQxNSIgeT0iNDMyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aW5qZWN0w6kgYXUgZMOpbWFycmFnZSwgcGFzIGRhbnMgbCdpbWFnZTwvdGV4dD4KCiAgPCEtLSBIw7R0ZSAtLT4KICA8cmVjdCB4PSI1ODAiIHk9IjExMCIgd2lkdGg9IjUwMCIgaGVpZ2h0PSIzODAiIHJ4PSIxMiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSI1OTYiIHk9IjEzNCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiPlBvc3RlIG91IHNlcnZldXIgwrcgZG9ja2VyIGNvbXBvc2UgdXAgLWQ8L3RleHQ+CiAgPHJlY3QgeD0iNjAwIiB5PSIxNjAiIHdpZHRoPSI0NjAiIGhlaWdodD0iMTk2IiByeD0iMTAiIGZpbGw9IiNGN0Y4RkEiIHN0cm9rZT0iIzVDNjg3QyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPgogIDx0ZXh0IHg9IjYxNCIgeT0iMTgwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiPnLDqXNlYXUgdm95YWdlcy1zY29sYWlyZXNfZGVmYXVsdDwvdGV4dD4KCiAgPCEtLSBDb250ZW5ldXIgYXBwIC0tPgogIDxyZWN0IHg9IjYyMCIgeT0iMTk2IiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjE0MCIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8cmVjdCB4PSI2MjAiIHk9IjE5NiIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIyOCIgcng9IjgiIGZpbGw9IiMzNTY4RDQiLz4KICA8cmVjdCB4PSI2MjAiIHk9IjIxNCIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjcxNSIgeT0iMjE2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2VydmljZSBhcHA8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI2MzIiIHk9IjI0NiI+QXBhY2hlICsgUEhQIDguMywgcG9ydCA4MDwvdGV4dD4KICAgIDx0ZXh0IHg9IjYzMiIgeT0iMjY4Ij5MYXJhdmVsIGxpdCBsJ2Vudmlyb25uZW1lbnQ8L3RleHQ+CiAgPC9nPgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI2MzIiIHk9IjI5MCI+REJfSE9TVD1kYjwvdGV4dD4KICAgIDx0ZXh0IHg9IjYzMiIgeT0iMzA4Ij5EQl9DT05ORUNUSU9OPW1hcmlhZGI8L3RleHQ+CiAgICA8dGV4dCB4PSI2MzIiIHk9IjMyNiI+QVBQX0tFWT3igKY8L3RleHQ+CiAgPC9nPgoKICA8IS0tIENvbnRlbmV1ciBkYiAtLT4KICA8cmVjdCB4PSI4NTAiIHk9IjE5NiIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIxNDAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMi41Ii8+CiAgPHJlY3QgeD0iODUwIiB5PSIxOTYiIHdpZHRoPSIxOTAiIGhlaWdodD0iMjgiIHJ4PSI4IiBmaWxsPSIjNkI1QkI1Ii8+CiAgPHJlY3QgeD0iODUwIiB5PSIyMTQiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTAiIGZpbGw9IiM2QjVCQjUiLz4KICA8dGV4dCB4PSI5NDUiIHk9IjIxNiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNlcnZpY2UgZGI8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjI0NiI+TWFyaWFEQiAxMS40LCBwb3J0IDMzMDY8L3RleHQ+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjI2OCI+bm9uIGV4cG9zw6kgw6AgbCdleHTDqXJpZXVyPC90ZXh0PgogICAgPHRleHQgeD0iODYyIiB5PSIyOTAiPmhlYWx0aGNoZWNrIDogcHLDqnRlID88L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9Ijg2MiIgeT0iMzE2IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxNzIwMzMiPk1BUklBREJfREFUQUJBU0U94oCmPC90ZXh0PgoKICA8IS0tIFZvbHVtZSAtLT4KICA8cGF0aCBkPSJNODgwLDQwNCBROTQ1LDM5MCAxMDEwLDQwNCBMMTAxMCw0NTYgUTk0NSw0NzAgODgwLDQ1NiBaIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxwYXRoIGQ9Ik04ODAsNDA0IFE5NDUsNDE4IDEwMTAsNDA0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijk0NSIgeT0iNDM4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmRiX2RhdGE8L3RleHQ+CiAgPHRleHQgeD0iOTQ1IiB5PSI0NTYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnZvbHVtZSBub21tw6k8L3RleHQ+CgogIDwhLS0gTmF2aWdhdGV1ciAtLT4KICA8cmVjdCB4PSIyMCIgeT0iNDIwIiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjU2IiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSIxMzUiIHk9IjQ0MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5hdmlnYXRldXI8L3RleHQ+CiAgPHRleHQgeD0iMTM1IiB5PSI0NjQiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5sb2NhbGhvc3Q6ODAwMC92b3lhZ2VzPC90ZXh0PgoKICA8IS0tIEZsw6hjaGVzIC0tPgogIDxsaW5lIHgxPSIyNTAiIHkxPSIyNTAiIHgyPSIyOTYiIHkyPSIyNTAiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDx0ZXh0IHg9IjI3MyIgeT0iMjQwIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YnVpbGQ8L3RleHQ+CiAgPGxpbmUgeDE9IjQxNSIgeTE9Ijg0IiB4Mj0iNDE1IiB5Mj0iMTI0IiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Z2KSIvPgogIDx0ZXh0IHg9IjQyNSIgeT0iMTA4IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSI+cHVsbDwvdGV4dD4KICA8cGF0aCBkPSJNNjMwLDUyIEw5NDUsNTIgTDk0NSwxOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjZnYpIi8+CiAgPHRleHQgeD0iNzkwIiB5PSI0NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM2QjVCQjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnB1bGwgbWFyaWFkYjoxMS40PC90ZXh0PgogIDxsaW5lIHgxPSI1MzAiIHkxPSIyNTAiIHgyPSI2MTYiIHkyPSIyNTAiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDx0ZXh0IHg9IjU2MCIgeT0iMjQwIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cnVuPC90ZXh0PgogIDxsaW5lIHgxPSI4MTAiIHkxPSIyNzYiIHgyPSI4NDYiIHkyPSIyNzYiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjZmcpIi8+CiAgPHRleHQgeD0iODI4IiB5PSIyNjYiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZGI8L3RleHQ+CiAgPGxpbmUgeDE9Ijk0NSIgeTE9IjMzNiIgeDI9Ijk0NSIgeTI9IjM5NiIgc3Ryb2tlPSIjNUM2ODdDIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNCIgbWFya2VyLWVuZD0idXJsKCNmZykiLz4KICA8dGV4dCB4PSI5NTUiIHk9IjM3OCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiM1QzY4N0MiPi92YXIvbGliL215c3FsPC90ZXh0PgogIDxwYXRoIGQ9Ik01MzAsNDE4IEw3MDAsNDE4IEw3MDAsMzQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtZGFzaGFycmF5PSI2IDQiIG1hcmtlci1lbmQ9InVybCgjZnIpIi8+CiAgPHBhdGggZD0iTTI1MCw0NjIgTDc0MCw0NjIgTDc0MCwzNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDx0ZXh0IHg9Ijc5MCIgeT0iNDU4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIuNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ODAwMCDihpIgODA8L3RleHQ+CgogIDwhLS0gU3ludGjDqHNlIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI1MDgiIHdpZHRoPSIxMDYwIiBoZWlnaHQ9IjcyIiByeD0iMTAiIGZpbGw9IiNFOEY0RUMiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSI1NTAiIHk9IjUzNyIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlID0gcmVjZXR0ZSBmaWfDqWUgwrcgQ29udGVuZXVyID0gaW5zdGFuY2UgamV0YWJsZSDCtyBWb2x1bWUgPSBkb25uw6llcyBxdWkgc3Vydml2ZW50PC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTYyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MZSBjb2RlIGV0IHNlcyBkw6lwZW5kYW5jZXMgdm95YWdlbnQgZGFucyBsJ2ltYWdlIDsgbGEgY29uZmlndXJhdGlvbiBldCBsZXMgc2VjcmV0cyBhcnJpdmVudCBwYXIgbCdlbnZpcm9ubmVtZW50LjwvdGV4dD4KPC9zdmc+Cg==" alt="Le dépôt fournit Dockerfile et compose.yaml ; l’image de l’application est construite à partir de php:8.3-apache ; Compose lance les services app et db sur un réseau interne, la base écrit dans le volume db_data, le .env est injecté au démarrage." />
+<figcaption aria-hidden="true">Le dépôt fournit Dockerfile et
+compose.yaml ; l’image de l’application est construite à partir de
+php:8.3-apache ; Compose lance les services app et db sur un réseau
+interne, la base écrit dans le volume db_data, le .env est injecté au
+démarrage.</figcaption>
+</figure>
+<h4 id="vérifier-linstallation">Vérifier l’installation</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose version</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> hello-world</span></code></pre></div>
+<p>La dernière commande télécharge une image, lance un conteneur qui
+affiche un message, puis le supprime (<code>--rm</code>). Si elle
+échoue, Docker Desktop n’est pas démarré.</p>
+<h4 id="le-dockerfile">Le Dockerfile</h4>
+<p>À la racine du dépôt, le fichier <code>Dockerfile</code> décrit la
+construction de l’image :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> php:8.3-apache</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> <span class="at">--no-install-recommends</span> git unzip libzip-dev <span class="dt">\</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">docker-php-ext-install</span> pdo_mysql zip <span class="dt">\</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">a2enmod</span> rewrite <span class="dt">\</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="fu">rm</span> <span class="at">-rf</span> /var/lib/apt/lists/<span class="pp">*</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> APACHE_DOCUMENT_ROOT=/var/www/html/public</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">sed</span> <span class="at">-ri</span> <span class="at">-e</span> <span class="st">&#39;s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g&#39;</span> <span class="dt">\</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    /etc/apache2/sites-available/<span class="pp">*</span>.conf</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">sed</span> <span class="at">-ri</span> <span class="at">-e</span> <span class="st">&#39;s!/var/www/!${APACHE_DOCUMENT_ROOT}!g&#39;</span> <span class="dt">\</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    /etc/apache2/apache2.conf /etc/apache2/conf-available/<span class="pp">*</span>.conf</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--from=composer:2</span> /usr/bin/composer /usr/bin/composer</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /var/www/html</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> composer.json composer.lock ./</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">composer</span> install <span class="at">--no-dev</span> <span class="at">--no-scripts</span> <span class="at">--no-autoloader</span> <span class="at">--prefer-dist</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">composer</span> dump-autoload <span class="at">--optimize</span> <span class="dt">\</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="fu">chown</span> <span class="at">-R</span> www-data:www-data storage bootstrap/cache</span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FROM php:8.3-apache</code></td>
+<td>Part de l’image officielle PHP 8.3 avec Apache, à une version
+écrite.</td>
+</tr>
+<tr>
+<td><code>RUN … docker-php-ext-install</code></td>
+<td>Ajoute les extensions PHP nécessaires : <code>pdo_mysql</code> pour
+MariaDB, <code>zip</code> pour Composer.</td>
+</tr>
+<tr>
+<td><code>a2enmod rewrite</code></td>
+<td>Active la réécriture d’URL, nécessaire aux routes Laravel.</td>
+</tr>
+<tr>
+<td><code>APACHE_DOCUMENT_ROOT</code> et <code>sed</code></td>
+<td>Fait servir le dossier <code>public/</code> : le reste du projet
+n’est pas accessible par le web.</td>
+</tr>
+<tr>
+<td><code>COPY --from=composer:2</code></td>
+<td>Récupère l’exécutable Composer depuis son image officielle.</td>
+</tr>
+<tr>
+<td><code>COPY composer.json composer.lock</code> puis
+<code>composer install</code></td>
+<td>Installe exactement les versions verrouillées. Copiés
+<strong>avant</strong> le code, ces fichiers permettent à Docker de
+réutiliser la couche <code>vendor/</code> tant qu’ils ne changent
+pas.</td>
+</tr>
+<tr>
+<td><code>COPY . .</code></td>
+<td>Copie le code, sauf ce que <code>.dockerignore</code> exclut.</td>
+</tr>
+<tr>
+<td><code>chown</code></td>
+<td>Laisse Apache écrire dans <code>storage/</code> et
+<code>bootstrap/cache/</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>À côté, le fichier <code>.dockerignore</code> liste ce qui ne doit
+pas entrer dans l’image :</p>
+<pre class="text"><code>.git
+.env
+vendor
+node_modules
+database/*.sqlite</code></pre>
+<h4 id="compose.yaml">compose.yaml</h4>
+<p>Le fichier <code>compose.yaml</code> décrit les deux services et leur
+liaison :</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;8000:80&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env_file</span><span class="kw">:</span><span class="at"> .env</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DB_CONNECTION</span><span class="kw">:</span><span class="at"> mariadb</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DB_HOST</span><span class="kw">:</span><span class="at"> db</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">condition</span><span class="kw">:</span><span class="at"> service_healthy</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mariadb:11.4</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_DATABASE</span><span class="kw">:</span><span class="at"> ${DB_DATABASE}</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_USER</span><span class="kw">:</span><span class="at"> ${DB_USERNAME}</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_PASSWORD</span><span class="kw">:</span><span class="at"> ${DB_PASSWORD}</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_RANDOM_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;1&quot;</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> db_data:/var/lib/mysql</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">healthcheck</span><span class="kw">:</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">test</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;CMD&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;healthcheck.sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;--connect&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;--innodb_initialized&quot;</span><span class="kw">]</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">interval</span><span class="kw">:</span><span class="at"> 5s</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">retries</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db_data</span><span class="kw">:</span></span></code></pre></div>
+<ul>
+<li><code>&quot;8000:80&quot;</code> : le port 8000 de l’hôte mène au port 80 du
+conteneur <code>app</code>. La base n’a pas de <code>ports</code> : elle
+n’est joignable que depuis le réseau interne.</li>
+<li><code>DB_HOST: db</code> : sur ce réseau, chaque service est
+joignable <strong>par son nom</strong>.</li>
+<li><code>env_file: .env</code> : les variables du <code>.env</code>
+sont injectées au démarrage. Une variable d’environnement l’emporte sur
+le fichier <code>.env</code> lu par Laravel : <code>DB_CONNECTION</code>
+et <code>DB_HOST</code> remplacent donc les valeurs SQLite du
+poste.</li>
+<li><code>${DB_DATABASE}</code> : Compose lit aussi le <code>.env</code>
+placé à côté de <code>compose.yaml</code> pour compléter le fichier. Un
+seul <code>.env</code> configure ainsi Laravel et MariaDB.</li>
+<li><code>depends_on</code> avec <code>service_healthy</code> :
+<code>app</code> attend que la base réponde vraiment, pas seulement que
+son conteneur existe.</li>
+</ul>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>MariaDB n’utilise <code>MARIADB_DATABASE</code>,
+<code>MARIADB_USER</code> et <code>MARIADB_PASSWORD</code> qu’au
+<strong>premier</strong> démarrage, sur un volume vide. Changer le mot
+de passe ensuite ne change rien : il faut supprimer le volume
+(<code>docker compose down -v</code>), et donc les données.</p>
+</div>
+<h4 id="démarrer">Démarrer</h4>
+<p>Dans votre <code>.env</code> (jamais commité), décommentez et
+renseignez les variables de base, par exemple
+<code>DB_DATABASE=voyages</code>, <code>DB_USERNAME=voyages</code> et un
+mot de passe. Reportez ces noms, <strong>sans valeur secrète</strong>,
+dans <code>.env.example</code>. Puis :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span> <span class="at">--build</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose ps</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose exec app php artisan migrate <span class="at">--seed</span></span></code></pre></div>
+<p>Ouvrez <code>http://localhost:8000/voyages</code> et
+<code>http://localhost:8000/api/voyages</code>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Commande</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker compose logs -f app</code></td>
+<td>Suit les journaux d’Apache et de Laravel.</td>
+</tr>
+<tr>
+<td><code>docker compose exec app sh</code></td>
+<td>Ouvre un terminal dans le conteneur <code>app</code>.</td>
+</tr>
+<tr>
+<td><code>docker compose down</code></td>
+<td>Arrête et supprime les conteneurs ; le volume <code>db_data</code>
+est conservé.</td>
+</tr>
+<tr>
+<td><code>docker compose down -v</code></td>
+<td>Supprime aussi les volumes : <strong>les données sont
+perdues</strong>.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>port is already allocated</code></td>
+<td>Un <code>php artisan serve</code> tourne encore ? Sinon,
+<code>&quot;8001:80&quot;</code>.</td>
+</tr>
+<tr>
+<td>Page 500, <code>No application encryption key</code></td>
+<td><code>APP_KEY</code> est-il renseigné dans <code>.env</code> ?</td>
+</tr>
+<tr>
+<td>Erreur sur la table <code>sessions</code></td>
+<td>Les migrations ont-elles été lancées dans le conteneur ?</td>
+</tr>
+<tr>
+<td><code>Connection refused</code> vers la base</td>
+<td><code>DB_HOST=db</code> ; <code>docker compose ps</code> montre-t-il
+<code>db</code> <em>healthy</em> ?</td>
+</tr>
+<tr>
+<td><code>Access denied for user</code></td>
+<td>Identifiants changés après le premier démarrage :
+<code>down -v</code>.</td>
+</tr>
+<tr>
+<td><code>Permission denied</code> dans <code>storage/</code></td>
+<td>Le <code>chown</code> du Dockerfile a-t-il été exécuté ?</td>
+</tr>
+</tbody>
+</table>
+<h4 id="à-trois-conteneuriser-par-pull-request">À trois : conteneuriser
+par pull request</h4>
+<p>Chacun crée une branche depuis <code>main</code> à jour, ouvre une PR
+et relit celle de son voisin, comme en partie 2. Les trois PR sont
+nécessaires pour que la pile démarre : fusionnez-les, puis testez.</p>
+<ol type="1">
+<li><strong>API</strong> : <code>Dockerfile</code> et
+<code>.dockerignore</code>. Construisez l’image seule avec
+<code>docker build -t voyages-app .</code> et expliquez dans la PR
+chaque instruction.</li>
+<li><strong>Création</strong> : <code>compose.yaml</code> et
+<code>.env.example</code> complété des variables de base. Vérifiez la
+syntaxe avec <code>docker compose config</code>, <strong>sans</strong>
+coller la sortie dans la PR : elle contient les valeurs du
+<code>.env</code>.</li>
+<li><strong>Modification</strong> : section « Démarrer avec Docker » du
+<code>README.md</code> (prérequis, commandes, adresse, arrêt). Après les
+fusions, clonez le dépôt dans un dossier neuf et suivez le README à la
+lettre.</li>
+</ol>
+<p><strong>Critère de réussite :</strong> depuis un clone neuf,
+<code>cp .env.example .env</code>, la clé, les variables de base,
+<code>docker compose up -d --build</code> et la migration suffisent à
+afficher la liste et l’API.</p>
+<h4 id="questions">Questions</h4>
+<ol type="1">
+<li>Après <code>docker compose down</code> puis <code>up -d</code>, les
+voyages sont-ils toujours là ? Et après <code>down -v</code> ?
+Expliquez.</li>
+<li>Pourquoi l’URL de la base est-elle <code>db</code> et non
+<code>127.0.0.1</code> dans le conteneur <code>app</code> ?</li>
+<li>On remplace <code>FROM php:8.3-apache</code> par
+<code>FROM php:apache</code>. Quel risque cela fait-il courir à la
+reproductibilité ?</li>
+<li>Pourquoi copier <code>composer.lock</code> avant le reste du code ?
+Observez la durée d’un second <code>docker compose build</code> après
+avoir modifié une vue.</li>
+<li>Citez deux pratiques du <code>Dockerfile</code> qui garantissent que
+deux postes obtiennent le même résultat.</li>
+</ol>
+<h4 id="extensions-1">Extensions</h4>
+<ul>
+<li><strong>Utilisateur non privilégié.</strong> Recherchez pourquoi un
+conteneur qui s’exécute en <code>root</code> est un risque, et ce que
+fait déjà l’image <code>php:apache</code> pour les processus
+Apache.</li>
+<li><strong>Épingler par empreinte.</strong>
+<code>docker images --digests</code> affiche l’empreinte
+<code>sha256</code> d’une image ;
+<code>FROM php:8.3-apache@sha256:…</code> fige l’image au bit près. Quel
+inconvénient pour les correctifs de sécurité ?</li>
+</ul>
+<h4 id="sources">Sources</h4>
+<p>Images officielles vérifiées le 19 octobre 2026 dans la documentation
+Docker : <a href="https://hub.docker.com/_/php">php, variante Apache</a>
+et <a href="https://hub.docker.com/_/mariadb">mariadb</a>. Règles de
+protection vérifiées le 18 octobre 2026 dans la documentation GitHub :
+<a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets">rulesets</a>
+et <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line">résolution
+d’un conflit en ligne de commande</a>.</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="diagnostic-1">Diagnostic</h3>
+<ol type="1">
+<li>Dans le dépôt local : <code>push</code> les publie. 2.
+<code>git fetch</code>. 3. <code>feature/x</code>. 4. Secrets et
+réglages propres au poste. 5. Le propriétaire seulement (<code>6</code>
+= lecture + écriture).</li>
+<li><code>tail -f</code>. 7. Le conteneur est une exécution de l’image.
+8. Démarre les services en arrière-plan.</li>
+</ol>
+<h3 id="exercice-1">Exercice 1</h3>
+<ol type="a">
+<li>Plan (les deux). b. Code (Dev, règle commune). c. Build (Dev,
+Dockerfile ; Ops, base de l’image). d. Test (Dev écrit, la CI exécute).
+e. Release (les deux). f. Deploy (Ops, par le pipeline). g. Operate
+(Ops, configuré par l’orchestrateur). h. Monitor (Ops reçoit, Dev
+corrige).</li>
+</ol>
+<h3 id="exercice-2">Exercice 2</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Défaillance</th>
+<th>Pratique</th>
+<th>Étape</th>
+<th>Indicateur DORA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Copie FTP et migration oubliée</td>
+<td>Déploiement automatisé qui exécute les migrations</td>
+<td>Deploy</td>
+<td>Taux d’échec des changements</td>
+</tr>
+<tr>
+<td>Aucun test avant la mise en ligne</td>
+<td>Tests automatiques bloquants en CI</td>
+<td>Test</td>
+<td>Taux d’échec des changements</td>
+</tr>
+<tr>
+<td>Panne découverte par les utilisateurs</td>
+<td>Contrôle de disponibilité et alerte</td>
+<td>Monitor</td>
+<td>Temps de rétablissement</td>
+</tr>
+<tr>
+<td>Version en ligne introuvable</td>
+<td>Versions étiquetées, images versionnées, retour arrière</td>
+<td>Release</td>
+<td>Temps de rétablissement</td>
+</tr>
+<tr>
+<td>Livraison isolée un vendredi soir</td>
+<td>Petites livraisons fréquentes, en journée, à plusieurs</td>
+<td>Plan / culture</td>
+<td>Fréquence de déploiement</td>
+</tr>
+</tbody>
+</table>
+<p>La question « qui est responsable ? » n’appelle pas un nom : c’est la
+chaîne qui a laissé passer l’erreur. Un bilan d’incident sans recherche
+de coupable cherche ce qu’il faut automatiser.</p>
+<h3 id="exercice-3">Exercice 3</h3>
+<p>Exemple de chaîne : PR ouverte → CI : tests et analyse (auteur
+prévenu) → fusion après revue → construction et publication de l’image
+étiquetée (équipe prévenue en cas d’échec) → déploiement sur le cluster
+avec migrations (retour à la version précédente si le contrôle de santé
+échoue) → surveillance de <code>/api/voyages</code> avec alerte à
+l’équipe. Oubli fréquent : la gestion des secrets du pipeline et le
+retour arrière.</p>
+<h3 id="conflit-du-premier-tour">Conflit du premier tour</h3>
+<p><code>routes/web.php</code> après résolution :</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/voyages&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;index&#39;</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.index&#39;</span>)<span class="ot">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/voyages/create&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;create&#39;</span>])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.create&#39;</span>)<span class="ot">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>Route::post(<span class="st">&#39;/voyages&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;store&#39;</span>])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.store&#39;</span>)<span class="ot">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/voyages/{voyage}/edit&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;edit&#39;</span>])</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.edit&#39;</span>)<span class="ot">;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>Route::put(<span class="st">&#39;/voyages/{voyage}&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;update&#39;</span>])</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.update&#39;</span>)<span class="ot">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>Route::delete(<span class="st">&#39;/voyages/{voyage}&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;destroy&#39;</span>])</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.destroy&#39;</span>)<span class="ot">;</span></span></code></pre></div>
+<p>Ces six routes peuvent se résumer en
+<code>Route::resource(&#39;voyages&#39;, VoyageController::class)-&gt;except(&#39;show&#39;);</code>
+: une simplification à proposer par une PR distincte, pas au milieu
+d’une résolution de conflit.</p>
+<p>Dans <code>VoyageController.php</code>, garder les cinq méthodes.
+Dans <code>index.blade.php</code>, garder le lien « Nouveau voyage », la
+colonne d’actions et <strong>un seul</strong> bloc d’affichage du
+message flash.</p>
+<h3 id="second-tour">Second tour</h3>
+<p>Ligne du tableau après les trois fusions :</p>
+<pre class="blade"><code>&lt;td&gt;{{ $voyage-&gt;depart-&gt;format(&#39;d/m/Y&#39;) }}&lt;/td&gt;
+&lt;td&gt;{{ number_format($voyage-&gt;prix, 2, &#39;,&#39;, &#39; &#39;) }} €&lt;/td&gt;
+&lt;td&gt;{{ $voyage-&gt;places }}&lt;/td&gt;</code></pre>
+<p>La boucle devient <code>@forelse ($voyages as $voyage)</code>, suivie
+de <code>@empty</code> et d’une ligne « Aucun voyage prévu » avant
+<code>@endforelse</code> ; l’en-tête reçoit une colonne « Places ».</p>
+<h3 id="extension-annuler-une-fusion">Extension : annuler une
+fusion</h3>
+<p><code>git revert</code> crée un nouveau commit qui défait la fusion :
+l’histoire de <code>main</code> reste intacte pour toute l’équipe et la
+règle de protection est respectée. Réécrire l’histoire
+(<code>reset</code> puis <code>push --force</code>) est bloqué par la
+règle et désynchroniserait les clones des autres.</p>
+<h3 id="partie-3-questions">Partie 3 — Questions</h3>
+<ol type="1">
+<li>Après <code>down</code> puis <code>up</code>, les voyages sont
+toujours là : les conteneurs sont recréés, mais la base écrit dans le
+volume nommé <code>db_data</code>, qui n’est pas supprimé.
+<code>down -v</code> supprime le volume : la base repart vide, il faut
+relancer la migration.</li>
+<li>Dans le conteneur, <code>127.0.0.1</code> désigne le conteneur
+<code>app</code> lui-même, où aucune base n’écoute. Compose crée un
+réseau où chaque service est résolu par son nom : <code>db</code>
+désigne le conteneur MariaDB.</li>
+<li><code>php:apache</code> suit la dernière version de PHP publiée :
+une construction de demain peut embarquer une version plus récente de
+PHP et casser l’application, alors que le code n’a pas changé. Deux
+postes qui construisent à des dates différentes n’obtiennent plus la
+même image.</li>
+<li>Chaque instruction produit une couche, réutilisée si ses entrées
+n’ont pas changé. Tant que <code>composer.json</code> et
+<code>composer.lock</code> sont identiques, la couche
+<code>composer install</code> vient du cache : modifier une vue ne
+relance que <code>COPY . .</code> et la suite, en quelques
+secondes.</li>
+<li>Par exemple : une image de base à version figée
+(<code>php:8.3-apache</code>, jamais <code>latest</code>) ; des
+dépendances installées depuis <code>composer.lock</code> commité ; un
+<code>.dockerignore</code> qui exclut <code>vendor</code> et
+<code>.env</code>, pour que rien du poste n’entre dans l’image.</li>
+</ol>
+</details>

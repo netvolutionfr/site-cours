@@ -1782,6 +1782,218 @@
    ]
   },
   {
+   "slug": "mastere/devops/SQ01-p03-docker-compose",
+   "matiere": "mastere",
+   "classe": "devops",
+   "rubrique": "",
+   "sequence": "mastere/devops/SQ01",
+   "titre": "Conteneuriser l'application",
+   "sousTitre": "Un clone neuf, une commande",
+   "nature": "Diaporama",
+   "date": "2026-10-19",
+   "pdf": "/mastere/devops/SQ01-p03-docker-compose.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "un-clone-neuf-une-commande-le-même-résultat-partout",
+     "text": "Un clone neuf, une commande, le même résultat partout"
+    }
+   ]
+  },
+  {
+   "slug": "mastere/devops/SQ01-support-eleve",
+   "matiere": "mastere",
+   "classe": "devops",
+   "rubrique": "",
+   "sequence": "mastere/devops/SQ01",
+   "titre": "Culture, collaboration Git et conteneurs",
+   "sousTitre": "Réunir le travail d'une équipe sans casser ce qui marche",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/mastere/devops/SQ01-support-eleve.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "culture-devops-et-diagnostic",
+     "text": "1. Culture DevOps et diagnostic"
+    },
+    {
+     "depth": 4,
+     "slug": "le-cycle-rappel-de-la-présentation-du-module",
+     "text": "Le cycle, rappel de la présentation du module"
+    },
+    {
+     "depth": 4,
+     "slug": "pourquoi-devops",
+     "text": "Pourquoi DevOps"
+    },
+    {
+     "depth": 4,
+     "slug": "trois-niveaux-dautomatisation",
+     "text": "Trois niveaux d’automatisation"
+    },
+    {
+     "depth": 4,
+     "slug": "mesurer-les-quatre-indicateurs-dora",
+     "text": "Mesurer : les quatre indicateurs DORA"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices",
+     "text": "Exercices"
+    },
+    {
+     "depth": 4,
+     "slug": "diagnostic",
+     "text": "Diagnostic"
+    },
+    {
+     "depth": 3,
+     "slug": "collaborer-avec-git-et-github",
+     "text": "2. Collaborer avec Git et GitHub"
+    },
+    {
+     "depth": 4,
+     "slug": "le-problème",
+     "text": "Le problème"
+    },
+    {
+     "depth": 4,
+     "slug": "le-github-flow",
+     "text": "Le GitHub flow"
+    },
+    {
+     "depth": 4,
+     "slug": "protéger-main",
+     "text": "Protéger main"
+    },
+    {
+     "depth": 4,
+     "slug": "ouvrir-sa-pull-request",
+     "text": "Ouvrir sa pull request"
+    },
+    {
+     "depth": 4,
+     "slug": "relire-la-pull-request-dun-autre",
+     "text": "Relire la pull request d’un autre"
+    },
+    {
+     "depth": 4,
+     "slug": "fusionner-puis-résoudre-un-conflit",
+     "text": "Fusionner, puis résoudre un conflit"
+    },
+    {
+     "depth": 4,
+     "slug": "second-tour-de-lissue-à-la-fusion",
+     "text": "Second tour : de l’issue à la fusion"
+    },
+    {
+     "depth": 4,
+     "slug": "restitution",
+     "text": "Restitution"
+    },
+    {
+     "depth": 4,
+     "slug": "extensions",
+     "text": "Extensions"
+    },
+    {
+     "depth": 3,
+     "slug": "conteneuriser-lapplication",
+     "text": "3. Conteneuriser l’application"
+    },
+    {
+     "depth": 4,
+     "slug": "le-problème-1",
+     "text": "Le problème"
+    },
+    {
+     "depth": 4,
+     "slug": "vérifier-linstallation",
+     "text": "Vérifier l’installation"
+    },
+    {
+     "depth": 4,
+     "slug": "le-dockerfile",
+     "text": "Le Dockerfile"
+    },
+    {
+     "depth": 4,
+     "slug": "compose.yaml",
+     "text": "compose.yaml"
+    },
+    {
+     "depth": 4,
+     "slug": "démarrer",
+     "text": "Démarrer"
+    },
+    {
+     "depth": 4,
+     "slug": "à-trois-conteneuriser-par-pull-request",
+     "text": "À trois : conteneuriser par pull request"
+    },
+    {
+     "depth": 4,
+     "slug": "questions",
+     "text": "Questions"
+    },
+    {
+     "depth": 4,
+     "slug": "extensions-1",
+     "text": "Extensions"
+    },
+    {
+     "depth": 4,
+     "slug": "sources",
+     "text": "Sources"
+    },
+    {
+     "depth": 3,
+     "slug": "diagnostic-1",
+     "text": "Diagnostic"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-1",
+     "text": "Exercice 1"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2",
+     "text": "Exercice 2"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3",
+     "text": "Exercice 3"
+    },
+    {
+     "depth": 3,
+     "slug": "conflit-du-premier-tour",
+     "text": "Conflit du premier tour"
+    },
+    {
+     "depth": 3,
+     "slug": "second-tour",
+     "text": "Second tour"
+    },
+    {
+     "depth": 3,
+     "slug": "extension-annuler-une-fusion",
+     "text": "Extension : annuler une fusion"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-questions",
+     "text": "Partie 3 — Questions"
+    }
+   ]
+  },
+  {
    "slug": "mastere/laravel/SQ01-p00-presentation-installation",
    "matiere": "mastere",
    "classe": "laravel",
@@ -1864,6 +2076,242 @@
      "text": "Concevoir, exposer, valider"
     }
    ]
+  },
+  {
+   "slug": "mastere/laravel/SQ01-support-eleve",
+   "matiere": "mastere",
+   "classe": "laravel",
+   "rubrique": "",
+   "sequence": "mastere/laravel/SQ01",
+   "titre": "Fondamentaux MVC, API et formulaires",
+   "sousTitre": "Des produits aux voyages : modèle, API, validation et formulaires",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/mastere/laravel/SQ01-support-eleve.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "construire-le-stockage-des-produits",
+     "text": "1. Construire le stockage des produits"
+    },
+    {
+     "depth": 4,
+     "slug": "créer-le-modèle-et-sa-migration",
+     "text": "Créer le modèle et sa migration"
+    },
+    {
+     "depth": 4,
+     "slug": "définir-les-colonnes-dans-la-migration",
+     "text": "Définir les colonnes dans la migration"
+    },
+    {
+     "depth": 4,
+     "slug": "exécuter-la-migration",
+     "text": "Exécuter la migration"
+    },
+    {
+     "depth": 3,
+     "slug": "manipuler-les-données-avec-eloquent",
+     "text": "2. Manipuler les données avec Eloquent"
+    },
+    {
+     "depth": 4,
+     "slug": "autoriser-les-champs-de-linsertion-groupée",
+     "text": "Autoriser les champs de l’insertion groupée"
+    },
+    {
+     "depth": 4,
+     "slug": "insérer-un-premier-produit-dans-tinker",
+     "text": "Insérer un premier produit dans Tinker"
+    },
+    {
+     "depth": 4,
+     "slug": "lire-et-filtrer",
+     "text": "Lire et filtrer"
+    },
+    {
+     "depth": 3,
+     "slug": "relier-une-url-aux-produits-affichés",
+     "text": "3. Relier une URL aux produits affichés"
+    },
+    {
+     "depth": 4,
+     "slug": "créer-le-contrôleur",
+     "text": "Créer le contrôleur"
+    },
+    {
+     "depth": 4,
+     "slug": "déclarer-la-route",
+     "text": "Déclarer la route"
+    },
+    {
+     "depth": 4,
+     "slug": "créer-la-vue-blade",
+     "text": "Créer la vue Blade"
+    },
+    {
+     "depth": 4,
+     "slug": "ouvrir-la-page-et-expliquer-son-fonctionnement",
+     "text": "Ouvrir la page et expliquer son fonctionnement"
+    },
+    {
+     "depth": 3,
+     "slug": "vérifier-et-reprendre-la-séance",
+     "text": "Vérifier et reprendre la séance"
+    },
+    {
+     "depth": 4,
+     "slug": "localiser-une-erreur",
+     "text": "Localiser une erreur"
+    },
+    {
+     "depth": 4,
+     "slug": "trois-exercices-de-reprise",
+     "text": "Trois exercices de reprise"
+    },
+    {
+     "depth": 4,
+     "slug": "sources",
+     "text": "Sources"
+    },
+    {
+     "depth": 3,
+     "slug": "concevoir-le-voyage-et-lexposer-en-api",
+     "text": "4. Concevoir le voyage et l’exposer en API"
+    },
+    {
+     "depth": 4,
+     "slug": "le-dépôt-commun",
+     "text": "Le dépôt commun"
+    },
+    {
+     "depth": 4,
+     "slug": "concevoir-le-modèle-avant-de-coder",
+     "text": "Concevoir le modèle avant de coder"
+    },
+    {
+     "depth": 4,
+     "slug": "programmer-à-trois-une-personne-au-clavier",
+     "text": "Programmer à trois : une personne au clavier"
+    },
+    {
+     "depth": 3,
+     "slug": "valider-les-données-avec-une-form-request",
+     "text": "5. Valider les données avec une Form Request"
+    },
+    {
+     "depth": 4,
+     "slug": "la-faille",
+     "text": "La faille"
+    },
+    {
+     "depth": 4,
+     "slug": "écrire-les-règles-une-seule-fois",
+     "text": "Écrire les règles une seule fois"
+    },
+    {
+     "depth": 4,
+     "slug": "deux-clients-deux-réponses",
+     "text": "Deux clients, deux réponses"
+    },
+    {
+     "depth": 4,
+     "slug": "les-trois-parts",
+     "text": "Les trois parts"
+    },
+    {
+     "depth": 4,
+     "slug": "part-api-une-api-qui-explique-ses-refus",
+     "text": "Part « API » : une API qui explique ses refus"
+    },
+    {
+     "depth": 4,
+     "slug": "extension",
+     "text": "Extension"
+    },
+    {
+     "depth": 3,
+     "slug": "créer-et-modifier-un-voyage-par-formulaire",
+     "text": "6. Créer et modifier un voyage par formulaire"
+    },
+    {
+     "depth": 4,
+     "slug": "les-quatre-mécanismes-dun-formulaire-laravel",
+     "text": "Les quatre mécanismes d’un formulaire Laravel"
+    },
+    {
+     "depth": 4,
+     "slug": "part-création",
+     "text": "Part « Création »"
+    },
+    {
+     "depth": 4,
+     "slug": "part-modification",
+     "text": "Part « Modification »"
+    },
+    {
+     "depth": 4,
+     "slug": "sources-et-sinks-où-naissent-les-failles-triviales",
+     "text": "Sources et sinks : où naissent les failles triviales"
+    },
+    {
+     "depth": 4,
+     "slug": "exercice-commun-chasser-les-sinks",
+     "text": "Exercice commun : chasser les sinks"
+    },
+    {
+     "depth": 4,
+     "slug": "restitution-de-léquipe",
+     "text": "Restitution de l’équipe"
+    },
+    {
+     "depth": 4,
+     "slug": "sources-1",
+     "text": "Sources"
+    },
+    {
+     "depth": 3,
+     "slug": "expliquer",
+     "text": "1. Expliquer"
+    },
+    {
+     "depth": 3,
+     "slug": "ajouter",
+     "text": "2. Ajouter"
+    },
+    {
+     "depth": 3,
+     "slug": "filtrer",
+     "text": "3. Filtrer"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-4-concevoir-le-voyage",
+     "text": "Partie 4 — Concevoir le voyage"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-5-part-api",
+     "text": "Partie 5 — Part « API »"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-6-part-création",
+     "text": "Partie 6 — Part « Création »"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-6-part-modification",
+     "text": "Partie 6 — Part « Modification »"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-6-chasser-les-sinks",
+     "text": "Partie 6 — Chasser les sinks"
+    }
+   ]
   }
  ],
  "sequences": [
@@ -1878,8 +2326,10 @@
    "debut": "2026-10-19",
    "fin": "2026-10-19",
    "supports": [
+    "mastere/devops/SQ01-support-eleve",
     "mastere/devops/SQ01-p01-culture-devops-cycle",
-    "mastere/devops/SQ01-p02-github-flow-revue-conflits"
+    "mastere/devops/SQ01-p02-github-flow-revue-conflits",
+    "mastere/devops/SQ01-p03-docker-compose"
    ]
   },
   {
@@ -1893,6 +2343,7 @@
    "debut": "2026-10-19",
    "fin": "2026-10-19",
    "supports": [
+    "mastere/laravel/SQ01-support-eleve",
     "mastere/laravel/SQ01-p05-validation-formulaires",
     "mastere/laravel/SQ01-p00-presentation-installation",
     "mastere/laravel/SQ01-p01-p02-modele-migration-eloquent",

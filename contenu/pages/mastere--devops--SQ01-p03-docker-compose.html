@@ -1,0 +1,339 @@
+<section id="conteneuriser-lapplication" class="slide title">
+<h2>Conteneuriser l’application</h2>
+<h3 id="un-clone-neuf-une-commande-le-même-résultat-partout">Un clone
+neuf, une commande, le même résultat partout</h3>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Distinguer image, conteneur, registre et volume</li>
+<li>Écrire le <code>Dockerfile</code> de <code>voyages-scolaires</code>
+et expliquer chaque instruction</li>
+<li>Démarrer l’application et sa base avec Docker Compose</li>
+<li>Expliquer ce qui rend un démarrage
+<strong>reproductible</strong></li>
+</ul>
+<p><strong>Prérequis :</strong> Docker Desktop (ou Docker Engine)
+installé ; <code>main</code> à jour.</p>
+</section>
+<section id="le-problème" class="slide warning" data-layout="single">
+<h2>Le problème</h2>
+<p>Le clone neuf de tout à l’heure a demandé une dizaine de
+commandes.</p>
+<p>Il fallait <strong>la bonne version de PHP</strong>, les bonnes
+extensions, <code>composer install</code>, un <code>.env</code>, une
+clé, une base, les migrations…</p>
+<p><strong>Comment garantir que l’appli démarre pareil sur chaque poste,
+et en production ?</strong></p>
+</section>
+<section id="machine-virtuelle-ou-conteneur" class="slide compare" data-layout="single">
+<h2>Machine virtuelle ou conteneur ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Machine virtuelle</th>
+<th>Conteneur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Système</td>
+<td>Un OS invité complet</td>
+<td>Partage le noyau de l’hôte</td>
+</tr>
+<tr>
+<td>Démarrage</td>
+<td>Minutes</td>
+<td>Secondes</td>
+</tr>
+<tr>
+<td>Taille</td>
+<td>Plusieurs Go</td>
+<td>Quelques dizaines à centaines de Mo</td>
+</tr>
+<tr>
+<td>Isolation</td>
+<td>Forte</td>
+<td>Processus isolés</td>
+</tr>
+<tr>
+<td>Usage typique</td>
+<td>Héberger des systèmes</td>
+<td>Livrer une application et ses dépendances</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="quatre-mots-à-ne-pas-confondre" class="slide compare" data-layout="single">
+<h2>Quatre mots à ne pas confondre</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Terme</th>
+<th>Ce que c’est</th>
+<th>Analogie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Image</strong></td>
+<td>Modèle en lecture seule : système, dépendances, code</td>
+<td>Une classe</td>
+</tr>
+<tr>
+<td><strong>Conteneur</strong></td>
+<td>Une instance de l’image qui s’exécute</td>
+<td>Un objet</td>
+</tr>
+<tr>
+<td><strong>Registre</strong></td>
+<td>Le dépôt où l’on publie et récupère les images</td>
+<td>Packagist, pour les images</td>
+</tr>
+<tr>
+<td><strong>Volume</strong></td>
+<td>Un stockage qui survit à la suppression du conteneur</td>
+<td>Le disque de la base</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="premiers-gestes" class="slide terminal">
+<h2>Premiers gestes</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> hello-world   <span class="co"># télécharger, lancer, supprimer</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> images                 <span class="co"># les images présentes</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps <span class="at">-a</span>                  <span class="co"># les conteneurs, même arrêtés</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> logs <span class="op">&lt;</span>conteneur<span class="op">&gt;</span>       <span class="co"># ce qu&#39;il a écrit</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>conteneur<span class="op">&gt;</span> sh  <span class="co"># entrer dedans</span></span></code></pre></div>
+<p>Un conteneur arrêté n’est pas supprimé : <code>--rm</code> le
+supprime en sortant.</p>
+</section>
+<section id="la-pile-de-voyages-scolaires" class="slide full-image">
+<h2>La pile de Voyages scolaires</h2>
+<figure>
+<img role="img" aria-label="Le dépôt fournit Dockerfile et compose.yaml ; l’image de l’application est construite à partir de php:8.3-apache ; Compose lance les services app et db sur un réseau interne, la base écrit dans le volume db_data, le .env est injecté au démarrage." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDYwMCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNjAwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZ2IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjNkI1QkI1Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZyIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjRDk1QzU5Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjNUM2ODdDIi8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjExMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjRkZGRkZGIi8+CgogIDwhLS0gUmVnaXN0cmUgLS0+CiAgPHJlY3QgeD0iMzAwIiB5PSIyMCIgd2lkdGg9IjMzMCIgaGVpZ2h0PSI2NCIgcng9IjEwIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjQ2NSIgeT0iNDQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNkI1QkI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5SZWdpc3RyZSDCtyBEb2NrZXIgSHViPC90ZXh0PgogIDx0ZXh0IHg9IjQ2NSIgeT0iNjgiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5waHA6OC4zLWFwYWNoZSDCtyBjb21wb3NlcjoyIMK3IG1hcmlhZGI6MTEuNDwvdGV4dD4KCiAgPCEtLSBEw6lww7R0IC0tPgogIDxyZWN0IHg9IjIwIiB5PSIxMjAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMjUwIiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjIwIiB5PSIxMjAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzAiIHJ4PSI4IiBmaWxsPSIjMTcyMDMzIi8+CiAgPHJlY3QgeD0iMjAiIHk9IjE0MCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzE3MjAzMyIvPgogIDx0ZXh0IHg9IjEzNSIgeT0iMTQxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RMOpcMO0dCB2b3lhZ2VzLXNjb2xhaXJlczwvdGV4dD4KICA8ZyBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPgogICAgPHRleHQgeD0iMzYiIHk9IjE3OCI+YXBwLyByb3V0ZXMvIOKApjwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyMDIiPmNvbXBvc2VyLmxvY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzNiIgeT0iMjI2IiBmb250LXdlaWdodD0iNzAwIj5Eb2NrZXJmaWxlPC90ZXh0PgogICAgPHRleHQgeD0iMzYiIHk9IjI1MCIgZm9udC13ZWlnaHQ9IjcwMCI+LmRvY2tlcmlnbm9yZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyNzQiIGZvbnQtd2VpZ2h0PSI3MDAiPmNvbXBvc2UueWFtbDwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyOTgiPi5lbnYuZXhhbXBsZTwvdGV4dD4KICA8L2c+CiAgPGxpbmUgeDE9IjMyIiB5MT0iMzE0IiB4Mj0iMjM4IiB5Mj0iMzE0IiBzdHJva2U9IiNENURBRTMiLz4KICA8dGV4dCB4PSIzNiIgeT0iMzM4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNEOTVDNTkiPi5lbnY8L3RleHQ+CiAgPHRleHQgeD0iODAiIHk9IjMzOCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iI0Q5NUM1OSI+amFtYWlzIGNvbW1pdMOpPC90ZXh0PgogIDx0ZXh0IHg9IjM2IiB5PSIzNTgiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIj5zZWNyZXRzLCBwcm9wcmUgw6AgY2hhcXVlIHBvc3RlPC90ZXh0PgoKICA8IS0tIEltYWdlIC0tPgogIDx0ZXh0IHg9IjQxNSIgeT0iMTQyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SW1hZ2Ugdm95YWdlcy1hcHA8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8cmVjdCB4PSIzMDAiIHk9IjE1MiIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIzOCIgcng9IjQiIGZpbGw9IiNFRUYyRkIiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDx0ZXh0IHg9IjMxMiIgeT0iMTc2Ij5jb2RlIGRlIGwnYXBwbGljYXRpb248L3RleHQ+CiAgICA8cmVjdCB4PSIzMDAiIHk9IjE5NCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIzOCIgcng9IjQiIGZpbGw9IiNFRUYyRkIiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDx0ZXh0IHg9IjMxMiIgeT0iMjE4Ij52ZW5kb3IvIGZpZ8OpIHBhciBjb21wb3Nlci5sb2NrPC90ZXh0PgogICAgPHJlY3QgeD0iMzAwIiB5PSIyMzYiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzgiIHJ4PSI0IiBmaWxsPSIjRUVGMkZCIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8dGV4dCB4PSIzMTIiIHk9IjI2MCI+RG9jdW1lbnRSb290IOKGkiBwdWJsaWMvPC90ZXh0PgogICAgPHJlY3QgeD0iMzAwIiB5PSIyNzgiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzgiIHJ4PSI0IiBmaWxsPSIjRUVGMkZCIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8dGV4dCB4PSIzMTIiIHk9IjMwMiI+ZXh0ZW5zaW9ucyBwZG9fbXlzcWwsIHppcDwvdGV4dD4KICAgIDxyZWN0IHg9IjMwMCIgeT0iMzIwIiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjM4IiByeD0iNCIgZmlsbD0iI0RDRTVGOCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHRleHQgeD0iMzEyIiB5PSIzNDQiIGZvbnQtd2VpZ2h0PSI3MDAiPkZST00gcGhwOjguMy1hcGFjaGU8L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9IjQxNSIgeT0iMzc2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzVDNjg3QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Y291Y2hlcyBlbXBpbMOpZXMsIGVuIGxlY3R1cmUgc2V1bGU8L3RleHQ+CgogIDwhLS0gLmVudiBpbmplY3TDqSAtLT4KICA8cmVjdCB4PSIzMDAiIHk9IjM5NiIgd2lkdGg9IjIzMCIgaGVpZ2h0PSI0NCIgcng9IjgiIGZpbGw9IiNGREVDRUMiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI2IDQiLz4KICA8dGV4dCB4PSI0MTUiIHk9IjQxNSIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiNEOTVDNTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmVudl9maWxlOiAuZW52PC90ZXh0PgogIDx0ZXh0IHg9IjQxNSIgeT0iNDMyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aW5qZWN0w6kgYXUgZMOpbWFycmFnZSwgcGFzIGRhbnMgbCdpbWFnZTwvdGV4dD4KCiAgPCEtLSBIw7R0ZSAtLT4KICA8cmVjdCB4PSI1ODAiIHk9IjExMCIgd2lkdGg9IjUwMCIgaGVpZ2h0PSIzODAiIHJ4PSIxMiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSI1OTYiIHk9IjEzNCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiPlBvc3RlIG91IHNlcnZldXIgwrcgZG9ja2VyIGNvbXBvc2UgdXAgLWQ8L3RleHQ+CiAgPHJlY3QgeD0iNjAwIiB5PSIxNjAiIHdpZHRoPSI0NjAiIGhlaWdodD0iMTk2IiByeD0iMTAiIGZpbGw9IiNGN0Y4RkEiIHN0cm9rZT0iIzVDNjg3QyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPgogIDx0ZXh0IHg9IjYxNCIgeT0iMTgwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiPnLDqXNlYXUgdm95YWdlcy1zY29sYWlyZXNfZGVmYXVsdDwvdGV4dD4KCiAgPCEtLSBDb250ZW5ldXIgYXBwIC0tPgogIDxyZWN0IHg9IjYyMCIgeT0iMTk2IiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjE0MCIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8cmVjdCB4PSI2MjAiIHk9IjE5NiIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIyOCIgcng9IjgiIGZpbGw9IiMzNTY4RDQiLz4KICA8cmVjdCB4PSI2MjAiIHk9IjIxNCIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjcxNSIgeT0iMjE2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2VydmljZSBhcHA8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI2MzIiIHk9IjI0NiI+QXBhY2hlICsgUEhQIDguMywgcG9ydCA4MDwvdGV4dD4KICAgIDx0ZXh0IHg9IjYzMiIgeT0iMjY4Ij5MYXJhdmVsIGxpdCBsJ2Vudmlyb25uZW1lbnQ8L3RleHQ+CiAgPC9nPgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI2MzIiIHk9IjI5MCI+REJfSE9TVD1kYjwvdGV4dD4KICAgIDx0ZXh0IHg9IjYzMiIgeT0iMzA4Ij5EQl9DT05ORUNUSU9OPW1hcmlhZGI8L3RleHQ+CiAgICA8dGV4dCB4PSI2MzIiIHk9IjMyNiI+QVBQX0tFWT3igKY8L3RleHQ+CiAgPC9nPgoKICA8IS0tIENvbnRlbmV1ciBkYiAtLT4KICA8cmVjdCB4PSI4NTAiIHk9IjE5NiIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIxNDAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMi41Ii8+CiAgPHJlY3QgeD0iODUwIiB5PSIxOTYiIHdpZHRoPSIxOTAiIGhlaWdodD0iMjgiIHJ4PSI4IiBmaWxsPSIjNkI1QkI1Ii8+CiAgPHJlY3QgeD0iODUwIiB5PSIyMTQiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTAiIGZpbGw9IiM2QjVCQjUiLz4KICA8dGV4dCB4PSI5NDUiIHk9IjIxNiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNlcnZpY2UgZGI8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjI0NiI+TWFyaWFEQiAxMS40LCBwb3J0IDMzMDY8L3RleHQ+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjI2OCI+bm9uIGV4cG9zw6kgw6AgbCdleHTDqXJpZXVyPC90ZXh0PgogICAgPHRleHQgeD0iODYyIiB5PSIyOTAiPmhlYWx0aGNoZWNrIDogcHLDqnRlID88L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9Ijg2MiIgeT0iMzE2IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxNzIwMzMiPk1BUklBREJfREFUQUJBU0U94oCmPC90ZXh0PgoKICA8IS0tIFZvbHVtZSAtLT4KICA8cGF0aCBkPSJNODgwLDQwNCBROTQ1LDM5MCAxMDEwLDQwNCBMMTAxMCw0NTYgUTk0NSw0NzAgODgwLDQ1NiBaIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxwYXRoIGQ9Ik04ODAsNDA0IFE5NDUsNDE4IDEwMTAsNDA0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijk0NSIgeT0iNDM4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmRiX2RhdGE8L3RleHQ+CiAgPHRleHQgeD0iOTQ1IiB5PSI0NTYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnZvbHVtZSBub21tw6k8L3RleHQ+CgogIDwhLS0gTmF2aWdhdGV1ciAtLT4KICA8cmVjdCB4PSIyMCIgeT0iNDIwIiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjU2IiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSIxMzUiIHk9IjQ0MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5hdmlnYXRldXI8L3RleHQ+CiAgPHRleHQgeD0iMTM1IiB5PSI0NjQiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5sb2NhbGhvc3Q6ODAwMC92b3lhZ2VzPC90ZXh0PgoKICA8IS0tIEZsw6hjaGVzIC0tPgogIDxsaW5lIHgxPSIyNTAiIHkxPSIyNTAiIHgyPSIyOTYiIHkyPSIyNTAiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDx0ZXh0IHg9IjI3MyIgeT0iMjQwIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YnVpbGQ8L3RleHQ+CiAgPGxpbmUgeDE9IjQxNSIgeTE9Ijg0IiB4Mj0iNDE1IiB5Mj0iMTI0IiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Z2KSIvPgogIDx0ZXh0IHg9IjQyNSIgeT0iMTA4IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSI+cHVsbDwvdGV4dD4KICA8cGF0aCBkPSJNNjMwLDUyIEw5NDUsNTIgTDk0NSwxOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjZnYpIi8+CiAgPHRleHQgeD0iNzkwIiB5PSI0NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM2QjVCQjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnB1bGwgbWFyaWFkYjoxMS40PC90ZXh0PgogIDxsaW5lIHgxPSI1MzAiIHkxPSIyNTAiIHgyPSI2MTYiIHkyPSIyNTAiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDx0ZXh0IHg9IjU2MCIgeT0iMjQwIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cnVuPC90ZXh0PgogIDxsaW5lIHgxPSI4MTAiIHkxPSIyNzYiIHgyPSI4NDYiIHkyPSIyNzYiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjZmcpIi8+CiAgPHRleHQgeD0iODI4IiB5PSIyNjYiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZGI8L3RleHQ+CiAgPGxpbmUgeDE9Ijk0NSIgeTE9IjMzNiIgeDI9Ijk0NSIgeTI9IjM5NiIgc3Ryb2tlPSIjNUM2ODdDIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNCIgbWFya2VyLWVuZD0idXJsKCNmZykiLz4KICA8dGV4dCB4PSI5NTUiIHk9IjM3OCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiM1QzY4N0MiPi92YXIvbGliL215c3FsPC90ZXh0PgogIDxwYXRoIGQ9Ik01MzAsNDE4IEw3MDAsNDE4IEw3MDAsMzQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtZGFzaGFycmF5PSI2IDQiIG1hcmtlci1lbmQ9InVybCgjZnIpIi8+CiAgPHBhdGggZD0iTTI1MCw0NjIgTDc0MCw0NjIgTDc0MCwzNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDx0ZXh0IHg9Ijc5MCIgeT0iNDU4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIuNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ODAwMCDihpIgODA8L3RleHQ+CgogIDwhLS0gU3ludGjDqHNlIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI1MDgiIHdpZHRoPSIxMDYwIiBoZWlnaHQ9IjcyIiByeD0iMTAiIGZpbGw9IiNFOEY0RUMiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSI1NTAiIHk9IjUzNyIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlID0gcmVjZXR0ZSBmaWfDqWUgwrcgQ29udGVuZXVyID0gaW5zdGFuY2UgamV0YWJsZSDCtyBWb2x1bWUgPSBkb25uw6llcyBxdWkgc3Vydml2ZW50PC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTYyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MZSBjb2RlIGV0IHNlcyBkw6lwZW5kYW5jZXMgdm95YWdlbnQgZGFucyBsJ2ltYWdlIDsgbGEgY29uZmlndXJhdGlvbiBldCBsZXMgc2VjcmV0cyBhcnJpdmVudCBwYXIgbCdlbnZpcm9ubmVtZW50LjwvdGV4dD4KPC9zdmc+Cg==" alt="Le dépôt fournit Dockerfile et compose.yaml ; l’image de l’application est construite à partir de php:8.3-apache ; Compose lance les services app et db sur un réseau interne, la base écrit dans le volume db_data, le .env est injecté au démarrage." />
+<figcaption aria-hidden="true">Le dépôt fournit Dockerfile et
+compose.yaml ; l’image de l’application est construite à partir de
+php:8.3-apache ; Compose lance les services app et db sur un réseau
+interne, la base écrit dans le volume db_data, le .env est injecté au
+démarrage.</figcaption>
+</figure>
+</section>
+<section id="le-dockerfile-12-le-système" class="slide code">
+<h2>Le Dockerfile, 1/2 : le système</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> php:8.3-apache</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> <span class="at">--no-install-recommends</span> <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>       git unzip libzip-dev <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">docker-php-ext-install</span> pdo_mysql zip <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">a2enmod</span> rewrite <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="fu">rm</span> <span class="at">-rf</span> /var/lib/apt/lists/<span class="pp">*</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> APACHE_DOCUMENT_ROOT=/var/www/html/public</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">sed</span> <span class="at">-ri</span> <span class="at">-e</span> <span class="st">&#39;s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g&#39;</span> <span class="dt">\</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    /etc/apache2/sites-available/<span class="pp">*</span>.conf</span></code></pre></div>
+<p>Une version de PHP <strong>écrite</strong>, plus jamais « celle
+installée sur le poste ».</p>
+</section>
+<section id="le-dockerfile-22-lapplication" class="slide code">
+<h2>Le Dockerfile, 2/2 : l’application</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--from=composer:2</span> /usr/bin/composer /usr/bin/composer</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /var/www/html</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> composer.json composer.lock ./</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">composer</span> install <span class="at">--no-dev</span> <span class="at">--no-scripts</span> <span class="at">--no-autoloader</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">composer</span> dump-autoload <span class="at">--optimize</span> <span class="dt">\</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="fu">chown</span> <span class="at">-R</span> www-data:www-data storage bootstrap/cache</span></code></pre></div>
+<p><code>composer.lock</code> d’abord : tant qu’il ne change pas, Docker
+<strong>réutilise</strong> la couche <code>vendor/</code>.</p>
+</section>
+<section id="ce-qui-nentre-pas-dans-limage" class="slide code">
+<h2>Ce qui n’entre pas dans l’image</h2>
+<pre class="text"><code># .dockerignore
+.git
+.env
+vendor
+node_modules
+database/*.sqlite</code></pre>
+<ul>
+<li><code>.env</code> : les secrets n’ont rien à faire dans une image
+publiée</li>
+<li><code>vendor</code> : reconstruit <strong>dans</strong> l’image,
+depuis <code>composer.lock</code></li>
+<li>Moins de fichiers envoyés, construction plus rapide</li>
+</ul>
+</section>
+<section id="compose.yaml-lapplication" class="slide code">
+<h2>compose.yaml : l’application</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;8000:80&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env_file</span><span class="kw">:</span><span class="at"> .env</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DB_CONNECTION</span><span class="kw">:</span><span class="at"> mariadb</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DB_HOST</span><span class="kw">:</span><span class="at"> db</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">condition</span><span class="kw">:</span><span class="at"> service_healthy</span></span></code></pre></div>
+<p><code>db</code> est le <strong>nom du service</strong> : Compose le
+résout sur le réseau interne.</p>
+</section>
+<section id="compose.yaml-la-base" class="slide code">
+<h2>compose.yaml : la base</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mariadb:11.4</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_DATABASE</span><span class="kw">:</span><span class="at"> ${DB_DATABASE}</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_USER</span><span class="kw">:</span><span class="at"> ${DB_USERNAME}</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_PASSWORD</span><span class="kw">:</span><span class="at"> ${DB_PASSWORD}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MARIADB_RANDOM_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;1&quot;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> db_data:/var/lib/mysql</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">healthcheck</span><span class="kw">:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">test</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">CMD</span><span class="kw">,</span><span class="at"> healthcheck.sh</span><span class="kw">,</span><span class="at"> --connect</span><span class="kw">,</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">             --innodb_initialized</span><span class="kw">]</span></span></code></pre></div>
+<p>En fin de fichier : <code>volumes: { db_data: }</code>.</p>
+</section>
+<section id="la-configuration-vient-de-lenvironnement" class="slide concept" data-layout="single">
+<h2>La configuration vient de l’environnement</h2>
+<ul>
+<li>Le <strong>même</strong> <code>.env</code> sert à Laravel et à
+Compose (<code>${DB_DATABASE}</code>)</li>
+<li>Une variable d’environnement <strong>l’emporte</strong> sur le
+fichier <code>.env</code> lu par Laravel</li>
+<li><code>.env.example</code> est commité, sans secrets ;
+<code>.env</code> reste sur chaque poste</li>
+<li>La base n’est pas exposée : seul <code>app</code> l’atteint, par le
+réseau interne</li>
+</ul>
+<blockquote>
+<p>Une image, plusieurs environnements : seule la configuration
+change.</p>
+</blockquote>
+</section>
+<section id="démarrer-la-pile" class="slide terminal">
+<h2>Démarrer la pile</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span> <span class="at">--build</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose ps</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose exec app php artisan migrate <span class="at">--seed</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span> app</span></code></pre></div>
+<p>Ouvrir <code>http://localhost:8000/voyages</code>, puis
+<code>/api/voyages</code>.</p>
+<p><code>docker compose down</code> arrête tout ; <code>down -v</code>
+supprime <strong>aussi</strong> le volume, donc les données.</p>
+</section>
+<section id="pourquoi-cest-reproductible" class="slide concept" data-layout="single">
+<h2>Pourquoi c’est reproductible</h2>
+<ul>
+<li><strong>Versions figées</strong> : <code>php:8.3-apache</code>,
+<code>mariadb:11.4</code>, jamais <code>latest</code></li>
+<li><strong>Dépendances verrouillées</strong> :
+<code>composer.lock</code> commité, <code>composer install</code> dans
+l’image</li>
+<li><strong>Rien du poste</strong> dans l’image :
+<code>.dockerignore</code>, configuration par l’environnement</li>
+<li><strong>Tout est décrit</strong> dans le dépôt :
+<code>Dockerfile</code>, <code>compose.yaml</code>, revus par PR</li>
+</ul>
+<blockquote>
+<p>Deux <code>docker compose up</code> sur deux postes : même système,
+mêmes dépendances, même résultat.</p>
+</blockquote>
+</section>
+<section id="quand-ça-ne-démarre-pas" class="slide compare" data-layout="single">
+<h2>Quand ça ne démarre pas</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>port is already allocated</code></td>
+<td>Un <code>php artisan serve</code> tourne encore ? Changer
+<code>&quot;8001:80&quot;</code></td>
+</tr>
+<tr>
+<td>Page 500, <code>No application encryption key</code></td>
+<td><code>APP_KEY</code> présent dans <code>.env</code> ?</td>
+</tr>
+<tr>
+<td><code>Connection refused</code> vers la base</td>
+<td><code>DB_HOST=db</code>, et <code>docker compose ps</code> :
+<code>db</code> est-elle <em>healthy</em> ?</td>
+</tr>
+<tr>
+<td>Accès refusé pour l’utilisateur</td>
+<td>Identifiants changés après le 1er démarrage :
+<code>down -v</code></td>
+</tr>
+<tr>
+<td><code>Permission denied</code> dans <code>storage/</code></td>
+<td>Le <code>chown</code> du Dockerfile</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="à-trois-conteneuriser-par-pr" class="slide activity" data-layout="single">
+<h2>À trois : conteneuriser par PR</h2>
+<p>Une branche chacun · revue en cercle · support A4, partie 3</p>
+<p><strong>À produire :</strong> <code>main</code> démarre depuis un
+clone neuf avec <code>docker compose up</code>.</p>
+<ol type="1">
+<li><strong>API</strong> — <code>Dockerfile</code> et
+<code>.dockerignore</code></li>
+<li><strong>Création</strong> — <code>compose.yaml</code> et
+<code>.env.example</code> complété</li>
+<li><strong>Modification</strong> — section « Démarrer avec Docker » du
+README, puis test du clone neuf</li>
+</ol>
+</section>
+<section id="restitution" class="slide question" data-layout="single">
+<h2>Restitution</h2>
+<p>Clone neuf sur le poste enseignant, devant l’équipe :</p>
+<ol type="1">
+<li>Combien de commandes, cette fois ?</li>
+<li>Chacun explique une instruction de son fichier</li>
+<li><code>down</code>, puis <code>up</code> : les voyages sont-ils
+toujours là ? Et après <code>down -v</code> ?</li>
+</ol>
+<p><strong>Qu’est-ce qui pourrait encore différer entre deux postes
+?</strong></p>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li><strong>Image</strong> = recette figée · <strong>conteneur</strong>
+= instance jetable · <strong>volume</strong> = données durables</li>
+<li>Versions figées et <code>composer.lock</code> : la reproductibilité
+s’écrit</li>
+<li>Secrets et configuration par l’<strong>environnement</strong>,
+jamais dans l’image</li>
+<li>Les services se parlent <strong>par leur nom</strong> sur le réseau
+Compose</li>
+</ul>
+<p>Intervention 4 : construire cette image automatiquement à chaque
+PR.</p>
+</section>

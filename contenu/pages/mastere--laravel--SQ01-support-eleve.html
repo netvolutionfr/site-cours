@@ -1,0 +1,1353 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Créer, lire et afficher des données avec Eloquent et Blade, en
+expliquant chaque fichier.</li>
+<li>Concevoir le modèle <code>Voyage</code> et l’exposer en API
+JSON.</li>
+<li>Rejeter une saisie invalide et expliquer la réponse.</li>
+<li>Créer et modifier un voyage par formulaire.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Le projet Laravel 13 installé en séance.</li>
+<li>Une base de développement configurée et accessible.</li>
+<li>Les bases de PHP et de HTML.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Modèle, migration et table des produits</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Insérer et lire avec Eloquent dans Tinker</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Route, contrôleur et affichage Blade</td>
+</tr>
+<tr>
+<td>Vérifier</td>
+<td>Points de contrôle et exercices de reprise</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Concevoir le voyage et l’exposer en API</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Valider les données avec une Form Request</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Créer et modifier un voyage par formulaire</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="construire-le-stockage-des-produits">1. Construire le stockage
+des produits</h3>
+<p><strong>Objectif :</strong> afficher des produits avec leur libellé,
+leur stock et leur prix, comme dans la démonstration. Le projet est déjà
+installé ; le CRUD complet viendra ensuite.</p>
+<p>Lancez <code>php artisan ...</code> <strong>dans le terminal, à la
+racine du projet</strong> (fichier <code>artisan</code>). Les extraits
+Tinker se saisissent dans Tinker ; les autres vont dans les fichiers
+indiqués. Vérifiez l’existant avant de recréer des fichiers ou d’insérer
+des doublons.</p>
+<h4 id="créer-le-modèle-et-sa-migration">Créer le modèle et sa
+migration</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:model Produit <span class="at">-m</span></span></code></pre></div>
+<p><code>Produit</code> est le nom de la classe, au singulier ;
+<code>-m</code> demande aussi une migration. Deux fichiers sont créés
+:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/Models/Produit.php</code></td>
+<td>Le modèle PHP qui permet de manipuler les produits avec
+Eloquent.</td>
+</tr>
+<tr>
+<td><code>database/migrations/..._create_produits_table.php</code></td>
+<td>La description versionnée de la création de la table. Le préfixe du
+fichier est horodaté.</td>
+</tr>
+</tbody>
+</table>
+<p>Un objet <code>Produit</code> représente une ligne ; la table
+<code>produits</code> conserve les lignes en base. <strong>Eloquent
+relie les objets PHP aux données relationnelles.</strong> Dans la
+configuration standard utilisée ici, il associe le modèle
+<code>Produit</code> à la table <code>produits</code>.</p>
+<h4 id="définir-les-colonnes-dans-la-migration">Définir les colonnes
+dans la migration</h4>
+<p>Dans la méthode <code>up()</code> de la migration générée, complétez
+le bloc <code>Schema::create</code> ainsi. Conservez les imports, la
+classe de migration et la méthode <code>down()</code> générés par
+Artisan.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Schema::create(<span class="st">&#39;produits&#39;</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;id()<span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">&#39;libelle&#39;</span>)<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;integer(<span class="st">&#39;stock&#39;</span>)<span class="ot">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;double(<span class="st">&#39;prix&#39;</span>)<span class="ot">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>})<span class="ot">;</span></span></code></pre></div>
+<p><code>id()</code> crée la clé primaire ; <code>libelle</code>
+contient du texte, <code>stock</code> un entier, <code>prix</code> un
+flottant. <code>timestamps()</code> ajoute <code>created_at</code> et
+<code>updated_at</code>, dates de création et modification gérées par
+Eloquent.</p>
+<div class="callout note">
+<p><strong>Note</strong></p>
+<p><code>double(&#39;prix&#39;)</code> reprend le choix de la démonstration.
+Pour un prix réel, préférez un stockage décimal adapté, par exemple
+<code>$table-&gt;decimal(&#39;prix&#39;, 10, 2)</code> (10 chiffres au total,
+dont 2 après la virgule), afin d’éviter les approximations du stockage
+flottant. Changer l’affichage du prix ne change pas son type de
+stockage.</p>
+</div>
+<h4 id="exécuter-la-migration">Exécuter la migration</h4>
+<p>La connexion à la base est celle configurée pour le projet dans
+<code>.env</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate:status</span></code></pre></div>
+<p>La première commande exécute les migrations en attente ; la seconde
+permet de vérifier que la migration des produits a été exécutée.
+<strong>Créer le fichier de migration ne crée pas encore la
+table.</strong></p>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Modifier le fichier d’une migration déjà exécutée ne modifie pas
+automatiquement la base. Dans un projet déjà utilisé, on fait évoluer le
+schéma avec une nouvelle migration. Ne réinitialisez pas toute la base
+pour résoudre une erreur : vous pourriez perdre les données.</p>
+</div>
+<h3 id="manipuler-les-données-avec-eloquent">2. Manipuler les données
+avec Eloquent</h3>
+<h4 id="autoriser-les-champs-de-linsertion-groupée">Autoriser les champs
+de l’insertion groupée</h4>
+<p>Dans <code>app/Models/Produit.php</code> :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> App\Models<span class="ot">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Illuminate\Database\Eloquent\Model<span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Produit <span class="kw">extends</span> Model</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="va">$fillable</span> <span class="op">=</span> [<span class="st">&#39;libelle&#39;</span><span class="ot">,</span> <span class="st">&#39;stock&#39;</span><span class="ot">,</span> <span class="st">&#39;prix&#39;</span>]<span class="ot">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><code>$fillable</code> autorise ces champs lors d’une affectation
+groupée, comme l’appel à <code>create()</code> ci-dessous. <strong>Ce
+n’est pas une validation des valeurs</strong> : cette liste n’impose
+pas, par exemple, que le stock soit positif. La validation sera
+travaillée avec les formulaires. Cette syntaxe de la séance reste prise
+en charge dans Laravel 13, dont la documentation présente aussi
+l’attribut PHP <code>#[Fillable(...)]</code>.</p>
+<h4 id="insérer-un-premier-produit-dans-tinker">Insérer un premier
+produit dans Tinker</h4>
+<p>Tinker permet d’exécuter du PHP dans le contexte de l’application,
+sans créer d’interface web. Dans le terminal :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan tinker</span></code></pre></div>
+<p>Puis <strong>dans Tinker</strong>, saisissez :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> App\Models\Produit<span class="ot">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span> <span class="op">=</span> Produit::create([</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;libelle&#39;</span> =&gt; <span class="st">&#39;Clavier&#39;</span><span class="ot">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;stock&#39;</span> =&gt; <span class="dv">12</span><span class="ot">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;prix&#39;</span> =&gt; <span class="fl">49.90</span><span class="ot">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span>-&gt;id<span class="ot">;</span></span></code></pre></div>
+<p><code>create()</code> enregistre une ligne et renvoie l’objet créé,
+avec son identifiant. Chaque nouvel appel ajoute une ligne : il ne
+remplace pas automatiquement le produit précédent. La commande agit sur
+la base configurée du projet ; utilisez votre environnement de
+développement.</p>
+<h4 id="lire-et-filtrer">Lire et filtrer</h4>
+<p>Toujours dans Tinker :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Produit::all()<span class="ot">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Produit::find(<span class="va">$produit</span>-&gt;id)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Produit::where(<span class="st">&#39;stock&#39;</span><span class="ot">,</span> <span class="st">&#39;&gt;&#39;</span><span class="ot">,</span> <span class="dv">5</span>)-&gt;get()<span class="ot">;</span></span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>all()</code></td>
+<td>Une collection contenant tous les produits.</td>
+</tr>
+<tr>
+<td><code>find($produit-&gt;id)</code></td>
+<td>Le produit portant cet identifiant, ou <code>null</code> s’il
+n’existe plus.</td>
+</tr>
+<tr>
+<td><code>where(...)-&gt;get()</code></td>
+<td>Une collection des produits dont le stock dépasse strictement
+5.</td>
+</tr>
+</tbody>
+</table>
+<p><code>find(1)</code> suppose que la ligne 1 existe ; utilisez plutôt
+l’identifiant renvoyé à la création. <code>where()</code> prépare le
+filtre et <code>get()</code> exécute la lecture. <code>all()</code>
+suffit pour ce petit catalogue ; une liste volumineuse appellera une
+pagination.</p>
+<p><strong>Contrôle reproductible, après l’insertion :</strong> cette
+vérification relit la ligne depuis la base et doit afficher
+<code>true</code>. Elle ne crée aucune nouvelle ligne.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$relu</span> <span class="op">=</span> Produit::find(<span class="va">$produit</span>-&gt;id)<span class="ot">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">$relu</span> <span class="op">!==</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> <span class="va">$relu</span>-&gt;libelle <span class="op">===</span> <span class="st">&#39;Clavier&#39;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;&amp;</span> (<span class="dt">int</span>) <span class="va">$relu</span>-&gt;stock <span class="op">===</span> <span class="dv">12</span><span class="ot">;</span></span></code></pre></div>
+<p>Saisissez ensuite <code>exit</code> pour revenir au terminal avant de
+lancer une nouvelle commande Artisan.</p>
+<h3 id="relier-une-url-aux-produits-affichés">3. Relier une URL aux
+produits affichés</h3>
+<h4 id="créer-le-contrôleur">Créer le contrôleur</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:controller ProduitController</span></code></pre></div>
+<p>Dans <code>app/Http/Controllers/ProduitController.php</code> :</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> App\Http\Controllers<span class="ot">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> App\Models\Produit<span class="ot">;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ProduitController <span class="kw">extends</span> Controller</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">function</span> index()</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">$produits</span> <span class="op">=</span> Produit::all()<span class="ot">;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> view(<span class="st">&#39;produits.index&#39;</span><span class="ot">,</span> [<span class="st">&#39;produits&#39;</span> =&gt; <span class="va">$produits</span>])<span class="ot">;</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Le contrôleur demande les données au modèle puis les transmet à la
+vue. La clé <code>&#39;produits&#39;</code> du tableau devient la variable
+<code>$produits</code> accessible dans Blade. La méthode
+<code>index()</code> sert ici à afficher la liste.</p>
+<h4 id="déclarer-la-route">Déclarer la route</h4>
+<p>Dans le fichier existant <code>routes/web.php</code>, ajoutez
+l’import du contrôleur et la route. L’import de <code>Route</code> est
+généralement déjà présent : ne le dupliquez pas.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> App\Http\Controllers\ProduitController<span class="ot">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Illuminate\Support\Facades\Route<span class="ot">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/produits&#39;</span><span class="ot">,</span> [ProduitController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;index&#39;</span>])<span class="ot">;</span></span></code></pre></div>
+<p>Une requête HTTP <strong>GET</strong> sur <code>/produits</code>
+appelle la méthode <code>index()</code> du contrôleur. Le nom de l’URL,
+celui de la méthode et celui de la vue sont reliés par ce code ; leur
+association n’est pas automatique.</p>
+<h4 id="créer-la-vue-blade">Créer la vue Blade</h4>
+<p>Créez le dossier <code>resources/views/produits</code>, puis son
+fichier <code>index.blade.php</code>. Le nom <code>produits.index</code>
+utilisé dans <code>view()</code> désigne ce fichier : le point sépare le
+dossier du nom de la vue, sans écrire l’extension
+<code>.blade.php</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">&quot;fr&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">&quot;UTF-8&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Produits<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Liste des produits<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">table</span><span class="dt">&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">thead</span><span class="dt">&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">tr</span><span class="dt">&gt;&lt;</span><span class="kw">th</span><span class="dt">&gt;</span>Libellé<span class="dt">&lt;/</span><span class="kw">th</span><span class="dt">&gt;&lt;</span><span class="kw">th</span><span class="dt">&gt;</span>Stock<span class="dt">&lt;/</span><span class="kw">th</span><span class="dt">&gt;&lt;</span><span class="kw">th</span><span class="dt">&gt;</span>Prix<span class="dt">&lt;/</span><span class="kw">th</span><span class="dt">&gt;&lt;/</span><span class="kw">tr</span><span class="dt">&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">thead</span><span class="dt">&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">tbody</span><span class="dt">&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            @foreach ($produits as $produit)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;</span><span class="kw">tr</span><span class="dt">&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">td</span><span class="dt">&gt;</span>{{ $produit-&gt;libelle }}<span class="dt">&lt;/</span><span class="kw">td</span><span class="dt">&gt;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">td</span><span class="dt">&gt;</span>{{ $produit-&gt;stock }}<span class="dt">&lt;/</span><span class="kw">td</span><span class="dt">&gt;</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&lt;</span><span class="kw">td</span><span class="dt">&gt;</span>{{ $produit-&gt;prix }} €<span class="dt">&lt;/</span><span class="kw">td</span><span class="dt">&gt;</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                <span class="dt">&lt;/</span><span class="kw">tr</span><span class="dt">&gt;</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            @endforeach</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">tbody</span><span class="dt">&gt;</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">table</span><span class="dt">&gt;</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div>
+<p><code>@foreach</code> parcourt la collection : <code>$produits</code>
+représente l’ensemble, <code>$produit</code> la ligne courante.
+<code>{{ ... }}</code> affiche une valeur en échappant les caractères
+HTML ; conservez cette syntaxe pour les données. Blade est exécuté côté
+serveur : le navigateur reçoit le HTML produit, pas la requête Eloquent
+ni les directives Blade.</p>
+<h4 id="ouvrir-la-page-et-expliquer-son-fonctionnement">Ouvrir la page
+et expliquer son fonctionnement</h4>
+<p>Dans le terminal :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan route:list <span class="at">--path</span><span class="op">=</span>produits</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan serve</span></code></pre></div>
+<p>Ouvrez l’URL du projet suivie de <code>/produits</code>, généralement
+<code>http://127.0.0.1:8000/produits</code>. Le tableau doit contenir «
+Clavier », <code>12</code> et le prix, qui peut apparaître comme
+<code>49.9</code> avant formatage monétaire.</p>
+<p><strong>Le trajet à raconter :</strong> GET <code>/produits</code> →
+route → <code>ProduitController::index()</code> →
+<code>Produit::all()</code> → vue <code>produits.index</code> → HTML
+renvoyé au navigateur.</p>
+<figure>
+<img role="img" aria-label="Trajet de GET /produits : route, contrôleur, modèle Eloquent, base, puis vue Blade et HTML renvoyé au navigateur ; la migration a préparé la table une seule fois." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDY0MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZ2IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMUU4NDQ5Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjOEE5NEE2Ii8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIiBmaWxsPSIjRkZGRkZGIi8+CgogIDwhLS0gTmF2aWdhdGV1ciAtLT4KICA8cmVjdCB4PSIyMCIgeT0iNTAiIHdpZHRoPSIxOTAiIGhlaWdodD0iMjMwIiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjIwIiB5PSI1MCIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIzMCIgcng9IjgiIGZpbGw9IiMxNzIwMzMiLz4KICA8cmVjdCB4PSIyMCIgeT0iNzAiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTAiIGZpbGw9IiMxNzIwMzMiLz4KICA8dGV4dCB4PSIxMTUiIHk9IjcxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TmF2aWdhdGV1cjwvdGV4dD4KICA8cmVjdCB4PSIzMCIgeT0iOTAiIHdpZHRoPSIxNzAiIGhlaWdodD0iMjQiIHJ4PSIxMiIgZmlsbD0iI0Y3RjhGQSIgc3Ryb2tlPSIjOEE5NEE2Ii8+CiAgPHRleHQgeD0iMTE1IiB5PSIxMDciIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMS41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xMjcuMC4wLjE6ODAwMC9wcm9kdWl0czwvdGV4dD4KICA8dGV4dCB4PSIzNCIgeT0iMTQwIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE3MjAzMyI+TGlzdGUgZGVzIHByb2R1aXRzPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiMxNzIwMzMiPgogICAgPHJlY3QgeD0iMzAiIHk9IjE1MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSIyMiIgZmlsbD0iI0VFRjJGQiIvPgogICAgPHRleHQgeD0iMzYiIHk9IjE2NiIgZm9udC13ZWlnaHQ9IjcwMCI+TGliZWxsw6k8L3RleHQ+PHRleHQgeD0iMTE4IiB5PSIxNjYiIGZvbnQtd2VpZ2h0PSI3MDAiPlN0b2NrPC90ZXh0Pjx0ZXh0IHg9IjE2MiIgeT0iMTY2IiBmb250LXdlaWdodD0iNzAwIj5Qcml4PC90ZXh0PgogICAgPHRleHQgeD0iMzYiIHk9IjE5MCI+Q2xhdmllcjwvdGV4dD48dGV4dCB4PSIxMTgiIHk9IjE5MCI+MTI8L3RleHQ+PHRleHQgeD0iMTU1IiB5PSIxOTAiPjQ5Ljkg4oKsPC90ZXh0PgogICAgPGxpbmUgeDE9IjMwIiB5MT0iMTk4IiB4Mj0iMjAwIiB5Mj0iMTk4IiBzdHJva2U9IiNENURBRTMiLz4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyMTYiPlNvdXJpczwvdGV4dD48dGV4dCB4PSIxMTgiIHk9IjIxNiI+MDwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjIxNiI+MTkuOSDigqw8L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9IjExNSIgeT0iMjYyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzVDNjg3QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+bmUgcmXDp29pdCBxdWUgZHUgSFRNTDwvdGV4dD4KCiAgPCEtLSBSb3V0ZSAtLT4KICA8cmVjdCB4PSIyNjAiIHk9IjUwIiB3aWR0aD0iMjEwIiBoZWlnaHQ9IjEyMCIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iMjYwIiB5PSI1MCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIzMCIgcng9IjgiIGZpbGw9IiM1QzY4N0MiLz4KICA8cmVjdCB4PSIyNjAiIHk9IjcwIiB3aWR0aD0iMjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjNUM2ODdDIi8+CiAgPHRleHQgeD0iMzY1IiB5PSI3MSIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJvdXRlPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSIyNzAiIHk9IjEwMiIgZmlsbD0iIzVDNjg3QyI+cm91dGVzL3dlYi5waHA8L3RleHQ+CiAgICA8dGV4dCB4PSIyNzAiIHk9IjEyNiI+Um91dGU6OmdldCgnL3Byb2R1aXRzJyw8L3RleHQ+CiAgICA8dGV4dCB4PSIyNzAiIHk9IjE0NCI+ICBbUHJvZHVpdENvbnRyb2xsZXI6OmNsYXNzLDwvdGV4dD4KICAgIDx0ZXh0IHg9IjI3MCIgeT0iMTYyIj4gICAnaW5kZXgnXSk7PC90ZXh0PgogIDwvZz4KCiAgPCEtLSBDb250csO0bGV1ciAtLT4KICA8cmVjdCB4PSI1MzAiIHk9IjUwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjE1MCIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8cmVjdCB4PSI1MzAiIHk9IjUwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjMwIiByeD0iOCIgZmlsbD0iIzM1NjhENCIvPgogIDxyZWN0IHg9IjUzMCIgeT0iNzAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTAiIGZpbGw9IiMzNTY4RDQiLz4KICA8dGV4dCB4PSI2NjAiIHk9IjcxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29udHLDtGxldXIgwrcgY29vcmRpbmF0aW9uPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjEwMiIgZmlsbD0iIzVDNjg3QyI+UHJvZHVpdENvbnRyb2xsZXIucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIxMjQiPnB1YmxpYyBmdW5jdGlvbiBpbmRleCgpPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIxNDIiPns8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjE2MCI+ICAkcHJvZHVpdHMgPSBQcm9kdWl0OjphbGwoKTs8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjE3OCI+ICByZXR1cm4gdmlldygncHJvZHVpdHMuaW5kZXgnLDwvdGV4dD4KICAgIDx0ZXh0IHg9IjU0MiIgeT0iMTk0Ij4gICAgWydwcm9kdWl0cycgPSZndDsgJHByb2R1aXRzXSk7PC90ZXh0PgogIDwvZz4KCiAgPCEtLSBNb2TDqGxlIC0tPgogIDxyZWN0IHg9Ijg1MCIgeT0iNTAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMTEwIiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjNkI1QkI1IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9Ijg1MCIgeT0iNTAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzAiIHJ4PSI4IiBmaWxsPSIjNkI1QkI1Ii8+CiAgPHJlY3QgeD0iODUwIiB5PSI3MCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzZCNUJCNSIvPgogIDx0ZXh0IHg9Ijk2NSIgeT0iNzEiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb2TDqGxlIMK3IGRvbm7DqWVzPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjEwMiIgZmlsbD0iIzVDNjg3QyI+YXBwL01vZGVscy9Qcm9kdWl0LnBocDwvdGV4dD4KICAgIDx0ZXh0IHg9Ijg2MiIgeT0iMTI2Ij5jbGFzcyBQcm9kdWl0IGV4dGVuZHMgTW9kZWw8L3RleHQ+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjE0OCIgZmlsbD0iIzZCNUJCNSI+RWxvcXVlbnQgw6ljcml0IGxlIFNRTDwvdGV4dD4KICA8L2c+CgogIDwhLS0gQmFzZSAtLT4KICA8cGF0aCBkPSJNODUwLDIyNCBROTY1LDIwMCAxMDgwLDIyNCBMMTA4MCwzMzAgUTk2NSwzNTQgODUwLDMzMCBaIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxwYXRoIGQ9Ik04NTAsMjI0IFE5NjUsMjQ4IDEwODAsMjI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijk2NSIgeT0iMjU4IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QmFzZSDCtyB0YWJsZSBwcm9kdWl0czwvdGV4dD4KICA8ZyBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTEuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI4NjYiIHk9IjI4MCIgZm9udC13ZWlnaHQ9IjcwMCI+aWQgbGliZWxsZSAgc3RvY2sgcHJpeDwvdGV4dD4KICAgIDx0ZXh0IHg9Ijg2NiIgeT0iMjk4Ij4xICBDbGF2aWVyICAxMiAgICA0OS45PC90ZXh0PgogICAgPHRleHQgeD0iODY2IiB5PSIzMTYiPjIgIFNvdXJpcyAgIDAgICAgIDE5Ljk8L3RleHQ+CiAgPC9nPgoKICA8IS0tIFZ1ZSAtLT4KICA8cmVjdCB4PSI1MzAiIHk9IjI2MCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxNDAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMi41Ii8+CiAgPHJlY3QgeD0iNTMwIiB5PSIyNjAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMzAiIHJ4PSI4IiBmaWxsPSIjMUU4NDQ5Ii8+CiAgPHJlY3QgeD0iNTMwIiB5PSIyODAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTAiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSI2NjAiIHk9IjI4MSIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlZ1ZSDCtyBwcsOpc2VudGF0aW9uPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjMxMiIgZmlsbD0iIzVDNjg3QyI+cHJvZHVpdHMvaW5kZXguYmxhZGUucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIzMzQiPkBmb3JlYWNoICgkcHJvZHVpdHMgYXMgJHApPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIzNTQiPiAgJmx0O3RkJmd0O3t7ICRwLSZndDtsaWJlbGxlIH19Jmx0Oy90ZCZndDs8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjM3NCI+ICDigKY8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjM5MiI+QGVuZGZvcmVhY2g8L3RleHQ+CiAgPC9nPgoKICA8IS0tIE1pZ3JhdGlvbiAtLT4KICA8cmVjdCB4PSI4NTAiIHk9IjQwMCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSI5NiIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzhBOTRBNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI3IDUiLz4KICA8dGV4dCB4PSI5NjUiIHk9IjQyNCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1pZ3JhdGlvbjwvdGV4dD4KICA8dGV4dCB4PSI5NjUiIHk9IjQ0NCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNyZWF0ZV9wcm9kdWl0c190YWJsZTwvdGV4dD4KICA8dGV4dCB4PSI5NjUiIHk9IjQ2NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cGhwIGFydGlzYW4gbWlncmF0ZSA6IHVuZSBmb2lzLDwvdGV4dD4KICA8dGV4dCB4PSI5NjUiIHk9IjQ4NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cGFzIMOgIGNoYXF1ZSByZXF1w6p0ZTwvdGV4dD4KICA8bGluZSB4MT0iOTY1IiB5MT0iNDAwIiB4Mj0iOTY1IiB5Mj0iMzQ4IiBzdHJva2U9IiM4QTk0QTYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNiA0IiBtYXJrZXItZW5kPSJ1cmwoI2ZnKSIvPgoKICA8IS0tIEZsw6hjaGVzIC0tPgogIDxsaW5lIHgxPSIyMTAiIHkxPSIxMjUiIHgyPSIyNTgiIHkyPSIxMjUiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDxsaW5lIHgxPSI0NzAiIHkxPSIxMTUiIHgyPSI1MjgiIHkyPSIxMTUiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDxsaW5lIHgxPSI3OTAiIHkxPSI5NSIgeDI9Ijg0OCIgeTI9Ijk1IiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICA8bGluZSB4MT0iOTMwIiB5MT0iMTYwIiB4Mj0iOTMwIiB5Mj0iMjA4IiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICA8bGluZSB4MT0iMTAxMCIgeTE9IjIxMCIgeDI9IjEwMTAiIHkyPSIxNjIiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2Z2KSIvPgogIDxsaW5lIHgxPSI4NTAiIHkxPSIxNDAiIHgyPSI3OTIiIHkyPSIxNDAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2Z2KSIvPgogIDxsaW5lIHgxPSI2NjAiIHkxPSIyMDAiIHgyPSI2NjAiIHkyPSIyNTgiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDxwYXRoIGQ9Ik01MzAsMzMwIEwxMTUsMzMwIEwxMTUsMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmdikiLz4KCiAgPCEtLSBQYXN0aWxsZXMgLS0+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgPGNpcmNsZSBjeD0iMjM0IiBjeT0iMTA2IiByPSIxMSIgZmlsbD0iIzM1NjhENCIvPjx0ZXh0IHg9IjIzNCIgeT0iMTExIj4xPC90ZXh0PgogICAgPGNpcmNsZSBjeD0iNDk5IiBjeT0iOTYiIHI9IjExIiBmaWxsPSIjMzU2OEQ0Ii8+PHRleHQgeD0iNDk5IiB5PSIxMDEiPjI8L3RleHQ+CiAgICA8Y2lyY2xlIGN4PSI4MTkiIGN5PSI3NiIgcj0iMTEiIGZpbGw9IiMzNTY4RDQiLz48dGV4dCB4PSI4MTkiIHk9IjgxIj4zPC90ZXh0PgogICAgPGNpcmNsZSBjeD0iOTEyIiBjeT0iMTg0IiByPSIxMSIgZmlsbD0iIzM1NjhENCIvPjx0ZXh0IHg9IjkxMiIgeT0iMTg5Ij40PC90ZXh0PgogICAgPGNpcmNsZSBjeD0iODIxIiBjeT0iMTU5IiByPSIxMSIgZmlsbD0iIzFFODQ0OSIvPjx0ZXh0IHg9IjgyMSIgeT0iMTY0Ij41PC90ZXh0PgogICAgPGNpcmNsZSBjeD0iNjgwIiBjeT0iMjI5IiByPSIxMSIgZmlsbD0iIzM1NjhENCIvPjx0ZXh0IHg9IjY4MCIgeT0iMjM0Ij42PC90ZXh0PgogICAgPGNpcmNsZSBjeD0iMzgwIiBjeT0iMzMwIiByPSIxMSIgZmlsbD0iIzFFODQ0OSIvPjx0ZXh0IHg9IjM4MCIgeT0iMzM1Ij43PC90ZXh0PgogIDwvZz4KCiAgPCEtLSDDiXRhcGVzIC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMTcyMDMzIj4KICAgIDx0ZXh0IHg9IjIwIiB5PSIzNzgiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0Ij4xPC90c3Bhbj4gIEdFVCAvcHJvZHVpdHMgOiBsZSBuYXZpZ2F0ZXVyIGRlbWFuZGUgbGEgcGFnZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIwIiB5PSI0MDIiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0Ij4yPC90c3Bhbj4gIGxhIHJvdXRlIGTDqXNpZ25lIFByb2R1aXRDb250cm9sbGVyOjppbmRleCgpPC90ZXh0PgogICAgPHRleHQgeD0iMjAiIHk9IjQyNiI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiPjM8L3RzcGFuPiAgbGUgY29udHLDtGxldXIgZGVtYW5kZSBsZXMgcHJvZHVpdHMgYXUgbW9kw6hsZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIwIiB5PSI0NTAiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0Ij40PC90c3Bhbj4gIEVsb3F1ZW50IGVudm9pZSBzZWxlY3QgKiBmcm9tIHByb2R1aXRzPC90ZXh0PgogICAgPHRleHQgeD0iMjAiIHk9IjQ3NCI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiPjU8L3RzcGFuPiAgbGVzIGxpZ25lcyByZXZpZW5uZW50IGVuIG9iamV0cyBQcm9kdWl0PC90ZXh0PgogICAgPHRleHQgeD0iMjAiIHk9IjQ5OCI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiPjY8L3RzcGFuPiAgbGUgY29udHLDtGxldXIgdHJhbnNtZXQgJHByb2R1aXRzIMOgIGxhIHZ1ZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIwIiB5PSI1MjIiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMUU4NDQ5Ij43PC90c3Bhbj4gIEJsYWRlIHByb2R1aXQgbGUgSFRNTCwgcmVudm95w6kgYXUgbmF2aWdhdGV1cjwvdGV4dD4KICA8L2c+CgogIDwhLS0gU3ludGjDqHNlIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI1NDgiIHdpZHRoPSIxMDYwIiBoZWlnaHQ9IjcyIiByeD0iMTAiIGZpbGw9IiNFOEY0RUMiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSI1NTAiIHk9IjU3NyIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vZMOobGUgPSBhY2PDqHMgYXV4IGRvbm7DqWVzIMK3IFZ1ZSA9IHByw6lzZW50YXRpb24gwrcgQ29udHLDtGxldXIgPSBjb29yZGluYXRpb248L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI2MDIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkF1Y3VuIGxpZW4gYXV0b21hdGlxdWUgOiBsJ1VSTCwgbGEgbcOpdGhvZGUgZXQgbGEgdnVlIHNvbnQgcmVsacOpZXMgcGFyIGxlIGNvZGUgZGUgbGEgcm91dGUgZXQgZHUgY29udHLDtGxldXIuPC90ZXh0Pgo8L3N2Zz4K" alt="Trajet de GET /produits : route, contrôleur, modèle Eloquent, base, puis vue Blade et HTML renvoyé au navigateur ; la migration a préparé la table une seule fois." />
+<figcaption aria-hidden="true">Trajet de GET /produits : route,
+contrôleur, modèle Eloquent, base, puis vue Blade et HTML renvoyé au
+navigateur ; la migration a préparé la table une seule
+fois.</figcaption>
+</figure>
+<p>MVC sépare les responsabilités : <strong>modèle = accès aux données ;
+vue = présentation ; contrôleur = coordination de la demande</strong>.
+La migration prépare la structure de stockage ; elle n’est pas exécutée
+à chaque consultation de la page.</p>
+<h3 id="vérifier-et-reprendre-la-séance">Vérifier et reprendre la
+séance</h3>
+<h4 id="localiser-une-erreur">Localiser une erreur</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Could not open input file: artisan</code></td>
+<td>Êtes-vous à la racine du projet ?</td>
+</tr>
+<tr>
+<td>Connexion impossible ou table <code>produits</code> absente</td>
+<td>Vérifiez la base configurée, puis <code>migrate:status</code>.</td>
+</tr>
+<tr>
+<td>Erreur d’affectation groupée</td>
+<td>Vérifiez <code>$fillable</code> dans le modèle et les noms des
+champs.</td>
+</tr>
+<tr>
+<td>Route introuvable</td>
+<td>Vérifiez l’URL et <code>route:list --path=produits</code>.</td>
+</tr>
+<tr>
+<td>Vue introuvable ou variable non définie</td>
+<td>Vérifiez le chemin du Blade et la clé <code>&#39;produits&#39;</code>
+transmise.</td>
+</tr>
+<tr>
+<td>Tableau vide</td>
+<td>Vérifiez <code>Produit::all()</code> dans Tinker : le Blade ne crée
+pas de données.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="trois-exercices-de-reprise">Trois exercices de reprise</h4>
+<p><strong>Individuellement, sur le projet de développement.</strong>
+Ces exercices prolongent la démonstration. L’IA est autorisée pour
+expliquer une erreur ou relire votre tentative ; vous devez pouvoir
+expliquer les lignes conservées.</p>
+<ol type="1">
+<li><strong>Expliquer, sans modifier.</strong> Sur votre feuille,
+associez la route, le contrôleur, le modèle, la migration et la vue à
+leur rôle. À quel endroit la lecture des produits est-elle déclenchée
+?</li>
+<li><strong>Ajouter et observer.</strong> Avec Tinker, ajoutez une «
+Souris », stock <code>0</code>, prix <code>19.90</code>. Rechargez
+<code>/produits</code>. À produire : une page contenant le nouveau
+produit et l’explication de sa présence sans modification du Blade.</li>
+<li><strong>Filtrer.</strong> Modifiez uniquement la lecture dans le
+contrôleur pour n’afficher que les produits en stock strictement
+positif. À produire : « Clavier » reste visible et « Souris » disparaît
+de la page ; vérifiez dans Tinker que la souris existe toujours en
+base.</li>
+</ol>
+<h4 id="sources">Sources</h4>
+<p>Support fondé sur l’<a href="https://chatgpt.com/share/6aa156ae-3aa0-83eb-8028-9c77707c9dc5">échange
+de préparation de la séance</a>. Syntaxe vérifiée le 9 septembre 2026
+dans la documentation Laravel 13 via Context7 : <a href="https://laravel.com/docs/13.x/migrations">migrations</a>, <a href="https://laravel.com/docs/13.x/eloquent">Eloquent</a>, <a href="https://laravel.com/docs/13.x/routing">routage</a> et <a href="https://laravel.com/docs/13.x/blade">Blade</a>. La compatibilité
+de <code>$fillable</code> est également vérifiée dans le <a href="https://github.com/laravel/framework/blob/13.x/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php">code
+officiel de Laravel 13</a>.</p>
+<h3 id="concevoir-le-voyage-et-lexposer-en-api">4. Concevoir le voyage
+et l’exposer en API</h3>
+<p><strong>Objectif :</strong> passer des produits de démonstration au
+fil rouge « Voyages scolaires », avec un modèle conçu par l’équipe et
+une API JSON complète. Le travail se fait <strong>à trois sur un seul
+dépôt</strong> : une partie commune, puis une part autonome par
+personne.</p>
+<h4 id="le-dépôt-commun">Le dépôt commun</h4>
+<p>Le dépôt <code>voyages-scolaires</code> (Laravel 13, base SQLite) a
+été préparé par l’enseignant et vous y êtes invités comme
+collaborateurs. Chacun le clone et l’installe sur son poste :</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>url-du-depot<span class="op">&gt;</span> voyages-scolaires</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> voyages-scolaires</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> install</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> .env.example .env</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan key:generate</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate</span></code></pre></div>
+<p><code>migrate</code> propose de créer le fichier
+<code>database/database.sqlite</code> : répondez oui. Le fichier
+<code>.env</code> et la base restent <strong>hors du dépôt</strong>
+(voir <code>.gitignore</code>) : chacun a les siens.</p>
+<h4 id="concevoir-le-modèle-avant-de-coder">Concevoir le modèle avant de
+coder</h4>
+<p><strong>Seul, sur papier, avant de lire la suite.</strong> Un parent
+consulte les voyages pour décider d’inscrire son enfant ; un enseignant
+les saisit. Listez les informations indispensables d’un voyage. Pour
+chacune, donnez son <strong>type</strong> et sa <strong>contrainte
+métier</strong> (« obligatoire », « positif »…). À produire : un tableau
+de trois colonnes, confronté ensuite à ceux des autres.</p>
+<p>Après mise en commun, l’équipe retient le schéma suivant. Les autres
+idées (date de retour, encadrants, participants inscrits) supposent des
+relations entre tables : elles viendront plus tard.</p>
+<table>
+<thead>
+<tr>
+<th>Attribut</th>
+<th>Colonne</th>
+<th>Contrainte métier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>titre</code></td>
+<td><code>string</code>, 120 caractères</td>
+<td>obligatoire</td>
+</tr>
+<tr>
+<td><code>destination</code></td>
+<td><code>string</code>, 100 caractères</td>
+<td>obligatoire</td>
+</tr>
+<tr>
+<td><code>depart</code></td>
+<td><code>date</code></td>
+<td>obligatoire, postérieure à aujourd’hui</td>
+</tr>
+<tr>
+<td><code>prix</code></td>
+<td><code>decimal(8, 2)</code></td>
+<td>obligatoire, strictement positif</td>
+</tr>
+<tr>
+<td><code>places</code></td>
+<td><code>unsignedSmallInteger</code></td>
+<td>entier de 1 à 60</td>
+</tr>
+</tbody>
+</table>
+<p>La troisième colonne n’est pas décorative : <strong>elle deviendra
+les règles de validation</strong> de la partie 5.</p>
+<h4 id="programmer-à-trois-une-personne-au-clavier">Programmer à trois :
+une personne au clavier</h4>
+<p>Un seul poste est projeté. La personne au clavier, le
+<strong>pilote</strong>, tape ; les deux autres, les
+<strong>navigateurs</strong>, lisent le support, vérifient chaque ligne
+et préviennent avant l’erreur. On change de pilote à chaque étape.</p>
+<p><strong>Étape 1, pilote 1 : modèle, migration et données de
+test.</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:model Voyage <span class="at">-mf</span></span></code></pre></div>
+<p><code>-m</code> crée la migration, <code>-f</code> une
+<em>factory</em>, c’est-à-dire un générateur de voyages fictifs. Dans la
+migration :</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Schema::create(<span class="st">&#39;voyages&#39;</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;id()<span class="ot">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">&#39;titre&#39;</span><span class="ot">,</span> <span class="dv">120</span>)<span class="ot">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">&#39;destination&#39;</span><span class="ot">,</span> <span class="dv">100</span>)<span class="ot">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="fu">date</span>(<span class="st">&#39;depart&#39;</span>)<span class="ot">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;decimal(<span class="st">&#39;prix&#39;</span><span class="ot">,</span> <span class="dv">8</span><span class="ot">,</span> <span class="dv">2</span>)<span class="ot">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;unsignedSmallInteger(<span class="st">&#39;places&#39;</span>)<span class="ot">;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>})<span class="ot">;</span></span></code></pre></div>
+<p>Dans <code>app/Models/Voyage.php</code>, déclarez les champs
+autorisés avec l’attribut <code>#[Fillable]</code> et ajoutez le
+<em>cast</em> :</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Illuminate\Database\Eloquent\Attributes\Fillable<span class="ot">;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>Fillable([<span class="st">&#39;titre&#39;</span><span class="ot">,</span> <span class="st">&#39;destination&#39;</span><span class="ot">,</span> <span class="st">&#39;depart&#39;</span><span class="ot">,</span> <span class="st">&#39;prix&#39;</span><span class="ot">,</span> <span class="st">&#39;places&#39;</span>])<span class="at">]</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Voyage <span class="kw">extends</span> Model</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">use</span> HasFactory<span class="ot">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="kw">function</span> casts()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [<span class="st">&#39;depart&#39;</span> =&gt; <span class="st">&#39;date:Y-m-d&#39;</span>]<span class="ot">;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><code>#[Fillable]</code> est un <strong>attribut PHP 8</strong> : une
+métadonnée attachée à la classe, que Laravel lit par réflexion. Il joue
+le même rôle que la propriété <code>protected $fillable = [...]</code>
+utilisée pour <code>Produit</code>, toujours acceptée par Laravel 13 et
+fréquente dans les projets existants.</p>
+<p>Le <em>cast</em> transforme <code>depart</code> en objet date PHP
+(Carbon) à la lecture, et l’écrit au format <code>2027-03-15</code> dans
+le JSON. Dans <code>database/factories/VoyageFactory.php</code> :</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> definition()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;titre&#39;</span> =&gt; fake()-&gt;sentence(<span class="dv">3</span>)<span class="ot">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;destination&#39;</span> =&gt; fake()-&gt;city()<span class="ot">,</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart&#39;</span> =&gt; fake()-&gt;dateTimeBetween(<span class="st">&#39;+1 week&#39;</span><span class="ot">,</span> <span class="st">&#39;+6 months&#39;</span>)<span class="ot">,</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;prix&#39;</span> =&gt; fake()-&gt;randomFloat(<span class="dv">2</span><span class="ot">,</span> <span class="dv">50</span><span class="ot">,</span> <span class="dv">900</span>)<span class="ot">,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;places&#39;</span> =&gt; fake()-&gt;numberBetween(<span class="dv">10</span><span class="ot">,</span> <span class="dv">60</span>)<span class="ot">,</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">;</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Dans la méthode <code>run()</code> de
+<code>database/seeders/DatabaseSeeder.php</code>, ajoutez
+<code>Voyage::factory(5)-&gt;create();</code> (avec
+<code>use App\Models\Voyage;</code> en haut du fichier), puis :</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan db:seed</span></code></pre></div>
+<p><strong>Étape 2, pilote 2 : l’API en lecture.</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan install:api</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:controller Api/VoyageController <span class="at">--api</span> <span class="at">--model</span><span class="op">=</span>Voyage</span></code></pre></div>
+<p><code>install:api</code> crée <code>routes/api.php</code> : toutes
+ses routes reçoivent le préfixe <code>/api</code>. <code>--api</code>
+génère un contrôleur sans <code>create()</code> ni <code>edit()</code>,
+qui affichent des formulaires inutiles à une API. Dans
+<code>routes/api.php</code> :</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> App\Http\Controllers\Api\VoyageController<span class="ot">;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>Route::apiResource(<span class="st">&#39;voyages&#39;</span><span class="ot">,</span> VoyageController::<span class="kw">class</span>)<span class="ot">;</span></span></code></pre></div>
+<p>Cette ligne déclare cinq routes. Dans
+<code>app/Http/Controllers/Api/VoyageController.php</code> :</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> index()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Voyage::orderBy(<span class="st">&#39;depart&#39;</span>)-&gt;get()<span class="ot">;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> show(Voyage <span class="va">$voyage</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">$voyage</span><span class="ot">;</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Laravel convertit en JSON le modèle ou la collection renvoyés. Le
+paramètre <code>Voyage $voyage</code> charge le voyage dont
+l’identifiant figure dans l’URL, ou répond <strong>404</strong> s’il
+n’existe pas.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan route:list <span class="at">--path</span><span class="op">=</span>api</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> http://127.0.0.1:8000/api/voyages</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> http://127.0.0.1:8000/api/voyages/1</span></code></pre></div>
+<blockquote>
+<p><strong>Sous Windows</strong>, utilisez <code>curl</code> dans Git
+Bash (dans PowerShell, <code>curl</code> désigne une autre commande), ou
+un client graphique comme Bruno.</p>
+</blockquote>
+<p><strong>Étape 3, pilote 3 : l’API en écriture, volontairement
+naïve.</strong></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> store(Request <span class="va">$request</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span> <span class="op">=</span> Voyage::create(<span class="va">$request</span>-&gt;all())<span class="ot">;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response()-&gt;json(<span class="va">$voyage</span><span class="ot">,</span> <span class="dv">201</span>)<span class="ot">;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> update(Request <span class="va">$request</span><span class="ot">,</span> Voyage <span class="va">$voyage</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span>-&gt;update(<span class="va">$request</span>-&gt;all())<span class="ot">;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">$voyage</span><span class="ot">;</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> destroy(Voyage <span class="va">$voyage</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span>-&gt;delete()<span class="ot">;</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response()-&gt;noContent()<span class="ot">;</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-X</span> POST http://127.0.0.1:8000/api/voyages <span class="dt">\</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Accept: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">&#39;{&quot;titre&quot;:&quot;Rome antique&quot;,&quot;destination&quot;:&quot;Rome&quot;,</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="st">       &quot;depart&quot;:&quot;2027-03-15&quot;,&quot;prix&quot;:420,&quot;places&quot;:35}&#39;</span></span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Code</th>
+<th>Signification dans cette API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200</code></td>
+<td>Lecture ou modification réussie, la ressource est dans la
+réponse.</td>
+</tr>
+<tr>
+<td><code>201</code></td>
+<td>Ressource créée.</td>
+</tr>
+<tr>
+<td><code>204</code></td>
+<td>Ressource supprimée, réponse vide.</td>
+</tr>
+<tr>
+<td><code>404</code></td>
+<td>Aucun voyage ne porte cet identifiant.</td>
+</tr>
+<tr>
+<td><code>422</code></td>
+<td>Données refusées par la validation (partie 5).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Étape 4, pilote 1 : la liste dans le navigateur.</strong>
+Reprenez la partie 3 : un contrôleur web <code>VoyageController</code>
+(sans <code>--api</code>) dont <code>index()</code> transmet
+<code>Voyage::all()</code> à la vue <code>voyages.index</code>, et la
+route nommée suivante dans <code>routes/web.php</code> :</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/voyages&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;index&#39;</span>])</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.index&#39;</span>)<span class="ot">;</span></span></code></pre></div>
+<p>La vue affiche un tableau avec le titre, la destination, le départ et
+le prix. Le pilote enregistre et publie le travail commun sur
+<code>main</code> :</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Modele Voyage, API CRUD et liste des voyages&quot;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+<p>Les deux autres récupèrent ce travail avec <code>git pull</code>,
+puis <code>php artisan migrate</code> et
+<code>php artisan db:seed</code> sur leur poste.</p>
+<h3 id="valider-les-données-avec-une-form-request">5. Valider les
+données avec une Form Request</h3>
+<h4 id="la-faille">La faille</h4>
+<p>Envoyez ces deux requêtes à l’API de l’étape 3 et observez les
+réponses :</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-X</span> POST http://127.0.0.1:8000/api/voyages <span class="dt">\</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Accept: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">&#39;{&quot;titre&quot;:&quot;Test&quot;,&quot;destination&quot;:&quot;Lune&quot;,</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="st">       &quot;depart&quot;:&quot;2020-01-01&quot;,&quot;prix&quot;:-50,&quot;places&quot;:0}&#39;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-X</span> POST http://127.0.0.1:8000/api/voyages <span class="dt">\</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Accept: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">&#39;{&quot;titre&quot;:&quot;&quot;,&quot;destination&quot;:&quot;Lune&quot;,</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="st">       &quot;depart&quot;:&quot;2027-01-01&quot;,&quot;prix&quot;:10,&quot;places&quot;:5}&#39;</span></span></code></pre></div>
+<p>La première crée un voyage absurde : <strong>201</strong>. La seconde
+provoque une erreur <strong>500</strong> : la chaîne vide est convertie
+en <code>null</code> et la base refuse un titre nul. Aucune des deux
+réponses n’explique au client ce qu’il doit corriger.</p>
+<p>Un attribut HTML <code>required</code> ne protège rien :
+<code>curl</code> ne passe pas par le formulaire. <strong>La validation
+qui protège est celle du serveur</strong> ; celle du navigateur
+n’apporte que du confort.</p>
+<h4 id="écrire-les-règles-une-seule-fois">Écrire les règles une seule
+fois</h4>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:request VoyageRequest</span></code></pre></div>
+<p>Dans <code>app/Http/Requests/VoyageRequest.php</code> :</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> authorize()<span class="ot">:</span> <span class="dt">bool</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">true</span><span class="ot">;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> rules()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;titre&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;string&#39;</span><span class="ot">,</span> <span class="st">&#39;max:120&#39;</span>]<span class="ot">,</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;destination&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;string&#39;</span><span class="ot">,</span> <span class="st">&#39;max:100&#39;</span>]<span class="ot">,</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;date&#39;</span><span class="ot">,</span> <span class="st">&#39;after:today&#39;</span>]<span class="ot">,</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;prix&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;numeric&#39;</span><span class="ot">,</span> <span class="st">&#39;gt:0&#39;</span>]<span class="ot">,</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;places&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;integer&#39;</span><span class="ot">,</span> <span class="st">&#39;between:1,60&#39;</span>]<span class="ot">,</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">;</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Chaque règle traduit une ligne de la colonne « contrainte métier » de
+la partie 4. <code>authorize()</code> renvoie <code>true</code> pour
+l’instant : réserver la gestion aux enseignants sera l’objet de
+l’intervention 4. Dans le contrôleur d’API, remplacez
+<code>Request</code> par <code>VoyageRequest</code> et
+<code>$request-&gt;all()</code> par
+<code>$request-&gt;validated()</code> :</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> store(VoyageRequest <span class="va">$request</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span> <span class="op">=</span> Voyage::create(<span class="va">$request</span>-&gt;validated())<span class="ot">;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response()-&gt;json(<span class="va">$voyage</span><span class="ot">,</span> <span class="dv">201</span>)<span class="ot">;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Faites de même dans <code>update()</code>. <code>validated()</code>
+ne renvoie <strong>que les champs validés</strong> : un champ inattendu
+envoyé par le client est ignoré.</p>
+<h4 id="deux-clients-deux-réponses">Deux clients, deux réponses</h4>
+<p>La Form Request est exécutée <strong>avant</strong> la méthode du
+contrôleur. Si une règle échoue, le contrôleur n’est jamais appelé et
+Laravel répond selon le client :</p>
+<figure>
+<img role="img" aria-label="Trajet d’une saisie invalide : la Form Request l’arrête avant le contrôleur, puis répond par une redirection avec erreurs au navigateur, ou par un JSON 422 au client d’API." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDY0MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZjIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjRDk1QzU5Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjOEE5NEE2Ii8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIiBmaWxsPSIjRkZGRkZGIi8+CgogIDwhLS0gQ2xpZW50IDEgOiBuYXZpZ2F0ZXVyIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI0MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxNzAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMi41Ii8+CiAgPHJlY3QgeD0iMjAiIHk9IjQwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzM1NjhENCIvPgogIDxyZWN0IHg9IjIwIiB5PSI2MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxMiIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjE0NSIgeT0iNjIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OYXZpZ2F0ZXVyIMK3IGZvcm11bGFpcmU8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMTcyMDMzIj4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxMDAiPlRpdHJlICAgICAgIFsgICAgICAgICAgXTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxMjYiPlByaXggICAgICAgIFsgLTUwICAgICAgXTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxNTIiPlBsYWNlcyAgICAgIFsgMzAgICAgICAgXTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxNzgiIGZpbGw9IiM1QzY4N0MiPl90b2tlbj04Zksy4oCmICAoQGNzcmYpPC90ZXh0PgogIDwvZz4KICA8cmVjdCB4PSIxNTAiIHk9IjE4NiIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxOCIgcng9IjQiIGZpbGw9IiNGN0Y4RkEiIHN0cm9rZT0iIzE3MjAzMyIvPgogIDx0ZXh0IHg9IjIwMCIgeT0iMTk5IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q3LDqWVyIGxlIHZveWFnZTwvdGV4dD4KICA8cGF0aCBkPSJNMCwyMTAgTDI5MCwyMTAgTDI3NiwyMjYgTDE0LDIyNiBaIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgoKICA8IS0tIEzDqWdlbmRlIC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMTcyMDMzIj4KICAgIDxsaW5lIHgxPSIyNCIgeTE9IjI2OCIgeDI9Ijc0IiB5Mj0iMjY4IiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICAgIDx0ZXh0IHg9Ijg0IiB5PSIyNzMiPnJlcXXDqnRlIGVudm95w6llPC90ZXh0PgogICAgPGxpbmUgeDE9Ijc0IiB5MT0iMjk2IiB4Mj0iMjQiIHkyPSIyOTYiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZjKSIvPgogICAgPHRleHQgeD0iODQiIHk9IjMwMSI+csOpcG9uc2Ugw6AgdW5lIHNhaXNpZSBpbnZhbGlkZTwvdGV4dD4KICA8L2c+CgogIDwhLS0gQ2xpZW50IDIgOiBhcHBsaSBtb2JpbGUgLS0+CiAgPHJlY3QgeD0iNjAiIHk9IjMzMCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSIyODAiIHJ4PSIyMiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjEyMCIgeT0iMzQyIiB3aWR0aD0iNTAiIGhlaWdodD0iNiIgcng9IjMiIGZpbGw9IiMxNzIwMzMiLz4KICA8cmVjdCB4PSI3NCIgeT0iMzYwIiB3aWR0aD0iMTQyIiBoZWlnaHQ9IjI4IiByeD0iNiIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjE0NSIgeT0iMzc5IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QXBwbGkgbW9iaWxlPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjMTcyMDMzIj4KICAgIDx0ZXh0IHg9Ijc2IiB5PSI0MTIiPlBPU1QgL2FwaS92b3lhZ2VzPC90ZXh0PgogICAgPHRleHQgeD0iNzYiIHk9IjQzNiIgZmlsbD0iIzM1NjhENCI+QWNjZXB0OjwvdGV4dD4KICAgIDx0ZXh0IHg9Ijc2IiB5PSI0NTQiIGZpbGw9IiMzNTY4RDQiPiBhcHBsaWNhdGlvbi9qc29uPC90ZXh0PgogICAgPHRleHQgeD0iNzYiIHk9IjQ4MiI+eyJ0aXRyZSI6ICIiLDwvdGV4dD4KICAgIDx0ZXh0IHg9Ijc2IiB5PSI1MDAiPiAicHJpeCI6IC01MCw8L3RleHQ+CiAgICA8dGV4dCB4PSI3NiIgeT0iNTE4Ij4gInBsYWNlcyI6IDMwfTwvdGV4dD4KICA8L2c+CiAgPGNpcmNsZSBjeD0iMTQ1IiBjeT0iNTg4IiByPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIiLz4KCiAgPCEtLSBWb2llcyByZXF1w6p0ZSAvIHLDqXBvbnNlIDogbmF2aWdhdGV1ciAtLT4KICA8bGluZSB4MT0iMjc2IiB5MT0iMTAwIiB4Mj0iNTE2IiB5Mj0iMTAwIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICA8dGV4dCB4PSIzOTYiIHk9Ijg4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBPU1QgL3ZveWFnZXM8L3RleHQ+CiAgPGxpbmUgeDE9IjUxOCIgeTE9IjE2MCIgeDI9IjI3OCIgeTI9IjE2MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmMpIi8+CiAgPHRleHQgeD0iMzk2IiB5PSIxODQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4zMDIg4oaSIHJldG91ciBhdSBmb3JtdWxhaXJlPC90ZXh0PgogIDx0ZXh0IHg9IjM5NiIgeT0iMjA0IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZXJyZXVycyAoJGVycm9ycykgZXQgc2Fpc2llPC90ZXh0PgogIDx0ZXh0IHg9IjM5NiIgeT0iMjIxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+KG9sZCgpKSBnYXJkw6llcyBlbiBzZXNzaW9uPC90ZXh0PgoKICA8IS0tIFZvaWVzIHJlcXXDqnRlIC8gcsOpcG9uc2UgOiBtb2JpbGUgLS0+CiAgPGxpbmUgeDE9IjIzNiIgeTE9IjQxMCIgeDI9IjUxNiIgeTI9IjQxMCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmIpIi8+CiAgPHRleHQgeD0iMzgwIiB5PSIzOTgiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UE9TVCAvYXBpL3ZveWFnZXM8L3RleHQ+CiAgPGxpbmUgeDE9IjUxOCIgeTE9IjQ4MCIgeDI9IjIzOCIgeTI9IjQ4MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmMpIi8+CiAgPHRleHQgeD0iMzgwIiB5PSI1MDQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj40MjIgKyBjb3JwcyBKU09OPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSIyNTIiIHk9IjUyNiI+eyJtZXNzYWdlIjogIuKApiIsPC90ZXh0PgogICAgPHRleHQgeD0iMjUyIiB5PSI1NDMiPiAiZXJyb3JzIjogezwvdGV4dD4KICAgIDx0ZXh0IHg9IjI1MiIgeT0iNTYwIj4gICAidGl0cmUiOiBbIuKApm9ibGlnYXRvaXJlLiJdLDwvdGV4dD4KICAgIDx0ZXh0IHg9IjI1MiIgeT0iNTc3Ij4gICAicHJpeCI6IFsi4oCmcG9zaXRpZi4iXX19PC90ZXh0PgogIDwvZz4KCiAgPCEtLSBTZXJ2ZXVyIC0tPgogIDxyZWN0IHg9IjUxMCIgeT0iMjAiIHdpZHRoPSI1ODAiIGhlaWdodD0iNjEwIiByeD0iMTQiIGZpbGw9IiNGN0Y4RkEiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iNTEwIiB5PSIyMCIgd2lkdGg9IjU4MCIgaGVpZ2h0PSIxNiIgcng9IjgiIGZpbGw9IiMxNzIwMzMiLz4KICA8dGV4dCB4PSIxMDc2IiB5PSI1NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJlbmQiPlNlcnZldXIgTGFyYXZlbDwvdGV4dD4KCiAgPCEtLSAxLiBSb3V0ZXMgLS0+CiAgPHJlY3QgeD0iNTIwIiB5PSI2MiIgd2lkdGg9IjE1MCIgaGVpZ2h0PSI1NDAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDx0ZXh0IHg9IjU5NSIgeT0iODgiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xLiBSb3V0ZTwvdGV4dD4KICA8ZyBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgPHRleHQgeD0iNTk1IiB5PSIxMjYiPnJvdXRlcy93ZWIucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTk1IiB5PSIxNDQiIGZpbGw9IiM1QzY4N0MiPuKGkiBWb3lhZ2VDb250cm9sbGVyPC90ZXh0PgogICAgPHRleHQgeD0iNTk1IiB5PSI0MzYiPnJvdXRlcy9hcGkucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTk1IiB5PSI0NTQiIGZpbGw9IiM1QzY4N0MiPuKGkiBBcGlcVm95YWdlLTwvdGV4dD4KICAgIDx0ZXh0IHg9IjU5NSIgeT0iNDcwIiBmaWxsPSIjNUM2ODdDIj5Db250cm9sbGVyPC90ZXh0PgogIDwvZz4KICA8bGluZSB4MT0iNTMwIiB5MT0iMjkwIiB4Mj0iNjYwIiB5Mj0iMjkwIiBzdHJva2U9IiNDQkQ2RTIiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSI1IDQiLz4KCiAgPCEtLSBSb3V0ZXMgdmVycyBWb3lhZ2VSZXF1ZXN0IC0tPgogIDxwYXRoIGQ9Ik02NzAsMTM1IEM2OTAsMTM1IDY5MCwyMDUgNzA4LDIwNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmIpIi8+CiAgPHBhdGggZD0iTTY3MCw0NDUgQzY5MCw0NDUgNjkwLDM0NSA3MDgsMzQ1IiBmaWxsPSJub25lIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KCiAgPCEtLSAyLiBWb3lhZ2VSZXF1ZXN0IC0tPgogIDxyZWN0IHg9IjcxMCIgeT0iMTUwIiB3aWR0aD0iMzcwIiBoZWlnaHQ9IjI1MCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxyZWN0IHg9IjcxMCIgeT0iMTUwIiB3aWR0aD0iMzcwIiBoZWlnaHQ9IjM0IiByeD0iMTAiIGZpbGw9IiNFNDlBMzgiLz4KICA8cmVjdCB4PSI3MTAiIHk9IjE3MiIgd2lkdGg9IjM3MCIgaGVpZ2h0PSIxMiIgZmlsbD0iI0U0OUEzOCIvPgogIDx0ZXh0IHg9Ijg5NSIgeT0iMTczIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Mi4gVm95YWdlUmVxdWVzdCDigJQgYXZhbnQgbGUgY29udHLDtGxldXI8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxNzIwMzMiPgogICAgPHRleHQgeD0iNzI4IiB5PSIyMTQiPnRpdHJlICAgcmVxdWlyZWQgwrcgbWF4OjEyMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjcyOCIgeT0iMjM4Ij5kZXBhcnQgIHJlcXVpcmVkIMK3IGFmdGVyOnRvZGF5PC90ZXh0PgogICAgPHRleHQgeD0iNzI4IiB5PSIyNjIiPnByaXggICAgcmVxdWlyZWQgwrcgZ3Q6MDwvdGV4dD4KICAgIDx0ZXh0IHg9IjcyOCIgeT0iMjg2Ij5wbGFjZXMgIHJlcXVpcmVkIMK3IGJldHdlZW46MSw2MDwvdGV4dD4KICA8L2c+CiAgPGxpbmUgeDE9IjcyOCIgeTE9IjMwNCIgeDI9IjEwNjIiIHkyPSIzMDQiIHN0cm9rZT0iI0NCRDZFMiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICA8ZyBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Q5NUM1OSI+CiAgICA8dGV4dCB4PSI3MjgiIHk9IjMzMiI+4pyXIHRpdHJlIDogb2JsaWdhdG9pcmU8L3RleHQ+CiAgICA8dGV4dCB4PSI3MjgiIHk9IjM1OCI+4pyXIHByaXggOiBkb2l0IMOqdHJlIHN0cmljdGVtZW50IHBvc2l0aWY8L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9IjcyOCIgeT0iMzg2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzVDNjg3QyI+4oaSIGFycsOqdCA6IHLDqXBvbnNlIGQnZXJyZXVyLCBzZWxvbiBsZSBjbGllbnQ8L3RleHQ+CgogIDwhLS0gMy4gQ29udHLDtGxldXIgLS0+CiAgPGxpbmUgeDE9Ijg5NSIgeTE9IjQwMCIgeDI9Ijg5NSIgeTI9IjQ1MCIgc3Ryb2tlPSIjOEE5NEE2IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIgbWFya2VyLWVuZD0idXJsKCNmZykiLz4KICA8ZyBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSI4ODEiIHkxPSI0MTEiIHgyPSI5MDkiIHkyPSI0MzkiLz4KICAgIDxsaW5lIHgxPSI5MDkiIHkxPSI0MTEiIHgyPSI4ODEiIHkyPSI0MzkiLz4KICA8L2c+CiAgPHJlY3QgeD0iNzEwIiB5PSI0NTIiIHdpZHRoPSIzNzAiIGhlaWdodD0iOTYiIHJ4PSIxMCIgZmlsbD0iI0VFRjBGMyIgc3Ryb2tlPSIjOEE5NEE2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPgogIDx0ZXh0IHg9Ijg5NSIgeT0iNDg0IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjMuIFZveWFnZUNvbnRyb2xsZXI6OnN0b3JlKCk8L3RleHQ+CiAgPHRleHQgeD0iODk1IiB5PSI1MTIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5qYW1haXMgZXjDqWN1dMOpIHNpIHVuZSByw6hnbGUgw6ljaG91ZTwvdGV4dD4KICA8dGV4dCB4PSI4OTUiIHk9IjUzNCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmF1Y3VuZSDDqWNyaXR1cmUgZW4gYmFzZTwvdGV4dD4KCiAgPCEtLSBTeW50aMOoc2UgLS0+CiAgPHJlY3QgeD0iNzEwIiB5PSI1NjIiIHdpZHRoPSIzNzAiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iI0U4RjRFQyIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDx0ZXh0IHg9Ijg5NSIgeT0iNTg0IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VW5lIHLDqGdsZSwgZGV1eCBjbGllbnRzLCBkZXV4IHLDqXBvbnNlcy48L3RleHQ+CiAgPHRleHQgeD0iODk1IiB5PSI2MDQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MZSBjb250csO0bGV1ciBuZSByZcOnb2l0IHF1ZSAkcmVxdWVzdC0+dmFsaWRhdGVkKCkuPC90ZXh0Pgo8L3N2Zz4K" alt="Trajet d’une saisie invalide : la Form Request l’arrête avant le contrôleur, puis répond par une redirection avec erreurs au navigateur, ou par un JSON 422 au client d’API." />
+<figcaption aria-hidden="true">Trajet d’une saisie invalide : la Form
+Request l’arrête avant le contrôleur, puis répond par une redirection
+avec erreurs au navigateur, ou par un JSON 422 au client
+d’API.</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Client</th>
+<th>Réponse à une saisie invalide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigateur (formulaire)</td>
+<td>Redirection <code>302</code> vers la page précédente ; erreurs et
+saisie conservées en session.</td>
+</tr>
+<tr>
+<td>Client qui envoie <code>Accept: application/json</code></td>
+<td><code>422</code> et un corps JSON
+<code>{&quot;message&quot;: …, &quot;errors&quot;: {…}}</code>.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Piège.</strong> Sans l’en-tête
+<code>Accept: application/json</code>, <code>curl</code> est traité
+comme un navigateur : il reçoit une redirection <code>302</code>, pas la
+liste des erreurs.</p>
+</blockquote>
+<p>La règle commune est publiée sur <code>main</code> par le pilote.
+Chacun crée ensuite <strong>sa branche</strong> à partir de cette
+version et y travaille seul :</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> feature/<span class="op">&lt;</span>nom-de-la-part<span class="op">&gt;</span></span></code></pre></div>
+<h4 id="les-trois-parts">Les trois parts</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Part</th>
+<th>Branche</th>
+<th>Fichiers principaux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API</td>
+<td><code>feature/api-validation</code></td>
+<td><code>VoyageRequest.php</code>, <code>README.md</code></td>
+</tr>
+<tr>
+<td>Création</td>
+<td><code>feature/creation-voyage</code></td>
+<td><code>routes/web.php</code>, <code>VoyageController.php</code>,
+<code>create.blade.php</code>, <code>index.blade.php</code></td>
+</tr>
+<tr>
+<td>Modification</td>
+<td><code>feature/modification-voyage</code></td>
+<td><code>routes/web.php</code>, <code>VoyageController.php</code>,
+<code>edit.blade.php</code>, <code>index.blade.php</code></td>
+</tr>
+</tbody>
+</table>
+<p>Chacun commite sur sa branche et la publie avec
+<code>git push -u origin &lt;branche&gt;</code>. <strong>Ne fusionnez
+pas dans <code>main</code></strong> : réunir les trois branches est le
+travail de l’après-midi.</p>
+<h4 id="part-api-une-api-qui-explique-ses-refus">Part « API » : une API
+qui explique ses refus</h4>
+<ol type="1">
+<li><p><strong>Tester.</strong> Remplissez ce tableau avec une requête
+<code>curl</code> par ligne :</p>
+<table>
+<thead>
+<tr>
+<th>Cas</th>
+<th>Code obtenu</th>
+<th>Message d’erreur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Voyage valide</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Titre vide</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Prix de −50 €</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>61 places</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Départ hier</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Voyage valide avec un champ <code>&quot;id&quot;: 999</code> en plus</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Titre vide, sans en-tête <code>Accept</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></li>
+<li><p><strong>Traduire.</strong> Les messages par défaut sont en
+anglais. Ajoutez à <code>VoyageRequest</code> une méthode
+<code>attributes()</code> (noms lisibles des champs) et une méthode
+<code>messages()</code> (phrases d’erreur), puis complétez-les pour
+toutes les règles :</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> attributes()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="st">&#39;depart&#39;</span> =&gt; <span class="st">&#39;date de départ&#39;</span><span class="ot">,</span> <span class="st">&#39;places&#39;</span> =&gt; <span class="st">&#39;nombre de places&#39;</span>]<span class="ot">;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> messages()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;required&#39;</span> =&gt; <span class="st">&#39;Le champ :attribute est obligatoire.&#39;</span><span class="ot">,</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart.after&#39;</span> =&gt; <span class="st">&#39;La date de départ doit être postérieure à aujourd</span><span class="sc">\&#39;</span><span class="st">hui.&#39;</span><span class="ot">,</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">;</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Une clé limitée au nom de la règle (<code>required</code>) s’applique
+à tous les champs ; une clé <code>champ.règle</code>
+(<code>depart.after</code>) vise un seul champ. <code>:attribute</code>
+reçoit le nom lisible.</p></li>
+<li><p><strong>Documenter.</strong> Dans <code>README.md</code>,
+décrivez l’API pour un développeur de l’appli mobile : les cinq routes,
+un exemple de requête de création, les codes de réponse et le format
+d’une erreur <code>422</code>.</p></li>
+</ol>
+<p><strong>Critère de réussite :</strong> les sept cas sont testés et
+expliqués, chaque refus produit un message en français, le README permet
+d’utiliser l’API sans lire le code.</p>
+<h4 id="extension">Extension</h4>
+<p>Écrivez un test de fonctionnalité
+(<code>php artisan make:test VoyageApiTest</code>) qui envoie un voyage
+de prix négatif avec <code>postJson(&#39;/api/voyages&#39;, [...])</code> et
+vérifie <code>assertStatus(422)</code> ; lancez-le avec
+<code>php artisan test</code>. Ce test sera exécuté automatiquement par
+la chaîne d’intégration continue du module DevOps.</p>
+<h3 id="créer-et-modifier-un-voyage-par-formulaire">6. Créer et modifier
+un voyage par formulaire</h3>
+<h4 id="les-quatre-mécanismes-dun-formulaire-laravel">Les quatre
+mécanismes d’un formulaire Laravel</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@csrf</code></td>
+<td>Ajoute un jeton secret propre à la session. Sans lui, Laravel refuse
+l’envoi (erreur <strong>419</strong>) : un autre site ne peut pas
+soumettre le formulaire à votre place.</td>
+</tr>
+<tr>
+<td><code>@method(&#39;PUT&#39;)</code></td>
+<td>Un formulaire HTML ne connaît que GET et POST : ce champ caché
+indique à Laravel la méthode réellement voulue (PUT, DELETE).</td>
+</tr>
+<tr>
+<td><code>@error(&#39;champ&#39;)</code></td>
+<td>Affiche, via <code>$message</code>, l’erreur de validation de ce
+champ s’il y en a une.</td>
+</tr>
+<tr>
+<td><code>old(&#39;champ&#39;)</code></td>
+<td>Restitue la saisie précédente après un refus, pour ne pas tout
+retaper.</td>
+</tr>
+</tbody>
+</table>
+<p>Après un enregistrement réussi, le contrôleur redirige vers la liste
+avec un <strong>message flash</strong>, une donnée de session lue une
+seule fois :</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> redirect()-&gt;route(<span class="st">&#39;voyages.index&#39;</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    -&gt;with(<span class="st">&#39;succes&#39;</span><span class="ot">,</span> <span class="st">&#39;Voyage créé.&#39;</span>)<span class="ot">;</span></span></code></pre></div>
+<p>Dans la vue, on l’affiche s’il existe :</p>
+<pre class="blade"><code>@if (session(&#39;succes&#39;))
+    &lt;p&gt;{{ session(&#39;succes&#39;) }}&lt;/p&gt;
+@endif</code></pre>
+<p>Pour vérifier la validation <strong>du serveur</strong>, ajoutez
+temporairement l’attribut <code>novalidate</code> à la balise
+<code>&lt;form&gt;</code> : le navigateur cesse alors de bloquer
+lui-même les champs <code>type=&quot;number&quot;</code> ou
+<code>type=&quot;date&quot;</code> mal remplis.</p>
+<h4 id="part-création">Part « Création »</h4>
+<p>Routes, à ajouter sous la route de la liste dans
+<code>routes/web.php</code> :</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/voyages/create&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;create&#39;</span>])</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.create&#39;</span>)<span class="ot">;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>Route::post(<span class="st">&#39;/voyages&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;store&#39;</span>])</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.store&#39;</span>)<span class="ot">;</span></span></code></pre></div>
+<p>Dans le contrôleur web :</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> create()</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> view(<span class="st">&#39;voyages.create&#39;</span>)<span class="ot">;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> store(VoyageRequest <span class="va">$request</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    Voyage::create(<span class="va">$request</span>-&gt;validated())<span class="ot">;</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> redirect()-&gt;route(<span class="st">&#39;voyages.index&#39;</span>)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>        -&gt;with(<span class="st">&#39;succes&#39;</span><span class="ot">,</span> <span class="st">&#39;Voyage créé.&#39;</span>)<span class="ot">;</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Début de <code>resources/views/voyages/create.blade.php</code>, page
+HTML complète à construire autour :</p>
+<pre class="blade"><code>&lt;form method=&quot;POST&quot; action=&quot;{{ route(&#39;voyages.store&#39;) }}&quot;&gt;
+    @csrf
+
+    &lt;label for=&quot;titre&quot;&gt;Titre&lt;/label&gt;
+    &lt;input id=&quot;titre&quot; name=&quot;titre&quot; value=&quot;{{ old(&#39;titre&#39;) }}&quot;&gt;
+    @error(&#39;titre&#39;)
+        &lt;p&gt;{{ $message }}&lt;/p&gt;
+    @enderror
+
+    &lt;button type=&quot;submit&quot;&gt;Créer le voyage&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<ol type="1">
+<li><strong>Compléter</strong> le formulaire avec les quatre autres
+champs, sur le même modèle (<code>type=&quot;date&quot;</code> pour le départ,
+<code>type=&quot;number&quot;</code> pour le prix et les places, avec
+<code>step=&quot;0.01&quot;</code> pour le prix).</li>
+<li><strong>Relier</strong> : dans la liste, un lien « Nouveau voyage »
+vers <code>route(&#39;voyages.create&#39;)</code> et l’affichage du message
+flash.</li>
+<li><strong>Éprouver</strong> : envoyez le formulaire vide, puis un prix
+négatif. À constater : les erreurs s’affichent sous les bons champs et
+les valeurs saisies sont conservées.</li>
+<li><strong>Expliquer</strong> : retirez <code>@csrf</code>, envoyez,
+notez le code obtenu, puis remettez la ligne. Pourquoi ce refus
+protège-t-il les utilisateurs ?</li>
+</ol>
+<p><strong>Critère de réussite :</strong> un voyage valide apparaît dans
+la liste avec le message de confirmation ; une saisie invalide revient
+sur le formulaire, avec ses erreurs et la saisie conservée.</p>
+<h4 id="part-modification">Part « Modification »</h4>
+<p>Routes, à ajouter sous la route de la liste dans
+<code>routes/web.php</code> :</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/voyages/{voyage}/edit&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;edit&#39;</span>])</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.edit&#39;</span>)<span class="ot">;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>Route::put(<span class="st">&#39;/voyages/{voyage}&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;update&#39;</span>])</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.update&#39;</span>)<span class="ot">;</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>Route::delete(<span class="st">&#39;/voyages/{voyage}&#39;</span><span class="ot">,</span> [VoyageController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;destroy&#39;</span>])</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    -&gt;name(<span class="st">&#39;voyages.destroy&#39;</span>)<span class="ot">;</span></span></code></pre></div>
+<p>Dans le contrôleur web :</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> edit(Voyage <span class="va">$voyage</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> view(<span class="st">&#39;voyages.edit&#39;</span><span class="ot">,</span> [<span class="st">&#39;voyage&#39;</span> =&gt; <span class="va">$voyage</span>])<span class="ot">;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> update(VoyageRequest <span class="va">$request</span><span class="ot">,</span> Voyage <span class="va">$voyage</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span>-&gt;update(<span class="va">$request</span>-&gt;validated())<span class="ot">;</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> redirect()-&gt;route(<span class="st">&#39;voyages.index&#39;</span>)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>        -&gt;with(<span class="st">&#39;succes&#39;</span><span class="ot">,</span> <span class="st">&#39;Voyage modifié.&#39;</span>)<span class="ot">;</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Début de <code>resources/views/voyages/edit.blade.php</code> :</p>
+<pre class="blade"><code>&lt;form method=&quot;POST&quot;
+      action=&quot;{{ route(&#39;voyages.update&#39;, $voyage) }}&quot;&gt;
+    @csrf
+    @method(&#39;PUT&#39;)
+
+    &lt;label for=&quot;titre&quot;&gt;Titre&lt;/label&gt;
+    &lt;input id=&quot;titre&quot; name=&quot;titre&quot;
+           value=&quot;{{ old(&#39;titre&#39;, $voyage-&gt;titre) }}&quot;&gt;
+    @error(&#39;titre&#39;)
+        &lt;p&gt;{{ $message }}&lt;/p&gt;
+    @enderror
+
+    &lt;button type=&quot;submit&quot;&gt;Enregistrer&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<p><code>old(&#39;titre&#39;, $voyage-&gt;titre)</code> affiche la saisie
+refusée s’il y en a une, sinon la valeur enregistrée.</p>
+<ol type="1">
+<li><strong>Compléter</strong> le formulaire avec les quatre autres
+champs. Attention au départ : un champ <code>type=&quot;date&quot;</code> attend
+le format <code>2027-03-15</code>, alors que
+<code>$voyage-&gt;depart</code> est un objet date. Utilisez
+<code>$voyage-&gt;depart-&gt;format(&#39;Y-m-d&#39;)</code> comme valeur par
+défaut.</li>
+<li><strong>Supprimer</strong> : écrivez <code>destroy()</code>
+(redirection avec « Voyage supprimé. »), puis ajoutez à chaque ligne de
+la liste un lien « Modifier » et un petit formulaire de suppression
+contenant <code>@csrf</code>, <code>@method(&#39;DELETE&#39;)</code> et un
+bouton. Affichez le message flash dans la liste.</li>
+<li><strong>Éprouver</strong> : modifiez un prix en −10, puis en 15. À
+constater : le refus, puis la modification visible dans la liste.</li>
+<li><strong>Raisonner</strong> : avec Tinker, passez le départ d’un
+voyage à une date d’hier, puis essayez de corriger seulement son prix
+par le formulaire. Que se passe-t-il ? Quelle règle en est responsable ?
+Proposez une solution, sans forcément la coder.</li>
+</ol>
+<p><strong>Critère de réussite :</strong> un voyage se modifie et se
+supprime depuis la liste ; une modification invalide revient sur le
+formulaire prérempli avec ses erreurs.</p>
+<h4 id="sources-et-sinks-où-naissent-les-failles-triviales">Sources et
+sinks : où naissent les failles triviales</h4>
+<p>La validation contrôle ce qui <strong>entre</strong> ; elle ne suffit
+pas à rendre une donnée inoffensive. Un titre
+<code>&lt;script&gt;alert(1)&lt;/script&gt;</code> respecte
+<code>max:120</code> : il est valide et sera enregistré.</p>
+<ul>
+<li>Une <strong>source</strong> est toute donnée contrôlée par le client
+: champ de formulaire, corps JSON, paramètre d’URL, en-tête, ou ligne de
+base qu’un client a remplie.</li>
+<li>Un <strong>sink</strong> est l’endroit où cette donnée est
+<strong>interprétée</strong> et non simplement affichée : une page HTML,
+une requête SQL, une URL de redirection, une commande système.</li>
+<li>Une faille apparaît quand une source atteint un sink <strong>sans
+traitement adapté à son contexte</strong>.</li>
+</ul>
+<blockquote>
+<p><strong>Valider en entrée, échapper en sortie.</strong> La validation
+vérifie la règle métier ; l’échappement dépend de l’endroit où la donnée
+arrive. On ne « nettoie » pas un titre avec <code>strip_tags</code> à
+l’entrée : « Sortie <Rome> » est un titre légitime.</p>
+</blockquote>
+<p>Le JSON renvoyé par l’API avec un code <code>201</code> n’est pas un
+sink : servi en <code>application/json</code>, il n’est pas interprété
+comme du HTML par le navigateur. Le danger apparaît chez le client qui
+l’insère ensuite dans une page.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Sink</th>
+<th>Faille</th>
+<th>Écriture sûre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{!! $voyage-&gt;titre !!}</code></td>
+<td>XSS stockée</td>
+<td><code>{{ $voyage-&gt;titre }}</code>, échappé par Blade</td>
+</tr>
+<tr>
+<td><code>element.innerHTML = voyage.titre</code></td>
+<td>XSS côté client</td>
+<td><code>element.textContent = voyage.titre</code></td>
+</tr>
+<tr>
+<td><code>whereRaw(&quot;destination = &#39;$d&#39;&quot;)</code></td>
+<td>Injection SQL</td>
+<td><code>where(&#39;destination&#39;, $d)</code>, requête préparée</td>
+</tr>
+<tr>
+<td><code>redirect($request-&gt;input(&#39;retour&#39;))</code></td>
+<td>Redirection ouverte</td>
+<td><code>redirect()-&gt;route(&#39;voyages.index&#39;)</code></td>
+</tr>
+<tr>
+<td><code>#[Unguarded]</code> et
+<code>create($request-&gt;all())</code></td>
+<td>Affectation de masse</td>
+<td><code>#[Fillable]</code> et <code>validated()</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="exercice-commun-chasser-les-sinks">Exercice commun : chasser les
+sinks</h4>
+<p>À trois, après vos parts. Pour chaque extrait, nommez la
+<strong>source</strong>, le <strong>sink</strong> et la faille, puis
+proposez l’écriture sûre. Cherchez ensuite si l’un de ces sinks existe
+dans votre propre code.</p>
+<ol type="1">
+<li><pre class="blade"><code>&lt;h2&gt;{!! $voyage-&gt;titre !!}&lt;/h2&gt;</code></pre></li>
+<li><div class="sourceCode" id="cb43"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="va">$voyages</span> <span class="op">=</span> <span class="cn">DB</span>::select(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;select * from voyages where destination = &#39;&quot;</span> <span class="op">.</span> <span class="va">$request</span>-&gt;query(<span class="st">&#39;ville&#39;</span>) <span class="op">.</span> <span class="st">&quot;&#39;&quot;</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span></code></pre></div></li>
+<li><div class="sourceCode" id="cb44"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> reponse <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="st">&#39;/api/voyages&#39;</span>)<span class="op">;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">const</span> v <span class="kw">of</span> <span class="cf">await</span> reponse<span class="op">.</span><span class="fu">json</span>()) {</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    liste<span class="op">.</span><span class="at">innerHTML</span> <span class="op">+=</span> <span class="vs">`&lt;li&gt;</span><span class="sc">${</span>v<span class="op">.</span><span class="at">titre</span><span class="sc">}</span><span class="vs">&lt;/li&gt;`</span><span class="op">;</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb45"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> redirect(<span class="va">$request</span>-&gt;input(<span class="st">&#39;retour&#39;</span><span class="ot">,</span> <span class="st">&#39;/voyages&#39;</span>))<span class="ot">;</span></span></code></pre></div></li>
+<li><div class="sourceCode" id="cb46"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>Unguarded<span class="at">]</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Voyage <span class="kw">extends</span> Model {}</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co">// dans le contrôleur</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="va">$voyage</span>-&gt;update(<span class="va">$request</span>-&gt;all())<span class="ot">;</span></span></code></pre></div></li>
+</ol>
+<p><strong>Critère de réussite :</strong> pour chaque extrait, la donnée
+dangereuse est suivie de la source au sink, et la correction agit au bon
+endroit.</p>
+<h4 id="restitution-de-léquipe">Restitution de l’équipe</h4>
+<p>Chacun, à tour de rôle, sur son poste projeté :</p>
+<ol type="1">
+<li>montre une saisie invalide sur son interface et la réponse obtenue
+;</li>
+<li>raconte le trajet de cette requête, de l’envoi jusqu’à la réponse
+;</li>
+<li>choisit une ligne de son code et explique pourquoi elle est
+nécessaire ;</li>
+<li>désigne un sink de sa part et montre ce qui le protège.</li>
+</ol>
+<p>Les deux autres posent au moins une question. La séance est réussie
+quand chacun sait expliquer <strong>pourquoi le contrôleur n’est jamais
+exécuté</strong> lorsqu’une saisie est invalide.</p>
+<h4 id="sources-1">Sources</h4>
+<p>Syntaxe vérifiée le 18 octobre 2026 dans la documentation Laravel 13
+via Context7 : <a href="https://laravel.com/docs/13.x/controllers#api-resource-routes">contrôleurs
+de ressource</a>, <a href="https://laravel.com/docs/13.x/routing#api-routes">routes
+d’API</a>, <a href="https://laravel.com/docs/13.x/validation#form-request-validation">Form
+Requests et réponse 422</a>, <a href="https://laravel.com/docs/13.x/routing#form-method-spoofing">simulation
+de méthode</a> et <a href="https://laravel.com/docs/13.x/requests#old-input">ancienne
+saisie</a>.</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="expliquer">1. Expliquer</h3>
+<p>La route associe l’URL à l’action ; le contrôleur orchestre la
+réponse ; le modèle permet l’accès aux lignes de <code>produits</code> ;
+la migration décrit le schéma ; la vue compose le HTML. La lecture est
+déclenchée par <code>Produit::all()</code> dans le contrôleur, et non
+par la boucle Blade.</p>
+<h3 id="ajouter">2. Ajouter</h3>
+<p>Dans Tinker, après <code>use App\Models\Produit;</code> :</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="va">$souris</span> <span class="op">=</span> Produit::create([</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;libelle&#39;</span> =&gt; <span class="st">&#39;Souris&#39;</span><span class="ot">,</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;stock&#39;</span> =&gt; <span class="dv">0</span><span class="ot">,</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;prix&#39;</span> =&gt; <span class="fl">19.90</span><span class="ot">,</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span></code></pre></div>
+<p>Au rechargement, le contrôleur relit les produits et la boucle
+affiche chaque ligne reçue. Le Blade n’a pas besoin de connaître à
+l’avance le nombre de produits.</p>
+<h3 id="filtrer">3. Filtrer</h3>
+<p>Dans <code>index()</code>, remplacez la ligne de lecture par :</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="va">$produits</span> <span class="op">=</span> Produit::where(<span class="st">&#39;stock&#39;</span><span class="ot">,</span> <span class="st">&#39;&gt;&#39;</span><span class="ot">,</span> <span class="dv">0</span>)-&gt;get()<span class="ot">;</span></span></code></pre></div>
+<p>La condition exclut de la lecture les produits de stock nul ; elle ne
+supprime aucune ligne. Dans la même session Tinker,
+<code>Produit::find($souris-&gt;id)</code> retrouve la souris. Si la
+session a été fermée, réimportez le modèle et recherchez-la avec
+<code>Produit::where(&#39;libelle&#39;, &#39;Souris&#39;)-&gt;get()</code>.</p>
+<h3 id="partie-4-concevoir-le-voyage">Partie 4 — Concevoir le
+voyage</h3>
+<p><code>decimal(8, 2)</code> plutôt qu’un flottant : un prix se compte
+en centimes exacts. <code>places</code> en
+<code>unsignedSmallInteger</code> : jamais négatif, largement suffisant
+pour 60. La contrainte « postérieure à aujourd’hui » ne peut pas être
+une contrainte de colonne : elle dépend du jour de la saisie, d’où sa
+place dans la validation.</p>
+<h3 id="partie-5-part-api">Partie 5 — Part « API »</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cas</th>
+<th>Code</th>
+<th>Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Voyage valide</td>
+<td><code>201</code></td>
+<td>Créé, le JSON contient l’<code>id</code> attribué.</td>
+</tr>
+<tr>
+<td>Titre vide</td>
+<td><code>422</code></td>
+<td><code>required</code> échoue.</td>
+</tr>
+<tr>
+<td>Prix de −50 €</td>
+<td><code>422</code></td>
+<td><code>gt:0</code> échoue.</td>
+</tr>
+<tr>
+<td>61 places</td>
+<td><code>422</code></td>
+<td><code>between:1,60</code> échoue.</td>
+</tr>
+<tr>
+<td>Départ hier</td>
+<td><code>422</code></td>
+<td><code>after:today</code> échoue.</td>
+</tr>
+<tr>
+<td>Champ <code>&quot;id&quot;: 999</code> en plus</td>
+<td><code>201</code></td>
+<td><code>validated()</code> ignore <code>id</code> : la base attribue
+l’identifiant.</td>
+</tr>
+<tr>
+<td>Titre vide sans <code>Accept</code></td>
+<td><code>302</code></td>
+<td>Traité comme un navigateur : redirection, pas de JSON.</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb49"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> attributes()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;titre&#39;</span> =&gt; <span class="st">&#39;titre&#39;</span><span class="ot">,</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;destination&#39;</span> =&gt; <span class="st">&#39;destination&#39;</span><span class="ot">,</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart&#39;</span> =&gt; <span class="st">&#39;date de départ&#39;</span><span class="ot">,</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;prix&#39;</span> =&gt; <span class="st">&#39;prix&#39;</span><span class="ot">,</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;places&#39;</span> =&gt; <span class="st">&#39;nombre de places&#39;</span><span class="ot">,</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">;</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> messages()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;required&#39;</span> =&gt; <span class="st">&#39;Le champ :attribute est obligatoire.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;max&#39;</span> =&gt; <span class="st">&#39;Le champ :attribute ne doit pas dépasser :max caractères.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;date&#39;</span> =&gt; <span class="st">&#39;Le champ :attribute doit être une date valide.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart.after&#39;</span> =&gt; <span class="st">&#39;La date de départ doit être postérieure à aujourd</span><span class="sc">\&#39;</span><span class="st">hui.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;numeric&#39;</span> =&gt; <span class="st">&#39;Le champ :attribute doit être un nombre.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;prix.gt&#39;</span> =&gt; <span class="st">&#39;Le prix doit être strictement positif.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;integer&#39;</span> =&gt; <span class="st">&#39;Le champ :attribute doit être un nombre entier.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;places.between&#39;</span> =&gt; <span class="st">&#39;Le nombre de places doit être compris entre 1 et 60.&#39;</span><span class="ot">,</span></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">;</span></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Extension, dans <code>tests/Feature/VoyageApiTest.php</code> :</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> test_un_prix_negatif_est_refuse()<span class="ot">:</span> <span class="dt">void</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$this</span>-&gt;postJson(<span class="st">&#39;/api/voyages&#39;</span><span class="ot">,</span> [</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;titre&#39;</span> =&gt; <span class="st">&#39;Test&#39;</span><span class="ot">,</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;destination&#39;</span> =&gt; <span class="st">&#39;Rome&#39;</span><span class="ot">,</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart&#39;</span> =&gt; now()-&gt;addMonth()-&gt;format(<span class="st">&#39;Y-m-d&#39;</span>)<span class="ot">,</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;prix&#39;</span> =&gt; <span class="op">-</span><span class="dv">50</span><span class="ot">,</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;places&#39;</span> =&gt; <span class="dv">30</span><span class="ot">,</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>    ])-&gt;assertStatus(<span class="dv">422</span>)-&gt;assertJsonValidationErrors(<span class="st">&#39;prix&#39;</span>)<span class="ot">;</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="partie-6-part-création">Partie 6 — Part « Création »</h3>
+<p>Champ du départ, sur le modèle du titre :</p>
+<pre class="blade"><code>&lt;label for=&quot;depart&quot;&gt;Départ&lt;/label&gt;
+&lt;input id=&quot;depart&quot; name=&quot;depart&quot; type=&quot;date&quot;
+       value=&quot;{{ old(&#39;depart&#39;) }}&quot;&gt;
+@error(&#39;depart&#39;)
+    &lt;p&gt;{{ $message }}&lt;/p&gt;
+@enderror</code></pre>
+<p>Sans <code>@csrf</code>, la réponse est <strong>419</strong>
+(<em>Page Expired</em>). Le jeton prouve que le formulaire vient bien de
+l’application : un site malveillant ouvert par un enseignant connecté ne
+peut pas lui faire créer un voyage à son insu (attaque CSRF).</p>
+<h3 id="partie-6-part-modification">Partie 6 — Part « Modification
+»</h3>
+<pre class="blade"><code>&lt;input id=&quot;depart&quot; name=&quot;depart&quot; type=&quot;date&quot;
+       value=&quot;{{ old(&#39;depart&#39;, $voyage-&gt;depart-&gt;format(&#39;Y-m-d&#39;)) }}&quot;&gt;</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> destroy(Voyage <span class="va">$voyage</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span>-&gt;delete()<span class="ot">;</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> redirect()-&gt;route(<span class="st">&#39;voyages.index&#39;</span>)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>        -&gt;with(<span class="st">&#39;succes&#39;</span><span class="ot">,</span> <span class="st">&#39;Voyage supprimé.&#39;</span>)<span class="ot">;</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre class="blade"><code>&lt;td&gt;
+    &lt;a href=&quot;{{ route(&#39;voyages.edit&#39;, $voyage) }}&quot;&gt;Modifier&lt;/a&gt;
+    &lt;form method=&quot;POST&quot;
+          action=&quot;{{ route(&#39;voyages.destroy&#39;, $voyage) }}&quot;&gt;
+        @csrf
+        @method(&#39;DELETE&#39;)
+        &lt;button type=&quot;submit&quot;&gt;Supprimer&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/td&gt;</code></pre>
+<p>Raisonner : le formulaire renvoie le départ inchangé, et
+<code>after:today</code> le refuse. On ne peut plus corriger le prix
+d’un voyage passé. Solutions : deux Form Requests distinctes,
+<code>StoreVoyageRequest</code> avec <code>after:today</code> et
+<code>UpdateVoyageRequest</code> sans cette règle ; ou une seule classe
+qui n’applique <code>after:today</code> qu’à la création
+(<code>$this-&gt;isMethod(&#39;post&#39;)</code>). Le choix est métier : faut-il
+autoriser la modification d’un voyage déjà parti ?</p>
+<h3 id="partie-6-chasser-les-sinks">Partie 6 — Chasser les sinks</h3>
+<ol type="1">
+<li><strong>Source</strong> : titre saisi, stocké en base.
+<strong>Sink</strong> : HTML de la page. <strong>Faille</strong> : XSS
+stockée, le script s’exécute chez chaque visiteur. <strong>Sûr</strong>
+: <code>{{ $voyage-&gt;titre }}</code>.</li>
+<li><strong>Source</strong> : paramètre <code>ville</code> de l’URL.
+<strong>Sink</strong> : requête SQL. <strong>Faille</strong> : injection
+SQL, <code>?ville=x&#39; or &#39;1&#39;=&#39;1</code> renvoie tous les voyages.
+<strong>Sûr</strong> : requête préparée par Eloquent,
+<code>Voyage::where(&#39;destination&#39;, $request-&gt;query(&#39;ville&#39;))-&gt;get()</code>.</li>
+<li><strong>Source</strong> : titre renvoyé par l’API.
+<strong>Sink</strong> : HTML via <code>innerHTML</code>.
+<strong>Faille</strong> : XSS côté client, alors que l’API est saine.
+<strong>Sûr</strong> : créer le <code>&lt;li&gt;</code> avec
+<code>document.createElement(&#39;li&#39;)</code> et remplir son
+<code>textContent</code>.</li>
+<li><strong>Source</strong> : champ <code>retour</code>.
+<strong>Sink</strong> : en-tête <code>Location</code>.
+<strong>Faille</strong> : redirection ouverte,
+<code>retour=https://site-piege.example</code> envoie l’utilisateur
+ailleurs depuis un lien de confiance. <strong>Sûr</strong> :
+<code>to_route(&#39;voyages.index&#39;)</code>, ou une liste de routes
+autorisées.</li>
+<li><strong>Source</strong> : corps de la requête. <strong>Sink</strong>
+: colonnes du modèle. <strong>Faille</strong> : affectation de masse,
+tout champ envoyé est écrit. <strong>Sûr</strong> :
+<code>#[Fillable([...])]</code> et
+<code>$voyage-&gt;update($request-&gt;validated())</code>.</li>
+</ol>
+<p>L’extrait 3 montre que le danger se déplace avec la donnée : l’API
+renvoie un JSON correct, c’est le client qui crée le sink. L’extrait 5
+est sans gravité sur <code>Voyage</code>, mais sur un modèle
+<code>User</code> avec une colonne <code>is_admin</code>, il permettrait
+de se déclarer administrateur.</p>
+</details>
