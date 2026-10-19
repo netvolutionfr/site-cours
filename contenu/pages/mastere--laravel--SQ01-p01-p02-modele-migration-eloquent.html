@@ -1,0 +1,244 @@
+<section id="modèles-migrations-et-eloquent" class="slide title">
+<h2>Modèles, migrations et Eloquent</h2>
+<h3 id="stocker-et-lire-des-produits-sans-écrire-de-sql">Stocker et lire
+des produits sans écrire de SQL</h3>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Créer un modèle et sa migration, puis exécuter la migration</li>
+<li>Insérer, lire et filtrer des données avec Eloquent dans Tinker</li>
+<li>Distinguer la <strong>structure</strong> de la base et les
+<strong>données</strong> qu’elle contient</li>
+</ul>
+<p><strong>Prérequis :</strong> projet Laravel installé, base configurée
+dans <code>.env</code>, bases de SQL.</p>
+</section>
+<section id="le-problème" class="slide warning" data-layout="single">
+<h2>Le problème</h2>
+<p>Une boutique veut afficher ses produits : libellé, stock, prix.</p>
+<p>Les données doivent <strong>survivre</strong> au redémarrage du
+serveur, et le schéma doit être <strong>le même</strong> sur chaque
+poste de l’équipe.</p>
+<p><strong>Où vivent les produits, et comment PHP les lit-il
+?</strong></p>
+</section>
+<section id="modèle-table-orm" class="slide concept" data-layout="single">
+<h2>Modèle, table, ORM</h2>
+<ul>
+<li>La <strong>table</strong> <code>produits</code> conserve les lignes
+en base</li>
+<li>Le <strong>modèle</strong> <code>Produit</code> est une classe PHP ;
+un objet <code>Produit</code> = une ligne</li>
+<li><strong>Eloquent</strong> est l’ORM de Laravel : il traduit les
+appels PHP en SQL</li>
+<li>Convention : modèle au <strong>singulier</strong>, table au
+<strong>pluriel</strong></li>
+</ul>
+<blockquote>
+<p><code>Produit::all()</code> devient
+<code>select * from produits</code>.</p>
+</blockquote>
+</section>
+<section id="créer-le-modèle-et-sa-migration" class="slide terminal">
+<h2>Créer le modèle et sa migration</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:model Produit <span class="at">-m</span></span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fichier créé</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/Models/Produit.php</code></td>
+<td>La classe qui manipule les produits</td>
+</tr>
+<tr>
+<td><code>database/migrations/…_create_produits_table.php</code></td>
+<td>La création de la table, versionnée</td>
+</tr>
+</tbody>
+</table>
+<p><code>-m</code> demande la migration ; le préfixe du fichier est
+horodaté.</p>
+</section>
+<section id="décrire-la-table" class="slide code">
+<h2>Décrire la table</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Schema::create(<span class="st">&#39;produits&#39;</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;id()<span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">&#39;libelle&#39;</span>)<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;integer(<span class="st">&#39;stock&#39;</span>)<span class="ot">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;double(<span class="st">&#39;prix&#39;</span>)<span class="ot">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>})<span class="ot">;</span></span></code></pre></div>
+<p>Dans la méthode <code>up()</code> ; <code>down()</code> annule la
+création.</p>
+</section>
+<section id="choisir-le-type-de-colonne" class="slide compare" data-layout="single">
+<h2>Choisir le type de colonne</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Colonne créée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id()</code></td>
+<td>Clé primaire auto-incrémentée</td>
+</tr>
+<tr>
+<td><code>string(&#39;libelle&#39;)</code></td>
+<td>Texte court, 255 caractères par défaut</td>
+</tr>
+<tr>
+<td><code>integer(&#39;stock&#39;)</code></td>
+<td>Entier</td>
+</tr>
+<tr>
+<td><code>double(&#39;prix&#39;)</code></td>
+<td>Flottant : approximatif, à éviter pour de l’argent</td>
+</tr>
+<tr>
+<td><code>decimal(&#39;prix&#39;, 10, 2)</code></td>
+<td>Décimal exact : 10 chiffres, dont 2 après la virgule</td>
+</tr>
+<tr>
+<td><code>timestamps()</code></td>
+<td><code>created_at</code> et <code>updated_at</code>, tenus à jour par
+Eloquent</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exécuter-la-migration" class="slide terminal">
+<h2>Exécuter la migration</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate:status</span></code></pre></div>
+<ul>
+<li><code>migrate</code> exécute les migrations <strong>en
+attente</strong>, puis les marque comme faites</li>
+<li><code>migrate:status</code> montre ce qui a été exécuté</li>
+<li><strong>Créer le fichier ne crée pas la table</strong> : il faut
+migrer</li>
+</ul>
+</section>
+<section id="une-migration-exécutée-ne-se-modifie-plus" class="slide warning" data-layout="single">
+<h2>Une migration exécutée ne se modifie plus</h2>
+<ul>
+<li>Modifier le fichier d’une migration déjà passée <strong>ne change
+pas</strong> la base</li>
+<li>Sur un projet partagé, on écrit une <strong>nouvelle
+migration</strong> qui fait évoluer le schéma</li>
+<li><code>migrate:fresh</code> supprime toutes les tables : <strong>les
+données sont perdues</strong></li>
+</ul>
+<blockquote>
+<p>Une migration est un commit du schéma : on ajoute, on ne réécrit pas
+l’histoire.</p>
+</blockquote>
+</section>
+<section id="autoriser-linsertion-groupée" class="slide code">
+<h2>Autoriser l’insertion groupée</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Produit <span class="kw">extends</span> Model</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="va">$fillable</span> <span class="op">=</span> [<span class="st">&#39;libelle&#39;</span><span class="ot">,</span> <span class="st">&#39;stock&#39;</span><span class="ot">,</span> <span class="st">&#39;prix&#39;</span>]<span class="ot">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<ul>
+<li><code>create([...])</code> remplit plusieurs champs d’un coup :
+seuls ceux de la liste sont acceptés</li>
+<li>Ce n’est <strong>pas une validation</strong> : un stock de −3
+passe</li>
+<li>Laravel 13 propose aussi l’attribut <code>#[Fillable([...])]</code>,
+vu avec le modèle <code>Voyage</code></li>
+</ul>
+</section>
+<section id="insérer-dans-tinker" class="slide terminal">
+<h2>Insérer dans Tinker</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan tinker</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> App\Models\Produit<span class="ot">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span> <span class="op">=</span> Produit::create([</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;libelle&#39;</span> =&gt; <span class="st">&#39;Clavier&#39;</span><span class="ot">,</span> <span class="st">&#39;stock&#39;</span> =&gt; <span class="dv">12</span><span class="ot">,</span> <span class="st">&#39;prix&#39;</span> =&gt; <span class="fl">49.90</span><span class="ot">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span>-&gt;id<span class="ot">;</span></span></code></pre></div>
+<p><code>create()</code> enregistre <strong>une nouvelle ligne</strong>
+à chaque appel et renvoie l’objet créé.</p>
+</section>
+<section id="lire-et-filtrer" class="slide compare" data-layout="single">
+<h2>Lire et filtrer</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Produit::all()</code></td>
+<td>Une collection de tous les produits</td>
+</tr>
+<tr>
+<td><code>Produit::find($produit-&gt;id)</code></td>
+<td>Le produit de cet identifiant, ou <code>null</code></td>
+</tr>
+<tr>
+<td><code>Produit::where(&#39;stock&#39;, &#39;&gt;&#39;, 5)-&gt;get()</code></td>
+<td>Les produits de stock strictement supérieur à 5</td>
+</tr>
+</tbody>
+</table>
+<p><code>where()</code> prépare le filtre, <code>get()</code> exécute la
+requête.</p>
+</section>
+<section id="modifier-et-supprimer" class="slide code">
+<h2>Modifier et supprimer</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span> <span class="op">=</span> Produit::find(<span class="va">$produit</span>-&gt;id)<span class="ot">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span>-&gt;update([<span class="st">&#39;prix&#39;</span> =&gt; <span class="fl">44.90</span>])<span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="va">$produit</span>-&gt;delete()<span class="ot">;</span></span></code></pre></div>
+<p>Avec <code>create</code>, <code>all</code>, <code>find</code>,
+<code>update</code> et <code>delete</code> : le <strong>CRUD</strong>
+complet, sans SQL.</p>
+</section>
+<section id="vérifier-pas-seulement-regarder" class="slide code">
+<h2>Vérifier, pas seulement regarder</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$relu</span> <span class="op">=</span> Produit::find(<span class="va">$produit</span>-&gt;id)<span class="ot">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">$relu</span> <span class="op">!==</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> <span class="va">$relu</span>-&gt;libelle <span class="op">===</span> <span class="st">&#39;Clavier&#39;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;&amp;</span> (<span class="dt">int</span>) <span class="va">$relu</span>-&gt;stock <span class="op">===</span> <span class="dv">12</span><span class="ot">;</span></span></code></pre></div>
+<p>Doit afficher <code>true</code>. La vérification <strong>relit la
+base</strong>, elle ne crée aucune ligne.</p>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li><strong>Migration</strong> = structure versionnée ·
+<strong>modèle</strong> = accès aux lignes</li>
+<li>Créer la migration ne crée pas la table :
+<code>php artisan migrate</code></li>
+<li><code>$fillable</code> autorise des champs, il ne
+<strong>valide</strong> rien</li>
+<li>Eloquent : <code>create</code>, <code>all</code>, <code>find</code>,
+<code>where()-&gt;get()</code>, <code>update</code>,
+<code>delete</code></li>
+</ul>
+<p>Ensuite : afficher les produits dans une page web.</p>
+</section>

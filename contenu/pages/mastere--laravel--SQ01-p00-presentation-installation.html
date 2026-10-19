@@ -1,0 +1,234 @@
+<section id="php-laravel" class="slide title">
+<h2>PHP · Laravel</h2>
+<h3 id="développer-une-application-web-mvc-de-la-première-page-à-la-production">Développer
+une application web MVC, de la première page à la production</h3>
+</section>
+<section id="objectifs-du-module" class="slide concept" data-layout="single">
+<h2>Objectifs du module</h2>
+<ul>
+<li>Construire une application <strong>MVC</strong> : routes, vues
+Blade, Eloquent, contrôleurs, formulaires validés</li>
+<li><strong>Sécuriser</strong> et enrichir : authentification,
+autorisations, sessions, cache, files d’attente, e-mails</li>
+<li><strong>Fiabiliser et livrer</strong> : tests automatisés, packages,
+déploiement vérifié en production</li>
+</ul>
+<p><strong>Prérequis :</strong> PHP objet, bases HTML et SQL, poste avec
+PHP 8.3+, Composer et Git.</p>
+</section>
+<section id="trois-séquences-31-heures" class="slide compare" data-layout="single">
+<h2>Trois séquences, 31 heures</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Séquence</th>
+<th>Contenu</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 · Fondamentaux MVC et données</td>
+<td>Routes, vues, Eloquent, contrôleurs, formulaires</td>
+<td>11 h</td>
+</tr>
+<tr>
+<td>2 · Sécurité, sessions, asynchrone</td>
+<td>Authentification, middlewares, cache, files, e-mails</td>
+<td>8 h</td>
+</tr>
+<tr>
+<td>3 · Tests, packages, production</td>
+<td>Tests des parcours, packages, déploiement</td>
+<td>12 h</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="un-fil-rouge-voyages-scolaires" class="slide concept" data-layout="single">
+<h2>Un fil rouge : Voyages scolaires</h2>
+<ul>
+<li><strong>Consulter</strong> et gérer les voyages d’un lycée</li>
+<li><strong>Réserver</strong> la gestion aux enseignants</li>
+<li><strong>Notifier</strong> les familles, rappeler les échéances</li>
+<li><strong>Tester</strong> les parcours essentiels,
+<strong>déployer</strong> une version utilisable</li>
+</ul>
+<p>Le même code sert au module <strong>DevOps</strong> : branches,
+conteneurs, pipeline, supervision.</p>
+</section>
+<section id="comment-on-travaille" class="slide concept" data-layout="single">
+<h2>Comment on travaille</h2>
+<ul>
+<li>Chaque intervention : <strong>apport bref</strong>,
+<strong>activité</strong> sur le fil rouge,
+<strong>restitution</strong></li>
+<li>L’IA est <strong>autorisée en usage professionnel</strong> : chaque
+ligne conservée doit pouvoir être expliquée</li>
+<li>Une ligne que vous ne savez pas expliquer est retirée</li>
+<li>Évaluation finale en intervention 8 : écrit et <strong>validation
+technique</strong> sur le fil rouge</li>
+</ul>
+</section>
+<section id="pourquoi-un-framework" class="slide compare" data-layout="single">
+<h2>Pourquoi un framework ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Besoin</th>
+<th>En PHP « nu »</th>
+<th>Avec Laravel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Associer une URL à du code</td>
+<td><code>if</code> sur <code>$_SERVER</code></td>
+<td><code>Route::get(...)</code></td>
+</tr>
+<tr>
+<td>Lire la base</td>
+<td>PDO et SQL à la main</td>
+<td>Eloquent : <code>Produit::all()</code></td>
+</tr>
+<tr>
+<td>Afficher sans faille XSS</td>
+<td><code>htmlspecialchars</code> partout</td>
+<td><code>{{ }}</code> échappe par défaut</td>
+</tr>
+<tr>
+<td>Protéger les formulaires</td>
+<td>Jeton CSRF à coder</td>
+<td><code>@csrf</code></td>
+</tr>
+<tr>
+<td>Faire évoluer le schéma</td>
+<td>Scripts SQL dispersés</td>
+<td>Migrations versionnées</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="créer-le-projet" class="slide terminal">
+<h2>Créer le projet</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> global require laravel/installer</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">laravel</span> new voyages-scolaires</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> voyages-scolaires</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan serve</span></code></pre></div>
+<p>Ouvrir <code>http://127.0.0.1:8000</code> : la page d’accueil de
+Laravel.</p>
+<p>Par défaut, la base est un fichier <strong>SQLite</strong> créé et
+migré à l’installation.</p>
+</section>
+<section id="où-est-quoi" class="slide compare" data-layout="single">
+<h2>Où est quoi ?</h2>
+<table>
+<thead>
+<tr>
+<th>Dossier ou fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routes/web.php</code></td>
+<td>Les URL de l’application</td>
+</tr>
+<tr>
+<td><code>app/Http/Controllers/</code></td>
+<td>Les contrôleurs</td>
+</tr>
+<tr>
+<td><code>app/Models/</code></td>
+<td>Les modèles Eloquent</td>
+</tr>
+<tr>
+<td><code>resources/views/</code></td>
+<td>Les vues Blade</td>
+</tr>
+<tr>
+<td><code>database/migrations/</code></td>
+<td>L’historique du schéma de la base</td>
+</tr>
+<tr>
+<td><code>.env</code></td>
+<td>La configuration de <strong>ce</strong> poste</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="le-fichier-.env" class="slide code">
+<h2>Le fichier .env</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">APP_NAME</span><span class="ot">=</span><span class="st">&quot;Voyages scolaires&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">APP_ENV</span><span class="ot">=</span><span class="st">local</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">APP_DEBUG</span><span class="ot">=</span><span class="kw">true</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">APP_URL</span><span class="ot">=</span><span class="st">http://127.0.0.1:8000</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dt">DB_CONNECTION</span><span class="ot">=</span><span class="st">sqlite</span></span></code></pre></div>
+<ul>
+<li>Une configuration <strong>par environnement</strong> : poste, test,
+production</li>
+<li>Jamais commité : il contient des secrets (<code>APP_KEY</code>, mots
+de passe)</li>
+<li><code>APP_DEBUG=true</code> en production affiche le code et la
+configuration à tous</li>
+</ul>
+</section>
+<section id="artisan-la-ligne-de-commande-du-projet" class="slide terminal">
+<h2>Artisan, la ligne de commande du projet</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan list                 <span class="co"># toutes les commandes</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan route:list           <span class="co"># les routes déclarées</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:controller ...  <span class="co"># générer un contrôleur</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:model ... <span class="at">-m</span>    <span class="co"># un modèle et sa migration</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan migrate              <span class="co"># appliquer les migrations</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan tinker               <span class="co"># du PHP dans l&#39;application</span></span></code></pre></div>
+<p>Toujours <strong>à la racine du projet</strong>, là où se trouve le
+fichier <code>artisan</code>.</p>
+</section>
+<section id="une-première-route" class="slide code">
+<h2>Une première route</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// routes/web.php</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Illuminate\Support\Facades\Route<span class="ot">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/&#39;</span><span class="ot">,</span> <span class="kw">function</span> () {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> view(<span class="st">&#39;welcome&#39;</span>)<span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>})<span class="ot">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/bonjour&#39;</span><span class="ot">,</span> <span class="kw">fn</span> () =&gt; <span class="st">&#39;Bonjour Laravel !&#39;</span>)<span class="ot">;</span></span></code></pre></div>
+<p>Une route associe une <strong>méthode HTTP</strong> et une
+<strong>URL</strong> à une action.</p>
+</section>
+<section id="à-vous" class="slide activity" data-layout="single">
+<h2>À vous</h2>
+<p>Seul · sur son poste</p>
+<p><strong>À produire :</strong> le projet qui démarre et une route
+<code>/bonjour</code> qui répond.</p>
+<ol type="1">
+<li>Créer le projet, le lancer, ouvrir la page d’accueil</li>
+<li>Ajouter la route <code>/bonjour</code>, la vérifier avec
+<code>php artisan route:list</code></li>
+<li>Retrouver dans le projet le fichier de la page d’accueil</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li>Laravel structure le projet : <strong>routes, contrôleurs, modèles,
+vues, migrations</strong></li>
+<li><code>.env</code> configure un poste et <strong>ne se commite
+pas</strong></li>
+<li><code>php artisan</code> génère le code et administre le projet</li>
+<li>Une route relie une URL à une action</li>
+</ul>
+<p>Ensuite : stocker et lire des données avec Eloquent.</p>
+</section>

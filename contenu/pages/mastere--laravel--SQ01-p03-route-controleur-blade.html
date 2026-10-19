@@ -1,0 +1,211 @@
+<section id="route-contrôleur-et-vue-blade" class="slide title">
+<h2>Route, contrôleur et vue Blade</h2>
+<h3 id="du-clic-sur-une-url-au-tableau-des-produits">Du clic sur une URL
+au tableau des produits</h3>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Relier une URL à un contrôleur, un modèle et une vue</li>
+<li>Afficher une collection avec Blade, sans faille d’affichage</li>
+<li>Raconter le trajet d’une requête et localiser une erreur</li>
+</ul>
+<p><strong>Prérequis :</strong> le modèle <code>Produit</code>, sa table
+et au moins un produit en base.</p>
+</section>
+<section id="le-problème" class="slide warning" data-layout="single">
+<h2>Le problème</h2>
+<p>Les produits sont en base. Tinker les affiche, mais un client n’ouvre
+pas Tinker.</p>
+<p><strong>Que faut-il écrire pour que <code>/produits</code> affiche un
+tableau dans le navigateur ?</strong></p>
+</section>
+<section id="mvc-trois-responsabilités" class="slide compare" data-layout="single">
+<h2>MVC : trois responsabilités</h2>
+<table>
+<thead>
+<tr>
+<th>Composant</th>
+<th>Rôle</th>
+<th>Ici</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Modèle</strong></td>
+<td>Accès aux données</td>
+<td><code>Produit</code></td>
+</tr>
+<tr>
+<td><strong>Vue</strong></td>
+<td>Présentation</td>
+<td><code>produits/index.blade.php</code></td>
+</tr>
+<tr>
+<td><strong>Contrôleur</strong></td>
+<td>Coordination de la demande</td>
+<td><code>ProduitController</code></td>
+</tr>
+</tbody>
+</table>
+<p>La <strong>route</strong> choisit le contrôleur ; la
+<strong>migration</strong> a préparé la table, une fois pour toutes.</p>
+</section>
+<section id="le-contrôleur" class="slide code">
+<h2>Le contrôleur</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan make:controller ProduitController</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> index()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$produits</span> <span class="op">=</span> Produit::all()<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> view(<span class="st">&#39;produits.index&#39;</span><span class="ot">,</span> [<span class="st">&#39;produits&#39;</span> =&gt; <span class="va">$produits</span>])<span class="ot">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>La clé <code>&#39;produits&#39;</code> devient la variable
+<code>$produits</code> dans la vue.</p>
+</section>
+<section id="la-route" class="slide code">
+<h2>La route</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// routes/web.php</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> App\Http\Controllers\ProduitController<span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Illuminate\Support\Facades\Route<span class="ot">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">&#39;/produits&#39;</span><span class="ot">,</span> [ProduitController::<span class="kw">class</span><span class="ot">,</span> <span class="st">&#39;index&#39;</span>])<span class="ot">;</span></span></code></pre></div>
+<ul>
+<li>GET <code>/produits</code> appelle
+<code>ProduitController::index()</code></li>
+<li>Rien n’est automatique : l’URL, la méthode et la vue sont reliées
+<strong>par ce code</strong></li>
+</ul>
+</section>
+<section id="la-vue" class="slide code">
+<h2>La vue</h2>
+<pre class="blade"><code>{{-- resources/views/produits/index.blade.php --}}
+&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;Libellé&lt;/th&gt;&lt;th&gt;Stock&lt;/th&gt;&lt;th&gt;Prix&lt;/th&gt;&lt;/tr&gt;
+    @foreach ($produits as $produit)
+        &lt;tr&gt;
+            &lt;td&gt;{{ $produit-&gt;libelle }}&lt;/td&gt;
+            &lt;td&gt;{{ $produit-&gt;stock }}&lt;/td&gt;
+            &lt;td&gt;{{ $produit-&gt;prix }} €&lt;/td&gt;
+        &lt;/tr&gt;
+    @endforeach
+&lt;/table&gt;</code></pre>
+<p><code>produits.index</code> : le point sépare le dossier du nom, sans
+<code>.blade.php</code>.</p>
+</section>
+<section id="ce-que-fait-blade" class="slide concept" data-layout="single">
+<h2>Ce que fait Blade</h2>
+<ul>
+<li><code>@foreach</code> parcourt la collection :
+<code>$produits</code> l’ensemble, <code>$produit</code> la ligne
+courante</li>
+<li><code>{{ ... }}</code> affiche une valeur <strong>en échappant le
+HTML</strong> : un <code>&lt;script&gt;</code> saisi reste du texte</li>
+<li>Blade s’exécute <strong>sur le serveur</strong> : le navigateur
+reçoit du HTML, jamais la requête Eloquent</li>
+</ul>
+<blockquote>
+<p>Toujours <code>{{ }}</code> pour une donnée ; <code>{!! !!}</code>
+n’échappe rien.</p>
+</blockquote>
+</section>
+<section id="le-trajet-dune-requête" class="slide full-image">
+<h2>Le trajet d’une requête</h2>
+<figure>
+<img role="img" aria-label="Trajet de GET /produits : route, contrôleur, modèle Eloquent, base, puis vue Blade et HTML renvoyé au navigateur ; la migration a préparé la table une seule fois." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDY0MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZ2IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMUU4NDQ5Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjOEE5NEE2Ii8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIiBmaWxsPSIjRkZGRkZGIi8+CgogIDwhLS0gTmF2aWdhdGV1ciAtLT4KICA8cmVjdCB4PSIyMCIgeT0iNTAiIHdpZHRoPSIxOTAiIGhlaWdodD0iMjMwIiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjIwIiB5PSI1MCIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIzMCIgcng9IjgiIGZpbGw9IiMxNzIwMzMiLz4KICA8cmVjdCB4PSIyMCIgeT0iNzAiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTAiIGZpbGw9IiMxNzIwMzMiLz4KICA8dGV4dCB4PSIxMTUiIHk9IjcxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TmF2aWdhdGV1cjwvdGV4dD4KICA8cmVjdCB4PSIzMCIgeT0iOTAiIHdpZHRoPSIxNzAiIGhlaWdodD0iMjQiIHJ4PSIxMiIgZmlsbD0iI0Y3RjhGQSIgc3Ryb2tlPSIjOEE5NEE2Ii8+CiAgPHRleHQgeD0iMTE1IiB5PSIxMDciIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMS41IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xMjcuMC4wLjE6ODAwMC9wcm9kdWl0czwvdGV4dD4KICA8dGV4dCB4PSIzNCIgeT0iMTQwIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE3MjAzMyI+TGlzdGUgZGVzIHByb2R1aXRzPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiMxNzIwMzMiPgogICAgPHJlY3QgeD0iMzAiIHk9IjE1MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSIyMiIgZmlsbD0iI0VFRjJGQiIvPgogICAgPHRleHQgeD0iMzYiIHk9IjE2NiIgZm9udC13ZWlnaHQ9IjcwMCI+TGliZWxsw6k8L3RleHQ+PHRleHQgeD0iMTE4IiB5PSIxNjYiIGZvbnQtd2VpZ2h0PSI3MDAiPlN0b2NrPC90ZXh0Pjx0ZXh0IHg9IjE2MiIgeT0iMTY2IiBmb250LXdlaWdodD0iNzAwIj5Qcml4PC90ZXh0PgogICAgPHRleHQgeD0iMzYiIHk9IjE5MCI+Q2xhdmllcjwvdGV4dD48dGV4dCB4PSIxMTgiIHk9IjE5MCI+MTI8L3RleHQ+PHRleHQgeD0iMTU1IiB5PSIxOTAiPjQ5Ljkg4oKsPC90ZXh0PgogICAgPGxpbmUgeDE9IjMwIiB5MT0iMTk4IiB4Mj0iMjAwIiB5Mj0iMTk4IiBzdHJva2U9IiNENURBRTMiLz4KICAgIDx0ZXh0IHg9IjM2IiB5PSIyMTYiPlNvdXJpczwvdGV4dD48dGV4dCB4PSIxMTgiIHk9IjIxNiI+MDwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjIxNiI+MTkuOSDigqw8L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9IjExNSIgeT0iMjYyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzVDNjg3QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+bmUgcmXDp29pdCBxdWUgZHUgSFRNTDwvdGV4dD4KCiAgPCEtLSBSb3V0ZSAtLT4KICA8cmVjdCB4PSIyNjAiIHk9IjUwIiB3aWR0aD0iMjEwIiBoZWlnaHQ9IjEyMCIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iMjYwIiB5PSI1MCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIzMCIgcng9IjgiIGZpbGw9IiM1QzY4N0MiLz4KICA8cmVjdCB4PSIyNjAiIHk9IjcwIiB3aWR0aD0iMjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjNUM2ODdDIi8+CiAgPHRleHQgeD0iMzY1IiB5PSI3MSIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJvdXRlPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSIyNzAiIHk9IjEwMiIgZmlsbD0iIzVDNjg3QyI+cm91dGVzL3dlYi5waHA8L3RleHQ+CiAgICA8dGV4dCB4PSIyNzAiIHk9IjEyNiI+Um91dGU6OmdldCgnL3Byb2R1aXRzJyw8L3RleHQ+CiAgICA8dGV4dCB4PSIyNzAiIHk9IjE0NCI+ICBbUHJvZHVpdENvbnRyb2xsZXI6OmNsYXNzLDwvdGV4dD4KICAgIDx0ZXh0IHg9IjI3MCIgeT0iMTYyIj4gICAnaW5kZXgnXSk7PC90ZXh0PgogIDwvZz4KCiAgPCEtLSBDb250csO0bGV1ciAtLT4KICA8cmVjdCB4PSI1MzAiIHk9IjUwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjE1MCIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8cmVjdCB4PSI1MzAiIHk9IjUwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjMwIiByeD0iOCIgZmlsbD0iIzM1NjhENCIvPgogIDxyZWN0IHg9IjUzMCIgeT0iNzAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTAiIGZpbGw9IiMzNTY4RDQiLz4KICA8dGV4dCB4PSI2NjAiIHk9IjcxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29udHLDtGxldXIgwrcgY29vcmRpbmF0aW9uPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjEwMiIgZmlsbD0iIzVDNjg3QyI+UHJvZHVpdENvbnRyb2xsZXIucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIxMjQiPnB1YmxpYyBmdW5jdGlvbiBpbmRleCgpPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIxNDIiPns8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjE2MCI+ICAkcHJvZHVpdHMgPSBQcm9kdWl0OjphbGwoKTs8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjE3OCI+ICByZXR1cm4gdmlldygncHJvZHVpdHMuaW5kZXgnLDwvdGV4dD4KICAgIDx0ZXh0IHg9IjU0MiIgeT0iMTk0Ij4gICAgWydwcm9kdWl0cycgPSZndDsgJHByb2R1aXRzXSk7PC90ZXh0PgogIDwvZz4KCiAgPCEtLSBNb2TDqGxlIC0tPgogIDxyZWN0IHg9Ijg1MCIgeT0iNTAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMTEwIiByeD0iOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjNkI1QkI1IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9Ijg1MCIgeT0iNTAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMzAiIHJ4PSI4IiBmaWxsPSIjNkI1QkI1Ii8+CiAgPHJlY3QgeD0iODUwIiB5PSI3MCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzZCNUJCNSIvPgogIDx0ZXh0IHg9Ijk2NSIgeT0iNzEiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb2TDqGxlIMK3IGRvbm7DqWVzPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjEwMiIgZmlsbD0iIzVDNjg3QyI+YXBwL01vZGVscy9Qcm9kdWl0LnBocDwvdGV4dD4KICAgIDx0ZXh0IHg9Ijg2MiIgeT0iMTI2Ij5jbGFzcyBQcm9kdWl0IGV4dGVuZHMgTW9kZWw8L3RleHQ+CiAgICA8dGV4dCB4PSI4NjIiIHk9IjE0OCIgZmlsbD0iIzZCNUJCNSI+RWxvcXVlbnQgw6ljcml0IGxlIFNRTDwvdGV4dD4KICA8L2c+CgogIDwhLS0gQmFzZSAtLT4KICA8cGF0aCBkPSJNODUwLDIyNCBROTY1LDIwMCAxMDgwLDIyNCBMMTA4MCwzMzAgUTk2NSwzNTQgODUwLDMzMCBaIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxwYXRoIGQ9Ik04NTAsMjI0IFE5NjUsMjQ4IDEwODAsMjI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijk2NSIgeT0iMjU4IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QmFzZSDCtyB0YWJsZSBwcm9kdWl0czwvdGV4dD4KICA8ZyBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTEuNSIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI4NjYiIHk9IjI4MCIgZm9udC13ZWlnaHQ9IjcwMCI+aWQgbGliZWxsZSAgc3RvY2sgcHJpeDwvdGV4dD4KICAgIDx0ZXh0IHg9Ijg2NiIgeT0iMjk4Ij4xICBDbGF2aWVyICAxMiAgICA0OS45PC90ZXh0PgogICAgPHRleHQgeD0iODY2IiB5PSIzMTYiPjIgIFNvdXJpcyAgIDAgICAgIDE5Ljk8L3RleHQ+CiAgPC9nPgoKICA8IS0tIFZ1ZSAtLT4KICA8cmVjdCB4PSI1MzAiIHk9IjI2MCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxNDAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMi41Ii8+CiAgPHJlY3QgeD0iNTMwIiB5PSIyNjAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMzAiIHJ4PSI4IiBmaWxsPSIjMUU4NDQ5Ii8+CiAgPHJlY3QgeD0iNTMwIiB5PSIyODAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTAiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSI2NjAiIHk9IjI4MSIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlZ1ZSDCtyBwcsOpc2VudGF0aW9uPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjMxMiIgZmlsbD0iIzVDNjg3QyI+cHJvZHVpdHMvaW5kZXguYmxhZGUucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIzMzQiPkBmb3JlYWNoICgkcHJvZHVpdHMgYXMgJHApPC90ZXh0PgogICAgPHRleHQgeD0iNTQyIiB5PSIzNTQiPiAgJmx0O3RkJmd0O3t7ICRwLSZndDtsaWJlbGxlIH19Jmx0Oy90ZCZndDs8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjM3NCI+ICDigKY8L3RleHQ+CiAgICA8dGV4dCB4PSI1NDIiIHk9IjM5MiI+QGVuZGZvcmVhY2g8L3RleHQ+CiAgPC9nPgoKICA8IS0tIE1pZ3JhdGlvbiAtLT4KICA8cmVjdCB4PSI4NTAiIHk9IjQwMCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSI5NiIgcng9IjgiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzhBOTRBNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI3IDUiLz4KICA8dGV4dCB4PSI5NjUiIHk9IjQyNCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1pZ3JhdGlvbjwvdGV4dD4KICA8dGV4dCB4PSI5NjUiIHk9IjQ0NCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNyZWF0ZV9wcm9kdWl0c190YWJsZTwvdGV4dD4KICA8dGV4dCB4PSI5NjUiIHk9IjQ2NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cGhwIGFydGlzYW4gbWlncmF0ZSA6IHVuZSBmb2lzLDwvdGV4dD4KICA8dGV4dCB4PSI5NjUiIHk9IjQ4NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cGFzIMOgIGNoYXF1ZSByZXF1w6p0ZTwvdGV4dD4KICA8bGluZSB4MT0iOTY1IiB5MT0iNDAwIiB4Mj0iOTY1IiB5Mj0iMzQ4IiBzdHJva2U9IiM4QTk0QTYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNiA0IiBtYXJrZXItZW5kPSJ1cmwoI2ZnKSIvPgoKICA8IS0tIEZsw6hjaGVzIC0tPgogIDxsaW5lIHgxPSIyMTAiIHkxPSIxMjUiIHgyPSIyNTgiIHkyPSIxMjUiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDxsaW5lIHgxPSI0NzAiIHkxPSIxMTUiIHgyPSI1MjgiIHkyPSIxMTUiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDxsaW5lIHgxPSI3OTAiIHkxPSI5NSIgeDI9Ijg0OCIgeTI9Ijk1IiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICA8bGluZSB4MT0iOTMwIiB5MT0iMTYwIiB4Mj0iOTMwIiB5Mj0iMjA4IiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICA8bGluZSB4MT0iMTAxMCIgeTE9IjIxMCIgeDI9IjEwMTAiIHkyPSIxNjIiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2Z2KSIvPgogIDxsaW5lIHgxPSI4NTAiIHkxPSIxNDAiIHgyPSI3OTIiIHkyPSIxNDAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2Z2KSIvPgogIDxsaW5lIHgxPSI2NjAiIHkxPSIyMDAiIHgyPSI2NjAiIHkyPSIyNTgiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZiKSIvPgogIDxwYXRoIGQ9Ik01MzAsMzMwIEwxMTUsMzMwIEwxMTUsMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmdikiLz4KCiAgPCEtLSBQYXN0aWxsZXMgLS0+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgPGNpcmNsZSBjeD0iMjM0IiBjeT0iMTA2IiByPSIxMSIgZmlsbD0iIzM1NjhENCIvPjx0ZXh0IHg9IjIzNCIgeT0iMTExIj4xPC90ZXh0PgogICAgPGNpcmNsZSBjeD0iNDk5IiBjeT0iOTYiIHI9IjExIiBmaWxsPSIjMzU2OEQ0Ii8+PHRleHQgeD0iNDk5IiB5PSIxMDEiPjI8L3RleHQ+CiAgICA8Y2lyY2xlIGN4PSI4MTkiIGN5PSI3NiIgcj0iMTEiIGZpbGw9IiMzNTY4RDQiLz48dGV4dCB4PSI4MTkiIHk9IjgxIj4zPC90ZXh0PgogICAgPGNpcmNsZSBjeD0iOTEyIiBjeT0iMTg0IiByPSIxMSIgZmlsbD0iIzM1NjhENCIvPjx0ZXh0IHg9IjkxMiIgeT0iMTg5Ij40PC90ZXh0PgogICAgPGNpcmNsZSBjeD0iODIxIiBjeT0iMTU5IiByPSIxMSIgZmlsbD0iIzFFODQ0OSIvPjx0ZXh0IHg9IjgyMSIgeT0iMTY0Ij41PC90ZXh0PgogICAgPGNpcmNsZSBjeD0iNjgwIiBjeT0iMjI5IiByPSIxMSIgZmlsbD0iIzM1NjhENCIvPjx0ZXh0IHg9IjY4MCIgeT0iMjM0Ij42PC90ZXh0PgogICAgPGNpcmNsZSBjeD0iMzgwIiBjeT0iMzMwIiByPSIxMSIgZmlsbD0iIzFFODQ0OSIvPjx0ZXh0IHg9IjM4MCIgeT0iMzM1Ij43PC90ZXh0PgogIDwvZz4KCiAgPCEtLSDDiXRhcGVzIC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMTcyMDMzIj4KICAgIDx0ZXh0IHg9IjIwIiB5PSIzNzgiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0Ij4xPC90c3Bhbj4gIEdFVCAvcHJvZHVpdHMgOiBsZSBuYXZpZ2F0ZXVyIGRlbWFuZGUgbGEgcGFnZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIwIiB5PSI0MDIiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0Ij4yPC90c3Bhbj4gIGxhIHJvdXRlIGTDqXNpZ25lIFByb2R1aXRDb250cm9sbGVyOjppbmRleCgpPC90ZXh0PgogICAgPHRleHQgeD0iMjAiIHk9IjQyNiI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiPjM8L3RzcGFuPiAgbGUgY29udHLDtGxldXIgZGVtYW5kZSBsZXMgcHJvZHVpdHMgYXUgbW9kw6hsZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIwIiB5PSI0NTAiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0Ij40PC90c3Bhbj4gIEVsb3F1ZW50IGVudm9pZSBzZWxlY3QgKiBmcm9tIHByb2R1aXRzPC90ZXh0PgogICAgPHRleHQgeD0iMjAiIHk9IjQ3NCI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiPjU8L3RzcGFuPiAgbGVzIGxpZ25lcyByZXZpZW5uZW50IGVuIG9iamV0cyBQcm9kdWl0PC90ZXh0PgogICAgPHRleHQgeD0iMjAiIHk9IjQ5OCI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiPjY8L3RzcGFuPiAgbGUgY29udHLDtGxldXIgdHJhbnNtZXQgJHByb2R1aXRzIMOgIGxhIHZ1ZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIwIiB5PSI1MjIiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMUU4NDQ5Ij43PC90c3Bhbj4gIEJsYWRlIHByb2R1aXQgbGUgSFRNTCwgcmVudm95w6kgYXUgbmF2aWdhdGV1cjwvdGV4dD4KICA8L2c+CgogIDwhLS0gU3ludGjDqHNlIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI1NDgiIHdpZHRoPSIxMDYwIiBoZWlnaHQ9IjcyIiByeD0iMTAiIGZpbGw9IiNFOEY0RUMiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSI1NTAiIHk9IjU3NyIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vZMOobGUgPSBhY2PDqHMgYXV4IGRvbm7DqWVzIMK3IFZ1ZSA9IHByw6lzZW50YXRpb24gwrcgQ29udHLDtGxldXIgPSBjb29yZGluYXRpb248L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI2MDIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkF1Y3VuIGxpZW4gYXV0b21hdGlxdWUgOiBsJ1VSTCwgbGEgbcOpdGhvZGUgZXQgbGEgdnVlIHNvbnQgcmVsacOpZXMgcGFyIGxlIGNvZGUgZGUgbGEgcm91dGUgZXQgZHUgY29udHLDtGxldXIuPC90ZXh0Pgo8L3N2Zz4K" alt="Trajet de GET /produits : route, contrôleur, modèle Eloquent, base, puis vue Blade et HTML renvoyé au navigateur ; la migration a préparé la table une seule fois." />
+<figcaption aria-hidden="true">Trajet de GET /produits : route,
+contrôleur, modèle Eloquent, base, puis vue Blade et HTML renvoyé au
+navigateur ; la migration a préparé la table une seule
+fois.</figcaption>
+</figure>
+</section>
+<section id="vérifier-et-ouvrir-la-page" class="slide terminal">
+<h2>Vérifier et ouvrir la page</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan route:list <span class="at">--path</span><span class="op">=</span>produits</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> artisan serve</span></code></pre></div>
+<p>Ouvrir <code>http://127.0.0.1:8000/produits</code> : « Clavier »,
+<code>12</code>, <code>49.9 €</code>.</p>
+<p>Le prix s’affiche <code>49.9</code> : le formatage monétaire est une
+question de <strong>vue</strong>, pas de stockage.</p>
+</section>
+<section id="localiser-une-erreur" class="slide compare" data-layout="single">
+<h2>Localiser une erreur</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Could not open input file: artisan</code></td>
+<td>Êtes-vous à la racine du projet ?</td>
+</tr>
+<tr>
+<td>Table <code>produits</code> absente</td>
+<td>La base configurée, puis <code>migrate:status</code></td>
+</tr>
+<tr>
+<td>Erreur d’affectation groupée</td>
+<td><code>$fillable</code> et les noms des champs</td>
+</tr>
+<tr>
+<td>Route introuvable (404)</td>
+<td>L’URL et <code>route:list --path=produits</code></td>
+</tr>
+<tr>
+<td>Vue introuvable, variable non définie</td>
+<td>Le chemin du Blade, la clé <code>&#39;produits&#39;</code></td>
+</tr>
+<tr>
+<td>Tableau vide</td>
+<td><code>Produit::all()</code> dans Tinker : le Blade ne crée pas de
+données</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="trois-exercices-de-reprise" class="slide activity" data-layout="single">
+<h2>Trois exercices de reprise</h2>
+<p>Seul · sur son projet · support A4, « Vérifier et reprendre »</p>
+<p><strong>À produire :</strong> une page qui montre la souris, puis la
+cache, et l’explication de chaque effet.</p>
+<ol type="1">
+<li><strong>Expliquer</strong> : associer route, contrôleur, modèle,
+migration et vue à leur rôle</li>
+<li><strong>Ajouter</strong> : une « Souris » à stock <code>0</code>
+dans Tinker ; pourquoi apparaît-elle sans toucher au Blade ?</li>
+<li><strong>Filtrer</strong> : n’afficher que les produits en stock, en
+modifiant <strong>seulement</strong> le contrôleur</li>
+</ol>
+</section>
+<section id="restitution" class="slide question" data-layout="single">
+<h2>Restitution</h2>
+<p>Chacun, sur son poste projeté :</p>
+<ol type="1">
+<li>Raconte le trajet de GET <code>/produits</code>, étape par
+étape</li>
+<li>Montre la ligne qui a fait disparaître la souris</li>
+</ol>
+<p><strong>À quel endroit la lecture des produits est-elle déclenchée :
+dans le contrôleur ou dans la boucle Blade ?</strong></p>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li>Route → contrôleur → modèle → vue → HTML</li>
+<li>Le contrôleur <strong>coordonne</strong>, il ne met en forme
+rien</li>
+<li><code>{{ }}</code> échappe : la vue affiche des données, elle
+n’exécute pas ce qu’elles contiennent</li>
+<li>Filtrer, c’est changer la <strong>lecture</strong>, pas supprimer
+des lignes</li>
+</ul>
+<p>Ensuite : concevoir le modèle <code>Voyage</code> et l’exposer en
+API.</p>
+</section>

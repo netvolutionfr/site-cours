@@ -1782,6 +1782,69 @@
    ]
   },
   {
+   "slug": "mastere/laravel/SQ01-p00-presentation-installation",
+   "matiere": "mastere",
+   "classe": "laravel",
+   "rubrique": "",
+   "sequence": "mastere/laravel/SQ01",
+   "titre": "PHP · Laravel",
+   "sousTitre": "Présentation du module et premiers pas",
+   "nature": "Diaporama",
+   "date": null,
+   "pdf": "/mastere/laravel/SQ01-p00-presentation-installation.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "développer-une-application-web-mvc-de-la-première-page-à-la-production",
+     "text": "Développer une application web MVC, de la première page à la production"
+    }
+   ]
+  },
+  {
+   "slug": "mastere/laravel/SQ01-p01-p02-modele-migration-eloquent",
+   "matiere": "mastere",
+   "classe": "laravel",
+   "rubrique": "",
+   "sequence": "mastere/laravel/SQ01",
+   "titre": "Modèles, migrations et Eloquent",
+   "sousTitre": "Stocker et lire des produits",
+   "nature": "Diaporama",
+   "date": null,
+   "pdf": "/mastere/laravel/SQ01-p01-p02-modele-migration-eloquent.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "stocker-et-lire-des-produits-sans-écrire-de-sql",
+     "text": "Stocker et lire des produits sans écrire de SQL"
+    }
+   ]
+  },
+  {
+   "slug": "mastere/laravel/SQ01-p03-route-controleur-blade",
+   "matiere": "mastere",
+   "classe": "laravel",
+   "rubrique": "",
+   "sequence": "mastere/laravel/SQ01",
+   "titre": "Route, contrôleur et vue Blade",
+   "sousTitre": "Afficher les produits et raconter le trajet d'une requête",
+   "nature": "Diaporama",
+   "date": null,
+   "pdf": "/mastere/laravel/SQ01-p03-route-controleur-blade.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "du-clic-sur-une-url-au-tableau-des-produits",
+     "text": "Du clic sur une URL au tableau des produits"
+    }
+   ]
+  },
+  {
    "slug": "mastere/laravel/SQ01-p05-validation-formulaires",
    "matiere": "mastere",
    "classe": "laravel",
@@ -1830,7 +1893,10 @@
    "debut": "2026-10-19",
    "fin": "2026-10-19",
    "supports": [
-    "mastere/laravel/SQ01-p05-validation-formulaires"
+    "mastere/laravel/SQ01-p05-validation-formulaires",
+    "mastere/laravel/SQ01-p00-presentation-installation",
+    "mastere/laravel/SQ01-p01-p02-modele-migration-eloquent",
+    "mastere/laravel/SQ01-p03-route-controleur-blade"
    ]
   },
   {
