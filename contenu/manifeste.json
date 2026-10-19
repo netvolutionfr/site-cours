@@ -2002,7 +2002,7 @@
    "titre": "PHP · Laravel",
    "sousTitre": "Présentation du module et premiers pas",
    "nature": "Diaporama",
-   "date": null,
+   "date": "2026-09-09",
    "pdf": "/mastere/laravel/SQ01-p00-presentation-installation.pdf",
    "pieces": [],
    "brut": null,
@@ -2023,7 +2023,7 @@
    "titre": "Modèles, migrations et Eloquent",
    "sousTitre": "Stocker et lire des produits",
    "nature": "Diaporama",
-   "date": null,
+   "date": "2026-09-09",
    "pdf": "/mastere/laravel/SQ01-p01-p02-modele-migration-eloquent.pdf",
    "pieces": [],
    "brut": null,
@@ -2044,7 +2044,7 @@
    "titre": "Route, contrôleur et vue Blade",
    "sousTitre": "Afficher les produits et raconter le trajet d'une requête",
    "nature": "Diaporama",
-   "date": null,
+   "date": "2026-09-30",
    "pdf": "/mastere/laravel/SQ01-p03-route-controleur-blade.pdf",
    "pieces": [],
    "brut": null,
@@ -2323,7 +2323,7 @@
    "rubriqueLibelle": "Général",
    "code": "SQ01",
    "titre": "Culture DevOps, collaboration Git et conteneurs",
-   "debut": "2026-10-19",
+   "debut": "2026-09-09",
    "fin": "2026-10-19",
    "supports": [
     "mastere/devops/SQ01-support-eleve",
@@ -2340,14 +2340,14 @@
    "rubriqueLibelle": "Général",
    "code": "SQ01",
    "titre": "Fondamentaux MVC, API et formulaires validés",
-   "debut": "2026-10-19",
+   "debut": "2026-09-09",
    "fin": "2026-10-19",
    "supports": [
     "mastere/laravel/SQ01-support-eleve",
-    "mastere/laravel/SQ01-p05-validation-formulaires",
     "mastere/laravel/SQ01-p00-presentation-installation",
     "mastere/laravel/SQ01-p01-p02-modele-migration-eloquent",
-    "mastere/laravel/SQ01-p03-route-controleur-blade"
+    "mastere/laravel/SQ01-p03-route-controleur-blade",
+    "mastere/laravel/SQ01-p05-validation-formulaires"
    ]
   },
   {
