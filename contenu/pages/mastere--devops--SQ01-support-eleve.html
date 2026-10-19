@@ -573,7 +573,11 @@ création, modification et suppression dans le navigateur.</li>
 fusion</h4>
 <p>L’enseignant a ouvert trois issues sur le dépôt. Chacune fait l’objet
 d’une branche, d’une PR qui contient <code>Closes #&lt;numéro&gt;</code>
-dans sa description, et d’une revue dans le même cercle.</p>
+dans sa description, et d’une revue dans le même cercle. Toutes trois
+enrichissent la carte d’un voyage,
+<code>resources/views/components/voyage-card.blade.php</code>, en
+ajoutant un élément <code>&lt;li&gt;</code> <strong>en tête</strong> de
+sa liste d’informations.</p>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -589,27 +593,31 @@ dans sa description, et d’une revue dans le même cercle.</p>
 </thead>
 <tbody>
 <tr>
-<td>Afficher le départ au format français (15/03/2027)</td>
+<td>#7 Afficher la destination sur la carte</td>
 <td>Modification</td>
-<td><code>$voyage-&gt;depart-&gt;format(&#39;d/m/Y&#39;)</code></td>
+<td>Icône <code>bi-geo-alt</code>,
+<code>{{ $voyage-&gt;destination }}</code></td>
 </tr>
 <tr>
-<td>Afficher le prix en euros (420,00 €)</td>
+<td>#8 Afficher la durée du voyage sur la carte</td>
 <td>API</td>
-<td><code>number_format($voyage-&gt;prix, 2, &#39;,&#39;, &#39; &#39;)</code></td>
+<td>Icône <code>bi-hourglass-split</code>, méthode
+<code>dureeEnJours()</code> du modèle ; « 1 jour » au singulier</td>
 </tr>
 <tr>
-<td>Afficher les places, et « Aucun voyage prévu » si la liste est
-vide</td>
+<td>#9 Afficher le nombre de classes concernées sur la carte</td>
 <td>Création</td>
-<td><code>@forelse … @empty … @endforelse</code></td>
+<td>Icône <code>bi-mortarboard</code>, <code>classes_count</code> chargé
+par <code>withCount(&#39;classes&#39;)</code> ; vérifier aussi la page
+d’accueil</td>
 </tr>
 </tbody>
 </table>
 <p>Ordre de fusion : <strong>Modification, API, Création.</strong> Les
-trois issues touchent des lignes voisines de la liste : à ce tour, l’API
-puis la Création intègrent <code>main</code> et résolvent leur conflit.
-À la fin de l’après-midi, chacun en a donc résolu un.</p>
+trois branches insèrent leur ligne au même endroit : à ce tour, l’API
+puis la Création intègrent <code>main</code> et résolvent leur conflit
+en gardant <strong>toutes</strong> les lignes. À la fin de l’après-midi,
+chacun en a donc résolu un.</p>
 <p><strong>Critère de réussite :</strong> chacun a ouvert une PR relue,
 demandé une modification argumentée et résolu un conflit ;
 <code>main</code> contient toutes les fonctions et l’application démarre
@@ -1091,13 +1099,34 @@ Dans <code>index.blade.php</code>, garder le lien « Nouveau voyage », la
 colonne d’actions et <strong>un seul</strong> bloc d’affichage du
 message flash.</p>
 <h3 id="second-tour">Second tour</h3>
-<p>Ligne du tableau après les trois fusions :</p>
-<pre class="blade"><code>&lt;td&gt;{{ $voyage-&gt;depart-&gt;format(&#39;d/m/Y&#39;) }}&lt;/td&gt;
-&lt;td&gt;{{ number_format($voyage-&gt;prix, 2, &#39;,&#39;, &#39; &#39;) }} €&lt;/td&gt;
-&lt;td&gt;{{ $voyage-&gt;places }}&lt;/td&gt;</code></pre>
-<p>La boucle devient <code>@forelse ($voyages as $voyage)</code>, suivie
-de <code>@empty</code> et d’une ligne « Aucun voyage prévu » avant
-<code>@endforelse</code> ; l’en-tête reçoit une colonne « Places ».</p>
+<p>Le conflit de l’API, puis celui de la Création, a la même forme :
+deux <code>&lt;li&gt;</code> insérés au même endroit. On garde les deux,
+dans un ordre lisible. Début de la liste après les trois fusions :</p>
+<pre class="blade"><code>&lt;li class=&quot;d-flex align-items-center gap-2 mb-1&quot;&gt;
+    &lt;i class=&quot;bi bi-geo-alt text-primary&quot;&gt;&lt;/i&gt;
+    {{ $voyage-&gt;destination }}
+&lt;/li&gt;
+&lt;li class=&quot;d-flex align-items-center gap-2 mb-1&quot;&gt;
+    &lt;i class=&quot;bi bi-hourglass-split text-primary&quot;&gt;&lt;/i&gt;
+    {{ $voyage-&gt;dureeEnJours() }} {{ $voyage-&gt;dureeEnJours() &gt; 1 ? &#39;jours&#39; : &#39;jour&#39; }}
+&lt;/li&gt;
+&lt;li class=&quot;d-flex align-items-center gap-2 mb-1&quot;&gt;
+    &lt;i class=&quot;bi bi-mortarboard text-primary&quot;&gt;&lt;/i&gt;
+    @if ($voyage-&gt;classes_count &gt; 0)
+        {{ $voyage-&gt;classes_count }} {{ $voyage-&gt;classes_count &gt; 1 ? &#39;classes&#39; : &#39;classe&#39; }}
+    @else
+        Aucune classe
+    @endif
+&lt;/li&gt;</code></pre>
+<p>Le piège de l’issue #9 : la page d’accueil réutilise la carte, mais
+sa route charge les voyages sans <code>withCount(&#39;classes&#39;)</code>.
+<code>classes_count</code> y vaut <code>null</code> et la carte
+afficherait « Aucune classe ». Correction dans
+<code>routes/web.php</code> :
+<code>Voyage::withCount(&#39;classes&#39;)-&gt;whereDate(…)</code>. Compter avec
+<code>$voyage-&gt;classes-&gt;count()</code> fonctionnerait aussi, mais
+au prix d’une requête par carte, ce que le dernier critère de l’issue
+interdit.</p>
 <h3 id="extension-annuler-une-fusion">Extension : annuler une
 fusion</h3>
 <p><code>git revert</code> crée un nouveau commit qui défait la fusion :
