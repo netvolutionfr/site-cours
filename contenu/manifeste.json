@@ -1738,9 +1738,101 @@
    "brut": null,
    "titres": [],
    "composant": "Markdown"
+  },
+  {
+   "slug": "mastere/devops/SQ01-p01-culture-devops-cycle",
+   "matiere": "mastere",
+   "classe": "devops",
+   "rubrique": "",
+   "sequence": "mastere/devops/SQ01",
+   "titre": "Culture DevOps",
+   "sousTitre": "Développer et exploiter, une seule chaîne",
+   "nature": "Diaporama",
+   "date": "2026-10-19",
+   "pdf": "/mastere/devops/SQ01-p01-culture-devops-cycle.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "développer-et-exploiter-une-seule-chaîne",
+     "text": "Développer et exploiter, une seule chaîne"
+    }
+   ]
+  },
+  {
+   "slug": "mastere/devops/SQ01-p02-github-flow-revue-conflits",
+   "matiere": "mastere",
+   "classe": "devops",
+   "rubrique": "",
+   "sequence": "mastere/devops/SQ01",
+   "titre": "Collaborer avec Git et GitHub",
+   "sousTitre": "Branches, pull requests, revue et conflits",
+   "nature": "Diaporama",
+   "date": "2026-10-19",
+   "pdf": "/mastere/devops/SQ01-p02-github-flow-revue-conflits.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "réunir-trois-branches-sans-casser-main",
+     "text": "Réunir trois branches sans casser main"
+    }
+   ]
+  },
+  {
+   "slug": "mastere/laravel/SQ01-p05-validation-formulaires",
+   "matiere": "mastere",
+   "classe": "laravel",
+   "rubrique": "",
+   "sequence": "mastere/laravel/SQ01",
+   "titre": "Voyages scolaires",
+   "sousTitre": "Du modèle à l'API, de l'API aux formulaires validés",
+   "nature": "Diaporama",
+   "date": "2026-10-19",
+   "pdf": "/mastere/laravel/SQ01-p05-validation-formulaires.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "concevoir-exposer-valider",
+     "text": "Concevoir, exposer, valider"
+    }
+   ]
   }
  ],
  "sequences": [
+  {
+   "id": "mastere/devops/SQ01",
+   "matiere": "mastere",
+   "classe": "devops",
+   "rubrique": "",
+   "rubriqueLibelle": "Général",
+   "code": "SQ01",
+   "titre": "Culture DevOps, collaboration Git et conteneurs",
+   "debut": "2026-10-19",
+   "fin": "2026-10-19",
+   "supports": [
+    "mastere/devops/SQ01-p01-culture-devops-cycle",
+    "mastere/devops/SQ01-p02-github-flow-revue-conflits"
+   ]
+  },
+  {
+   "id": "mastere/laravel/SQ01",
+   "matiere": "mastere",
+   "classe": "laravel",
+   "rubrique": "",
+   "rubriqueLibelle": "Général",
+   "code": "SQ01",
+   "titre": "Fondamentaux MVC, API et formulaires validés",
+   "debut": "2026-10-19",
+   "fin": "2026-10-19",
+   "supports": [
+    "mastere/laravel/SQ01-p05-validation-formulaires"
+   ]
+  },
   {
    "id": "nsi/1g/SQ00",
    "matiere": "nsi",

@@ -1,0 +1,397 @@
+<section id="culture-devops" class="slide title">
+<h2>Culture DevOps</h2>
+<h3 id="développer-et-exploiter-une-seule-chaîne">Développer et
+exploiter, une seule chaîne</h3>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Expliquer pourquoi développement et exploitation se sont
+opposés</li>
+<li>Décrire le cycle DevOps et situer une pratique ou un outil sur ce
+cycle</li>
+<li>Analyser un incident de livraison et proposer les pratiques qui
+l’évitent</li>
+</ul>
+<p><strong>Prérequis :</strong> aucun prérequis disciplinaire au-delà de
+la présentation du module.</p>
+</section>
+<section id="vendredi-17-h-30" class="slide warning" data-layout="single">
+<h2>Vendredi, 17 h 30</h2>
+<p>Le développeur dépose la nouvelle version de « Voyages scolaires »
+par FTP, puis part en week-end.</p>
+<p>Lundi 9 h, les parents appellent le lycée : la liste des voyages
+affiche une <strong>erreur 500</strong>.</p>
+<p><strong>Qui est responsable ? Et qu’est-ce qui a vraiment échoué
+?</strong></p>
+</section>
+<section id="deux-métiers-deux-objectifs" class="slide compare" data-layout="single">
+<h2>Deux métiers, deux objectifs</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Développement (Dev)</th>
+<th>Exploitation (Ops)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mission</td>
+<td>Livrer des fonctions nouvelles</td>
+<td>Garder le service disponible</td>
+</tr>
+<tr>
+<td>Mesuré sur</td>
+<td>Ce qui est livré</td>
+<td>Ce qui tombe en panne</td>
+</tr>
+<tr>
+<td>Le changement est</td>
+<td>Le but</td>
+<td>Le premier risque</td>
+</tr>
+<tr>
+<td>Réflexe en cas d’incident</td>
+<td>« Chez moi, ça marche »</td>
+<td>« On gèle les mises en production »</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="le-mur-de-la-confusion" class="slide concept" data-layout="single">
+<h2>Le mur de la confusion</h2>
+<ul>
+<li>Le code est « jeté par-dessus le mur » à l’exploitation</li>
+<li>Les livraisons s’espacent, donc chacune devient <strong>plus grosse
+et plus risquée</strong></li>
+<li>Un incident devient une recherche de coupable</li>
+<li>Personne ne voit la chaîne en entier</li>
+</ul>
+<blockquote>
+<p>Chaque camp optimise sa part ; c’est le service rendu à l’utilisateur
+qui en paie le prix.</p>
+</blockquote>
+</section>
+<section id="le-déploiement-artisanal" class="slide concept" data-layout="single">
+<h2>Le déploiement artisanal</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Geste</th>
+<th>Risque</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Copie de fichiers par FTP</td>
+<td>Version en ligne inconnue, aucun retour arrière</td>
+</tr>
+<tr>
+<td>Migrations lancées « à la main »</td>
+<td>Oubli, ordre faux, base incohérente</td>
+</tr>
+<tr>
+<td>Configuration éditée sur le serveur</td>
+<td>Serveur impossible à reconstruire à l’identique</td>
+</tr>
+<tr>
+<td>Test : « j’ai regardé la page »</td>
+<td>Les régressions passent en production</td>
+</tr>
+<tr>
+<td>Personne ne surveille</td>
+<td>Ce sont les utilisateurs qui découvrent la panne</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="devops" class="slide definition" data-layout="single">
+<h2>DevOps</h2>
+<p>Une <strong>culture</strong> et un ensemble de
+<strong>pratiques</strong> qui rapprochent ceux qui développent et ceux
+qui exploitent une application, autour d’une chaîne de livraison
+<strong>automatisée</strong>, <strong>mesurée</strong> et dont ils
+partagent la <strong>responsabilité</strong>, du code jusqu’à la
+production.</p>
+<p>DevOps n’est ni un outil, ni un poste, ni une équipe de plus.</p>
+</section>
+<section id="doù-vient-le-mot" class="slide concept" data-layout="single">
+<h2>D’où vient le mot</h2>
+<ul>
+<li><strong>2008-2009</strong> : Patrick Debois, consultant belge,
+cherche à réconcilier développeurs et administrateurs</li>
+<li><strong>Juin 2009</strong> : à la conférence Velocity, Allspaw et
+Hammond présentent <em>10+ Deploys per Day: Dev and Ops Cooperation at
+Flickr</em></li>
+<li><strong>Octobre 2009</strong> : premiers <em>DevOpsDays</em> à Gand
+; le mot-dièse <code>#devops</code> s’impose</li>
+<li><strong>2018</strong> : <em>Accelerate</em> (Forsgren, Humble, Kim)
+relie ces pratiques à la performance des organisations</li>
+</ul>
+</section>
+<section id="qui-construit-exploite" class="slide quote" data-layout="single">
+<h2>Qui construit exploite</h2>
+<blockquote>
+<p>« You build it, you run it. »</p>
+</blockquote>
+<p>Werner Vogels, directeur technique d’Amazon, 2006 : l’équipe qui
+développe un service en assure aussi le fonctionnement en
+production.</p>
+</section>
+<section id="calms-cinq-piliers" class="slide compare" data-layout="single">
+<h2>CALMS : cinq piliers</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Pilier</th>
+<th>Ce qu’il change</th>
+<th>Dans ce module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C</strong>ulture</td>
+<td>Responsabilité partagée, incidents sans recherche de coupable</td>
+<td>Revue croisée, bilan d’incident</td>
+</tr>
+<tr>
+<td><strong>A</strong>utomatisation</td>
+<td>Plus de geste manuel répétitif dans la chaîne</td>
+<td>GitHub Actions, Terraform, k3d</td>
+</tr>
+<tr>
+<td><strong>L</strong>ean</td>
+<td>Petits lots, livrés souvent</td>
+<td>Branches courtes, PR fréquentes</td>
+</tr>
+<tr>
+<td><strong>M</strong>esure</td>
+<td>Décider sur des faits</td>
+<td>Journaux, disponibilité, alerte</td>
+</tr>
+<tr>
+<td><strong>S</strong>hare (partage)</td>
+<td>Code, outils et connaissances communs</td>
+<td>Dépôt commun, README, PR</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="le-cycle-devops-appliqué-au-fil-rouge" class="slide full-image">
+<h2>Le cycle DevOps, appliqué au fil rouge</h2>
+<figure>
+<img role="img" aria-label="Cycle DevOps en huit étapes : Plan, Code, Build, Test côté Dev ; Release, Deploy, Operate, Monitor côté Ops ; chaque étape associée à son outil et à l’intervention du module." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDU2MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNTYwIj4KICA8cmVjdCB3aWR0aD0iMTEwMCIgaGVpZ2h0PSI1NjAiIGZpbGw9IiNGRkZGRkYiLz4KCiAgPCEtLSBib3VjbGVzIC0tPgogIDxwYXRoIGQ9Ik01NTAsMjUwIEM0NTAsOTUgMTMwLDk1IDEzMCwyNTAgQzEzMCw0MDUgNDUwLDQwNSA1NTAsMjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik01NTAsMjUwIEM2NTAsOTUgOTcwLDk1IDk3MCwyNTAgQzk3MCw0MDUgNjUwLDQwNSA1NTAsMjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiM2QjVCQjUiIHN0cm9rZS13aWR0aD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwb2x5Z29uIHBvaW50cz0iMTE3LDIzNiAxNDMsMjM2IDEzMCwyNjIiIGZpbGw9IiMzNTY4RDQiLz4KICA8cG9seWdvbiBwb2ludHM9Ijk1NywyMzYgOTgzLDIzNiA5NzAsMjYyIiBmaWxsPSIjNkI1QkI1Ii8+CgogIDwhLS0gY2VudHJlcyAtLT4KICA8dGV4dCB4PSIzMzAiIHk9IjI0NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRldjwvdGV4dD4KICA8dGV4dCB4PSIzMzAiIHk9IjI3MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNoYW5nZXIgdml0ZSBldCBzb3V2ZW50PC90ZXh0PgogIDx0ZXh0IHg9Ijc3MCIgeT0iMjQ0IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0MCIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3BzPC90ZXh0PgogIDx0ZXh0IHg9Ijc3MCIgeT0iMjcyIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Z2FyZGVyIGxlIHNlcnZpY2Ugc3RhYmxlPC90ZXh0PgoKICA8IS0tIMOpdGFwZXMgRGV2IC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIj4KICAgIDxyZWN0IHg9IjM2NSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI0NTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGxhbjwvdGV4dD4KICAgIDx0ZXh0IHg9IjQ1MCIgeT0iMTY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5pc3N1ZXMgR2l0SHViIMK3IGkyPC90ZXh0PgoKICAgIDxyZWN0IHg9IjEyNSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSIyMTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29kZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjIxMCIgeT0iMTY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HaXQsIFBSLCByZXZ1ZSDCtyBpMjwvdGV4dD4KCiAgICA8cmVjdCB4PSIxMjUiIHk9IjMxOCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHRleHQgeD0iMjEwIiB5PSIzNDMiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJ1aWxkPC90ZXh0PgogICAgPHRleHQgeD0iMjEwIiB5PSIzNjYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmltYWdlIERvY2tlciDCtyBpMzwvdGV4dD4KCiAgICA8cmVjdCB4PSIzNjUiIHk9IjMxOCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHRleHQgeD0iNDUwIiB5PSIzNDMiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlRlc3Q8L3RleHQ+CiAgICA8dGV4dCB4PSI0NTAiIHk9IjM2NiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+dGVzdHMgYXV0bywgQ0kgwrcgaTQ8L3RleHQ+CiAgPC9nPgoKICA8IS0tIMOpdGFwZXMgT3BzIC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIj4KICAgIDxyZWN0IHg9IjU2NSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2NTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmVsZWFzZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjY1MCIgeT0iMTY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50YWcsIGltYWdlIMK3IGk0PC90ZXh0PgoKICAgIDxyZWN0IHg9IjgwNSIgeT0iMTE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI4OTAiIHk9IjE0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RGVwbG95PC90ZXh0PgogICAgPHRleHQgeD0iODkwIiB5PSIxNjYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnBpcGVsaW5lLCBrM2QgwrcgaTQsIGk2PC90ZXh0PgoKICAgIDxyZWN0IHg9IjgwNSIgeT0iMzE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI4OTAiIHk9IjM0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3BlcmF0ZTwvdGV4dD4KICAgIDx0ZXh0IHg9Ijg5MCIgeT0iMzY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LdWJlcm5ldGVzLCBJYUMgwrcgaTUsIGk2PC90ZXh0PgoKICAgIDxyZWN0IHg9IjU2NSIgeT0iMzE4IiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2NTAiIHk9IjM0MyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TW9uaXRvcjwvdGV4dD4KICAgIDx0ZXh0IHg9IjY1MCIgeT0iMzY2IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5qb3VybmF1eCwgYWxlcnRlIMK3IGk3PC90ZXh0PgogIDwvZz4KCiAgPCEtLSByw6l0cm9hY3Rpb24gLS0+CiAgPHBhdGggZD0iTTY1MCwzODQgTDY1MCw0MjYgUTY1MCw0NDAgNjM2LDQ0MCBMNzQsNDQwIFE2MCw0NDAgNjAsNDI2IEw2MCwxMDYgUTYwLDkyIDc0LDkyIEw0NTAsOTIgTDQ1MCwxMDgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPgogIDxwb2x5Z29uIHBvaW50cz0iNDQzLDEwNiA0NTcsMTA2IDQ1MCwxMTgiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSIzNjAiIHk9IjQ2MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPnVuZSBhbGVydGUgZGV2aWVudCB1bmUgaXNzdWU8L3RleHQ+CgogIDwhLS0gc8OpY3VyaXTDqSB0cmFuc3ZlcnNhbGUgLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjIwIiB3aWR0aD0iMTAyMCIgaGVpZ2h0PSI0MCIgcng9IjEwIiBmaWxsPSIjRkRFQ0VDIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjU1MCIgeT0iNDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Q5NUM1OSI+U8OpY3VyaXTDqSDDoCBjaGFxdWUgw6l0YXBlPC90c3Bhbj4gwrcgc2VjcmV0cyBob3JzIGR1IGTDqXDDtHQsIGRyb2l0cyBtaW5pbWF1eCBkdSBwaXBlbGluZSwgaW1hZ2UgdsOpcmlmacOpZSDCtyBpNCwgaTc8L3RleHQ+CgogIDwhLS0gc3ludGjDqHNlIC0tPgogIDxyZWN0IHg9IjQwIiB5PSI0NzgiIHdpZHRoPSIxMDIwIiBoZWlnaHQ9IjYyIiByeD0iMTAiIGZpbGw9IiNFOEY0RUMiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSI1NTAiIHk9IjUwMyIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlVuZSBzZXVsZSBjaGHDrm5lLCBhdXRvbWF0aXPDqWUsIGRvbnQgbCfDqXF1aXBlIGVudGnDqHJlIGVzdCByZXNwb25zYWJsZS48L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1MjYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZpbCByb3VnZSDCqyBWb3lhZ2VzIHNjb2xhaXJlcyDCuyDCtyBpTiA9IGludGVydmVudGlvbiBkdSBtb2R1bGUgb8O5IGwnw6l0YXBlIGVzdCB0cmF2YWlsbMOpZTwvdGV4dD4KPC9zdmc+Cg==" alt="Cycle DevOps en huit étapes : Plan, Code, Build, Test côté Dev ; Release, Deploy, Operate, Monitor côté Ops ; chaque étape associée à son outil et à l’intervention du module." />
+<figcaption aria-hidden="true">Cycle DevOps en huit étapes : Plan, Code,
+Build, Test côté Dev ; Release, Deploy, Operate, Monitor côté Ops ;
+chaque étape associée à son outil et à l’intervention du
+module.</figcaption>
+</figure>
+</section>
+<section id="intégration-livraison-déploiement-continus" class="slide compare" data-layout="single">
+<h2>Intégration, livraison, déploiement continus</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Intégration continue (CI)</th>
+<th>Livraison continue</th>
+<th>Déploiement continu (CD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chaque modification</td>
+<td>est fusionnée souvent, construite et testée</td>
+<td>produit une version prête à livrer</td>
+<td>part en production</td>
+</tr>
+<tr>
+<td>Geste humain restant</td>
+<td>la revue</td>
+<td><strong>la décision</strong> de livrer</td>
+<td>aucun</td>
+</tr>
+<tr>
+<td>Condition</td>
+<td>tests automatiques fiables</td>
+<td>CI + déploiement automatisé</td>
+<td>livraison continue + surveillance</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mesurer-la-chaîne-les-indicateurs-dora" class="slide compare" data-layout="single">
+<h2>Mesurer la chaîne : les indicateurs DORA</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Indicateur</th>
+<th>Question</th>
+<th>Mesure la</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fréquence de déploiement</td>
+<td>Combien de livraisons en production ?</td>
+<td>rapidité</td>
+</tr>
+<tr>
+<td>Délai de mise en production</td>
+<td>Du commit à la production, combien de temps ?</td>
+<td>rapidité</td>
+</tr>
+<tr>
+<td>Taux d’échec des changements</td>
+<td>Quelle part des livraisons provoque un incident ?</td>
+<td>stabilité</td>
+</tr>
+<tr>
+<td>Temps de rétablissement</td>
+<td>Combien de temps pour revenir à un service normal ?</td>
+<td>stabilité</td>
+</tr>
+</tbody>
+</table>
+<p>Les équipes les plus performantes vont <strong>à la fois</strong>
+plus vite et plus sûrement.</p>
+</section>
+<section id="qui-fait-quoi" class="slide compare" data-layout="single">
+<h2>Qui fait quoi ?</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Dev</th>
+<th>Ops</th>
+<th>Ensemble</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code, revue</td>
+<td>écrit, relit</td>
+<td>relit ce qui touche l’exploitation</td>
+<td>règles de la PR</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>les écrit</td>
+<td></td>
+<td>les rend bloquants dans la CI</td>
+</tr>
+<tr>
+<td>Image, pipeline</td>
+<td>Dockerfile</td>
+<td>droits, secrets, cibles</td>
+<td>le pipeline lui-même</td>
+</tr>
+<tr>
+<td>Production</td>
+<td>corrige</td>
+<td>surveille, alerte</td>
+<td>astreinte, bilan d’incident</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ce-que-devops-nest-pas" class="slide warning" data-layout="single">
+<h2>Ce que DevOps n’est pas</h2>
+<ul>
+<li>Une <strong>équipe « DevOps »</strong> de plus entre les deux autres
+: le mur reste</li>
+<li>Les <strong>développeurs seuls</strong> en production, sans
+compétence d’exploitation</li>
+<li>Un <strong>outil</strong> à acheter : Jenkins ou Kubernetes sans la
+culture ne changent rien</li>
+<li>La <strong>suppression des contrôles</strong> : on les automatise,
+on ne les retire pas</li>
+</ul>
+</section>
+<section id="exercice-1-placer-sur-le-cycle" class="slide activity" data-layout="single">
+<h2>Exercice 1 — Placer sur le cycle</h2>
+<p>5 min · seul · sur papier</p>
+<p><strong>À produire :</strong> l’étape du cycle de chacune des 8
+actions du support A4, partie 1.</p>
+<ol type="1">
+<li>Associer chaque action à une étape</li>
+<li>Pour chacune, dire si elle relève de Dev, d’Ops ou des deux</li>
+</ol>
+</section>
+<section id="exercice-2-analyser-lincident-du-vendredi" class="slide activity" data-layout="single">
+<h2>Exercice 2 — Analyser l’incident du vendredi</h2>
+<p>10 min · seul, puis confrontation à trois · sur papier</p>
+<p><strong>À produire :</strong> un tableau <em>défaillance · pratique
+qui l’évite · étape · indicateur DORA dégradé</em>.</p>
+<ol type="1">
+<li>Relever au moins trois défaillances dans le récit du support</li>
+<li>Pour chacune, proposer une pratique DevOps précise</li>
+</ol>
+</section>
+<section id="exercice-3-la-chaîne-de-voyages-scolaires" class="slide activity" data-layout="single">
+<h2>Exercice 3 — La chaîne de Voyages scolaires</h2>
+<p>15 min · à trois · une seule production</p>
+<p><strong>À produire :</strong> la chaîne cible du projet, de la PR à
+l’alerte, en six étapes au plus.</p>
+<ol type="1">
+<li>Pour chaque étape : ce qui se passe <strong>automatiquement</strong>
+et l’outil</li>
+<li>Qui est prévenu si l’étape échoue ?</li>
+<li>Confronter au déroulé du module : qu’avez-vous oublié ?</li>
+</ol>
+</section>
+<section id="diagnostic" class="slide activity" data-layout="single">
+<h2>Diagnostic</h2>
+<p>10 min · seul · sans aide · non noté</p>
+<p><strong>À produire :</strong> les 8 réponses du questionnaire,
+support A4 partie 1.</p>
+<p>Git, Linux, Docker : il sert à régler les prochaines interventions
+sur vos acquis.</p>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li>DevOps : une <strong>culture</strong> de responsabilité partagée,
+outillée par l’<strong>automatisation</strong></li>
+<li>Un cycle continu : Plan, Code, Build, Test, Release, Deploy,
+Operate, Monitor</li>
+<li>CI, livraison continue, déploiement continu : trois niveaux
+d’automatisation</li>
+<li>On mesure vitesse <strong>et</strong> stabilité (DORA), qui
+progressent ensemble</li>
+</ul>
+<p>Première étape de la chaîne : intégrer le code proprement, avec Git
+et GitHub.</p>
+</section>

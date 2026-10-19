@@ -1,0 +1,311 @@
+<section id="voyages-scolaires" class="slide title">
+<h2>Voyages scolaires</h2>
+<h3 id="concevoir-exposer-valider">Concevoir, exposer, valider</h3>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Concevoir le modèle <code>Voyage</code> à partir du besoin</li>
+<li>Exposer les voyages en API JSON</li>
+<li>Rejeter une saisie invalide et expliquer la réponse</li>
+<li>Créer et modifier un voyage par formulaire</li>
+</ul>
+<p><strong>Prérequis :</strong> parties 1 à 3 — modèle, Eloquent, route,
+contrôleur, vue Blade.</p>
+</section>
+<section id="le-problème-du-jour" class="slide warning" data-layout="single">
+<h2>Le problème du jour</h2>
+<p>L’appli mobile du lycée et le secrétariat vont enregistrer des
+voyages.</p>
+<p>Un voyage à <strong>−50 €</strong>, pour <strong>0 élève</strong>,
+<strong>parti hier</strong> :</p>
+<p><strong>qui doit l’empêcher, et à quel endroit ?</strong></p>
+</section>
+<section id="une-équipe-un-dépôt-trois-parts" class="slide compare" data-layout="single">
+<h2>Une équipe, un dépôt, trois parts</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Temps</th>
+<th>Organisation</th>
+<th>Production</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concevoir</td>
+<td>Seul sur papier, puis en commun</td>
+<td>Schéma du voyage</td>
+</tr>
+<tr>
+<td>Construire</td>
+<td>À trois, un pilote au clavier, rotation</td>
+<td>Modèle, API, liste, règle commune sur <code>main</code></td>
+</tr>
+<tr>
+<td>Approfondir</td>
+<td>Une part chacun, sur sa branche</td>
+<td>API, Création, Modification</td>
+</tr>
+<tr>
+<td>Restituer</td>
+<td>Chacun devant les deux autres</td>
+<td>Saisie invalide montrée et expliquée</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="concevoir-le-voyage" class="slide activity" data-layout="single">
+<h2>Concevoir le voyage</h2>
+<p>10 min · seul, sur papier · puis mise en commun</p>
+<p><strong>À produire :</strong> un tableau <em>information · type ·
+contrainte métier</em>.</p>
+<ol type="1">
+<li>Ce qu’un parent consulte pour décider d’une inscription</li>
+<li>Ce qu’un enseignant saisit pour publier un voyage</li>
+<li>Pour chaque information : son type, sa règle</li>
+</ol>
+</section>
+<section id="pilote-et-navigateurs" class="slide concept" data-layout="single">
+<h2>Pilote et navigateurs</h2>
+<ul>
+<li><strong>Pilote</strong> : tape, annonce ce qu’il fait</li>
+<li><strong>Navigateurs</strong> : lisent le support, vérifient chaque
+ligne, préviennent avant l’erreur</li>
+<li>On change de pilote <strong>à chaque étape</strong></li>
+</ul>
+<p>Étapes : modèle et données de test · API en lecture · API en écriture
+· liste web.</p>
+</section>
+<section id="fillable-devient-un-attribut-php" class="slide code">
+<h2><code>$fillable</code> devient un attribut PHP</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Illuminate\Database\Eloquent\Attributes\Fillable<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>Fillable([<span class="st">&#39;titre&#39;</span><span class="ot">,</span> <span class="st">&#39;destination&#39;</span><span class="ot">,</span> <span class="st">&#39;depart&#39;</span><span class="ot">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;prix&#39;</span><span class="ot">,</span> <span class="st">&#39;places&#39;</span>])<span class="at">]</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Voyage <span class="kw">extends</span> Model {}</span></code></pre></div>
+<ul>
+<li>Remplace <code>protected $fillable = [...]</code>, encore
+accepté</li>
+<li><code>#[...]</code> : attribut PHP 8, métadonnée lue par
+Laravel</li>
+<li>Liste blanche de <code>create()</code>, <strong>pas une
+validation</strong></li>
+</ul>
+</section>
+<section id="lapi-en-une-ligne-de-routes" class="slide code">
+<h2>L’API en une ligne de routes</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Route::apiResource(<span class="st">&#39;voyages&#39;</span><span class="ot">,</span> VoyageController::<span class="kw">class</span>)<span class="ot">;</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>URL</th>
+<th>Action</th>
+<th>Succès</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/voyages</code></td>
+<td><code>index</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/voyages</code></td>
+<td><code>store</code></td>
+<td>201</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/voyages/{voyage}</code></td>
+<td><code>show</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>PUT/PATCH</td>
+<td><code>/api/voyages/{voyage}</code></td>
+<td><code>update</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/voyages/{voyage}</code></td>
+<td><code>destroy</code></td>
+<td>204</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="essayons-de-casser-lapi" class="slide terminal">
+<h2>Essayons de casser l’API</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-X</span> POST http://127.0.0.1:8000/api/voyages <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Accept: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">&#39;{&quot;titre&quot;:&quot;Test&quot;,&quot;destination&quot;:&quot;Lune&quot;,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">       &quot;depart&quot;:&quot;2020-01-01&quot;,&quot;prix&quot;:-50,&quot;places&quot;:0}&#39;</span></span></code></pre></div>
+<p>Réponse <strong>201</strong> : le voyage absurde est enregistré. Avec
+un titre vide : <strong>500</strong>.</p>
+</section>
+<section id="le-navigateur-ne-protège-rien" class="slide concept" data-layout="single">
+<h2>Le navigateur ne protège rien</h2>
+<ul>
+<li><code>required</code>, <code>min</code>, <code>type=&quot;date&quot;</code> :
+du <strong>confort</strong> pour l’utilisateur</li>
+<li><code>curl</code>, une appli mobile, un script : ils ne passent pas
+par le formulaire</li>
+<li>La validation qui protège s’exécute <strong>sur le
+serveur</strong></li>
+</ul>
+<blockquote>
+<p>Ne jamais faire confiance à une donnée qui vient du client.</p>
+</blockquote>
+</section>
+<section id="les-règles-métier-écrites-une-fois" class="slide code">
+<h2>Les règles métier, écrites une fois</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> rules()<span class="ot">:</span> <span class="dt">array</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;titre&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;string&#39;</span><span class="ot">,</span> <span class="st">&#39;max:120&#39;</span>]<span class="ot">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;destination&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;string&#39;</span><span class="ot">,</span> <span class="st">&#39;max:100&#39;</span>]<span class="ot">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;depart&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;date&#39;</span><span class="ot">,</span> <span class="st">&#39;after:today&#39;</span>]<span class="ot">,</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;prix&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;numeric&#39;</span><span class="ot">,</span> <span class="st">&#39;gt:0&#39;</span>]<span class="ot">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;places&#39;</span> =&gt; [<span class="st">&#39;required&#39;</span><span class="ot">,</span> <span class="st">&#39;integer&#39;</span><span class="ot">,</span> <span class="st">&#39;between:1,60&#39;</span>]<span class="ot">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Chaque ligne traduit une contrainte du tableau de conception.</p>
+</section>
+<section id="une-règle-deux-clients-deux-réponses" class="slide full-image">
+<h2>Une règle, deux clients, deux réponses</h2>
+<figure>
+<img role="img" aria-label="Trajet d’une saisie invalide : redirection avec erreurs pour le navigateur, JSON 422 pour l’appli mobile ; le contrôleur n’est jamais exécuté." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDY0MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjMzU2OEQ0Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZjIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjRDk1QzU5Ii8+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImZnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMTAsNSBMMCwxMCB6IiBmaWxsPSIjOEE5NEE2Ii8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjExMDAiIGhlaWdodD0iNjQwIiBmaWxsPSIjRkZGRkZGIi8+CgogIDwhLS0gQ2xpZW50IDEgOiBuYXZpZ2F0ZXVyIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI0MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxNzAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMi41Ii8+CiAgPHJlY3QgeD0iMjAiIHk9IjQwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzM1NjhENCIvPgogIDxyZWN0IHg9IjIwIiB5PSI2MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxMiIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjE0NSIgeT0iNjIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OYXZpZ2F0ZXVyIMK3IGZvcm11bGFpcmU8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMTcyMDMzIj4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxMDAiPlRpdHJlICAgICAgIFsgICAgICAgICAgXTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxMjYiPlByaXggICAgICAgIFsgLTUwICAgICAgXTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxNTIiPlBsYWNlcyAgICAgIFsgMzAgICAgICAgXTwvdGV4dD4KICAgIDx0ZXh0IHg9IjM2IiB5PSIxNzgiIGZpbGw9IiM1QzY4N0MiPl90b2tlbj04Zksy4oCmICAoQGNzcmYpPC90ZXh0PgogIDwvZz4KICA8cmVjdCB4PSIxNTAiIHk9IjE4NiIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxOCIgcng9IjQiIGZpbGw9IiNGN0Y4RkEiIHN0cm9rZT0iIzE3MjAzMyIvPgogIDx0ZXh0IHg9IjIwMCIgeT0iMTk5IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q3LDqWVyIGxlIHZveWFnZTwvdGV4dD4KICA8cGF0aCBkPSJNMCwyMTAgTDI5MCwyMTAgTDI3NiwyMjYgTDE0LDIyNiBaIiBmaWxsPSIjRjdGOEZBIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iMiIvPgoKICA8IS0tIEzDqWdlbmRlIC0tPgogIDxnIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMTcyMDMzIj4KICAgIDxsaW5lIHgxPSIyNCIgeTE9IjI2OCIgeDI9Ijc0IiB5Mj0iMjY4IiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICAgIDx0ZXh0IHg9Ijg0IiB5PSIyNzMiPnJlcXXDqnRlIGVudm95w6llPC90ZXh0PgogICAgPGxpbmUgeDE9Ijc0IiB5MT0iMjk2IiB4Mj0iMjQiIHkyPSIyOTYiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2ZjKSIvPgogICAgPHRleHQgeD0iODQiIHk9IjMwMSI+csOpcG9uc2Ugw6AgdW5lIHNhaXNpZSBpbnZhbGlkZTwvdGV4dD4KICA8L2c+CgogIDwhLS0gQ2xpZW50IDIgOiBhcHBsaSBtb2JpbGUgLS0+CiAgPHJlY3QgeD0iNjAiIHk9IjMzMCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSIyODAiIHJ4PSIyMiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjEyMCIgeT0iMzQyIiB3aWR0aD0iNTAiIGhlaWdodD0iNiIgcng9IjMiIGZpbGw9IiMxNzIwMzMiLz4KICA8cmVjdCB4PSI3NCIgeT0iMzYwIiB3aWR0aD0iMTQyIiBoZWlnaHQ9IjI4IiByeD0iNiIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjE0NSIgeT0iMzc5IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QXBwbGkgbW9iaWxlPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjMTcyMDMzIj4KICAgIDx0ZXh0IHg9Ijc2IiB5PSI0MTIiPlBPU1QgL2FwaS92b3lhZ2VzPC90ZXh0PgogICAgPHRleHQgeD0iNzYiIHk9IjQzNiIgZmlsbD0iIzM1NjhENCI+QWNjZXB0OjwvdGV4dD4KICAgIDx0ZXh0IHg9Ijc2IiB5PSI0NTQiIGZpbGw9IiMzNTY4RDQiPiBhcHBsaWNhdGlvbi9qc29uPC90ZXh0PgogICAgPHRleHQgeD0iNzYiIHk9IjQ4MiI+eyJ0aXRyZSI6ICIiLDwvdGV4dD4KICAgIDx0ZXh0IHg9Ijc2IiB5PSI1MDAiPiAicHJpeCI6IC01MCw8L3RleHQ+CiAgICA8dGV4dCB4PSI3NiIgeT0iNTE4Ij4gInBsYWNlcyI6IDMwfTwvdGV4dD4KICA8L2c+CiAgPGNpcmNsZSBjeD0iMTQ1IiBjeT0iNTg4IiByPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTcyMDMzIiBzdHJva2Utd2lkdGg9IjIiLz4KCiAgPCEtLSBWb2llcyByZXF1w6p0ZSAvIHLDqXBvbnNlIDogbmF2aWdhdGV1ciAtLT4KICA8bGluZSB4MT0iMjc2IiB5MT0iMTAwIiB4Mj0iNTE2IiB5Mj0iMTAwIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KICA8dGV4dCB4PSIzOTYiIHk9Ijg4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBPU1QgL3ZveWFnZXM8L3RleHQ+CiAgPGxpbmUgeDE9IjUxOCIgeTE9IjE2MCIgeDI9IjI3OCIgeTI9IjE2MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmMpIi8+CiAgPHRleHQgeD0iMzk2IiB5PSIxODQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4zMDIg4oaSIHJldG91ciBhdSBmb3JtdWxhaXJlPC90ZXh0PgogIDx0ZXh0IHg9IjM5NiIgeT0iMjA0IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZXJyZXVycyAoJGVycm9ycykgZXQgc2Fpc2llPC90ZXh0PgogIDx0ZXh0IHg9IjM5NiIgeT0iMjIxIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+KG9sZCgpKSBnYXJkw6llcyBlbiBzZXNzaW9uPC90ZXh0PgoKICA8IS0tIFZvaWVzIHJlcXXDqnRlIC8gcsOpcG9uc2UgOiBtb2JpbGUgLS0+CiAgPGxpbmUgeDE9IjIzNiIgeTE9IjQxMCIgeDI9IjUxNiIgeTI9IjQxMCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmIpIi8+CiAgPHRleHQgeD0iMzgwIiB5PSIzOTgiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM1NjhENCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UE9TVCAvYXBpL3ZveWFnZXM8L3RleHQ+CiAgPGxpbmUgeDE9IjUxOCIgeTE9IjQ4MCIgeDI9IjIzOCIgeTI9IjQ4MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmMpIi8+CiAgPHRleHQgeD0iMzgwIiB5PSI1MDQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj40MjIgKyBjb3JwcyBKU09OPC90ZXh0PgogIDxnIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzE3MjAzMyI+CiAgICA8dGV4dCB4PSIyNTIiIHk9IjUyNiI+eyJtZXNzYWdlIjogIuKApiIsPC90ZXh0PgogICAgPHRleHQgeD0iMjUyIiB5PSI1NDMiPiAiZXJyb3JzIjogezwvdGV4dD4KICAgIDx0ZXh0IHg9IjI1MiIgeT0iNTYwIj4gICAidGl0cmUiOiBbIuKApm9ibGlnYXRvaXJlLiJdLDwvdGV4dD4KICAgIDx0ZXh0IHg9IjI1MiIgeT0iNTc3Ij4gICAicHJpeCI6IFsi4oCmcG9zaXRpZi4iXX19PC90ZXh0PgogIDwvZz4KCiAgPCEtLSBTZXJ2ZXVyIC0tPgogIDxyZWN0IHg9IjUxMCIgeT0iMjAiIHdpZHRoPSI1ODAiIGhlaWdodD0iNjEwIiByeD0iMTQiIGZpbGw9IiNGN0Y4RkEiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iNTEwIiB5PSIyMCIgd2lkdGg9IjU4MCIgaGVpZ2h0PSIxNiIgcng9IjgiIGZpbGw9IiMxNzIwMzMiLz4KICA8dGV4dCB4PSIxMDc2IiB5PSI1NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJlbmQiPlNlcnZldXIgTGFyYXZlbDwvdGV4dD4KCiAgPCEtLSAxLiBSb3V0ZXMgLS0+CiAgPHJlY3QgeD0iNTIwIiB5PSI2MiIgd2lkdGg9IjE1MCIgaGVpZ2h0PSI1NDAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDx0ZXh0IHg9IjU5NSIgeT0iODgiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMzU2OEQ0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xLiBSb3V0ZTwvdGV4dD4KICA8ZyBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgPHRleHQgeD0iNTk1IiB5PSIxMjYiPnJvdXRlcy93ZWIucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTk1IiB5PSIxNDQiIGZpbGw9IiM1QzY4N0MiPuKGkiBWb3lhZ2VDb250cm9sbGVyPC90ZXh0PgogICAgPHRleHQgeD0iNTk1IiB5PSI0MzYiPnJvdXRlcy9hcGkucGhwPC90ZXh0PgogICAgPHRleHQgeD0iNTk1IiB5PSI0NTQiIGZpbGw9IiM1QzY4N0MiPuKGkiBBcGlcVm95YWdlLTwvdGV4dD4KICAgIDx0ZXh0IHg9IjU5NSIgeT0iNDcwIiBmaWxsPSIjNUM2ODdDIj5Db250cm9sbGVyPC90ZXh0PgogIDwvZz4KICA8bGluZSB4MT0iNTMwIiB5MT0iMjkwIiB4Mj0iNjYwIiB5Mj0iMjkwIiBzdHJva2U9IiNDQkQ2RTIiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSI1IDQiLz4KCiAgPCEtLSBSb3V0ZXMgdmVycyBWb3lhZ2VSZXF1ZXN0IC0tPgogIDxwYXRoIGQ9Ik02NzAsMTM1IEM2OTAsMTM1IDY5MCwyMDUgNzA4LDIwNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjZmIpIi8+CiAgPHBhdGggZD0iTTY3MCw0NDUgQzY5MCw0NDUgNjkwLDM0NSA3MDgsMzQ1IiBmaWxsPSJub25lIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMyIgbWFya2VyLWVuZD0idXJsKCNmYikiLz4KCiAgPCEtLSAyLiBWb3lhZ2VSZXF1ZXN0IC0tPgogIDxyZWN0IHg9IjcxMCIgeT0iMTUwIiB3aWR0aD0iMzcwIiBoZWlnaHQ9IjI1MCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxyZWN0IHg9IjcxMCIgeT0iMTUwIiB3aWR0aD0iMzcwIiBoZWlnaHQ9IjM0IiByeD0iMTAiIGZpbGw9IiNFNDlBMzgiLz4KICA8cmVjdCB4PSI3MTAiIHk9IjE3MiIgd2lkdGg9IjM3MCIgaGVpZ2h0PSIxMiIgZmlsbD0iI0U0OUEzOCIvPgogIDx0ZXh0IHg9Ijg5NSIgeT0iMTczIiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Mi4gVm95YWdlUmVxdWVzdCDigJQgYXZhbnQgbGUgY29udHLDtGxldXI8L3RleHQ+CiAgPGcgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxNzIwMzMiPgogICAgPHRleHQgeD0iNzI4IiB5PSIyMTQiPnRpdHJlICAgcmVxdWlyZWQgwrcgbWF4OjEyMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjcyOCIgeT0iMjM4Ij5kZXBhcnQgIHJlcXVpcmVkIMK3IGFmdGVyOnRvZGF5PC90ZXh0PgogICAgPHRleHQgeD0iNzI4IiB5PSIyNjIiPnByaXggICAgcmVxdWlyZWQgwrcgZ3Q6MDwvdGV4dD4KICAgIDx0ZXh0IHg9IjcyOCIgeT0iMjg2Ij5wbGFjZXMgIHJlcXVpcmVkIMK3IGJldHdlZW46MSw2MDwvdGV4dD4KICA8L2c+CiAgPGxpbmUgeDE9IjcyOCIgeTE9IjMwNCIgeDI9IjEwNjIiIHkyPSIzMDQiIHN0cm9rZT0iI0NCRDZFMiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICA8ZyBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Q5NUM1OSI+CiAgICA8dGV4dCB4PSI3MjgiIHk9IjMzMiI+4pyXIHRpdHJlIDogb2JsaWdhdG9pcmU8L3RleHQ+CiAgICA8dGV4dCB4PSI3MjgiIHk9IjM1OCI+4pyXIHByaXggOiBkb2l0IMOqdHJlIHN0cmljdGVtZW50IHBvc2l0aWY8L3RleHQ+CiAgPC9nPgogIDx0ZXh0IHg9IjcyOCIgeT0iMzg2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzVDNjg3QyI+4oaSIGFycsOqdCA6IHLDqXBvbnNlIGQnZXJyZXVyLCBzZWxvbiBsZSBjbGllbnQ8L3RleHQ+CgogIDwhLS0gMy4gQ29udHLDtGxldXIgLS0+CiAgPGxpbmUgeDE9Ijg5NSIgeTE9IjQwMCIgeDI9Ijg5NSIgeTI9IjQ1MCIgc3Ryb2tlPSIjOEE5NEE2IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIgbWFya2VyLWVuZD0idXJsKCNmZykiLz4KICA8ZyBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSI4ODEiIHkxPSI0MTEiIHgyPSI5MDkiIHkyPSI0MzkiLz4KICAgIDxsaW5lIHgxPSI5MDkiIHkxPSI0MTEiIHgyPSI4ODEiIHkyPSI0MzkiLz4KICA8L2c+CiAgPHJlY3QgeD0iNzEwIiB5PSI0NTIiIHdpZHRoPSIzNzAiIGhlaWdodD0iOTYiIHJ4PSIxMCIgZmlsbD0iI0VFRjBGMyIgc3Ryb2tlPSIjOEE5NEE2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPgogIDx0ZXh0IHg9Ijg5NSIgeT0iNDg0IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjMuIFZveWFnZUNvbnRyb2xsZXI6OnN0b3JlKCk8L3RleHQ+CiAgPHRleHQgeD0iODk1IiB5PSI1MTIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5qYW1haXMgZXjDqWN1dMOpIHNpIHVuZSByw6hnbGUgw6ljaG91ZTwvdGV4dD4KICA8dGV4dCB4PSI4OTUiIHk9IjUzNCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmF1Y3VuZSDDqWNyaXR1cmUgZW4gYmFzZTwvdGV4dD4KCiAgPCEtLSBTeW50aMOoc2UgLS0+CiAgPHJlY3QgeD0iNzEwIiB5PSI1NjIiIHdpZHRoPSIzNzAiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iI0U4RjRFQyIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDx0ZXh0IHg9Ijg5NSIgeT0iNTg0IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VW5lIHLDqGdsZSwgZGV1eCBjbGllbnRzLCBkZXV4IHLDqXBvbnNlcy48L3RleHQ+CiAgPHRleHQgeD0iODk1IiB5PSI2MDQiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMTcyMDMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MZSBjb250csO0bGV1ciBuZSByZcOnb2l0IHF1ZSAkcmVxdWVzdC0+dmFsaWRhdGVkKCkuPC90ZXh0Pgo8L3N2Zz4K" alt="Trajet d’une saisie invalide : redirection avec erreurs pour le navigateur, JSON 422 pour l’appli mobile ; le contrôleur n’est jamais exécuté." />
+<figcaption aria-hidden="true">Trajet d’une saisie invalide :
+redirection avec erreurs pour le navigateur, JSON 422 pour l’appli
+mobile ; le contrôleur n’est jamais exécuté.</figcaption>
+</figure>
+</section>
+<section id="le-contrôleur-ne-voit-que-du-valide" class="slide code">
+<h2>Le contrôleur ne voit que du valide</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> store(VoyageRequest <span class="va">$request</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$voyage</span> <span class="op">=</span> Voyage::create(<span class="va">$request</span>-&gt;validated())<span class="ot">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response()-&gt;json(<span class="va">$voyage</span><span class="ot">,</span> <span class="dv">201</span>)<span class="ot">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<ul>
+<li><code>VoyageRequest</code> : validation <strong>avant</strong>
+l’appel</li>
+<li><code>validated()</code> : seulement les champs prévus, un
+<code>&quot;id&quot;: 999</code> est ignoré</li>
+</ul>
+</section>
+<section id="les-quatre-mécanismes-dun-formulaire" class="slide compare" data-layout="single">
+<h2>Les quatre mécanismes d’un formulaire</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@csrf</code></td>
+<td>Jeton de session ; sans lui, <strong>419</strong></td>
+</tr>
+<tr>
+<td><code>@method(&#39;PUT&#39;)</code></td>
+<td>Simule PUT ou DELETE, que HTML ne connaît pas</td>
+</tr>
+<tr>
+<td><code>@error(&#39;prix&#39;)</code></td>
+<td>Affiche l’erreur du champ dans <code>$message</code></td>
+</tr>
+<tr>
+<td><code>old(&#39;prix&#39;, $voyage-&gt;prix)</code></td>
+<td>Rend la saisie refusée, sinon la valeur enregistrée</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="source-sink-où-naît-une-faille" class="slide concept" data-layout="single">
+<h2>Source, sink : où naît une faille</h2>
+<ul>
+<li><strong>Source</strong> : toute donnée contrôlée par le client —
+formulaire, JSON, URL, en-tête, base</li>
+<li><strong>Sink</strong> : l’endroit où elle est
+<strong>interprétée</strong> — HTML, SQL, redirection, commande</li>
+<li>Faille : une source atteint un sink <strong>sans traitement adapté
+au contexte</strong></li>
+</ul>
+<blockquote>
+<p>Valider en entrée (le métier), échapper en sortie (le contexte).</p>
+</blockquote>
+<p>Le JSON du <code>201</code> n’est pas un sink : c’est le client qui
+l’affichera qui doit échapper.</p>
+</section>
+<section id="cinq-sinks-triviaux-en-laravel" class="slide code">
+<h2>Cinq sinks triviaux en Laravel</h2>
+<pre class="text"><code>XSS stockée
+  {!! $v-&gt;titre !!}              →  {{ $v-&gt;titre }}
+XSS côté client
+  el.innerHTML = v.titre         →  el.textContent = v.titre
+Injection SQL
+  whereRaw(&quot;destination = &#39;$d&#39;&quot;) →  where(&#39;destination&#39;, $d)
+Redirection ouverte
+  redirect($request-&gt;retour)     →  to_route(&#39;voyages.index&#39;)
+Affectation de masse
+  #[Unguarded] + all()           →  #[Fillable] + validated()</code></pre>
+</section>
+<section id="une-part-chacun" class="slide activity" data-layout="single">
+<h2>Une part chacun</h2>
+<p>Seul · sur sa branche · support A4, parties 5 et 6</p>
+<p><strong>À produire :</strong> une interface qui refuse une saisie
+invalide et explique pourquoi.</p>
+<ol type="1">
+<li><strong>API</strong> — tester 7 cas, messages en français, README de
+l’API</li>
+<li><strong>Création</strong> — formulaire, erreurs, saisie conservée,
+message flash</li>
+<li><strong>Modification</strong> — formulaire prérempli, suppression,
+voyage déjà parti</li>
+</ol>
+</section>
+<section id="restitution" class="slide question" data-layout="single">
+<h2>Restitution</h2>
+<p>Chacun, sur son poste projeté :</p>
+<ol type="1">
+<li>Montre une saisie invalide et la réponse obtenue</li>
+<li>Raconte le trajet de la requête</li>
+<li>Explique une ligne de son code</li>
+<li>Désigne un sink de sa part et ce qui le protège</li>
+</ol>
+<p><strong>Pourquoi le contrôleur n’est-il jamais exécuté quand la
+saisie est invalide ?</strong></p>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li>Le besoin métier devient un schéma, puis des <strong>règles de
+validation</strong></li>
+<li>Une Form Request valide <strong>avant</strong> le contrôleur, pour
+tous les clients</li>
+<li>Navigateur : <strong>302</strong> + erreurs en session · API :
+<strong>422</strong> + JSON</li>
+<li><code>validated()</code> plutôt que <code>all()</code></li>
+<li>Valider en entrée, <strong>échapper en sortie</strong> : chaque sink
+a son contexte</li>
+</ul>
+<p>Cet après-midi : réunir les trois branches sans rien casser.</p>
+</section>

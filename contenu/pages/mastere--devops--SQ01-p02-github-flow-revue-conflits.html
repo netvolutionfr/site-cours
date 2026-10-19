@@ -1,0 +1,205 @@
+<section id="collaborer-avec-git-et-github" class="slide title">
+<h2>Collaborer avec Git et GitHub</h2>
+<h3 id="réunir-trois-branches-sans-casser-main">Réunir trois branches
+sans casser main</h3>
+</section>
+<section id="objectifs" class="slide concept" data-layout="single">
+<h2>Objectifs</h2>
+<ul>
+<li>Intégrer son travail par une pull request relue</li>
+<li>Relire le code d’un pair et argumenter une demande de
+modification</li>
+<li>Résoudre un conflit de fusion et expliquer la version retenue</li>
+</ul>
+<p><strong>Prérequis :</strong> <code>clone</code>, <code>commit</code>,
+<code>push</code> ; les trois branches du matin.</p>
+</section>
+<section id="le-problème-de-laprès-midi" class="slide warning" data-layout="single">
+<h2>Le problème de l’après-midi</h2>
+<p>Trois branches, trois auteurs, un seul <code>main</code>.</p>
+<p>Deux branches ont modifié <code>routes/web.php</code>,
+<code>VoyageController.php</code> et <code>index.blade.php</code>.</p>
+<p><strong>Comment tout réunir sans écraser personne, ni casser la
+version qui marche ?</strong></p>
+</section>
+<section id="le-github-flow-appliqué-à-ce-matin" class="slide full-image">
+<h2>Le GitHub flow, appliqué à ce matin</h2>
+<figure>
+<img role="img" aria-label="Trois branches courtes partent de main et y reviennent par des pull requests relues ; la dernière intègre main et résout le conflit." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCAxMTAwIDU2MCIgd2lkdGg9IjExMDAiIGhlaWdodD0iNTYwIj4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImZjIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIG9yaWVudD0iYXV0byI+CiAgICAgIDxwYXRoIGQ9Ik0wLDAgTDEwLDUgTDAsMTAgeiIgZmlsbD0iI0Q5NUM1OSIvPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJmYSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiBvcmllbnQ9ImF1dG8iPgogICAgICA8cGF0aCBkPSJNMCwwIEwxMCw1IEwwLDEwIHoiIGZpbGw9IiNFNDlBMzgiLz4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTEwMCIgaGVpZ2h0PSI1NjAiIGZpbGw9IiNGRkZGRkYiLz4KCiAgPCEtLSBQdXNoIGRpcmVjdCByZWZ1c8OpIC0tPgogIDxyZWN0IHg9IjMwMCIgeT0iMTQiIHdpZHRoPSIxOTAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjM5NSIgeT0iMzkiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Z2l0IHB1c2ggb3JpZ2luIG1haW48L3RleHQ+CiAgPGxpbmUgeDE9IjM5NSIgeTE9IjU2IiB4Mj0iMzk1IiB5Mj0iOTYiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNCIgbWFya2VyLWVuZD0idXJsKCNmYykiLz4KICA8ZyBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSIzODUiIHkxPSI2NiIgeDI9IjQwNSIgeTI9Ijg2Ii8+PGxpbmUgeDE9IjQwNSIgeTE9IjY2IiB4Mj0iMzg1IiB5Mj0iODYiLz4KICA8L2c+CiAgPHRleHQgeD0iNDE1IiB5PSI4MiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNEOTVDNTkiPnJlZnVzw6kgOiByw6hnbGUgZGUgcHJvdGVjdGlvbjwvdGV4dD4KCiAgPCEtLSBtYWluIC0tPgogIDxyZWN0IHg9IjIwIiB5PSI4OCIgd2lkdGg9IjEwNjAiIGhlaWdodD0iNDQiIHJ4PSIyMiIgZmlsbD0iI0VFRjNGQyIvPgogIDxsaW5lIHgxPSI2MCIgeTE9IjExMCIgeDI9IjEwNTAiIHkyPSIxMTAiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgPHRleHQgeD0iMjYiIHk9IjgwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxNzIwMzMiPm1haW48L3RleHQ+CiAgPCEtLSBjYWRlbmFzIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0MCw2MikiPgogICAgPHBhdGggZD0iTTQsOCBWNCBhNiw2IDAgMCAxIDEyLDAgVjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSIyLjIiLz4KICAgIDxyZWN0IHg9IjAiIHk9IjgiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNCIgcng9IjMiIGZpbGw9IiMxNzIwMzMiLz4KICA8L2c+CiAgPHRleHQgeD0iNjY4IiB5PSI4MCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPnByb3TDqWfDqWUgOiBQUiArIDEgYXBwcm9iYXRpb248L3RleHQ+CgogIDwhLS0gY29tbWl0cyBkdSBtYXRpbiAtLT4KICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMTAiIHI9IjExIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMxNzIwMzMiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjE5MCIgY3k9IjExMCIgcj0iMTEiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzE3MjAzMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxNTIiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm1vZMOobGUsIEFQSSw8L3RleHQ+CiAgPHRleHQgeD0iMTAwIiB5PSIxNjciIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmxpc3RlPC90ZXh0PgogIDx0ZXh0IHg9IjE5MCIgeT0iODAiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Wb3lhZ2VSZXF1ZXN0PC90ZXh0PgoKICA8IS0tIGJyYW5jaGUgQVBJIChibGV1KSAtLT4KICA8cGF0aCBkPSJNMTkwLDExMCBDMjE1LDExMCAyMTUsMjIwIDI1MCwyMjAgTDQ3MCwyMjAgQzUyMCwyMjAgNTIwLDExMCA1NjAsMTEwIiBmaWxsPSJub25lIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjMyMCIgY3k9IjIyMCIgcj0iOSIgZmlsbD0iIzM1NjhENCIvPgogIDxjaXJjbGUgY3g9IjQyMCIgY3k9IjIyMCIgcj0iOSIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjI2MCIgeT0iMjA4IiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNTY4RDQiPmZlYXR1cmUvYXBpLXZhbGlkYXRpb248L3RleHQ+CiAgPHRleHQgeD0iMzIwIiB5PSIyNDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5tZXNzYWdlcyBGUjwvdGV4dD4KICA8dGV4dCB4PSI0MjAiIHk9IjI0NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJFQURNRTwvdGV4dD4KCiAgPCEtLSBicmFuY2hlIENyw6lhdGlvbiAodmVydCkgLS0+CiAgPHBhdGggZD0iTTE5MCwxMTAgQzIyNSwxMTAgMjE1LDMyMCAyNjAsMzIwIEw2MzAsMzIwIEM2OTAsMzIwIDY4MCwxMTAgNzIwLDExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8Y2lyY2xlIGN4PSIzMzAiIGN5PSIzMjAiIHI9IjkiIGZpbGw9IiMxRTg0NDkiLz4KICA8Y2lyY2xlIGN4PSI0NDAiIGN5PSIzMjAiIHI9IjkiIGZpbGw9IiMxRTg0NDkiLz4KICA8Y2lyY2xlIGN4PSI1NTAiIGN5PSIzMjAiIHI9IjkiIGZpbGw9IiMxRTg0NDkiLz4KICA8dGV4dCB4PSIyNzAiIHk9IjMwOCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUU4NDQ5Ij5mZWF0dXJlL2NyZWF0aW9uLXZveWFnZTwvdGV4dD4KICA8dGV4dCB4PSIzMzAiIHk9IjM0NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnJvdXRlczwvdGV4dD4KICA8dGV4dCB4PSI0NDAiIHk9IjM0NiIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1QzY4N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmZvcm11bGFpcmU8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzNDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5saWVuICsgZmxhc2g8L3RleHQ+CgogIDwhLS0gYnJhbmNoZSBNb2RpZmljYXRpb24gKHZpb2xldCkgLS0+CiAgPHBhdGggZD0iTTE5MCwxMTAgQzIzNSwxMTAgMjE1LDQyMCAyNzAsNDIwIEw5MDAsNDIwIEM5NTAsNDIwIDkzMCwxMTAgOTcwLDExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNkI1QkI1IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8Y2lyY2xlIGN4PSIzNDAiIGN5PSI0MjAiIHI9IjkiIGZpbGw9IiM2QjVCQjUiLz4KICA8Y2lyY2xlIGN4PSI0NzAiIGN5PSI0MjAiIHI9IjkiIGZpbGw9IiM2QjVCQjUiLz4KICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSI0MjAiIHI9IjkiIGZpbGw9IiM2QjVCQjUiLz4KICA8dGV4dCB4PSIyODAiIHk9IjQwOCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNkI1QkI1Ij5mZWF0dXJlL21vZGlmaWNhdGlvbi12b3lhZ2U8L3RleHQ+CiAgPHRleHQgeD0iMzQwIiB5PSI0NDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5yb3V0ZXM8L3RleHQ+CiAgPHRleHQgeD0iNDcwIiB5PSI0NDYiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNUM2ODdDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5mb3JtdWxhaXJlPC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iNDQ2IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzVDNjg3QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YWN0aW9ucyArIGZsYXNoPC90ZXh0PgoKICA8IS0tIGludMOpZ3JhdGlvbiBkZSBtYWluIGRhbnMgTW9kaWZpY2F0aW9uIDogY29uZmxpdCAtLT4KICA8cGF0aCBkPSJNNzIwLDExMCBDNzYwLDExMCA3OTAsMzAwIDgyMCw0MTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U0OUEzOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtZGFzaGFycmF5PSI4IDUiIG1hcmtlci1lbmQ9InVybCgjZmEpIi8+CiAgPGNpcmNsZSBjeD0iODMwIiBjeT0iNDIwIiByPSIxMyIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjRTQ5QTM4IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8dGV4dCB4PSI4MzAiIHk9IjQyNSIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNFNDlBMzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiE8L3RleHQ+CiAgPHJlY3QgeD0iNzQyIiB5PSI0NDgiIHdpZHRoPSIyNTAiIGhlaWdodD0iNTgiIHJ4PSI4IiBmaWxsPSIjRkZGNkVBIiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijc1NiIgeT0iNDcwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPmdpdCBtZXJnZSBvcmlnaW4vbWFpbjwvdGV4dD4KICA8dGV4dCB4PSI3NTYiIHk9IjQ5NCIgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxNzIwMzMiPmNvbmZsaXQgOiB3ZWIucGhwLCBpbmRleC5ibGFkZS5waHA8L3RleHQ+CgogIDwhLS0gZnVzaW9ucyBzdXIgbWFpbiAtLT4KICA8Y2lyY2xlIGN4PSI1NjAiIGN5PSIxMTAiIHI9IjEzIiBmaWxsPSIjMzU2OEQ0IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxjaXJjbGUgY3g9IjcyMCIgY3k9IjExMCIgcj0iMTMiIGZpbGw9IiMxRTg0NDkiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPGNpcmNsZSBjeD0iOTcwIiBjeT0iMTEwIiByPSIxMyIgZmlsbD0iIzZCNUJCNSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjMiLz4KCiAgPCEtLSBiYWRnZXMgUFIgLS0+CiAgPGcgZm9udC1mYW1pbHk9IkludGVyLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIuNSIgZm9udC13ZWlnaHQ9IjcwMCI+CiAgICA8cmVjdCB4PSI0OTIiIHk9IjE0NiIgd2lkdGg9IjExNiIgaGVpZ2h0PSIyNiIgcng9IjEzIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPHRleHQgeD0iNTUwIiB5PSIxNjQiIGZpbGw9IiMzNTY4RDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBSIDEgwrcgcmV2dWUg4pyTPC90ZXh0PgogICAgPHJlY3QgeD0iNjQyIiB5PSIyMzYiIHdpZHRoPSIxMTYiIGhlaWdodD0iMjYiIHJ4PSIxMyIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDx0ZXh0IHg9IjcwMCIgeT0iMjU0IiBmaWxsPSIjMUU4NDQ5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QUiAyIMK3IHJldnVlIOKckzwvdGV4dD4KICAgIDxyZWN0IHg9IjkwMCIgeT0iMjM2IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzZCNUJCNSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8dGV4dCB4PSI5NTgiIHk9IjI1NCIgZmlsbD0iIzZCNUJCNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UFIgMyDCtyByZXZ1ZSDinJM8L3RleHQ+CiAgPC9nPgoKICA8IS0tIMOpdGlxdWV0dGUgLS0+CiAgPHBhdGggZD0iTTEwMTAsOTYgTDEwNjYsOTYgTDEwODAsMTEwIEwxMDY2LDEyNCBMMTAxMCwxMjQgWiIgZmlsbD0iIzE3MjAzMyIvPgogIDx0ZXh0IHg9IjEwNDAiIHk9IjExNSIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlIiBmb250LXNpemU9IjEyIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj52MC4xLjA8L3RleHQ+CgogIDwhLS0gb3JkcmUgZXQgc3ludGjDqHNlIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI1MzAiIGZvbnQtZmFtaWx5PSJJbnRlcixzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNUM2ODdDIj5PcmRyZSBkZXMgZnVzaW9ucyA6IDEuIEFQSSDCtyAyLiBDcsOpYXRpb24gwrcgMy4gTW9kaWZpY2F0aW9uIChkZXJuacOocmUgOiBlbGxlIGludMOoZ3JlIGQnYWJvcmQgbWFpbik8L3RleHQ+CiAgPHJlY3QgeD0iMjAiIHk9IjQ2MCIgd2lkdGg9IjcwMCIgaGVpZ2h0PSI0NiIgcng9IjEwIiBmaWxsPSIjRThGNEVDIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjM3MCIgeT0iNDg5IiBmb250LWZhbWlseT0iSW50ZXIsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MjAzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiPlVuZSBwYXJ0ID0gdW5lIGJyYW5jaGUgY291cnRlID0gdW5lIFBSIHJlbHVlLjwvdHNwYW4+IG1haW4gcmVzdGUgdG91am91cnMgZm9uY3Rpb25uZWxsZS48L3RleHQ+Cjwvc3ZnPgo=" alt="Trois branches courtes partent de main et y reviennent par des pull requests relues ; la dernière intègre main et résout le conflit." />
+<figcaption aria-hidden="true">Trois branches courtes partent de main et
+y reviennent par des pull requests relues ; la dernière intègre main et
+résout le conflit.</figcaption>
+</figure>
+</section>
+<section id="github-flow-ou-gitflow" class="slide compare" data-layout="single">
+<h2>GitHub flow ou Gitflow ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>GitHub flow</th>
+<th>Gitflow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Branches durables</td>
+<td><code>main</code> seule</td>
+<td><code>main</code>, <code>develop</code></td>
+</tr>
+<tr>
+<td>Branches de travail</td>
+<td>une par changement</td>
+<td><code>feature/*</code>, <code>release/*</code>,
+<code>hotfix/*</code></td>
+</tr>
+<tr>
+<td>Livraison</td>
+<td>continue, depuis <code>main</code></td>
+<td>par versions planifiées</td>
+</tr>
+<tr>
+<td>Adapté à</td>
+<td>petite équipe, CI/CD</td>
+<td>cycles de version longs</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="main-ne-casse-jamais" class="slide concept" data-layout="single">
+<h2>main ne casse jamais</h2>
+<ul>
+<li>Ce qui est dans <code>main</code> sera <strong>testé, construit,
+déployé</strong> automatiquement</li>
+<li>Donc : pas de push direct, <strong>une PR et une
+approbation</strong> pour chaque fusion</li>
+<li>La règle est technique, pas une promesse : GitHub refuse le
+reste</li>
+</ul>
+<p>Démonstration : création du <em>ruleset</em> sur le dépôt, puis un
+push direct refusé.</p>
+</section>
+<section id="une-pr-se-décrit" class="slide code">
+<h2>Une PR se décrit</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quoi</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Ce que la branche ajoute, en deux ou trois phrases.</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pourquoi</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Le besoin ou le problème réglé.</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comment tester</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Les commandes et les gestes pour vérifier,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>y compris une saisie invalide.</span></code></pre></div>
+<p>Le relecteur doit pouvoir tester <strong>sans demander à
+l’auteur</strong>.</p>
+</section>
+<section id="relire-ce-nest-pas-survoler" class="slide concept" data-layout="single">
+<h2>Relire, ce n’est pas survoler</h2>
+<ul>
+<li><strong>Tester</strong> la branche sur son poste, pas seulement lire
+le diff</li>
+<li><strong>Comprendre</strong> chaque ligne, ou poser la question</li>
+<li><strong>Traquer</strong> les fichiers en trop : <code>.env</code>,
+<code>vendor/</code>, base SQLite</li>
+<li><strong>Commenter</strong> en trois temps : constat, raison,
+proposition</li>
+</ul>
+<blockquote>
+<p>« <code>store()</code> utilise <code>$request-&gt;all()</code> : un
+champ non prévu serait enregistré. Proposition :
+<code>validated()</code>. »</p>
+</blockquote>
+</section>
+<section id="le-conflit-arrive-au-dernier" class="slide terminal">
+<h2>Le conflit arrive au dernier</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch feature/modification-voyage</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> fetch origin</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge origin/main</span></code></pre></div>
+<pre class="text"><code>CONFLICT (content): Merge conflict in routes/web.php
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+<p>On résout <strong>sur son poste</strong>, pour pouvoir tester avant
+de publier.</p>
+</section>
+<section id="lire-les-marqueurs" class="slide code">
+<h2>Lire les marqueurs</h2>
+<pre class="text"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Route::get(&#39;/voyages/{voyage}/edit&#39;, ...);
+Route::put(&#39;/voyages/{voyage}&#39;, ...);
+Route::delete(&#39;/voyages/{voyage}&#39;, ...);
+=======
+Route::get(&#39;/voyages/create&#39;, ...);
+Route::post(&#39;/voyages&#39;, ...);
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+<p><code>HEAD</code> : ma branche · après <code>=======</code> : ce que
+<code>main</code> a reçu.</p>
+</section>
+<section id="résoudre-nest-pas-choisir-un-camp" class="slide concept" data-layout="single">
+<h2>Résoudre n’est pas choisir un camp</h2>
+<ul>
+<li>Écrire la version qui respecte <strong>les deux
+intentions</strong></li>
+<li>Ici : garder les cinq routes ; ailleurs, <strong>un seul</strong>
+bloc de message flash</li>
+<li>Supprimer les marqueurs, <strong>tester</strong>, puis
+<code>git add</code> et <code>git commit</code></li>
+<li><code>git push</code> : la PR redevient fusionnable</li>
+</ul>
+</section>
+<section id="premier-tour-les-trois-parts-du-matin" class="slide activity" data-layout="single">
+<h2>Premier tour : les trois parts du matin</h2>
+<p>À trois · chacun sa PR · revue en cercle</p>
+<p><strong>À produire :</strong> trois PR relues et fusionnées,
+<code>main</code> fonctionnelle.</p>
+<ol type="1">
+<li>Ouvrir sa PR, décrite selon le modèle</li>
+<li>Relire : API → Création → Modification → API ; au moins un
+<em>Request changes</em> argumenté</li>
+<li>Fusionner dans l’ordre API, Création, Modification ; le dernier
+résout le conflit</li>
+</ol>
+</section>
+<section id="second-tour-de-lissue-à-la-fusion" class="slide activity" data-layout="single">
+<h2>Second tour : de l’issue à la fusion</h2>
+<p>Chacun une issue · une branche · une PR avec
+<code>Closes #n</code></p>
+<p><strong>À produire :</strong> trois issues fermées par leur PR, un
+conflit résolu par chacun.</p>
+<ol type="1">
+<li>Départ en jj/mm/aaaa : Modification</li>
+<li>Prix en euros : API</li>
+<li>Places et « Aucun voyage prévu » : Création</li>
+</ol>
+<p>Fusion dans cet ordre : l’API puis la Création intègrent
+<code>main</code> et résolvent.</p>
+</section>
+<section id="restitution" class="slide question" data-layout="single">
+<h2>Restitution</h2>
+<p>Chacun, sur son poste projeté :</p>
+<ol type="1">
+<li>Sa PR : commentaire reçu, commentaire donné</li>
+<li>Son conflit : les deux versions, celle retenue, pourquoi</li>
+<li><code>git log --oneline --graph</code> autour de sa fusion</li>
+</ol>
+<p>Puis : clone neuf, installation devant l’équipe. <strong>Combien de
+commandes ? Qu’est-ce qui change d’un poste à l’autre ?</strong></p>
+</section>
+<section id="à-retenir" class="slide summary" data-layout="single">
+<h2>À retenir</h2>
+<ul>
+<li>Une part = une <strong>branche courte</strong> = une <strong>PR
+relue</strong></li>
+<li><code>main</code> est protégée par une règle, pas par la bonne
+volonté</li>
+<li>Un conflit se résout <strong>en comprenant les deux
+intentions</strong>, puis se teste</li>
+<li>La PR sera bientôt le point d’entrée des <strong>tests
+automatiques</strong></li>
+</ul>
+<p>Intervention 3 : une application qui démarre pareil partout, avec
+Docker.</p>
+</section>
