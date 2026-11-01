@@ -1,0 +1,340 @@
+<section id="combien-de-bits" class="slide title">
+<h2>Combien de bits ?</h2>
+<h3 id="taille-dune-écriture-binaire-somme-produit-et-dépassement">Taille
+d’une écriture binaire, somme, produit et dépassement</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Déterminer</strong> le nombre de bits nécessaire pour écrire
+un entier, en l’encadrant entre deux puissances de 2.</li>
+<li><strong>Prévoir</strong> la taille d’une somme et d’un produit.</li>
+<li><strong>Expliquer</strong> un dépassement de capacité sur une taille
+fixe, et le simuler en Python.</li>
+</ul>
+<p><strong>Prérequis :</strong> poids des bits, divisions successives,
+tableau de suivi (partie 2).</p>
+</section>
+<section id="le-problème" class="slide concept">
+<h2>Le problème</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Taille d’un entier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Machine des nombres</td>
+<td>8 bits : 255 au maximum</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>variable : <code>2 ** 100</code> s’affiche en entier</td>
+</tr>
+<tr>
+<td>Processeur, fichier, réseau, capteur</td>
+<td><strong>fixée à l’avance</strong> : 8, 16, 32 ou 64 bits</td>
+</tr>
+</tbody>
+</table>
+<p>Deux questions pour un informaticien :</p>
+<ol type="1">
+<li>Combien de bits un nombre demande-t-il ?</li>
+<li>Que se passe-t-il quand il n’y en a pas assez ?</li>
+</ol>
+</section>
+<section id="chaque-bit-double-les-possibilités" class="slide concept">
+<h2>Chaque bit double les possibilités</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Bits</th>
+<th style="text-align: right;">Valeurs</th>
+<th style="text-align: right;">Plus grand entier</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td>vrai / faux</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">15</td>
+<td>un chiffre hexadécimal</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">255</td>
+<td>un octet, une couleur</td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">65 536</td>
+<td style="text-align: right;">65 535</td>
+<td>numéro de port TCP</td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">4 294 967 296</td>
+<td style="text-align: right;">≈ 4,3 milliards</td>
+<td>adresse IPv4</td>
+</tr>
+<tr>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">≈ 1,8 × 10¹⁹</td>
+<td style="text-align: right;">≈ 1,8 × 10¹⁹</td>
+<td>processeur actuel</td>
+</tr>
+</tbody>
+</table>
+<p>Avec <em>n</em> bits : <strong>2ⁿ valeurs</strong>, de 0 à <strong>2ⁿ
+− 1</strong>. Repère : 2¹⁰ = 1024 ≈ 1000.</p>
+</section>
+<section id="combien-de-bits-pour-écrire-n" class="slide definition">
+<h2>Combien de bits pour écrire <em>N</em> ?</h2>
+<p><em>N</em> demande <em>n</em> bits quand <strong>2ⁿ⁻¹ ≤ <em>N</em>
+&lt; 2ⁿ</strong> : on encadre <em>N</em> entre deux puissances de 2
+consécutives.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"><em>N</em></th>
+<th>Encadrement</th>
+<th style="text-align: right;">Bits</th>
+<th>Écriture binaire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">13</td>
+<td>8 ≤ 13 &lt; 16</td>
+<td style="text-align: right;">4</td>
+<td><code>1101</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">200</td>
+<td>128 ≤ 200 &lt; 256</td>
+<td style="text-align: right;">8</td>
+<td><code>11001000</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">255</td>
+<td>128 ≤ 255 &lt; 256</td>
+<td style="text-align: right;">8</td>
+<td><code>11111111</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">256</td>
+<td>256 ≤ 256 &lt; 512</td>
+<td style="text-align: right;">9</td>
+<td><code>100000000</code></td>
+</tr>
+</tbody>
+</table>
+<p>C’est la <strong>longueur</strong> de l’écriture binaire, sans zéros
+à gauche.</p>
+</section>
+<section id="en-python" class="slide code" data-layout="split">
+<h2>En Python</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">bin</span>(<span class="dv">200</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;0b11001000&#39;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">len</span>(<span class="bu">bin</span>(<span class="dv">200</span>)) <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> (<span class="dv">200</span>).bit_length()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span></span></code></pre></div>
+<ul>
+<li><code>len(bin(n)) - 2</code> : longueur du texte, moins le préfixe
+<code>0b</code>.</li>
+<li><code>n.bit_length()</code> : directement le nombre de bits.</li>
+<li>Les parenthèses autour de <code>200</code> évitent que Python lise
+<code>200.</code> comme un nombre à virgule.</li>
+</ul>
+</section>
+<section id="exercice-3.1-compter-les-divisions" class="slide activity">
+<h2>Exercice 3.1 — Compter les divisions</h2>
+<p><strong>Papier · seul puis à deux · 10 min</strong></p>
+<p><strong>À produire :</strong> le tableau de suivi de
+<code>nb_bits(13)</code>, puis les valeurs prévues pour 15 et 16.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nb_bits(n):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    compteur <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> n <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        compteur <span class="op">=</span> compteur <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> compteur</span></code></pre></div>
+<p>Question à trancher à deux : pourquoi <code>compteur</code>
+commence-t-il à 1 ?</p>
+</section>
+<section id="le-résultat-dun-calcul" class="slide">
+<h2>Le résultat d’un calcul</h2>
+</section>
+<section id="somme-et-produit-raisonner-sur-le-pire-cas" class="slide compare">
+<h2>Somme et produit : raisonner sur le pire cas</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Opération</th>
+<th>Plus grand résultat</th>
+<th>Taille</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Somme de deux entiers de <em>n</em> bits</td>
+<td>2ⁿ⁺¹ − 2</td>
+<td>au plus <strong>n + 1</strong> bits</td>
+</tr>
+<tr>
+<td>Produit <em>n</em> bits × <em>m</em> bits</td>
+<td>(2ⁿ − 1)(2ᵐ − 1) &lt; 2ⁿ⁺ᵐ</td>
+<td>au plus <strong>n + m</strong> bits</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Sur 8 bits</th>
+<th>Calcul</th>
+<th style="text-align: right;">Bits nécessaires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Somme maximale</td>
+<td>255 + 255 = 510</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td>Produit maximal</td>
+<td>255 × 255 = 65 025</td>
+<td style="text-align: right;">16</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="quand-les-bits-manquent-le-dépassement" class="slide concept" data-layout="split">
+<h2>Quand les bits manquent : le dépassement</h2>
+<table>
+<thead>
+<tr>
+<th>Retenue</th>
+<th>8 bits conservés</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code></td>
+<td><code>00000000</code></td>
+</tr>
+</tbody>
+</table>
+<p>255 + 1 sur 8 bits : le 9<sup>e</sup> bit est <strong>perdu</strong>,
+le résultat vaut <strong>0</strong>.</p>
+<ul>
+<li>On parle de <strong>dépassement de capacité</strong>
+(<em>overflow</em>).</li>
+<li>La machine compte « modulo 256 », comme un compteur kilométrique qui
+repasse à zéro.</li>
+<li>En Python : <code>(a + b) % 256</code> simule une addition sur 8
+bits.</li>
+</ul>
+</section>
+<section id="des-dépassements-bien-réels" class="slide warning">
+<h2>Des dépassements bien réels</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Système</th>
+<th>Taille</th>
+<th>Conséquence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pac-Man (1980)</td>
+<td>niveau sur 8 bits</td>
+<td>niveau 256 : moitié de l’écran illisible</td>
+</tr>
+<tr>
+<td>Ariane 5, vol 501 (1996)</td>
+<td>entier de 16 bits</td>
+<td>calculateur arrêté, lanceur perdu</td>
+</tr>
+<tr>
+<td>YouTube, <em>Gangnam Style</em> (2014)</td>
+<td>entier signé de 32 bits</td>
+<td>limite de vues proche : passage à 64 bits</td>
+</tr>
+<tr>
+<td>Horloge Unix</td>
+<td>entier signé de 32 bits</td>
+<td>limite le 19 janvier 2038</td>
+</tr>
+</tbody>
+</table>
+<p>Vérifier qu’un résultat tient dans sa taille : c’est de la
+<strong>mise au point</strong>.</p>
+</section>
+<section id="exercice-3.2-à-la-main" class="slide activity">
+<h2>Exercice 3.2 — À la main</h2>
+<p><strong>Papier · seul · 10 min</strong></p>
+<p><strong>À produire :</strong> le nombre de bits, justifié par un
+encadrement entre puissances de 2.</p>
+<ol type="1">
+<li>100, 255, 256, 1000.</li>
+<li>Un million, avec 2¹⁰ ≈ 1000.</li>
+<li>Somme et produit de deux entiers de 8 bits ; produit d’un entier de
+8 bits par un entier de 4 bits.</li>
+</ol>
+</section>
+<section id="exercices-3.3-et-3.4-simuler-une-machine-à-8-bits" class="slide activity">
+<h2>Exercices 3.3 et 3.4 — Simuler une machine à 8 bits</h2>
+<p><strong>Sur ordinateur · seul · 15 min</strong> — page du cours ou
+EduPython</p>
+<p><strong>À produire :</strong> <code>addition_8_bits(a, b)</code> et
+<code>deborde(a, b)</code> qui passent les tests, puis le QCM 3.4.</p>
+<ol type="1">
+<li>Garder les huit bits de droite = reste de la division par 256.</li>
+<li><code>deborde</code> renvoie un booléen : une comparaison
+suffit.</li>
+<li>Pour ceux qui ont fini : exercice 3.5, le compteur de <em>Gangnam
+Style</em>.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<ol type="1">
+<li>Avec <em>n</em> bits : 2ⁿ valeurs, de 0 à 2ⁿ − 1.</li>
+<li><em>N</em> demande <em>n</em> bits quand 2ⁿ⁻¹ ≤ <em>N</em> &lt; 2ⁿ ;
+en Python, <code>n.bit_length()</code>.</li>
+<li>Somme de deux entiers de <em>n</em> bits : au plus <em>n</em> + 1
+bits ; produit <em>n</em> × <em>m</em> bits : au plus <em>n</em> +
+<em>m</em> bits.</li>
+<li>Sur une taille fixe, un résultat trop grand <strong>déborde</strong>
+: on garde les bits de droite.</li>
+<li>Question ouverte pour la partie 4 : comment écrire un entier
+<strong>négatif</strong> ?</li>
+</ol>
+</section>

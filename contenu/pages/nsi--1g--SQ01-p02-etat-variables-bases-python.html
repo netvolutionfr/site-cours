@@ -1,0 +1,510 @@
+<section id="convertir-les-entiers" class="slide title">
+<h2>Convertir les entiers</h2>
+<h3 id="état-des-variables-divisions-successives-base-16-et-python">État
+des variables, divisions successives, base 16 et Python</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Tracer</strong> l’état des variables d’une boucle ou d’une
+fonction dans un tableau de suivi.</li>
+<li><strong>Convertir</strong> un entier positif entre les bases 2, 10
+et 16 par une méthode explicite.</li>
+<li><strong>Utiliser</strong> <code>0b</code>, <code>0x</code>,
+<code>bin</code>, <code>hex</code> et <code>int</code> en Python sans
+confondre texte et entier.</li>
+</ul>
+<p><strong>Prérequis :</strong> poids des bits (partie 1),
+<code>lire_octet</code> et le travail à distance « Ce que la boucle
+retient », <code>//</code> et <code>%</code>.</p>
+</section>
+<section id="ce-que-la-boucle-retenait" class="slide concept" data-layout="split">
+<h2>Ce que la boucle retenait</h2>
+<p><code>lire_octet(&quot;10000001&quot;)</code>, tracé au tableau :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: center;"><code>bit</code></th>
+<th style="text-align: right;"><code>total</code></th>
+<th style="text-align: right;"><code>poids</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;"><code>&quot;1&quot;</code></td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr>
+<td style="text-align: right;">2 à 7</td>
+<td style="text-align: center;"><code>&quot;0&quot;</code></td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">64 → 1</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: center;"><code>&quot;1&quot;</code></td>
+<td style="text-align: right;">129</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>total</code> <strong>accumule</strong> les poids des bits à
+1.</li>
+<li><code>poids</code> <strong>change à chaque tour</strong>, que le bit
+vaille 0 ou 1.</li>
+<li>Le <code>if</code> décide seulement <strong>si l’on
+ajoute</strong>.</li>
+</ul>
+</section>
+<section id="létat-dun-programme" class="slide definition">
+<h2>L’état d’un programme</h2>
+<p>L’<strong>état</strong>, à un instant donné, c’est la valeur de
+<strong>chacune</strong> des variables.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Règle du tableau de suivi</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Une colonne par variable</td>
+<td>On voit tout ce que le programme garde en mémoire</td>
+</tr>
+<tr>
+<td>Une ligne par tour</td>
+<td>On voit l’évolution, pas seulement le résultat</td>
+</tr>
+<tr>
+<td>Première ligne : état <strong>avant</strong> la boucle</td>
+<td>L’initialisation fait partie du calcul</td>
+</tr>
+<tr>
+<td>Valeurs <strong>à la fin</strong> du tour</td>
+<td>Une convention unique, pas d’ambiguïté</td>
+</tr>
+</tbody>
+</table>
+<p>Tracer d’abord, exécuter ensuite : l’exécution dit <em>quel</em>
+résultat, le tableau dit <em>pourquoi</em>.</p>
+</section>
+<section id="exercice-2.1-une-boucle-qui-divise" class="slide activity">
+<h2>Exercice 2.1 — Une boucle qui divise</h2>
+<p><strong>Papier · seul puis à deux · 10 min</strong></p>
+<p><strong>À produire :</strong> le tableau de suivi de
+<code>ecrire_binaire(13)</code>, colonnes <code>reste</code>,
+<code>bits</code>, <code>n</code>.</p>
+<ol type="1">
+<li>Tracer sans exécuter (handout, exercice 2.1).</li>
+<li>Comparer avec son voisin, puis vérifier avec 13 = 8 + 4 + 1.</li>
+<li>Questions 3 et 4 : et si on écrivait <code>bits + str(reste)</code>
+? et pour <code>n = 0</code> ?</li>
+</ol>
+</section>
+<section id="la-fonction-tracée" class="slide code" data-layout="split">
+<h2>La fonction tracée</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ecrire_binaire(n):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    bits <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        reste <span class="op">=</span> n <span class="op">%</span> <span class="dv">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        bits <span class="op">=</span> <span class="bu">str</span>(reste) <span class="op">+</span> bits</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bits</span></code></pre></div>
+<ul>
+<li><code>n % 2</code> : le reste, 0 ou 1.</li>
+<li><code>n // 2</code> : le quotient, qui devient le nouveau
+<code>n</code>.</li>
+<li><code>str(reste) + bits</code> : le nouveau chiffre se place
+<strong>devant</strong>.</li>
+<li>La boucle s’arrête quand <code>n</code> vaut 0 — attention au cas
+<code>n = 0</code> dès le départ.</li>
+</ul>
+</section>
+<section id="exercice-2.2-létat-dans-une-fonction" class="slide activity">
+<h2>Exercice 2.2 — L’état dans une fonction</h2>
+<p><strong>Papier puis console · seul · 5 min</strong></p>
+<p><strong>À produire :</strong> les deux lignes affichées, puis une
+phrase qui explique la première.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> moitie(n):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">26</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> moitie(n)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(n, m)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> moitie(m)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(n, m)</span></code></pre></div>
+</section>
+<section id="variables-locales" class="slide summary">
+<h2>Variables locales</h2>
+<ol type="1">
+<li>Le paramètre <code>n</code> de <code>moitie</code> est une
+<strong>autre variable</strong> que le <code>n</code> du programme.</li>
+<li>À l’appel, il reçoit une <strong>copie de la valeur</strong> ; il
+disparaît au <code>return</code>.</li>
+<li>Seule la <strong>valeur renvoyée</strong> sort de la fonction, à
+condition de la ranger : <code>m = moitie(n)</code>.</li>
+<li>Affichage : <code>26 13</code>, puis <code>26 6</code>.</li>
+</ol>
+</section>
+<section id="une-méthode-qui-marche-toujours" class="slide">
+<h2>Une méthode qui marche toujours</h2>
+</section>
+<section id="les-divisions-successives" class="slide concept" data-layout="split">
+<h2>Les divisions successives</h2>
+<table>
+<thead>
+<tr>
+<th>Division</th>
+<th style="text-align: right;">Quotient</th>
+<th style="text-align: right;">Reste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>13 ÷ 2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;"><strong>1</strong></td>
+</tr>
+<tr>
+<td>6 ÷ 2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"><strong>0</strong></td>
+</tr>
+<tr>
+<td>3 ÷ 2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"><strong>1</strong></td>
+</tr>
+<tr>
+<td>1 ÷ 2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Diviser par 2, noter le <strong>reste</strong>, garder le
+<strong>quotient</strong>.</li>
+<li>Recommencer jusqu’à un quotient nul.</li>
+<li>Lire les restes <strong>de bas en haut</strong> : 13 =
+<strong>1101</strong>₂.</li>
+</ol>
+<p>C’est exactement <code>ecrire_binaire</code>, à la main.</p>
+</section>
+<section id="pourquoi-lire-à-lenvers" class="slide concept">
+<h2>Pourquoi lire à l’envers ?</h2>
+<ul>
+<li>Le premier reste dit si le nombre est <strong>pair ou
+impair</strong> : c’est le bit de poids 1, à droite.</li>
+<li>Diviser par 2 <strong>décale</strong> l’écriture d’un cran vers la
+droite : 1101 → 110 → 11 → 1.</li>
+<li>Chaque division fait donc « tomber » le bit suivant, de la droite
+vers la gauche.</li>
+<li>Même méthode dans <strong>toute base b</strong> : diviser par b, les
+restes vont de 0 à b − 1.</li>
+</ul>
+<p>Pour comparer, en base 10 : 473 ÷ 10 → reste <strong>3</strong> ; 47
+÷ 10 → reste <strong>7</strong> ; 4 ÷ 10 → reste <strong>4</strong>. Lus
+de bas en haut : 4, 7, 3.</p>
+</section>
+<section id="la-base-16" class="slide">
+<h2>La base 16</h2>
+</section>
+<section id="seize-chiffres" class="slide concept">
+<h2>Seize chiffres</h2>
+<p>Un octet en binaire, c’est huit chiffres : long à écrire, facile à
+mal recopier.</p>
+<table>
+<thead>
+<tr>
+<th>Base 10</th>
+<th>0–9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base 16</td>
+<td>0–9</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+</tr>
+<tr>
+<td>Base 2</td>
+<td>0000–1001</td>
+<td>1010</td>
+<td>1011</td>
+<td>1100</td>
+<td>1101</td>
+<td>1110</td>
+<td>1111</td>
+</tr>
+</tbody>
+</table>
+<p>Poids : 1, 16, 256, 4096… Exemple : <code>2F</code> = 2 × 16 + 15 =
+<strong>47</strong>.</p>
+</section>
+<section id="un-chiffre-hexadécimal-quatre-bits" class="slide concept" data-layout="split">
+<h2>Un chiffre hexadécimal = quatre bits</h2>
+<p>16 = 2⁴ : chaque chiffre hexadécimal correspond
+<strong>exactement</strong> à un quartet.</p>
+<table>
+<thead>
+<tr>
+<th>Quartet</th>
+<th>1011</th>
+<th>0110</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lecture 8-4-2-1</td>
+<td>11</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Chiffre</td>
+<td>B</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Découper en paquets de 4 bits <strong>à partir de la
+droite</strong>.</li>
+<li>Lire chaque paquet comme <code>lire_quartet</code>.</li>
+<li>Assembler : <code>10110110</code> = <strong>B6</strong>.</li>
+</ol>
+<p>Chemin inverse : chaque chiffre redonne ses 4 bits.</p>
+</section>
+<section id="lhexadécimal-autour-de-vous" class="slide concept">
+<h2>L’hexadécimal autour de vous</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Usage</th>
+<th>Exemple</th>
+<th>Ce qui est codé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Couleur web (CSS)</td>
+<td><code>#FF8800</code></td>
+<td>3 octets : rouge 255, vert 136, bleu 0</td>
+</tr>
+<tr>
+<td>Adresse MAC</td>
+<td><code>3C:52:82:1A:F0:07</code></td>
+<td>6 octets identifiant une carte réseau</td>
+</tr>
+<tr>
+<td>Adresse IPv6</td>
+<td><code>2001:db8::1</code></td>
+<td>16 octets, par groupes de 2 octets</td>
+</tr>
+<tr>
+<td>Éditeur hexadécimal</td>
+<td><code>89 50 4E 47</code></td>
+<td>Les premiers octets d’un fichier PNG</td>
+</tr>
+</tbody>
+</table>
+<p>Partout où l’on manipule des octets, l’hexadécimal remplace le
+binaire pour les humains.</p>
+</section>
+<section id="les-entiers-en-python" class="slide">
+<h2>Les entiers en Python</h2>
+</section>
+<section id="trois-écritures-un-seul-nombre" class="slide code" data-layout="split">
+<h2>Trois écritures, un seul nombre</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0b1101</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0x2F</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0b1101</span> <span class="op">==</span> <span class="dv">13</span> <span class="op">==</span> <span class="bn">0xD</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code></pre></div>
+<ul>
+<li><code>0b</code> : écriture binaire d’un entier.</li>
+<li><code>0x</code> : écriture hexadécimale d’un entier.</li>
+<li>La machine stocke <strong>toujours</strong> du binaire : seule
+l’écriture change.</li>
+<li><code>13</code>, <code>0b1101</code> et <code>0xD</code> sont le
+<strong>même</strong> objet <code>int</code>.</li>
+</ul>
+</section>
+<section id="convertir-dans-quel-sens" class="slide compare">
+<h2>Convertir : dans quel sens ?</h2>
+<table>
+<thead>
+<tr>
+<th>Écriture</th>
+<th>Résultat</th>
+<th>Type</th>
+<th>Sens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bin(13)</code></td>
+<td><code>&#39;0b1101&#39;</code></td>
+<td><code>str</code></td>
+<td>entier → texte</td>
+</tr>
+<tr>
+<td><code>hex(47)</code></td>
+<td><code>&#39;0x2f&#39;</code></td>
+<td><code>str</code></td>
+<td>entier → texte</td>
+</tr>
+<tr>
+<td><code>int(&quot;1101&quot;, 2)</code></td>
+<td><code>13</code></td>
+<td><code>int</code></td>
+<td>texte → entier</td>
+</tr>
+<tr>
+<td><code>int(&quot;2F&quot;, 16)</code></td>
+<td><code>47</code></td>
+<td><code>int</code></td>
+<td>texte → entier</td>
+</tr>
+</tbody>
+</table>
+<p>On <strong>calcule</strong> sur des entiers ; on convertit en texte
+pour <strong>afficher</strong>.</p>
+</section>
+<section id="texte-ou-entier" class="slide warning">
+<h2>Texte ou entier ?</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">bin</span>(<span class="dv">5</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">TypeError</span>: can only concatenate <span class="bu">str</span> (<span class="kw">not</span> <span class="st">&quot;int&quot;</span>) to <span class="bu">str</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="bu">bin</span>(<span class="dv">5</span>), <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span></span></code></pre></div>
+<ul>
+<li><code>bin(5)</code> est le <strong>texte</strong>
+<code>&#39;0b101&#39;</code> : on ne lui ajoute pas un nombre.</li>
+<li><code>int</code> accepte le préfixe : <code>int(&quot;0b101&quot;, 2)</code>
+vaut 5.</li>
+<li>Réflexe : <code>type(...)</code> en cas de doute.</li>
+</ul>
+</section>
+<section id="des-entiers-sans-limite" class="slide concept">
+<h2>Des entiers sans limite</h2>
+<table>
+<thead>
+<tr>
+<th>Langage ou machine</th>
+<th>Taille d’un entier</th>
+<th>Plus grand entier positif</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Machine des nombres</td>
+<td>8 bits</td>
+<td>255</td>
+</tr>
+<tr>
+<td>Java <code>int</code>, C <code>int32_t</code></td>
+<td>32 bits</td>
+<td>2 147 483 647</td>
+</tr>
+<tr>
+<td>Java <code>long</code>, C <code>int64_t</code></td>
+<td>64 bits</td>
+<td>environ 9,2 × 10¹⁸</td>
+</tr>
+<tr>
+<td>Python <code>int</code></td>
+<td>variable</td>
+<td>limité par la mémoire</td>
+</tr>
+</tbody>
+</table>
+<p><code>2 ** 100</code> s’affiche en entier : Python réserve autant de
+bits que nécessaire. La partie 3 montre ce que coûte une taille
+fixe.</p>
+</section>
+<section id="exercice-2.3-écrire-ecrire_binaire" class="slide activity">
+<h2>Exercice 2.3 — Écrire <code>ecrire_binaire</code></h2>
+<p><strong>Sur ordinateur · seul · 15 min</strong> — page du cours
+(Python dans la page) ou EduPython</p>
+<p><strong>À produire :</strong> une fonction qui passe les 7 tests,
+<strong>sans</strong> <code>bin</code> ni <code>format</code>.</p>
+<ol type="1">
+<li>Sans regarder l’exercice 2.1 : tracer d’abord
+<code>ecrire_binaire(6)</code> sur papier.</li>
+<li>Traiter <code>n == 0</code> à part pour renvoyer
+<code>&quot;0&quot;</code>.</li>
+<li>Exécuter les tests ; si un test échoue, retracer ce cas.</li>
+</ol>
+</section>
+<section id="exercice-2.4-et-2.5-convertir-prévoir" class="slide activity">
+<h2>Exercice 2.4 et 2.5 — Convertir, prévoir</h2>
+<p><strong>Papier puis console · seul · 15 min</strong></p>
+<p><strong>À produire :</strong> les quatre conversions avec la méthode,
+puis les quatre réponses du QCM.</p>
+<ol type="1">
+<li>45 en base 2 · <code>11010011</code> en base 16 · <code>0x3A</code>
+en bases 2 et 10.</li>
+<li><code>#1E90FF</code> : valeur décimale de chaque octet.</li>
+<li>QCM 2.5 : prévoir <strong>avant</strong> de vérifier dans la
+console.</li>
+</ol>
+</section>
+<section id="exercice-2.6-pour-aller-plus-loin" class="slide activity">
+<h2>Exercice 2.6 — Pour aller plus loin</h2>
+<p><strong>Sur ordinateur · seul · pour ceux qui ont fini</strong></p>
+<p><strong>À produire :</strong> <code>ecrire_hexa(n)</code> qui passe
+les tests, dont <code>ecrire_hexa(48879) == &quot;BEEF&quot;</code>.</p>
+<ol type="1">
+<li>Reprendre la structure de <code>ecrire_binaire</code> avec
+<code>// 16</code> et <code>% 16</code>.</li>
+<li>Le reste sert de position dans <code>&quot;0123456789ABCDEF&quot;</code>.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<ol type="1">
+<li>Un <strong>tableau de suivi</strong> : une colonne par variable, une
+ligne par tour, l’état avant la boucle.</li>
+<li>Les variables d’une fonction sont <strong>locales</strong> : seule
+la valeur renvoyée en sort.</li>
+<li><strong>Divisions successives</strong> par b : les restes, lus du
+dernier au premier, donnent l’écriture en base b.</li>
+<li>Un chiffre hexadécimal = <strong>quatre bits</strong>.</li>
+<li><code>0b</code>, <code>0x</code> écrivent un entier ;
+<code>bin</code>, <code>hex</code> donnent du texte ;
+<code>int(texte, base)</code> redonne un entier.</li>
+</ol>
+</section>

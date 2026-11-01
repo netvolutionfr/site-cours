@@ -1,0 +1,508 @@
+<section id="web-apache-nginx-et-https" class="slide title">
+<h2>Web : Apache, Nginx et HTTPS</h2>
+<h3 id="hôtes-virtuels-proxy-inverse-certificats-et-tls">Hôtes virtuels,
+proxy inverse, certificats et TLS</h3>
+<figure>
+<img role="img" aria-label="Architecture du service web du laboratoire" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkFyY2hpdGVjdHVyZSBkdSBzZXJ2aWNlIHdlYiBkdSBsYWJvcmF0b2lyZTwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPkxlIGNsaWVudCAxMC43Ny4xLjIwIGludGVycm9nZSBsZSBETlMgMTAuNzcuMS4xMCBwb3VyIHdlYi5sYWIudGVzdCwgcHVpcyBzZSBjb25uZWN0ZSDDoCBOZ2lueCBzdXIgbGEgVk0gd2ViIDEwLjc3LjEuMzAuIExlIHBvcnQgODAgcmVkaXJpZ2UgdmVycyBIVFRQUywgbGUgcG9ydCA0NDMgY2hpZmZyZSBsJ8OpY2hhbmdlIGF2ZWMgbGUgY2VydGlmaWNhdCBkdSBzZXJ2ZXVyLiBOZ2lueCB0cmFuc21ldCBlbiBIVFRQIGNsYWlyIMOgIEFwYWNoZSwgcXVpIG4nw6ljb3V0ZSBxdWUgc3VyIDEyNy4wLjAuMTo4MDgwIGV0IHNlcnQgL3Zhci93d3cvbGFiLiBVbmUgY29ubmV4aW9uIGRpcmVjdGUgYXUgcG9ydCA4MDgwIGRlcHVpcyBsZSBjbGllbnQgZXN0IGltcG9zc2libGUuIE5naW54IGpvdXJuYWxpc2UgbCdhZHJlc3NlIGR1IGNsaWVudCwgQXBhY2hlIGNlbGxlIGRlIE5naW54LjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjMzU2OEQ0Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYWEiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiNFNDlBMzgiLz48L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImFrIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjNjU3ODhkIi8+PC9tYXJrZXI+CiAgPC9kZWZzPgogIDxzdHlsZT4KICAgIC56b25le2ZpbGw6I2ZmZjtzdHJva2U6IzE3MjAzMztzdHJva2Utd2lkdGg6Mi41fQogICAgLnN2Y3tmaWxsOiNFQUY0RkI7c3Ryb2tlOiMzNTY4RDQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAuc3ZjMntmaWxsOiNGN0Y4RkE7c3Ryb2tlOiM2NTc4OGQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAudHRse2ZvbnQ6NzAwIDIycHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMxNzIwMzN9CiAgICAuaHtmb250OjcwMCAxOXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLnR7Zm9udDo1MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzNjNGI1Y30KICAgIC5je2ZvbnQ6NjAwIDE0cHggbW9ub3NwYWNlO2ZpbGw6IzE2NGQ3OX0KICAgIC5sYntmb250OjcwMCAxNHB4IEFyaWFsLHNhbnMtc2VyaWZ9CiAgICAudGFne2ZpbGw6IzA4N0U4Qn0KICAgIC50YWd0e2ZvbnQ6NzAwIDEzcHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiNmZmZ9CiAgPC9zdHlsZT4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNGN0Y4RkEiLz4KICA8dGV4dCB4PSI0MCIgeT0iNDQiIGNsYXNzPSJ0dGwiPlVuIGZyb250YWwgTmdpbnggZGV2YW50IEFwYWNoZSwgZXQgSFRUUFMgZGUgYm91dCBlbiBib3V0IGPDtHTDqSBjbGllbnQ8L3RleHQ+CgogIDwhLS0gVk0gY2xpZW50IC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMzMwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjQwIiB5PSIxMDAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTQiLz4KICA8dGV4dCB4PSI1NiIgeT0iMTAzIiBjbGFzcz0idGFndCI+Vk0gQ0xJRU5UIMK3IDEwLjc3LjEuMjA8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjYwIiB5PSIxMzIiIHdpZHRoPSIyNjAiIGhlaWdodD0iOTYiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9Ijc0IiB5PSIxNTYiIGNsYXNzPSJoIj5jdXJsLCBuYXZpZ2F0ZXVyPC90ZXh0PgogIDx0ZXh0IHg9Ijc0IiB5PSIxODAiIGNsYXNzPSJjIj5jdXJsIC0tY2FjZXJ0IGNhLWxhYi5jcnQ8L3RleHQ+CiAgPHRleHQgeD0iNzQiIHk9IjIwMiIgY2xhc3M9ImMiPiAgaHR0cHM6Ly93ZWIubGFiLnRlc3QvPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJzdmMiIHg9IjYwIiB5PSIyNDQiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTQ2IiByeD0iMTAiLz4KICA8dGV4dCB4PSI3NCIgeT0iMjY4IiBjbGFzcz0iaCI+QXV0b3JpdMOpIGR1IGxhYm88L3RleHQ+CiAgPHRleHQgeD0iNzQiIHk9IjI5MiIgY2xhc3M9ImMiPn4vY2EtbGFiLzwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzE2IiBjbGFzcz0iYyI+Y2EtbGFiLmNydDwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjMxNiIgY2xhc3M9InQiPnB1YmxpYzwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzQwIiBjbGFzcz0iYyI+Y2EtbGFiLmtleTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjM0MCIgY2xhc3M9InQiIHN0eWxlPSJmaWxsOiNEOTVDNTkiPnNlY3JldDwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzcwIiBjbGFzcz0idCI+c2lnbmUgbGEgQ1NSIGR1IHNlcnZldXI8L3RleHQ+CgogIDwhLS0gVk0gRE5TIC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iNDUwIiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE2MCIgcng9IjE2Ii8+CiAgPHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjQ1MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzNCIgcng9IjE2Ii8+PHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjQ3MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNCIvPgogIDx0ZXh0IHg9IjU2IiB5PSI0NzMiIGNsYXNzPSJ0YWd0Ij5WTSBETlMgwrcgMTAuNzcuMS4xMCDCtyBCSU5EPC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSI1MTQiIGNsYXNzPSJoIj5ab25lIGxhYi50ZXN0PC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSI1NDIiIGNsYXNzPSJjIj53ZWIgSU4gQSAgICAgMTAuNzcuMS4zMDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iNTY2IiBjbGFzcz0iYyI+d3d3IElOIENOQU1FIHdlYi5sYWIudGVzdC48L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjU5NCIgY2xhc3M9InQiPm91IC0tcmVzb2x2ZSBzaSBsZSBETlMgbidlc3QgcGFzIHByw6p0PC90ZXh0PgoKICA8IS0tIFZNIHdlYiAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iNTYwIiB5PSI4MCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MzAiIHJ4PSIxNiIvPgogIDxyZWN0IGNsYXNzPSJ0YWciIHg9IjU2MCIgeT0iODAiIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjU2MCIgeT0iMTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjE0Ii8+CiAgPHRleHQgeD0iNTc2IiB5PSIxMDMiIGNsYXNzPSJ0YWd0Ij5WTSBXRUIgwrcgMTAuNzcuMS4zMDwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YyIgeD0iNTkwIiB5PSIxMzIiIHdpZHRoPSI1NDAiIGhlaWdodD0iMjAwIiByeD0iMTIiLz4KICA8dGV4dCB4PSI2MDYiIHk9IjE2MCIgY2xhc3M9ImgiPk5naW54IOKAlCBmcm9udGFsIChwcm94eSBpbnZlcnNlKTwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjE5MCIgY2xhc3M9ImMiPjAuMC4wLjA6ODA8L3RleHQ+PHRleHQgeD0iNzQwIiB5PSIxOTAiIGNsYXNzPSJ0Ij5yZXR1cm4gMzAxIGh0dHBzOi8vJGhvc3QkcmVxdWVzdF91cmk8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSIyMTgiIGNsYXNzPSJjIj4wLjAuMC4wOjQ0MzwvdGV4dD48dGV4dCB4PSI3NDAiIHk9IjIxOCIgY2xhc3M9InQiPmxpc3RlbiA0NDMgc3NsIMK3IFRMU3YxLjIgLyBUTFN2MS4zPC90ZXh0PgogIDx0ZXh0IHg9Ijc0MCIgeT0iMjQyIiBjbGFzcz0iYyI+d2ViLmxhYi50ZXN0LmNydDwvdGV4dD48dGV4dCB4PSI5MTAiIHk9IjI0MiIgY2xhc3M9InQiPnB1YmxpYzwvdGV4dD4KICA8dGV4dCB4PSI3NDAiIHk9IjI2NCIgY2xhc3M9ImMiPndlYi5sYWIudGVzdC5rZXk8L3RleHQ+PHRleHQgeD0iOTEwIiB5PSIyNjQiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojRDk1QzU5Ij5zZWNyZXQsIGRyb2l0cyA2MDA8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSIyOTYiIGNsYXNzPSJjIj5wcm94eV9wYXNzIGh0dHA6Ly8xMjcuMC4wLjE6ODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjMxOCIgY2xhc3M9InQiPmpvdXJuYWwgOiAvdmFyL2xvZy9uZ2lueC9hY2Nlc3MubG9nIOKGkiB2b2l0IDEwLjc3LjEuMjA8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI1OTAiIHk9IjQwMCIgd2lkdGg9IjU0MCIgaGVpZ2h0PSIxOTAiIHJ4PSIxMiIvPgogIDx0ZXh0IHg9IjYwNiIgeT0iNDI4IiBjbGFzcz0iaCI+QXBhY2hlIOKAlCBzZXJ2ZXVyIGRlIGNvbnRlbnU8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSI0NTgiIGNsYXNzPSJjIj4xMjcuMC4wLjE6ODA4MDwvdGV4dD48dGV4dCB4PSI3NjAiIHk9IjQ1OCIgY2xhc3M9InQiPkxpc3RlbiAxMjcuMC4wLjE6ODA4MCAocG9ydHMuY29uZik8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSI0ODYiIGNsYXNzPSJjIj4mbHQ7VmlydHVhbEhvc3QgMTI3LjAuMC4xOjgwODAmZ3Q7PC90ZXh0PgogIDx0ZXh0IHg9IjYwNiIgeT0iNTEwIiBjbGFzcz0iYyI+U2VydmVyTmFtZSB3ZWIubGFiLnRlc3QgwrcgRG9jdW1lbnRSb290IC92YXIvd3d3L2xhYjwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjU0MCIgY2xhc3M9InQiPmpvdXJuYWwgOiBsYWItYWNjZXNzLmxvZyDihpIgdm9pdCAxMjcuMC4wLjEgKE5naW54KTwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjU2NiIgY2xhc3M9InQiPmluam9pZ25hYmxlIGRlcHVpcyBsZSByw6lzZWF1IDogc2V1bCBOZ2lueCBsdWkgcGFybGU8L3RleHQ+CgogIDwhLS0gZmx1eCAtLT4KICA8cGF0aCBkPSJNMzQwIDIwMCBDNDMwIDIwMCA0NzAgMjEwIDU4OCAyMTAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDx0ZXh0IHg9IjM3MiIgeT0iMTgyIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPuKRoCBIVFRQUyDCtyA0NDMgwrcgY2hpZmZyw6k8L3RleHQ+CiAgPHBhdGggZD0iTTM0MCAxNTAgQzQzMCAxNTAgNDgwIDE4MCA1ODggMTg2IiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iOSA2IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FhKSIvPgogIDx0ZXh0IHg9IjM2MiIgeT0iMTM2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNDQTZGMUUiPkhUVFAgwrcgODAg4oaSIDMwMTwvdGV4dD4KICA8cGF0aCBkPSJNMTkwIDQxMCBMMTkwIDQ0OCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iMjAwIiB5PSI0MzYiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+4pOqIGRpZyB3ZWIubGFiLnRlc3Q8L3RleHQ+CiAgPHBhdGggZD0iTTg2MCAzMzQgTDg2MCAzOTgiIHN0cm9rZT0iIzY1Nzg4ZCIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDx0ZXh0IHg9Ijg3MiIgeT0iMzcyIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiM1MjY0NzciPuKRoSBIVFRQIGNsYWlyIHN1ciBsYSBib3VjbGUgbG9jYWxlPC90ZXh0PgogIDxwYXRoIGQ9Ik0zNDAgMzMwIEM0MjAgMzgwIDQ3MCA0NzAgNTYwIDQ4MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNiIgZmlsbD0ibm9uZSIvPgogIDxwYXRoIGQ9Ik01NDIgNDY2IGwyMiAyMiBNNTY0IDQ2NiBsLTIyIDIyIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iNTIwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNEOTVDNTkiPjo4MDgwIGRlcHVpczwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjUzOCIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojRDk1QzU5Ij5sZSBjbGllbnQgOiByZWZ1c8OpPC90ZXh0PgoKICA8IS0tIHN5bnRow6hzZSAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNjMwIiB3aWR0aD0iMTEyMCIgaGVpZ2h0PSI1MiIgcng9IjEwIiBmaWxsPSIjRUFGQUYxIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjU4IiB5PSI2NjIiIGNsYXNzPSJ0Ij48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSI+w4AgcmV0ZW5pciDCtyA8L3RzcGFuPlRMUyBwcm90w6hnZSBsZSB0cmFqZXQgY2xpZW50IOKGlCBOZ2lueC4gTGUgY2VydGlmaWNhdCBsaWUgdW5lIGNsw6kgcHVibGlxdWUgYXV4IG5vbXMgd2ViL3d3dy5sYWIudGVzdCwgc2lnbsOpIHBhciBsJ2F1dG9yaXTDqSBkdSBsYWJvLjwvdGV4dD4KPC9zdmc+Cg==" alt="Architecture du service web du laboratoire" />
+<figcaption aria-hidden="true">Architecture du service web du
+laboratoire</figcaption>
+</figure>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Publier</strong> un site par un hôte virtuel Apache, puis
+<strong>placer</strong> Nginx en frontal.</li>
+<li><strong>Faire signer</strong> un certificat par l’autorité du
+laboratoire et <strong>passer</strong> le site en HTTPS.</li>
+<li><strong>Prouver</strong> ce que HTTPS garantit, et ce qu’il ne
+garantit pas.</li>
+</ul>
+<p><strong>Prérequis :</strong> VM du laboratoire, DNS
+<code>lab.test</code>, chiffrement asymétrique et signature (P01).</p>
+</section>
+<section id="que-se-passe-t-il-derrière-httpsweb.lab.test" class="slide concept">
+<h2>Que se passe-t-il derrière <code>https://web.lab.test/</code> ?</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Protocole · port</th>
+<th>Ce qui est obtenu</th>
+<th>Preuve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Résolution</td>
+<td>DNS · 53</td>
+<td>L’adresse <code>10.77.1.30</code></td>
+<td><code>dig @10.77.1.10 web.lab.test</code></td>
+</tr>
+<tr>
+<td>Connexion</td>
+<td>TCP · 443</td>
+<td>Un canal vers le serveur</td>
+<td><code>ss -ltnp</code>, <code>curl -v</code></td>
+</tr>
+<tr>
+<td>Négociation</td>
+<td>TLS 1.2 / 1.3</td>
+<td>Identité du serveur, clés de session</td>
+<td><code>openssl s_client</code></td>
+</tr>
+<tr>
+<td>Requête</td>
+<td>HTTP</td>
+<td>La page, un code 200, 301, 404…</td>
+<td><code>curl -i</code>, journaux</td>
+</tr>
+</tbody>
+</table>
+<p>Chaque étape peut échouer seule : un diagnostic commence par situer
+<strong>laquelle</strong>.</p>
+</section>
+<section id="apache-et-nginx" class="slide compare">
+<h2>Apache et Nginx</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Apache HTTP Server</th>
+<th>Nginx</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modèle</td>
+<td>Processus ou threads (MPM)</td>
+<td>Événementiel, peu de processus</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Hôtes virtuels, <code>.htaccess</code> par dossier</td>
+<td>Blocs <code>server</code>, pas de <code>.htaccess</code></td>
+</tr>
+<tr>
+<td>Point fort</td>
+<td>Modules, hébergement mutualisé, PHP</td>
+<td>Frontal, statique, proxy inverse, charge</td>
+</tr>
+<tr>
+<td>Debian : activer, valider</td>
+<td><code>a2ensite</code>, <code>apache2ctl configtest</code></td>
+<td><code>ln -s</code>, <code>nginx -t</code></td>
+</tr>
+</tbody>
+</table>
+<p>Les deux sont libres et parmi les plus déployés au monde, souvent
+<strong>ensemble</strong>.</p>
+</section>
+<section id="un-serveur-plusieurs-sites-lhôte-virtuel" class="slide concept">
+<h2>Un serveur, plusieurs sites : l’hôte virtuel</h2>
+<p>Le client envoie le nom demandé dans l’en-tête HTTP
+<code>Host</code>. Le serveur choisit le site qui le déclare.</p>
+<table>
+<thead>
+<tr>
+<th>Requête du client</th>
+<th>Site servi par Apache</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Host: web.lab.test</code></td>
+<td><code>lab.conf</code> (<code>ServerName web.lab.test</code>)</td>
+</tr>
+<tr>
+<td><code>Host: www.lab.test</code></td>
+<td><code>lab.conf</code> (<code>ServerAlias www.lab.test</code>)</td>
+</tr>
+<tr>
+<td><code>Host: 10.77.1.30</code></td>
+<td>site par défaut <code>000-default</code></td>
+</tr>
+</tbody>
+</table>
+<p>C’est pourquoi <code>curl --resolve web.lab.test:80:10.77.1.30</code>
+teste le <strong>bon</strong> site sans DNS, alors que
+<code>curl http://10.77.1.30/</code> affiche la page Debian.</p>
+</section>
+<section id="un-hôte-virtuel-apache" class="slide code" data-layout="split">
+<h2>Un hôte virtuel Apache</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode apache"><code class="sourceCode apache"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;VirtualHost</span><span class="at"> *:80</span><span class="fu">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    ServerName<span class="st"> web.lab.test</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    ServerAlias<span class="st"> www.lab.test</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    DocumentRoot<span class="st"> /var/www/lab</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    CustomLog<span class="st"> ${APACHE_LOG_DIR}/lab-access.log combined</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;/VirtualHost&gt;</span></span></code></pre></div>
+<ol type="1">
+<li>Écrire dans <code>sites-available/lab.conf</code>.</li>
+<li><code>a2ensite lab</code> crée le lien dans
+<code>sites-enabled/</code>.</li>
+<li><code>apache2ctl configtest</code> <strong>avant</strong> tout
+rechargement.</li>
+<li><code>systemctl reload apache2</code>, puis
+<code>apache2ctl -S</code>.</li>
+</ol>
+</section>
+<section id="le-proxy-inverse-un-frontal-devant-lapplication" class="slide concept">
+<h2>Le proxy inverse : un frontal devant l’application</h2>
+<p>Le client ne parle qu’au frontal ; le frontal transmet au serveur
+d’application.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Intérêt</th>
+<th>Exemple concret</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Un seul point d’entrée exposé</td>
+<td>Apache, PHP, Node n’écoutent que sur <code>127.0.0.1</code></td>
+</tr>
+<tr>
+<td>Terminaison TLS centralisée</td>
+<td>Un seul endroit pour les certificats</td>
+</tr>
+<tr>
+<td>Répartition de charge</td>
+<td>Plusieurs serveurs d’application derrière un frontal</td>
+</tr>
+<tr>
+<td>Cache et fichiers statiques</td>
+<td>Images et CSS servis sans solliciter l’application</td>
+</tr>
+<tr>
+<td>Filtrage</td>
+<td>Limitation de débit, pare-feu applicatif (WAF)</td>
+</tr>
+</tbody>
+</table>
+<p>Produits courants : Nginx, HAProxy, Traefik, Caddy, Apache
+(<code>mod_proxy</code>), Cloudflare.</p>
+</section>
+<section id="larchitecture-du-laboratoire" class="slide full-image">
+<h2>L’architecture du laboratoire</h2>
+<figure>
+<img role="img" aria-label="Le client interroge le DNS, joint Nginx en HTTPS ; Nginx transmet à Apache sur 127.0.0.1:8080." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkFyY2hpdGVjdHVyZSBkdSBzZXJ2aWNlIHdlYiBkdSBsYWJvcmF0b2lyZTwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPkxlIGNsaWVudCAxMC43Ny4xLjIwIGludGVycm9nZSBsZSBETlMgMTAuNzcuMS4xMCBwb3VyIHdlYi5sYWIudGVzdCwgcHVpcyBzZSBjb25uZWN0ZSDDoCBOZ2lueCBzdXIgbGEgVk0gd2ViIDEwLjc3LjEuMzAuIExlIHBvcnQgODAgcmVkaXJpZ2UgdmVycyBIVFRQUywgbGUgcG9ydCA0NDMgY2hpZmZyZSBsJ8OpY2hhbmdlIGF2ZWMgbGUgY2VydGlmaWNhdCBkdSBzZXJ2ZXVyLiBOZ2lueCB0cmFuc21ldCBlbiBIVFRQIGNsYWlyIMOgIEFwYWNoZSwgcXVpIG4nw6ljb3V0ZSBxdWUgc3VyIDEyNy4wLjAuMTo4MDgwIGV0IHNlcnQgL3Zhci93d3cvbGFiLiBVbmUgY29ubmV4aW9uIGRpcmVjdGUgYXUgcG9ydCA4MDgwIGRlcHVpcyBsZSBjbGllbnQgZXN0IGltcG9zc2libGUuIE5naW54IGpvdXJuYWxpc2UgbCdhZHJlc3NlIGR1IGNsaWVudCwgQXBhY2hlIGNlbGxlIGRlIE5naW54LjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjMzU2OEQ0Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYWEiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiNFNDlBMzgiLz48L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImFrIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjNjU3ODhkIi8+PC9tYXJrZXI+CiAgPC9kZWZzPgogIDxzdHlsZT4KICAgIC56b25le2ZpbGw6I2ZmZjtzdHJva2U6IzE3MjAzMztzdHJva2Utd2lkdGg6Mi41fQogICAgLnN2Y3tmaWxsOiNFQUY0RkI7c3Ryb2tlOiMzNTY4RDQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAuc3ZjMntmaWxsOiNGN0Y4RkE7c3Ryb2tlOiM2NTc4OGQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAudHRse2ZvbnQ6NzAwIDIycHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMxNzIwMzN9CiAgICAuaHtmb250OjcwMCAxOXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLnR7Zm9udDo1MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzNjNGI1Y30KICAgIC5je2ZvbnQ6NjAwIDE0cHggbW9ub3NwYWNlO2ZpbGw6IzE2NGQ3OX0KICAgIC5sYntmb250OjcwMCAxNHB4IEFyaWFsLHNhbnMtc2VyaWZ9CiAgICAudGFne2ZpbGw6IzA4N0U4Qn0KICAgIC50YWd0e2ZvbnQ6NzAwIDEzcHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiNmZmZ9CiAgPC9zdHlsZT4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNGN0Y4RkEiLz4KICA8dGV4dCB4PSI0MCIgeT0iNDQiIGNsYXNzPSJ0dGwiPlVuIGZyb250YWwgTmdpbnggZGV2YW50IEFwYWNoZSwgZXQgSFRUUFMgZGUgYm91dCBlbiBib3V0IGPDtHTDqSBjbGllbnQ8L3RleHQ+CgogIDwhLS0gVk0gY2xpZW50IC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMzMwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjQwIiB5PSIxMDAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTQiLz4KICA8dGV4dCB4PSI1NiIgeT0iMTAzIiBjbGFzcz0idGFndCI+Vk0gQ0xJRU5UIMK3IDEwLjc3LjEuMjA8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjYwIiB5PSIxMzIiIHdpZHRoPSIyNjAiIGhlaWdodD0iOTYiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9Ijc0IiB5PSIxNTYiIGNsYXNzPSJoIj5jdXJsLCBuYXZpZ2F0ZXVyPC90ZXh0PgogIDx0ZXh0IHg9Ijc0IiB5PSIxODAiIGNsYXNzPSJjIj5jdXJsIC0tY2FjZXJ0IGNhLWxhYi5jcnQ8L3RleHQ+CiAgPHRleHQgeD0iNzQiIHk9IjIwMiIgY2xhc3M9ImMiPiAgaHR0cHM6Ly93ZWIubGFiLnRlc3QvPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJzdmMiIHg9IjYwIiB5PSIyNDQiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTQ2IiByeD0iMTAiLz4KICA8dGV4dCB4PSI3NCIgeT0iMjY4IiBjbGFzcz0iaCI+QXV0b3JpdMOpIGR1IGxhYm88L3RleHQ+CiAgPHRleHQgeD0iNzQiIHk9IjI5MiIgY2xhc3M9ImMiPn4vY2EtbGFiLzwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzE2IiBjbGFzcz0iYyI+Y2EtbGFiLmNydDwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjMxNiIgY2xhc3M9InQiPnB1YmxpYzwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzQwIiBjbGFzcz0iYyI+Y2EtbGFiLmtleTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjM0MCIgY2xhc3M9InQiIHN0eWxlPSJmaWxsOiNEOTVDNTkiPnNlY3JldDwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzcwIiBjbGFzcz0idCI+c2lnbmUgbGEgQ1NSIGR1IHNlcnZldXI8L3RleHQ+CgogIDwhLS0gVk0gRE5TIC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iNDUwIiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE2MCIgcng9IjE2Ii8+CiAgPHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjQ1MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzNCIgcng9IjE2Ii8+PHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjQ3MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNCIvPgogIDx0ZXh0IHg9IjU2IiB5PSI0NzMiIGNsYXNzPSJ0YWd0Ij5WTSBETlMgwrcgMTAuNzcuMS4xMCDCtyBCSU5EPC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSI1MTQiIGNsYXNzPSJoIj5ab25lIGxhYi50ZXN0PC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSI1NDIiIGNsYXNzPSJjIj53ZWIgSU4gQSAgICAgMTAuNzcuMS4zMDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iNTY2IiBjbGFzcz0iYyI+d3d3IElOIENOQU1FIHdlYi5sYWIudGVzdC48L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjU5NCIgY2xhc3M9InQiPm91IC0tcmVzb2x2ZSBzaSBsZSBETlMgbidlc3QgcGFzIHByw6p0PC90ZXh0PgoKICA8IS0tIFZNIHdlYiAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iNTYwIiB5PSI4MCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MzAiIHJ4PSIxNiIvPgogIDxyZWN0IGNsYXNzPSJ0YWciIHg9IjU2MCIgeT0iODAiIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjU2MCIgeT0iMTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjE0Ii8+CiAgPHRleHQgeD0iNTc2IiB5PSIxMDMiIGNsYXNzPSJ0YWd0Ij5WTSBXRUIgwrcgMTAuNzcuMS4zMDwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YyIgeD0iNTkwIiB5PSIxMzIiIHdpZHRoPSI1NDAiIGhlaWdodD0iMjAwIiByeD0iMTIiLz4KICA8dGV4dCB4PSI2MDYiIHk9IjE2MCIgY2xhc3M9ImgiPk5naW54IOKAlCBmcm9udGFsIChwcm94eSBpbnZlcnNlKTwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjE5MCIgY2xhc3M9ImMiPjAuMC4wLjA6ODA8L3RleHQ+PHRleHQgeD0iNzQwIiB5PSIxOTAiIGNsYXNzPSJ0Ij5yZXR1cm4gMzAxIGh0dHBzOi8vJGhvc3QkcmVxdWVzdF91cmk8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSIyMTgiIGNsYXNzPSJjIj4wLjAuMC4wOjQ0MzwvdGV4dD48dGV4dCB4PSI3NDAiIHk9IjIxOCIgY2xhc3M9InQiPmxpc3RlbiA0NDMgc3NsIMK3IFRMU3YxLjIgLyBUTFN2MS4zPC90ZXh0PgogIDx0ZXh0IHg9Ijc0MCIgeT0iMjQyIiBjbGFzcz0iYyI+d2ViLmxhYi50ZXN0LmNydDwvdGV4dD48dGV4dCB4PSI5MTAiIHk9IjI0MiIgY2xhc3M9InQiPnB1YmxpYzwvdGV4dD4KICA8dGV4dCB4PSI3NDAiIHk9IjI2NCIgY2xhc3M9ImMiPndlYi5sYWIudGVzdC5rZXk8L3RleHQ+PHRleHQgeD0iOTEwIiB5PSIyNjQiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojRDk1QzU5Ij5zZWNyZXQsIGRyb2l0cyA2MDA8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSIyOTYiIGNsYXNzPSJjIj5wcm94eV9wYXNzIGh0dHA6Ly8xMjcuMC4wLjE6ODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjMxOCIgY2xhc3M9InQiPmpvdXJuYWwgOiAvdmFyL2xvZy9uZ2lueC9hY2Nlc3MubG9nIOKGkiB2b2l0IDEwLjc3LjEuMjA8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI1OTAiIHk9IjQwMCIgd2lkdGg9IjU0MCIgaGVpZ2h0PSIxOTAiIHJ4PSIxMiIvPgogIDx0ZXh0IHg9IjYwNiIgeT0iNDI4IiBjbGFzcz0iaCI+QXBhY2hlIOKAlCBzZXJ2ZXVyIGRlIGNvbnRlbnU8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSI0NTgiIGNsYXNzPSJjIj4xMjcuMC4wLjE6ODA4MDwvdGV4dD48dGV4dCB4PSI3NjAiIHk9IjQ1OCIgY2xhc3M9InQiPkxpc3RlbiAxMjcuMC4wLjE6ODA4MCAocG9ydHMuY29uZik8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSI0ODYiIGNsYXNzPSJjIj4mbHQ7VmlydHVhbEhvc3QgMTI3LjAuMC4xOjgwODAmZ3Q7PC90ZXh0PgogIDx0ZXh0IHg9IjYwNiIgeT0iNTEwIiBjbGFzcz0iYyI+U2VydmVyTmFtZSB3ZWIubGFiLnRlc3QgwrcgRG9jdW1lbnRSb290IC92YXIvd3d3L2xhYjwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjU0MCIgY2xhc3M9InQiPmpvdXJuYWwgOiBsYWItYWNjZXNzLmxvZyDihpIgdm9pdCAxMjcuMC4wLjEgKE5naW54KTwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjU2NiIgY2xhc3M9InQiPmluam9pZ25hYmxlIGRlcHVpcyBsZSByw6lzZWF1IDogc2V1bCBOZ2lueCBsdWkgcGFybGU8L3RleHQ+CgogIDwhLS0gZmx1eCAtLT4KICA8cGF0aCBkPSJNMzQwIDIwMCBDNDMwIDIwMCA0NzAgMjEwIDU4OCAyMTAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDx0ZXh0IHg9IjM3MiIgeT0iMTgyIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPuKRoCBIVFRQUyDCtyA0NDMgwrcgY2hpZmZyw6k8L3RleHQ+CiAgPHBhdGggZD0iTTM0MCAxNTAgQzQzMCAxNTAgNDgwIDE4MCA1ODggMTg2IiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iOSA2IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FhKSIvPgogIDx0ZXh0IHg9IjM2MiIgeT0iMTM2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNDQTZGMUUiPkhUVFAgwrcgODAg4oaSIDMwMTwvdGV4dD4KICA8cGF0aCBkPSJNMTkwIDQxMCBMMTkwIDQ0OCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iMjAwIiB5PSI0MzYiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+4pOqIGRpZyB3ZWIubGFiLnRlc3Q8L3RleHQ+CiAgPHBhdGggZD0iTTg2MCAzMzQgTDg2MCAzOTgiIHN0cm9rZT0iIzY1Nzg4ZCIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDx0ZXh0IHg9Ijg3MiIgeT0iMzcyIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiM1MjY0NzciPuKRoSBIVFRQIGNsYWlyIHN1ciBsYSBib3VjbGUgbG9jYWxlPC90ZXh0PgogIDxwYXRoIGQ9Ik0zNDAgMzMwIEM0MjAgMzgwIDQ3MCA0NzAgNTYwIDQ4MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNiIgZmlsbD0ibm9uZSIvPgogIDxwYXRoIGQ9Ik01NDIgNDY2IGwyMiAyMiBNNTY0IDQ2NiBsLTIyIDIyIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iNTIwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNEOTVDNTkiPjo4MDgwIGRlcHVpczwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjUzOCIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojRDk1QzU5Ij5sZSBjbGllbnQgOiByZWZ1c8OpPC90ZXh0PgoKICA8IS0tIHN5bnRow6hzZSAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNjMwIiB3aWR0aD0iMTEyMCIgaGVpZ2h0PSI1MiIgcng9IjEwIiBmaWxsPSIjRUFGQUYxIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjU4IiB5PSI2NjIiIGNsYXNzPSJ0Ij48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSI+w4AgcmV0ZW5pciDCtyA8L3RzcGFuPlRMUyBwcm90w6hnZSBsZSB0cmFqZXQgY2xpZW50IOKGlCBOZ2lueC4gTGUgY2VydGlmaWNhdCBsaWUgdW5lIGNsw6kgcHVibGlxdWUgYXV4IG5vbXMgd2ViL3d3dy5sYWIudGVzdCwgc2lnbsOpIHBhciBsJ2F1dG9yaXTDqSBkdSBsYWJvLjwvdGV4dD4KPC9zdmc+Cg==" alt="Le client interroge le DNS, joint Nginx en HTTPS ; Nginx transmet à Apache sur 127.0.0.1:8080." />
+<figcaption aria-hidden="true">Le client interroge le DNS, joint Nginx
+en HTTPS ; Nginx transmet à Apache sur 127.0.0.1:8080.</figcaption>
+</figure>
+</section>
+<section id="ce-que-le-frontal-change-dans-les-journaux" class="slide warning">
+<h2>Ce que le frontal change dans les journaux</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Journal</th>
+<th>Adresse cliente vue</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nginx <code>access.log</code></td>
+<td><code>10.77.1.20</code></td>
+<td>Le client s’est connecté à Nginx</td>
+</tr>
+<tr>
+<td>Apache <code>lab-access.log</code></td>
+<td><code>127.0.0.1</code></td>
+<td>C’est Nginx qui se connecte à Apache</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Une enquête sur incident qui ne lit qu’Apache <strong>perd l’adresse
+réelle</strong> du client.</li>
+<li>Correctif : en-têtes <code>X-Real-IP</code>,
+<code>X-Forwarded-For</code>, module Apache <code>remoteip</code>.</li>
+<li>Ces en-têtes ne sont fiables que <strong>s’ils viennent du
+frontal</strong> : Apache ne doit pas être joignable directement.</li>
+</ul>
+</section>
+<section id="passer-en-https" class="slide">
+<h2>Passer en HTTPS</h2>
+</section>
+<section id="ce-que-https-garantit-et-ce-quil-ne-garantit-pas" class="slide compare">
+<h2>Ce que HTTPS garantit… et ce qu’il ne garantit pas</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Garanti, entre client et Nginx</th>
+<th>Non garanti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Confidentialité</strong> : contenu chiffré sur le
+réseau</td>
+<td>Que le serveur soit honnête ou non compromis</td>
+</tr>
+<tr>
+<td><strong>Intégrité</strong> : toute modification est détectée</td>
+<td>La sécurité des données stockées sur le serveur</td>
+</tr>
+<tr>
+<td><strong>Authentification du serveur</strong> : il possède la clé du
+certificat</td>
+<td>La disponibilité du service</td>
+</tr>
+<tr>
+<td></td>
+<td>Le chiffrement entre Nginx et Apache</td>
+</tr>
+</tbody>
+</table>
+<p>Un cadenas prouve à <strong>qui</strong> l’on parle, pas que cet
+interlocuteur est <strong>digne de confiance</strong>.</p>
+</section>
+<section id="le-certificat-x.509" class="slide definition">
+<h2>Le certificat X.509</h2>
+<p>Un certificat <strong>lie une clé publique à des noms</strong>, sous
+la signature d’une autorité.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Exemple au laboratoire</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sujet</td>
+<td><code>CN=web.lab.test</code></td>
+<td>Titulaire (historique)</td>
+</tr>
+<tr>
+<td>Noms alternatifs (SAN)</td>
+<td><code>web.lab.test</code>, <code>www.lab.test</code></td>
+<td>Noms réellement vérifiés</td>
+</tr>
+<tr>
+<td>Émetteur</td>
+<td><code>CN=Autorite Laboratoire SISR</code></td>
+<td>Qui a signé</td>
+</tr>
+<tr>
+<td>Validité</td>
+<td>30 jours</td>
+<td>Durée d’usage</td>
+</tr>
+<tr>
+<td>Clé publique</td>
+<td>RSA 2048 bits</td>
+<td>Prouvée par la clé privée du serveur</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>par <code>ca-lab.key</code></td>
+<td>Vérifiable avec <code>ca-lab.crt</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="obtenir-le-certificat-la-clé-privée-ne-voyage-pas" class="slide full-image">
+<h2>Obtenir le certificat : la clé privée ne voyage pas</h2>
+<figure>
+<img role="img" aria-label="La VM web génère clé et CSR ; l’autorité signe ; le certificat revient ; le client vérifie signature, nom et dates." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPk9idGVuaXIgZXQgdsOpcmlmaWVyIGxlIGNlcnRpZmljYXQgZHUgc2VydmV1ciB3ZWI8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5TdXIgbGEgVk0gd2ViLCBvbiBnw6luw6hyZSB1bmUgY2zDqSBwcml2w6llIGV0IHVuZSBkZW1hbmRlIGRlIHNpZ25hdHVyZSAoQ1NSKSBjb250ZW5hbnQgbGVzIG5vbXMgZXQgbGEgY2zDqSBwdWJsaXF1ZS4gU2V1bGUgbGEgQ1NSIGVzdCB0cmFuc21pc2Ugw6AgbCdhdXRvcml0w6kgZHUgbGFib3JhdG9pcmUsIHN1ciBsYSBWTSBjbGllbnQsIHF1aSBsYSBzaWduZSBhdmVjIHNhIGNsw6kgcHJpdsOpZSBldCBwcm9kdWl0IGxlIGNlcnRpZmljYXQuIExlIGNlcnRpZmljYXQgcmV2aWVudCBzdXIgbGEgVk0gd2ViIGV0IE5naW54IGxlIHByw6lzZW50ZSBsb3JzIGRlIGxhIG7DqWdvY2lhdGlvbiBUTFMuIExlIGNsaWVudCB2w6lyaWZpZSBsYSBzaWduYXR1cmUgYXZlYyBsZSBjZXJ0aWZpY2F0IGRlIGwnYXV0b3JpdMOpLCBsZSBub20gZGVtYW5kw6kgZGFucyBsYSBsaXN0ZSBzdWJqZWN0QWx0TmFtZSBldCBsZXMgZGF0ZXMgZGUgdmFsaWRpdMOpLjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjMzU2OEQ0Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogIDwvZGVmcz4KICA8c3R5bGU+CiAgICAuem9uZXtmaWxsOiNmZmY7c3Ryb2tlOiMxNzIwMzM7c3Ryb2tlLXdpZHRoOjIuNX0KICAgIC5kb2N7ZmlsbDojRUFGNEZCO3N0cm9rZTojMzU2OEQ0O3N0cm9rZS13aWR0aDoyfQogICAgLnNlY3tmaWxsOiNGREVERUM7c3Ryb2tlOiNEOTVDNTk7c3Ryb2tlLXdpZHRoOjJ9CiAgICAub2t7ZmlsbDojRUFGQUYxO3N0cm9rZTojMUU4NDQ5O3N0cm9rZS13aWR0aDoyfQogICAgLnR0bHtmb250OjcwMCAyMnB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLmh7Zm9udDo3MDAgMThweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzE3MjAzM30KICAgIC50e2ZvbnQ6NTAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMzYzRiNWN9CiAgICAuY3tmb250OjYwMCAxNHB4IG1vbm9zcGFjZTtmaWxsOiMxNjRkNzl9CiAgICAubGJ7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLnRhZ3tmaWxsOiMwODdFOEJ9CiAgICAudGFndHtmb250OjcwMCAxM3B4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojZmZmfQogICAgLm57Zm9udDo3MDAgMThweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I2ZmZn0KICA8L3N0eWxlPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY4MCIgZmlsbD0iI0Y3RjhGQSIvPgogIDx0ZXh0IHg9IjQwIiB5PSI0NCIgY2xhc3M9InR0bCI+TGEgY2zDqSBwcml2w6llIG5lIHZveWFnZSBqYW1haXMgOiBzZXVscyBsYSBkZW1hbmRlIGV0IGxlIGNlcnRpZmljYXQgY2lyY3VsZW50PC90ZXh0PgoKICA8IS0tIFZNIHdlYiAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iNDAiIHk9IjgwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjQ0MCIgcng9IjE2Ii8+CiAgPHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjgwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjM0IiByeD0iMTYiLz48cmVjdCBjbGFzcz0idGFnIiB4PSI0MCIgeT0iMTAwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjE0Ii8+CiAgPHRleHQgeD0iNTYiIHk9IjEwMyIgY2xhc3M9InRhZ3QiPlZNIFdFQiDCtyBzZXJ2ZXVyIMOgIGNlcnRpZmllcjwvdGV4dD4KCiAgPGNpcmNsZSBjeD0iNzgiIGN5PSIxNTIiIHI9IjE2IiBmaWxsPSIjMTcyMDMzIi8+PHRleHQgeD0iNzIiIHk9IjE1OCIgY2xhc3M9Im4iPjE8L3RleHQ+CiAgPHRleHQgeD0iMTA0IiB5PSIxNTgiIGNsYXNzPSJoIj5vcGVuc3NsIHJlcSAtbmV3IC1uZXdrZXkgcnNhOjIwNDggLW5vZW5jPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJzZWMiIHg9IjY0IiB5PSIxNzgiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI3OCIgeT0iMjA0IiBjbGFzcz0iaCI+Q2zDqSBwcml2w6llPC90ZXh0PgogIDx0ZXh0IHg9Ijc4IiB5PSIyMjgiIGNsYXNzPSJjIj53ZWIubGFiLnRlc3Qua2V5PC90ZXh0PgogIDx0ZXh0IHg9Ijc4IiB5PSIyNTIiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojQzAzOTJCIj5zZWNyZXQgwrcgcmVzdGUgaWNpIMK3IDYwMDwvdGV4dD4KICA8cmVjdCBjbGFzcz0iZG9jIiB4PSIzMDAiIHk9IjE3OCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxNDAiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjMxNCIgeT0iMjA0IiBjbGFzcz0iaCI+RGVtYW5kZSAoQ1NSKTwvdGV4dD4KICA8dGV4dCB4PSIzMTQiIHk9IjIyOCIgY2xhc3M9ImMiPkNOPXdlYi5sYWIudGVzdDwvdGV4dD4KICA8dGV4dCB4PSIzMTQiIHk9IjI1MCIgY2xhc3M9ImMiPlNBTjogd2ViLCB3d3cubGFiLnRlc3Q8L3RleHQ+CiAgPHRleHQgeD0iMzE0IiB5PSIyNzIiIGNsYXNzPSJ0Ij4rIGNsw6kgcHVibGlxdWU8L3RleHQ+CiAgPHRleHQgeD0iMzE0IiB5PSIyOTYiIGNsYXNzPSJ0Ij5wdWJsaWMgwrcgcGV1dCBjaXJjdWxlcjwvdGV4dD4KCiAgPGNpcmNsZSBjeD0iNzgiIGN5PSIzNzIiIHI9IjE2IiBmaWxsPSIjMTcyMDMzIi8+PHRleHQgeD0iNzIiIHk9IjM3OCIgY2xhc3M9Im4iPjQ8L3RleHQ+CiAgPHRleHQgeD0iMTA0IiB5PSIzNzgiIGNsYXNzPSJoIj5OZ2lueCBwcsOpc2VudGUgbGUgY2VydGlmaWNhdDwvdGV4dD4KICA8cmVjdCBjbGFzcz0iZG9jIiB4PSI2NCIgeT0iMzk4IiB3aWR0aD0iNDc2IiBoZWlnaHQ9IjEwNCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNzgiIHk9IjQyNCIgY2xhc3M9ImMiPnNzbF9jZXJ0aWZpY2F0ZSAgICAgd2ViLmxhYi50ZXN0LmNydDwvdGV4dD4KICA8dGV4dCB4PSI3OCIgeT0iNDQ4IiBjbGFzcz0iYyI+c3NsX2NlcnRpZmljYXRlX2tleSB3ZWIubGFiLnRlc3Qua2V5PC90ZXh0PgogIDx0ZXh0IHg9Ijc4IiB5PSI0NzgiIGNsYXNzPSJ0Ij5MYSBjbMOpIHByaXbDqWUgcHJvdXZlLCDDoCBjaGFxdWUgY29ubmV4aW9uLCBxdWUgbGUgc2VydmV1cjwvdGV4dD4KICA8dGV4dCB4PSI3OCIgeT0iNDk2IiBjbGFzcz0idCI+cG9zc8OoZGUgYmllbiBsYSBjbMOpIHB1YmxpcXVlIGluc2NyaXRlIGRhbnMgbGUgY2VydGlmaWNhdC48L3RleHQ+CgogIDwhLS0gVk0gY2xpZW50IC8gQUMgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjY0MCIgeT0iODAiIHdpZHRoPSI1MjAiIGhlaWdodD0iNDQwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnIiB4PSI2NDAiIHk9IjgwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjM0IiByeD0iMTYiLz48cmVjdCBjbGFzcz0idGFnIiB4PSI2NDAiIHk9IjEwMCIgd2lkdGg9IjUyMCIgaGVpZ2h0PSIxNCIvPgogIDx0ZXh0IHg9IjY1NiIgeT0iMTAzIiBjbGFzcz0idGFndCI+Vk0gQ0xJRU5UIMK3IGF1dG9yaXTDqSBkdSBsYWJvcmF0b2lyZTwvdGV4dD4KCiAgPGNpcmNsZSBjeD0iNjc4IiBjeT0iMTUyIiByPSIxNiIgZmlsbD0iIzE3MjAzMyIvPjx0ZXh0IHg9IjY3MiIgeT0iMTU4IiBjbGFzcz0ibiI+MjwvdGV4dD4KICA8dGV4dCB4PSI3MDQiIHk9IjE1OCIgY2xhc3M9ImgiPm9wZW5zc2wgeDUwOSAtcmVxIOKApiAtQ0Eg4oCmIC1DQWtleSDigKY8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InNlYyIgeD0iNjY0IiB5PSIxNzgiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI2NzgiIHk9IjIwNCIgY2xhc3M9ImgiPkNsw6kgZGUgbCdBQzwvdGV4dD4KICA8dGV4dCB4PSI2NzgiIHk9IjIyOCIgY2xhc3M9ImMiPmNhLWxhYi5rZXk8L3RleHQ+CiAgPHRleHQgeD0iNjc4IiB5PSIyNTIiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojQzAzOTJCIj5zZWNyZXQgwrcgcGhyYXNlIGRlIHBhc3NlPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJkb2MiIHg9IjkwMCIgeT0iMTc4IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjEwMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iOTE0IiB5PSIyMDQiIGNsYXNzPSJoIj5DZXJ0aWZpY2F0IGRlIGwnQUM8L3RleHQ+CiAgPHRleHQgeD0iOTE0IiB5PSIyMjgiIGNsYXNzPSJjIj5jYS1sYWIuY3J0PC90ZXh0PgogIDx0ZXh0IHg9IjkxNCIgeT0iMjUyIiBjbGFzcz0idCI+cHVibGljIMK3IMOgIGRpc3RyaWJ1ZXI8L3RleHQ+CgogIDxjaXJjbGUgY3g9IjY3OCIgY3k9IjMyMCIgcj0iMTYiIGZpbGw9IiMxNzIwMzMiLz48dGV4dCB4PSI2NzIiIHk9IjMyNiIgY2xhc3M9Im4iPjM8L3RleHQ+CiAgPHRleHQgeD0iNzA0IiB5PSIzMjYiIGNsYXNzPSJoIj5DZXJ0aWZpY2F0IGR1IHNlcnZldXI8L3RleHQ+CiAgPHJlY3QgY2xhc3M9ImRvYyIgeD0iNjY0IiB5PSIzNDIiIHdpZHRoPSI0NzYiIGhlaWdodD0iMTYwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI2NzgiIHk9IjM2OCIgY2xhc3M9ImMiPndlYi5sYWIudGVzdC5jcnQ8L3RleHQ+CiAgPHRleHQgeD0iNjc4IiB5PSIzOTQiIGNsYXNzPSJ0Ij5zdWpldCBDTj13ZWIubGFiLnRlc3QgwrcgU0FOIHdlYiwgd3d3LmxhYi50ZXN0PC90ZXh0PgogIDx0ZXh0IHg9IjY3OCIgeT0iNDE4IiBjbGFzcz0idCI+w6ltZXR0ZXVyIENOPUF1dG9yaXRlIExhYm9yYXRvaXJlIFNJU1I8L3RleHQ+CiAgPHRleHQgeD0iNjc4IiB5PSI0NDIiIGNsYXNzPSJ0Ij52YWxpZGl0w6kgMzAgam91cnMgwrcgY2zDqSBwdWJsaXF1ZSBkdSBzZXJ2ZXVyPC90ZXh0PgogIDx0ZXh0IHg9IjY3OCIgeT0iNDcwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMzNTY4RDQiPisgc2lnbmF0dXJlIGRlIGwnQUMgc3VyIHRvdXQgbGUgY29udGVudTwvdGV4dD4KCiAgPCEtLSBmbHV4IC0tPgogIDxwYXRoIGQ9Ik01NDAgMjMwIEM1OTAgMjMwIDYwMCAzMDAgNjYyIDMwMCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iNTY2IiB5PSIyMTQiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+Q1NSPC90ZXh0PgogIDxwYXRoIGQ9Ik02NjQgNDcwIEM2MTAgNDcwIDYwMCA0NTAgNTQyIDQ1MCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iNTY2IiB5PSI0OTQiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+LmNydDwvdGV4dD4KCiAgPCEtLSB2w6lyaWZpY2F0aW9uIC0tPgogIDxjaXJjbGUgY3g9IjU4IiBjeT0iNTY2IiByPSIxNiIgZmlsbD0iIzFFODQ0OSIvPjx0ZXh0IHg9IjUyIiB5PSI1NzIiIGNsYXNzPSJuIj41PC90ZXh0PgogIDx0ZXh0IHg9Ijg0IiB5PSI1NzIiIGNsYXNzPSJoIj5MZSBjbGllbnQgdsOpcmlmaWUsIMOgIGNoYXF1ZSBjb25uZXhpb24gSFRUUFM8L3RleHQ+CiAgPHJlY3QgY2xhc3M9Im9rIiB4PSI0MCIgeT0iNTkwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjcwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI1NiIgeT0iNjE2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPlNpZ25hdHVyZTwvdGV4dD4KICA8dGV4dCB4PSI1NiIgeT0iNjQwIiBjbGFzcz0idCI+dmFsaWRlIGF2ZWMgY2EtbGFiLmNydCAoY29uZmlhbmNlKTwvdGV4dD4KICA8cmVjdCBjbGFzcz0ib2siIHg9IjQyMCIgeT0iNTkwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjcwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI0MzYiIHk9IjYxNiIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojMUU4NDQ5Ij5Ob208L3RleHQ+CiAgPHRleHQgeD0iNDM2IiB5PSI2NDAiIGNsYXNzPSJ0Ij5sZSBub20gZGVtYW5kw6kgZmlndXJlIGRhbnMgbGUgU0FOPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJvayIgeD0iODAwIiB5PSI1OTAiIHdpZHRoPSIzNjAiIGhlaWdodD0iNzAiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjgxNiIgeT0iNjE2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPkRhdGVzPC90ZXh0PgogIDx0ZXh0IHg9IjgxNiIgeT0iNjQwIiBjbGFzcz0idCI+bm90QmVmb3JlIOKJpCBhdWpvdXJkJ2h1aSDiiaQgbm90QWZ0ZXI8L3RleHQ+Cjwvc3ZnPgo=" alt="La VM web génère clé et CSR ; l’autorité signe ; le certificat revient ; le client vérifie signature, nom et dates." />
+<figcaption aria-hidden="true">La VM web génère clé et CSR ; l’autorité
+signe ; le certificat revient ; le client vérifie signature, nom et
+dates.</figcaption>
+</figure>
+</section>
+<section id="quelle-autorité-pour-quel-usage" class="slide compare">
+<h2>Quelle autorité pour quel usage ?</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>AC publique</th>
+<th>AC privée d’organisation</th>
+<th>Auto-signé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Exemples</td>
+<td>Let’s Encrypt, DigiCert, Sectigo</td>
+<td>Active Directory Certificate Services, step-ca, OpenSSL</td>
+<td><code>openssl req -x509</code> sur le serveur</td>
+</tr>
+<tr>
+<td>Confiance</td>
+<td>Navigateurs, nativement</td>
+<td>Postes où l’on déploie le certificat de l’AC</td>
+<td>Exception manuelle, poste par poste</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Sites publics</td>
+<td>Intranet, laboratoire, VPN, Wi-Fi 802.1X</td>
+<td>Test ponctuel uniquement</td>
+</tr>
+<tr>
+<td>Coût</td>
+<td>Gratuit (Let’s Encrypt) à payant</td>
+<td>Infrastructure à gérer</td>
+<td>Nul, mais habitue à ignorer les alertes</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="la-négociation-tls-simplifiée" class="slide concept">
+<h2>La négociation TLS, simplifiée</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Client</th>
+<th>Serveur Nginx</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>ClientHello</code> : versions, suites, <strong>nom demandé
+(SNI)</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td><code>ServerHello</code> + <strong>certificat</strong> de
+<code>web.lab.test</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Vérifie signature, nom, dates</td>
+<td>Prouve la possession de la clé privée</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Clés de session partagées</td>
+<td>Clés de session partagées</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Requête HTTP <strong>chiffrée</strong></td>
+<td>Réponse HTTP <strong>chiffrée</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>ssl_protocols TLSv1.2 TLSv1.3</code> : les versions
+antérieures, vulnérables, sont refusées.</p>
+</section>
+<section id="lire-une-erreur-de-certificat" class="slide warning">
+<h2>Lire une erreur de certificat</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Message de curl</th>
+<th>Vérification en échec</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unable to get local issuer certificate</code></td>
+<td>Autorité inconnue</td>
+<td><code>--cacert</code>, magasin du poste</td>
+</tr>
+<tr>
+<td><code>no alternative certificate subject name matches</code></td>
+<td>Nom absent du SAN</td>
+<td><code>openssl x509 -ext subjectAltName</code></td>
+</tr>
+<tr>
+<td><code>certificate has expired</code></td>
+<td>Dates</td>
+<td><code>-dates</code>, horloge</td>
+</tr>
+<tr>
+<td><code>Connection refused</code></td>
+<td>Rien n’écoute sur 443</td>
+<td><code>ss -ltnp</code>, <code>nginx -t</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ne <strong>jamais</strong> contourner avec <code>curl -k</code> dans
+une preuve : on supprime la vérification.</p>
+</section>
+<section id="tp-web-apache-nginx-et-https" class="slide activity">
+<h2>TP — Web : Apache, Nginx et HTTPS</h2>
+<p><strong>Sur les VM · en binôme, conclusion individuelle · lundi et
+mardi</strong></p>
+<p><strong>À produire :</strong> tableau commande / attendu / observé /
+conclusion, configurations, réponses aux questions 1 à 11.</p>
+<ol type="1">
+<li>Lundi : étapes 1 à 3, Apache en HTTP puis Nginx en frontal.</li>
+<li>Mardi : étapes 4 et 5, autorité du laboratoire, certificat, HTTPS et
+redirection.</li>
+<li>Repli documentaire en fin de fiche si une VM n’est pas prête.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<ol type="1">
+<li>L’en-tête <code>Host</code> sélectionne l’hôte virtuel :
+<code>ServerName</code> chez Apache, <code>server_name</code> chez
+Nginx.</li>
+<li>Valider avant de recharger : <code>apache2ctl configtest</code>,
+<code>nginx -t</code>.</li>
+<li>Un frontal expose un seul point d’entrée ; le serveur d’application
+écoute sur la boucle locale.</li>
+<li>Un certificat lie une clé publique à des noms, sous la signature
+d’une autorité de confiance.</li>
+<li>HTTPS garantit confidentialité, intégrité et identité du serveur sur
+le trajet, rien de plus.</li>
+</ol>
+</section>

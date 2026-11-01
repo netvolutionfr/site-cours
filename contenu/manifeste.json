@@ -576,13 +576,55 @@
    ]
   },
   {
+   "slug": "nsi/1g/SQ01-p02-etat-variables-bases-python",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Convertir les entiers",
+   "sousTitre": "État des variables, divisions successives, base 16 et Python",
+   "nature": "Diaporama",
+   "date": "2026-11-02",
+   "pdf": "/nsi/1g/SQ01-p02-etat-variables-bases-python.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "état-des-variables-divisions-successives-base-16-et-python",
+     "text": "État des variables, divisions successives, base 16 et Python"
+    }
+   ]
+  },
+  {
+   "slug": "nsi/1g/SQ01-p03-taille-ecriture-binaire",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Combien de bits ?",
+   "sousTitre": "Taille d'une écriture binaire, somme, produit et dépassement",
+   "nature": "Diaporama",
+   "date": "2026-11-02",
+   "pdf": "/nsi/1g/SQ01-p03-taille-ecriture-binaire.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "taille-dune-écriture-binaire-somme-produit-et-dépassement",
+     "text": "Taille d’une écriture binaire, somme, produit et dépassement"
+    }
+   ]
+  },
+  {
    "slug": "nsi/1g/SQ01-support-eleve",
    "matiere": "nsi",
    "classe": "1g",
    "rubrique": "",
    "sequence": "nsi/1g/SQ01",
    "titre": "Du métier Jacquard au binaire",
-   "sousTitre": "Représenter une information avec deux états",
+   "sousTitre": "Représenter les entiers avec deux états, en bases 2, 10 et 16, puis en Python",
    "nature": "Cours complet",
    "date": null,
    "pdf": "/nsi/1g/SQ01-support-eleve.pdf",
@@ -591,28 +633,153 @@
    "titres": [
     {
      "depth": 3,
+     "slug": "partie-1-deux-états-et-le-poids-des-positions",
+     "text": "Partie 1 — Deux états et le poids des positions"
+    },
+    {
+     "depth": 4,
      "slug": "le-problème",
      "text": "Le problème"
     },
     {
-     "depth": 3,
+     "depth": 4,
      "slug": "le-bit",
      "text": "Le bit"
     },
     {
-     "depth": 3,
+     "depth": 4,
      "slug": "le-poids-dune-position",
      "text": "Le poids d’une position"
     },
     {
-     "depth": 3,
+     "depth": 4,
      "slug": "exercices",
      "text": "Exercices"
     },
     {
      "depth": 3,
-     "slug": "la-suite",
-     "text": "La suite"
+     "slug": "partie-2-convertir-les-entiers-méthode-base-16-et-python",
+     "text": "Partie 2 — Convertir les entiers : méthode, base 16 et Python"
+    },
+    {
+     "depth": 4,
+     "slug": "suivre-létat-des-variables",
+     "text": "Suivre l’état des variables"
+    },
+    {
+     "depth": 4,
+     "slug": "la-méthode-des-divisions-successives",
+     "text": "La méthode des divisions successives"
+    },
+    {
+     "depth": 4,
+     "slug": "la-base-16",
+     "text": "La base 16"
+    },
+    {
+     "depth": 4,
+     "slug": "les-entiers-en-python",
+     "text": "Les entiers en Python"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-1",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-3-taille-dune-écriture-binaire",
+     "text": "Partie 3 — Taille d’une écriture binaire"
+    },
+    {
+     "depth": 4,
+     "slug": "combien-de-valeurs-avec-n-bits",
+     "text": "Combien de valeurs avec n bits ?"
+    },
+    {
+     "depth": 4,
+     "slug": "combien-de-bits-pour-écrire-un-entier",
+     "text": "Combien de bits pour écrire un entier ?"
+    },
+    {
+     "depth": 4,
+     "slug": "somme-et-produit",
+     "text": "Somme et produit"
+    },
+    {
+     "depth": 4,
+     "slug": "quand-les-bits-manquent-le-dépassement",
+     "text": "Quand les bits manquent : le dépassement"
+    },
+    {
+     "depth": 4,
+     "slug": "exercices-2",
+     "text": "Exercices"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-4-entiers-relatifs-et-complément-à-2",
+     "text": "Partie 4 — Entiers relatifs et complément à 2"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1",
+     "text": "Partie 1"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2.1",
+     "text": "Exercice 2.1"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2.2",
+     "text": "Exercice 2.2"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2.3",
+     "text": "Exercice 2.3"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2.4",
+     "text": "Exercice 2.4"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2.5",
+     "text": "Exercice 2.5"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-2.6",
+     "text": "Exercice 2.6"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3.1",
+     "text": "Exercice 3.1"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3.2",
+     "text": "Exercice 3.2"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3.3",
+     "text": "Exercice 3.3"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3.4",
+     "text": "Exercice 3.4"
+    },
+    {
+     "depth": 3,
+     "slug": "exercice-3.5",
+     "text": "Exercice 3.5"
     }
    ]
   },
@@ -1724,16 +1891,37 @@
    "composant": "Markdown"
   },
   {
-   "slug": "sio/2sisr-fil-rouge/p06-web-publier-diagnostiquer",
+   "slug": "sio/2sisr-fil-rouge/p06-web-apache-nginx-https-slides",
    "matiere": "sio",
    "classe": "2sisr",
    "rubrique": "fil-rouge",
    "sequence": "sio/2sisr-fil-rouge/",
-   "titre": "Web : publier et diagnostiquer",
-   "sousTitre": "Projet fil rouge · mardi 13 octobre 2026 · Bloc 2",
+   "titre": "Web : Apache, Nginx et HTTPS",
+   "sousTitre": "Hôtes virtuels, proxy inverse, certificats et TLS",
+   "nature": "Diaporama",
+   "date": "2026-11-02",
+   "pdf": "/sio/2sisr-fil-rouge/p06-web-apache-nginx-https-slides.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "hôtes-virtuels-proxy-inverse-certificats-et-tls",
+     "text": "Hôtes virtuels, proxy inverse, certificats et TLS"
+    }
+   ]
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p06-web-apache-nginx-https",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Web : Apache, Nginx et HTTPS",
+   "sousTitre": "Projet fil rouge · à partir du lundi 2 novembre 2026 · Blocs 2 et 3",
    "nature": "Activité",
-   "date": "2026-10-13",
-   "pdf": null,
+   "date": "2026-11-02",
+   "pdf": "/sio/2sisr-fil-rouge/p06-web-apache-nginx-https.pdf",
    "pieces": [],
    "brut": null,
    "titres": [],
@@ -2375,11 +2563,13 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-10-16",
+   "fin": "2026-11-06",
    "supports": [
     "nsi/1g/SQ01-support-eleve",
     "nsi/1g/SQ01-tp-binaire",
-    "nsi/1g/SQ01-distanciel-boucle-variables-chaines"
+    "nsi/1g/SQ01-distanciel-boucle-variables-chaines",
+    "nsi/1g/SQ01-p02-etat-variables-bases-python",
+    "nsi/1g/SQ01-p03-taille-ecriture-binaire"
    ]
   },
   {
@@ -2486,12 +2676,13 @@
    "code": "",
    "titre": "Fil rouge",
    "debut": "2026-10-05",
-   "fin": "2026-10-13",
+   "fin": "2026-11-02",
    "supports": [
     "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
     "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
     "sio/2sisr-fil-rouge/p05-dns-securiser-prouver",
-    "sio/2sisr-fil-rouge/p06-web-publier-diagnostiquer"
+    "sio/2sisr-fil-rouge/p06-web-apache-nginx-https-slides",
+    "sio/2sisr-fil-rouge/p06-web-apache-nginx-https"
    ]
   }
  ]
