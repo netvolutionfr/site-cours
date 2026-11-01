@@ -1924,8 +1924,53 @@
    "pdf": "/sio/2sisr-fil-rouge/p06-web-apache-nginx-https.pdf",
    "pieces": [],
    "brut": null,
-   "titres": [],
-   "composant": "Markdown"
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "votre-mission",
+     "text": "Votre mission"
+    },
+    {
+     "depth": 3,
+     "slug": "identifier-les-rôles-et-létat-de-départ",
+     "text": "1. Identifier les rôles et l’état de départ"
+    },
+    {
+     "depth": 3,
+     "slug": "apache-un-hôte-virtuel-en-http",
+     "text": "2. Apache : un hôte virtuel en HTTP"
+    },
+    {
+     "depth": 3,
+     "slug": "nginx-en-frontal-devant-apache",
+     "text": "3. Nginx en frontal devant Apache"
+    },
+    {
+     "depth": 3,
+     "slug": "une-autorité-de-certification-pour-le-laboratoire",
+     "text": "4. Une autorité de certification pour le laboratoire"
+    },
+    {
+     "depth": 3,
+     "slug": "https-sur-nginx-redirection-et-preuves",
+     "text": "5. HTTPS sur Nginx, redirection et preuves"
+    },
+    {
+     "depth": 3,
+     "slug": "livrable-restitution-et-repli-documentaire",
+     "text": "6. Livrable, restitution et repli documentaire"
+    },
+    {
+     "depth": 4,
+     "slug": "repli-documentaire",
+     "text": "Repli documentaire"
+    },
+    {
+     "depth": 3,
+     "slug": "repères",
+     "text": "Repères"
+    }
+   ]
   },
   {
    "slug": "mastere/devops/SQ01-p01-culture-devops-cycle",

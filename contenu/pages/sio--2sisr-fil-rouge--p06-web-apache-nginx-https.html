@@ -1,0 +1,476 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Publier un site avec un hôte virtuel Apache et le vérifier.</li>
+<li>Placer Nginx en frontal (proxy inverse) devant Apache, puis
+expliquer les journaux.</li>
+<li>Faire signer un certificat par l’autorité du laboratoire et passer
+le site en HTTPS.</li>
+<li>Prouver ce que HTTPS garantit, et ce qu’il ne garantit pas.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>VM Debian du laboratoire : web, client, éventuellement DNS ; SSH et
+<code>sudo</code>.</li>
+<li>Lien nom → adresse (DNS) ; requête et réponse HTTP, codes 200 et
+404.</li>
+<li>Chiffrement asymétrique, empreinte et signature (Bloc 3, P01
+intégrité et signature).</li>
+</ul>
+</section>
+<section id="étapes" class="outline">
+<h3>Étapes</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Travail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Identifier les rôles et l’état de départ</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Apache : un hôte virtuel en HTTP</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nginx en frontal devant Apache</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Une autorité de certification pour le laboratoire</td>
+</tr>
+<tr>
+<td>5</td>
+<td>HTTPS sur Nginx, redirection et preuves</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Livrable, restitution et repli documentaire</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="votre-mission">Votre mission</h3>
+<p>Le laboratoire doit servir une page web interne,
+<code>web.lab.test</code>. Vous commencez par la configuration la plus
+classique, un <strong>hôte virtuel Apache</strong>. Vous placez ensuite
+<strong>Nginx devant Apache</strong> : c’est l’architecture d’une grande
+partie des sites réels, où un serveur frontal reçoit les clients et
+transmet au serveur d’application. Enfin, vous chiffrez l’accès en
+<strong>HTTPS</strong> avec un certificat signé par l’autorité de
+certification du laboratoire.</p>
+<p><strong>En binôme</strong>, alternez administration et contrôle.
+Chacun rédige sa propre conclusion. Travaillez exclusivement sur les VM
+attribuées, sans données réelles ni mot de passe réutilisé ailleurs. Le
+TP se poursuit sur plusieurs créneaux : conservez vos VM et complétez
+votre tableau de preuves à chaque étape.</p>
+<figure>
+<img role="img" aria-label="Architecture visée : le client interroge le DNS, puis joint Nginx en HTTPS ; Nginx transmet à Apache, qui n’écoute que sur 127.0.0.1:8080." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkFyY2hpdGVjdHVyZSBkdSBzZXJ2aWNlIHdlYiBkdSBsYWJvcmF0b2lyZTwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPkxlIGNsaWVudCAxMC43Ny4xLjIwIGludGVycm9nZSBsZSBETlMgMTAuNzcuMS4xMCBwb3VyIHdlYi5sYWIudGVzdCwgcHVpcyBzZSBjb25uZWN0ZSDDoCBOZ2lueCBzdXIgbGEgVk0gd2ViIDEwLjc3LjEuMzAuIExlIHBvcnQgODAgcmVkaXJpZ2UgdmVycyBIVFRQUywgbGUgcG9ydCA0NDMgY2hpZmZyZSBsJ8OpY2hhbmdlIGF2ZWMgbGUgY2VydGlmaWNhdCBkdSBzZXJ2ZXVyLiBOZ2lueCB0cmFuc21ldCBlbiBIVFRQIGNsYWlyIMOgIEFwYWNoZSwgcXVpIG4nw6ljb3V0ZSBxdWUgc3VyIDEyNy4wLjAuMTo4MDgwIGV0IHNlcnQgL3Zhci93d3cvbGFiLiBVbmUgY29ubmV4aW9uIGRpcmVjdGUgYXUgcG9ydCA4MDgwIGRlcHVpcyBsZSBjbGllbnQgZXN0IGltcG9zc2libGUuIE5naW54IGpvdXJuYWxpc2UgbCdhZHJlc3NlIGR1IGNsaWVudCwgQXBhY2hlIGNlbGxlIGRlIE5naW54LjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjMzU2OEQ0Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYWEiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiNFNDlBMzgiLz48L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImFrIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjNjU3ODhkIi8+PC9tYXJrZXI+CiAgPC9kZWZzPgogIDxzdHlsZT4KICAgIC56b25le2ZpbGw6I2ZmZjtzdHJva2U6IzE3MjAzMztzdHJva2Utd2lkdGg6Mi41fQogICAgLnN2Y3tmaWxsOiNFQUY0RkI7c3Ryb2tlOiMzNTY4RDQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAuc3ZjMntmaWxsOiNGN0Y4RkE7c3Ryb2tlOiM2NTc4OGQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAudHRse2ZvbnQ6NzAwIDIycHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMxNzIwMzN9CiAgICAuaHtmb250OjcwMCAxOXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLnR7Zm9udDo1MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzNjNGI1Y30KICAgIC5je2ZvbnQ6NjAwIDE0cHggbW9ub3NwYWNlO2ZpbGw6IzE2NGQ3OX0KICAgIC5sYntmb250OjcwMCAxNHB4IEFyaWFsLHNhbnMtc2VyaWZ9CiAgICAudGFne2ZpbGw6IzA4N0U4Qn0KICAgIC50YWd0e2ZvbnQ6NzAwIDEzcHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiNmZmZ9CiAgPC9zdHlsZT4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNGN0Y4RkEiLz4KICA8dGV4dCB4PSI0MCIgeT0iNDQiIGNsYXNzPSJ0dGwiPlVuIGZyb250YWwgTmdpbnggZGV2YW50IEFwYWNoZSwgZXQgSFRUUFMgZGUgYm91dCBlbiBib3V0IGPDtHTDqSBjbGllbnQ8L3RleHQ+CgogIDwhLS0gVk0gY2xpZW50IC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMzMwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjQwIiB5PSIxMDAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTQiLz4KICA8dGV4dCB4PSI1NiIgeT0iMTAzIiBjbGFzcz0idGFndCI+Vk0gQ0xJRU5UIMK3IDEwLjc3LjEuMjA8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjYwIiB5PSIxMzIiIHdpZHRoPSIyNjAiIGhlaWdodD0iOTYiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9Ijc0IiB5PSIxNTYiIGNsYXNzPSJoIj5jdXJsLCBuYXZpZ2F0ZXVyPC90ZXh0PgogIDx0ZXh0IHg9Ijc0IiB5PSIxODAiIGNsYXNzPSJjIj5jdXJsIC0tY2FjZXJ0IGNhLWxhYi5jcnQ8L3RleHQ+CiAgPHRleHQgeD0iNzQiIHk9IjIwMiIgY2xhc3M9ImMiPiAgaHR0cHM6Ly93ZWIubGFiLnRlc3QvPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJzdmMiIHg9IjYwIiB5PSIyNDQiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTQ2IiByeD0iMTAiLz4KICA8dGV4dCB4PSI3NCIgeT0iMjY4IiBjbGFzcz0iaCI+QXV0b3JpdMOpIGR1IGxhYm88L3RleHQ+CiAgPHRleHQgeD0iNzQiIHk9IjI5MiIgY2xhc3M9ImMiPn4vY2EtbGFiLzwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzE2IiBjbGFzcz0iYyI+Y2EtbGFiLmNydDwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjMxNiIgY2xhc3M9InQiPnB1YmxpYzwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzQwIiBjbGFzcz0iYyI+Y2EtbGFiLmtleTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjM0MCIgY2xhc3M9InQiIHN0eWxlPSJmaWxsOiNEOTVDNTkiPnNlY3JldDwvdGV4dD4KICA8dGV4dCB4PSI3NCIgeT0iMzcwIiBjbGFzcz0idCI+c2lnbmUgbGEgQ1NSIGR1IHNlcnZldXI8L3RleHQ+CgogIDwhLS0gVk0gRE5TIC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iNDUwIiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE2MCIgcng9IjE2Ii8+CiAgPHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjQ1MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzNCIgcng9IjE2Ii8+PHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjQ3MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNCIvPgogIDx0ZXh0IHg9IjU2IiB5PSI0NzMiIGNsYXNzPSJ0YWd0Ij5WTSBETlMgwrcgMTAuNzcuMS4xMCDCtyBCSU5EPC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSI1MTQiIGNsYXNzPSJoIj5ab25lIGxhYi50ZXN0PC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSI1NDIiIGNsYXNzPSJjIj53ZWIgSU4gQSAgICAgMTAuNzcuMS4zMDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iNTY2IiBjbGFzcz0iYyI+d3d3IElOIENOQU1FIHdlYi5sYWIudGVzdC48L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjU5NCIgY2xhc3M9InQiPm91IC0tcmVzb2x2ZSBzaSBsZSBETlMgbidlc3QgcGFzIHByw6p0PC90ZXh0PgoKICA8IS0tIFZNIHdlYiAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iNTYwIiB5PSI4MCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MzAiIHJ4PSIxNiIvPgogIDxyZWN0IGNsYXNzPSJ0YWciIHg9IjU2MCIgeT0iODAiIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjU2MCIgeT0iMTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjE0Ii8+CiAgPHRleHQgeD0iNTc2IiB5PSIxMDMiIGNsYXNzPSJ0YWd0Ij5WTSBXRUIgwrcgMTAuNzcuMS4zMDwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YyIgeD0iNTkwIiB5PSIxMzIiIHdpZHRoPSI1NDAiIGhlaWdodD0iMjAwIiByeD0iMTIiLz4KICA8dGV4dCB4PSI2MDYiIHk9IjE2MCIgY2xhc3M9ImgiPk5naW54IOKAlCBmcm9udGFsIChwcm94eSBpbnZlcnNlKTwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjE5MCIgY2xhc3M9ImMiPjAuMC4wLjA6ODA8L3RleHQ+PHRleHQgeD0iNzQwIiB5PSIxOTAiIGNsYXNzPSJ0Ij5yZXR1cm4gMzAxIGh0dHBzOi8vJGhvc3QkcmVxdWVzdF91cmk8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSIyMTgiIGNsYXNzPSJjIj4wLjAuMC4wOjQ0MzwvdGV4dD48dGV4dCB4PSI3NDAiIHk9IjIxOCIgY2xhc3M9InQiPmxpc3RlbiA0NDMgc3NsIMK3IFRMU3YxLjIgLyBUTFN2MS4zPC90ZXh0PgogIDx0ZXh0IHg9Ijc0MCIgeT0iMjQyIiBjbGFzcz0iYyI+d2ViLmxhYi50ZXN0LmNydDwvdGV4dD48dGV4dCB4PSI5MTAiIHk9IjI0MiIgY2xhc3M9InQiPnB1YmxpYzwvdGV4dD4KICA8dGV4dCB4PSI3NDAiIHk9IjI2NCIgY2xhc3M9ImMiPndlYi5sYWIudGVzdC5rZXk8L3RleHQ+PHRleHQgeD0iOTEwIiB5PSIyNjQiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojRDk1QzU5Ij5zZWNyZXQsIGRyb2l0cyA2MDA8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSIyOTYiIGNsYXNzPSJjIj5wcm94eV9wYXNzIGh0dHA6Ly8xMjcuMC4wLjE6ODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjMxOCIgY2xhc3M9InQiPmpvdXJuYWwgOiAvdmFyL2xvZy9uZ2lueC9hY2Nlc3MubG9nIOKGkiB2b2l0IDEwLjc3LjEuMjA8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI1OTAiIHk9IjQwMCIgd2lkdGg9IjU0MCIgaGVpZ2h0PSIxOTAiIHJ4PSIxMiIvPgogIDx0ZXh0IHg9IjYwNiIgeT0iNDI4IiBjbGFzcz0iaCI+QXBhY2hlIOKAlCBzZXJ2ZXVyIGRlIGNvbnRlbnU8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSI0NTgiIGNsYXNzPSJjIj4xMjcuMC4wLjE6ODA4MDwvdGV4dD48dGV4dCB4PSI3NjAiIHk9IjQ1OCIgY2xhc3M9InQiPkxpc3RlbiAxMjcuMC4wLjE6ODA4MCAocG9ydHMuY29uZik8L3RleHQ+CiAgPHRleHQgeD0iNjA2IiB5PSI0ODYiIGNsYXNzPSJjIj4mbHQ7VmlydHVhbEhvc3QgMTI3LjAuMC4xOjgwODAmZ3Q7PC90ZXh0PgogIDx0ZXh0IHg9IjYwNiIgeT0iNTEwIiBjbGFzcz0iYyI+U2VydmVyTmFtZSB3ZWIubGFiLnRlc3QgwrcgRG9jdW1lbnRSb290IC92YXIvd3d3L2xhYjwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjU0MCIgY2xhc3M9InQiPmpvdXJuYWwgOiBsYWItYWNjZXNzLmxvZyDihpIgdm9pdCAxMjcuMC4wLjEgKE5naW54KTwvdGV4dD4KICA8dGV4dCB4PSI2MDYiIHk9IjU2NiIgY2xhc3M9InQiPmluam9pZ25hYmxlIGRlcHVpcyBsZSByw6lzZWF1IDogc2V1bCBOZ2lueCBsdWkgcGFybGU8L3RleHQ+CgogIDwhLS0gZmx1eCAtLT4KICA8cGF0aCBkPSJNMzQwIDIwMCBDNDMwIDIwMCA0NzAgMjEwIDU4OCAyMTAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDx0ZXh0IHg9IjM3MiIgeT0iMTgyIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPuKRoCBIVFRQUyDCtyA0NDMgwrcgY2hpZmZyw6k8L3RleHQ+CiAgPHBhdGggZD0iTTM0MCAxNTAgQzQzMCAxNTAgNDgwIDE4MCA1ODggMTg2IiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iOSA2IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FhKSIvPgogIDx0ZXh0IHg9IjM2MiIgeT0iMTM2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNDQTZGMUUiPkhUVFAgwrcgODAg4oaSIDMwMTwvdGV4dD4KICA8cGF0aCBkPSJNMTkwIDQxMCBMMTkwIDQ0OCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iMjAwIiB5PSI0MzYiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+4pOqIGRpZyB3ZWIubGFiLnRlc3Q8L3RleHQ+CiAgPHBhdGggZD0iTTg2MCAzMzQgTDg2MCAzOTgiIHN0cm9rZT0iIzY1Nzg4ZCIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDx0ZXh0IHg9Ijg3MiIgeT0iMzcyIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiM1MjY0NzciPuKRoSBIVFRQIGNsYWlyIHN1ciBsYSBib3VjbGUgbG9jYWxlPC90ZXh0PgogIDxwYXRoIGQ9Ik0zNDAgMzMwIEM0MjAgMzgwIDQ3MCA0NzAgNTYwIDQ4MCIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNiIgZmlsbD0ibm9uZSIvPgogIDxwYXRoIGQ9Ik01NDIgNDY2IGwyMiAyMiBNNTY0IDQ2NiBsLTIyIDIyIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iNTIwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNEOTVDNTkiPjo4MDgwIGRlcHVpczwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjUzOCIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojRDk1QzU5Ij5sZSBjbGllbnQgOiByZWZ1c8OpPC90ZXh0PgoKICA8IS0tIHN5bnRow6hzZSAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNjMwIiB3aWR0aD0iMTEyMCIgaGVpZ2h0PSI1MiIgcng9IjEwIiBmaWxsPSIjRUFGQUYxIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjU4IiB5PSI2NjIiIGNsYXNzPSJ0Ij48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSI+w4AgcmV0ZW5pciDCtyA8L3RzcGFuPlRMUyBwcm90w6hnZSBsZSB0cmFqZXQgY2xpZW50IOKGlCBOZ2lueC4gTGUgY2VydGlmaWNhdCBsaWUgdW5lIGNsw6kgcHVibGlxdWUgYXV4IG5vbXMgd2ViL3d3dy5sYWIudGVzdCwgc2lnbsOpIHBhciBsJ2F1dG9yaXTDqSBkdSBsYWJvLjwvdGV4dD4KPC9zdmc+Cg==" alt="Architecture visée : le client interroge le DNS, puis joint Nginx en HTTPS ; Nginx transmet à Apache, qui n’écoute que sur 127.0.0.1:8080." />
+<figcaption aria-hidden="true">Architecture visée : le client interroge
+le DNS, puis joint Nginx en HTTPS ; Nginx transmet à Apache, qui
+n’écoute que sur 127.0.0.1:8080.</figcaption>
+</figure>
+<h3 id="identifier-les-rôles-et-létat-de-départ">1. Identifier les rôles
+et l’état de départ</h3>
+<p><strong>Les valeurs ci-dessous sont un exemple</strong> à remplacer
+par celles de votre binôme : DNS <code>10.77.1.10</code>, client
+<code>10.77.1.20</code>, web <code>10.77.1.30</code>, réseau
+<code>10.77.1.0/24</code>, zone <code>lab.test</code>. Si vous n’avez
+que deux VM, l’enseignant peut autoriser le rôle web sur une VM
+existante : notez alors son adresse réelle.</p>
+<p>Sur la VM web :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span><span class="kw">;</span> <span class="ex">ip</span> <span class="at">-br</span> address<span class="kw">;</span> <span class="ex">ip</span> route</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dpkg</span> <span class="at">-l</span> apache2 nginx openssl <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&#39;^ii&#39;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ss <span class="at">-ltnp</span></span></code></pre></div>
+<p>Les paquets sont préinstallés par l’enseignant ; le réseau du
+laboratoire reste isolé. N’ouvrez pas d’accès Internet.
+<code>ss -ltnp</code> indique quel programme écoute sur quel port :
+<strong>un seul service peut écouter sur un couple
+adresse/port</strong>.</p>
+<p><strong>Question 1.</strong> Quels services écoutent sur le port 80
+de la VM web ? Si Nginx et Apache sont tous deux actifs, que se
+passe-t-il au démarrage du second ?</p>
+<p>Si Nginx occupe déjà le port 80, arrêtez-le pour l’étape 2 :
+<code>sudo systemctl stop nginx</code>.</p>
+<h3 id="apache-un-hôte-virtuel-en-http">2. Apache : un hôte virtuel en
+HTTP</h3>
+<p>Créez la page servie. Ce fichier est l’objet du TP : une page
+fictive, sans donnée réelle.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mkdir <span class="at">-p</span> /var/www/lab</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /var/www/lab/index.html</span></code></pre></div>
+<p>Rédigez un titre, la mention « Laboratoire SISR » et un identifiant
+fictif de binôme (exemple : <code>B07</code>). Puis créez l’hôte virtuel
+<code>/etc/apache2/sites-available/lab.conf</code> :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode apache"><code class="sourceCode apache"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;VirtualHost</span><span class="at"> *:80</span><span class="fu">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    ServerName<span class="st"> web.lab.test</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    ServerAlias<span class="st"> www.lab.test</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    DocumentRoot<span class="st"> /var/www/lab</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    ErrorLog<span class="st"> ${APACHE_LOG_DIR}/lab-error.log</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    CustomLog<span class="st"> ${APACHE_LOG_DIR}/lab-access.log combined</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;/VirtualHost&gt;</span></span></code></pre></div>
+<p>Activez le site, <strong>validez avant de recharger</strong>, puis
+vérifiez l’état du service :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite lab</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apache2ctl configtest</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl reload apache2</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apache2ctl <span class="at">-S</span></span></code></pre></div>
+<p>L’avertissement <code>AH00558 … fully qualified domain name</code>
+est sans conséquence ici : il signale seulement l’absence de
+<code>ServerName</code> global. <code>apache2ctl -S</code> liste les
+hôtes virtuels et celui qui sert par défaut. Conservez le site Debian
+<code>000-default</code> : c’est lui qui répond si le nom demandé ne
+correspond à aucun hôte.</p>
+<p>Depuis le client, testez <strong>sans dépendre du DNS</strong> :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-i</span> <span class="at">--resolve</span> web.lab.test:80:10.77.1.30 <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  http://web.lab.test/</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-i</span> http://10.77.1.30/</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-i</span> <span class="at">--resolve</span> web.lab.test:80:10.77.1.30 <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  http://web.lab.test/absent</span></code></pre></div>
+<p>Attendu : votre marqueur, puis la page Debian par défaut, puis
+<code>404 Not Found</code>. <code>--resolve</code> donne l’adresse à
+curl tout en envoyant le nom dans l’en-tête <code>Host</code>. Sur la VM
+web, rapprochez vos requêtes du journal :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> tail <span class="at">-n</span> 5 /var/log/apache2/lab-access.log</span></code></pre></div>
+<p><strong>Question 2.</strong> Pourquoi la requête vers l’adresse IP
+seule n’affiche-t-elle pas votre site ? Qu’est-ce qui permet à Apache de
+choisir l’hôte virtuel ?</p>
+<p><strong>Question 3.</strong> Le <code>404</code> prouve-t-il une
+panne réseau ? Que prouve-t-il ?</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Si le DNS du laboratoire est opérationnel, publiez <code>web</code>
+(A) et <code>www</code> (CNAME vers <code>web.lab.test.</code>) dans la
+zone, incrémentez la série, validez avec <code>named-checkzone</code>
+puis vérifiez avec <code>dig @10.77.1.10 web.lab.test +norecurse</code>.
+Le TP peut se faire entièrement avec <code>--resolve</code> si le DNS
+n’est pas prêt.</p>
+</div>
+<h3 id="nginx-en-frontal-devant-apache">3. Nginx en frontal devant
+Apache</h3>
+<p>Apache ne doit plus recevoir les clients directement : il n’écoutera
+que sur la boucle locale, port 8080. Sauvegardez avant de modifier (le
+suffixe ne doit pas déjà exister) :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp <span class="at">-n</span> /etc/apache2/ports.conf /etc/apache2/ports.conf.avant-nginx</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp <span class="at">-n</span> /etc/apache2/sites-available/lab.conf <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  /etc/apache2/sites-available/lab.conf.avant-nginx</span></code></pre></div>
+<p>Dans <code>/etc/apache2/ports.conf</code>, remplacez
+<code>Listen 80</code> par <code>Listen 127.0.0.1:8080</code>. Dans
+<code>lab.conf</code>, remplacez <code>&lt;VirtualHost *:80&gt;</code>
+par <code>&lt;VirtualHost 127.0.0.1:8080&gt;</code>. Désactivez le site
+par défaut d’Apache, qui écoutait sur le port 80 :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite 000-default</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apache2ctl configtest</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart apache2</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ss <span class="at">-ltnp</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">&#39;:80 |:8080 &#39;</span></span></code></pre></div>
+<p>Attendu : Apache sur <code>127.0.0.1:8080</code>, plus rien sur le
+port 80. Un rechargement ne suffit pas pour changer de port d’écoute :
+il faut redémarrer.</p>
+<p>Créez le site Nginx <code>/etc/nginx/sites-available/lab</code> :</p>
+<pre class="nginx"><code>server {
+    listen 80;
+    server_name web.lab.test www.lab.test;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre>
+<p>Activez-le, sans écraser un lien existant, puis validez et démarrez
+:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ln <span class="at">-s</span> /etc/nginx/sites-available/lab /etc/nginx/sites-enabled/lab</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nginx <span class="at">-t</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable <span class="at">--now</span> nginx</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl reload nginx</span></code></pre></div>
+<p>Depuis le client, refaites le premier test de l’étape 2, puis
+observez les en-têtes :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-I</span> <span class="at">--resolve</span> web.lab.test:80:10.77.1.30 <span class="dt">\</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  http://web.lab.test/</span></code></pre></div>
+<p>Sur la VM web, comparez les deux journaux pour <strong>la même
+requête</strong> :</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> tail <span class="at">-n</span> 3 /var/log/nginx/access.log</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> tail <span class="at">-n</span> 3 /var/log/apache2/lab-access.log</span></code></pre></div>
+<p><strong>Question 4.</strong> Quel serveur annonce l’en-tête
+<code>Server</code> ? Quelle adresse cliente apparaît dans chaque
+journal ? Expliquez la différence.</p>
+<p><strong>Question 5.</strong> Depuis le client,
+<code>curl http://10.77.1.30:8080/</code> aboutit-il ? Pourquoi est-ce
+souhaitable ?</p>
+<p><strong>Question 6.</strong> Citez deux intérêts d’un serveur frontal
+devant le serveur d’application.</p>
+<p>Pour les rapides : faites journaliser l’adresse réelle du client par
+Apache avec le module <code>remoteip</code> et l’en-tête
+<code>X-Real-IP</code>. Vérifiez dans <code>lab-access.log</code>.</p>
+<h3 id="une-autorité-de-certification-pour-le-laboratoire">4. Une
+autorité de certification pour le laboratoire</h3>
+<p>Un navigateur fait confiance à un certificat s’il est <strong>signé
+par une autorité</strong> qu’il connaît déjà. Le laboratoire n’a pas
+d’autorité publique : vous en créez une, privée, dont le certificat sera
+distribué aux clients du laboratoire. L’autorité est installée sur la
+<strong>VM client</strong> : sa clé privée ne doit jamais se trouver sur
+le serveur web.</p>
+<figure>
+<img role="img" aria-label="La clé privée du serveur reste sur la VM web : seule la demande de signature part vers l’autorité, qui renvoie le certificat signé." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPk9idGVuaXIgZXQgdsOpcmlmaWVyIGxlIGNlcnRpZmljYXQgZHUgc2VydmV1ciB3ZWI8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5TdXIgbGEgVk0gd2ViLCBvbiBnw6luw6hyZSB1bmUgY2zDqSBwcml2w6llIGV0IHVuZSBkZW1hbmRlIGRlIHNpZ25hdHVyZSAoQ1NSKSBjb250ZW5hbnQgbGVzIG5vbXMgZXQgbGEgY2zDqSBwdWJsaXF1ZS4gU2V1bGUgbGEgQ1NSIGVzdCB0cmFuc21pc2Ugw6AgbCdhdXRvcml0w6kgZHUgbGFib3JhdG9pcmUsIHN1ciBsYSBWTSBjbGllbnQsIHF1aSBsYSBzaWduZSBhdmVjIHNhIGNsw6kgcHJpdsOpZSBldCBwcm9kdWl0IGxlIGNlcnRpZmljYXQuIExlIGNlcnRpZmljYXQgcmV2aWVudCBzdXIgbGEgVk0gd2ViIGV0IE5naW54IGxlIHByw6lzZW50ZSBsb3JzIGRlIGxhIG7DqWdvY2lhdGlvbiBUTFMuIExlIGNsaWVudCB2w6lyaWZpZSBsYSBzaWduYXR1cmUgYXZlYyBsZSBjZXJ0aWZpY2F0IGRlIGwnYXV0b3JpdMOpLCBsZSBub20gZGVtYW5kw6kgZGFucyBsYSBsaXN0ZSBzdWJqZWN0QWx0TmFtZSBldCBsZXMgZGF0ZXMgZGUgdmFsaWRpdMOpLjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFiIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjMzU2OEQ0Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogIDwvZGVmcz4KICA8c3R5bGU+CiAgICAuem9uZXtmaWxsOiNmZmY7c3Ryb2tlOiMxNzIwMzM7c3Ryb2tlLXdpZHRoOjIuNX0KICAgIC5kb2N7ZmlsbDojRUFGNEZCO3N0cm9rZTojMzU2OEQ0O3N0cm9rZS13aWR0aDoyfQogICAgLnNlY3tmaWxsOiNGREVERUM7c3Ryb2tlOiNEOTVDNTk7c3Ryb2tlLXdpZHRoOjJ9CiAgICAub2t7ZmlsbDojRUFGQUYxO3N0cm9rZTojMUU4NDQ5O3N0cm9rZS13aWR0aDoyfQogICAgLnR0bHtmb250OjcwMCAyMnB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLmh7Zm9udDo3MDAgMThweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzE3MjAzM30KICAgIC50e2ZvbnQ6NTAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMzYzRiNWN9CiAgICAuY3tmb250OjYwMCAxNHB4IG1vbm9zcGFjZTtmaWxsOiMxNjRkNzl9CiAgICAubGJ7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLnRhZ3tmaWxsOiMwODdFOEJ9CiAgICAudGFndHtmb250OjcwMCAxM3B4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojZmZmfQogICAgLm57Zm9udDo3MDAgMThweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I2ZmZn0KICA8L3N0eWxlPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY4MCIgZmlsbD0iI0Y3RjhGQSIvPgogIDx0ZXh0IHg9IjQwIiB5PSI0NCIgY2xhc3M9InR0bCI+TGEgY2zDqSBwcml2w6llIG5lIHZveWFnZSBqYW1haXMgOiBzZXVscyBsYSBkZW1hbmRlIGV0IGxlIGNlcnRpZmljYXQgY2lyY3VsZW50PC90ZXh0PgoKICA8IS0tIFZNIHdlYiAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iNDAiIHk9IjgwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjQ0MCIgcng9IjE2Ii8+CiAgPHJlY3QgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjgwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjM0IiByeD0iMTYiLz48cmVjdCBjbGFzcz0idGFnIiB4PSI0MCIgeT0iMTAwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjE0Ii8+CiAgPHRleHQgeD0iNTYiIHk9IjEwMyIgY2xhc3M9InRhZ3QiPlZNIFdFQiDCtyBzZXJ2ZXVyIMOgIGNlcnRpZmllcjwvdGV4dD4KCiAgPGNpcmNsZSBjeD0iNzgiIGN5PSIxNTIiIHI9IjE2IiBmaWxsPSIjMTcyMDMzIi8+PHRleHQgeD0iNzIiIHk9IjE1OCIgY2xhc3M9Im4iPjE8L3RleHQ+CiAgPHRleHQgeD0iMTA0IiB5PSIxNTgiIGNsYXNzPSJoIj5vcGVuc3NsIHJlcSAtbmV3IC1uZXdrZXkgcnNhOjIwNDggLW5vZW5jPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJzZWMiIHg9IjY0IiB5PSIxNzgiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI3OCIgeT0iMjA0IiBjbGFzcz0iaCI+Q2zDqSBwcml2w6llPC90ZXh0PgogIDx0ZXh0IHg9Ijc4IiB5PSIyMjgiIGNsYXNzPSJjIj53ZWIubGFiLnRlc3Qua2V5PC90ZXh0PgogIDx0ZXh0IHg9Ijc4IiB5PSIyNTIiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojQzAzOTJCIj5zZWNyZXQgwrcgcmVzdGUgaWNpIMK3IDYwMDwvdGV4dD4KICA8cmVjdCBjbGFzcz0iZG9jIiB4PSIzMDAiIHk9IjE3OCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxNDAiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjMxNCIgeT0iMjA0IiBjbGFzcz0iaCI+RGVtYW5kZSAoQ1NSKTwvdGV4dD4KICA8dGV4dCB4PSIzMTQiIHk9IjIyOCIgY2xhc3M9ImMiPkNOPXdlYi5sYWIudGVzdDwvdGV4dD4KICA8dGV4dCB4PSIzMTQiIHk9IjI1MCIgY2xhc3M9ImMiPlNBTjogd2ViLCB3d3cubGFiLnRlc3Q8L3RleHQ+CiAgPHRleHQgeD0iMzE0IiB5PSIyNzIiIGNsYXNzPSJ0Ij4rIGNsw6kgcHVibGlxdWU8L3RleHQ+CiAgPHRleHQgeD0iMzE0IiB5PSIyOTYiIGNsYXNzPSJ0Ij5wdWJsaWMgwrcgcGV1dCBjaXJjdWxlcjwvdGV4dD4KCiAgPGNpcmNsZSBjeD0iNzgiIGN5PSIzNzIiIHI9IjE2IiBmaWxsPSIjMTcyMDMzIi8+PHRleHQgeD0iNzIiIHk9IjM3OCIgY2xhc3M9Im4iPjQ8L3RleHQ+CiAgPHRleHQgeD0iMTA0IiB5PSIzNzgiIGNsYXNzPSJoIj5OZ2lueCBwcsOpc2VudGUgbGUgY2VydGlmaWNhdDwvdGV4dD4KICA8cmVjdCBjbGFzcz0iZG9jIiB4PSI2NCIgeT0iMzk4IiB3aWR0aD0iNDc2IiBoZWlnaHQ9IjEwNCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNzgiIHk9IjQyNCIgY2xhc3M9ImMiPnNzbF9jZXJ0aWZpY2F0ZSAgICAgd2ViLmxhYi50ZXN0LmNydDwvdGV4dD4KICA8dGV4dCB4PSI3OCIgeT0iNDQ4IiBjbGFzcz0iYyI+c3NsX2NlcnRpZmljYXRlX2tleSB3ZWIubGFiLnRlc3Qua2V5PC90ZXh0PgogIDx0ZXh0IHg9Ijc4IiB5PSI0NzgiIGNsYXNzPSJ0Ij5MYSBjbMOpIHByaXbDqWUgcHJvdXZlLCDDoCBjaGFxdWUgY29ubmV4aW9uLCBxdWUgbGUgc2VydmV1cjwvdGV4dD4KICA8dGV4dCB4PSI3OCIgeT0iNDk2IiBjbGFzcz0idCI+cG9zc8OoZGUgYmllbiBsYSBjbMOpIHB1YmxpcXVlIGluc2NyaXRlIGRhbnMgbGUgY2VydGlmaWNhdC48L3RleHQ+CgogIDwhLS0gVk0gY2xpZW50IC8gQUMgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjY0MCIgeT0iODAiIHdpZHRoPSI1MjAiIGhlaWdodD0iNDQwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnIiB4PSI2NDAiIHk9IjgwIiB3aWR0aD0iNTIwIiBoZWlnaHQ9IjM0IiByeD0iMTYiLz48cmVjdCBjbGFzcz0idGFnIiB4PSI2NDAiIHk9IjEwMCIgd2lkdGg9IjUyMCIgaGVpZ2h0PSIxNCIvPgogIDx0ZXh0IHg9IjY1NiIgeT0iMTAzIiBjbGFzcz0idGFndCI+Vk0gQ0xJRU5UIMK3IGF1dG9yaXTDqSBkdSBsYWJvcmF0b2lyZTwvdGV4dD4KCiAgPGNpcmNsZSBjeD0iNjc4IiBjeT0iMTUyIiByPSIxNiIgZmlsbD0iIzE3MjAzMyIvPjx0ZXh0IHg9IjY3MiIgeT0iMTU4IiBjbGFzcz0ibiI+MjwvdGV4dD4KICA8dGV4dCB4PSI3MDQiIHk9IjE1OCIgY2xhc3M9ImgiPm9wZW5zc2wgeDUwOSAtcmVxIOKApiAtQ0Eg4oCmIC1DQWtleSDigKY8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InNlYyIgeD0iNjY0IiB5PSIxNzgiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI2NzgiIHk9IjIwNCIgY2xhc3M9ImgiPkNsw6kgZGUgbCdBQzwvdGV4dD4KICA8dGV4dCB4PSI2NzgiIHk9IjIyOCIgY2xhc3M9ImMiPmNhLWxhYi5rZXk8L3RleHQ+CiAgPHRleHQgeD0iNjc4IiB5PSIyNTIiIGNsYXNzPSJ0IiBzdHlsZT0iZmlsbDojQzAzOTJCIj5zZWNyZXQgwrcgcGhyYXNlIGRlIHBhc3NlPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJkb2MiIHg9IjkwMCIgeT0iMTc4IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjEwMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iOTE0IiB5PSIyMDQiIGNsYXNzPSJoIj5DZXJ0aWZpY2F0IGRlIGwnQUM8L3RleHQ+CiAgPHRleHQgeD0iOTE0IiB5PSIyMjgiIGNsYXNzPSJjIj5jYS1sYWIuY3J0PC90ZXh0PgogIDx0ZXh0IHg9IjkxNCIgeT0iMjUyIiBjbGFzcz0idCI+cHVibGljIMK3IMOgIGRpc3RyaWJ1ZXI8L3RleHQ+CgogIDxjaXJjbGUgY3g9IjY3OCIgY3k9IjMyMCIgcj0iMTYiIGZpbGw9IiMxNzIwMzMiLz48dGV4dCB4PSI2NzIiIHk9IjMyNiIgY2xhc3M9Im4iPjM8L3RleHQ+CiAgPHRleHQgeD0iNzA0IiB5PSIzMjYiIGNsYXNzPSJoIj5DZXJ0aWZpY2F0IGR1IHNlcnZldXI8L3RleHQ+CiAgPHJlY3QgY2xhc3M9ImRvYyIgeD0iNjY0IiB5PSIzNDIiIHdpZHRoPSI0NzYiIGhlaWdodD0iMTYwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI2NzgiIHk9IjM2OCIgY2xhc3M9ImMiPndlYi5sYWIudGVzdC5jcnQ8L3RleHQ+CiAgPHRleHQgeD0iNjc4IiB5PSIzOTQiIGNsYXNzPSJ0Ij5zdWpldCBDTj13ZWIubGFiLnRlc3QgwrcgU0FOIHdlYiwgd3d3LmxhYi50ZXN0PC90ZXh0PgogIDx0ZXh0IHg9IjY3OCIgeT0iNDE4IiBjbGFzcz0idCI+w6ltZXR0ZXVyIENOPUF1dG9yaXRlIExhYm9yYXRvaXJlIFNJU1I8L3RleHQ+CiAgPHRleHQgeD0iNjc4IiB5PSI0NDIiIGNsYXNzPSJ0Ij52YWxpZGl0w6kgMzAgam91cnMgwrcgY2zDqSBwdWJsaXF1ZSBkdSBzZXJ2ZXVyPC90ZXh0PgogIDx0ZXh0IHg9IjY3OCIgeT0iNDcwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMzNTY4RDQiPisgc2lnbmF0dXJlIGRlIGwnQUMgc3VyIHRvdXQgbGUgY29udGVudTwvdGV4dD4KCiAgPCEtLSBmbHV4IC0tPgogIDxwYXRoIGQ9Ik01NDAgMjMwIEM1OTAgMjMwIDYwMCAzMDAgNjYyIDMwMCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iNTY2IiB5PSIyMTQiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+Q1NSPC90ZXh0PgogIDxwYXRoIGQ9Ik02NjQgNDcwIEM2MTAgNDcwIDYwMCA0NTAgNTQyIDQ1MCIgc3Ryb2tlPSIjMzU2OEQ0IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWIpIi8+CiAgPHRleHQgeD0iNTY2IiB5PSI0OTQiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzM1NjhENCI+LmNydDwvdGV4dD4KCiAgPCEtLSB2w6lyaWZpY2F0aW9uIC0tPgogIDxjaXJjbGUgY3g9IjU4IiBjeT0iNTY2IiByPSIxNiIgZmlsbD0iIzFFODQ0OSIvPjx0ZXh0IHg9IjUyIiB5PSI1NzIiIGNsYXNzPSJuIj41PC90ZXh0PgogIDx0ZXh0IHg9Ijg0IiB5PSI1NzIiIGNsYXNzPSJoIj5MZSBjbGllbnQgdsOpcmlmaWUsIMOgIGNoYXF1ZSBjb25uZXhpb24gSFRUUFM8L3RleHQ+CiAgPHJlY3QgY2xhc3M9Im9rIiB4PSI0MCIgeT0iNTkwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjcwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI1NiIgeT0iNjE2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPlNpZ25hdHVyZTwvdGV4dD4KICA8dGV4dCB4PSI1NiIgeT0iNjQwIiBjbGFzcz0idCI+dmFsaWRlIGF2ZWMgY2EtbGFiLmNydCAoY29uZmlhbmNlKTwvdGV4dD4KICA8cmVjdCBjbGFzcz0ib2siIHg9IjQyMCIgeT0iNTkwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjcwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI0MzYiIHk9IjYxNiIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojMUU4NDQ5Ij5Ob208L3RleHQ+CiAgPHRleHQgeD0iNDM2IiB5PSI2NDAiIGNsYXNzPSJ0Ij5sZSBub20gZGVtYW5kw6kgZmlndXJlIGRhbnMgbGUgU0FOPC90ZXh0PgogIDxyZWN0IGNsYXNzPSJvayIgeD0iODAwIiB5PSI1OTAiIHdpZHRoPSIzNjAiIGhlaWdodD0iNzAiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjgxNiIgeT0iNjE2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPkRhdGVzPC90ZXh0PgogIDx0ZXh0IHg9IjgxNiIgeT0iNjQwIiBjbGFzcz0idCI+bm90QmVmb3JlIOKJpCBhdWpvdXJkJ2h1aSDiiaQgbm90QWZ0ZXI8L3RleHQ+Cjwvc3ZnPgo=" alt="La clé privée du serveur reste sur la VM web : seule la demande de signature part vers l’autorité, qui renvoie le certificat signé." />
+<figcaption aria-hidden="true">La clé privée du serveur reste sur la VM
+web : seule la demande de signature part vers l’autorité, qui renvoie le
+certificat signé.</figcaption>
+</figure>
+<p>Sur la VM client, créez l’autorité. La clé de l’autorité est protégée
+par une phrase de passe propre au laboratoire :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/ca-lab <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/ca-lab</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> req <span class="at">-x509</span> <span class="at">-newkey</span> rsa:3072 <span class="at">-days</span> 30 <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-keyout</span> ca-lab.key <span class="at">-out</span> ca-lab.crt <span class="dt">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-subj</span> <span class="st">&quot;/CN=Autorite Laboratoire SISR B07&quot;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 ca-lab.key</span></code></pre></div>
+<p>Sur la VM web, générez la clé du serveur et une <strong>demande de
+signature</strong> (CSR). La clé n’est pas chiffrée : Nginx doit pouvoir
+démarrer sans opérateur, elle est donc protégée par les droits du
+fichier.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> req <span class="at">-new</span> <span class="at">-newkey</span> rsa:2048 <span class="at">-noenc</span> <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-keyout</span> web.lab.test.key <span class="at">-out</span> web.lab.test.csr <span class="dt">\</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-subj</span> <span class="st">&quot;/CN=web.lab.test&quot;</span> <span class="dt">\</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-addext</span> <span class="st">&quot;subjectAltName=DNS:web.lab.test,DNS:www.lab.test&quot;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 web.lab.test.key</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> req <span class="at">-in</span> web.lab.test.csr <span class="at">-noout</span> <span class="at">-text</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-A1</span> <span class="st">&#39;Alternative&#39;</span></span></code></pre></div>
+<p>Transférez <strong>uniquement la CSR</strong> vers le client
+(<code>scp</code>, ou copier-coller du texte PEM : une CSR est
+publique). La clé du serveur ne quitte pas la VM web. Sur le client,
+l’autorité signe :</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/ca-lab</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> x509 <span class="at">-req</span> <span class="at">-in</span> web.lab.test.csr <span class="at">-days</span> 30 <span class="dt">\</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-CA</span> ca-lab.crt <span class="at">-CAkey</span> ca-lab.key <span class="at">-CAcreateserial</span> <span class="dt">\</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-copy_extensions</span> copy <span class="at">-out</span> web.lab.test.crt</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> x509 <span class="at">-in</span> web.lab.test.crt <span class="at">-noout</span> <span class="dt">\</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-subject</span> <span class="at">-issuer</span> <span class="at">-dates</span> <span class="at">-ext</span> subjectAltName</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> verify <span class="at">-CAfile</span> ca-lab.crt web.lab.test.crt</span></code></pre></div>
+<p>Rapportez <code>web.lab.test.crt</code> sur la VM web (fichier public
+lui aussi).</p>
+<p><strong>Question 7.</strong> Complétez le tableau : quel fichier est
+secret, quel fichier est public, sur quelle VM se trouve-t-il ?</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Contenu</th>
+<th>Secret ou public</th>
+<th>VM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ca-lab.key</code></td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>ca-lab.crt</code></td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>web.lab.test.key</code></td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>web.lab.test.csr</code></td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>web.lab.test.crt</code></td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question 8.</strong> Pourquoi le certificat porte-t-il les
+noms dans l’extension <code>subjectAltName</code>, et pas seulement dans
+le <code>CN</code> ?</p>
+<h3 id="https-sur-nginx-redirection-et-preuves">5. HTTPS sur Nginx,
+redirection et preuves</h3>
+<p>Sur la VM web, installez la clé et le certificat avec des droits
+stricts :</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> install <span class="at">-m</span> 644 web.lab.test.crt /etc/ssl/certs/web.lab.test.crt</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> install <span class="at">-m</span> 600 web.lab.test.key /etc/ssl/private/web.lab.test.key</span></code></pre></div>
+<p>Sauvegardez <code>/etc/nginx/sites-available/lab</code>, puis
+remplacez son contenu par deux blocs : le port 80 ne fait plus que
+<strong>rediriger</strong> vers HTTPS.</p>
+<pre class="nginx"><code>server {
+    listen 80;
+    server_name web.lab.test www.lab.test;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name web.lab.test www.lab.test;
+
+    ssl_certificate     /etc/ssl/certs/web.lab.test.crt;
+    ssl_certificate_key /etc/ssl/private/web.lab.test.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nginx <span class="at">-t</span> <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> systemctl reload nginx</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ss <span class="at">-ltnp</span> <span class="kw">|</span> <span class="fu">grep</span> nginx</span></code></pre></div>
+<p>Depuis le client, menez les tests <strong>dans cet ordre</strong> et
+notez chaque résultat :</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="va">R80</span><span class="op">=</span><span class="st">&quot;web.lab.test:80:10.77.1.30&quot;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="va">R443</span><span class="op">=</span><span class="st">&quot;web.lab.test:443:10.77.1.30&quot;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-I</span> <span class="at">--resolve</span> <span class="va">$R80</span> http://web.lab.test/</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-i</span> <span class="at">--resolve</span> <span class="va">$R443</span> https://web.lab.test/</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-i</span> <span class="at">--cacert</span> ~/ca-lab/ca-lab.crt <span class="dt">\</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--resolve</span> <span class="va">$R443</span> https://web.lab.test/</span></code></pre></div>
+<p>Attendu : <code>301</code> avec un en-tête
+<code>Location: https://…</code> ; puis un <strong>échec de
+vérification</strong> du certificat ; puis <code>200 OK</code> et votre
+marqueur. Observez enfin la négociation TLS :</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> s_client <span class="at">-connect</span> 10.77.1.30:443 <span class="at">-servername</span> web.lab.test <span class="dt">\</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-CAfile</span> ~/ca-lab/ca-lab.crt <span class="op">&lt;</span> /dev/null <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="dt">\</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">&#39;subject=|issuer=|Verify return|Protocol|Cipher&#39;</span></span></code></pre></div>
+<p>Un contrôle négatif, à réaliser et à expliquer :</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--noproxy</span> <span class="st">&#39;*&#39;</span> <span class="at">-I</span> <span class="at">--cacert</span> ~/ca-lab/ca-lab.crt <span class="dt">\</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--resolve</span> autre.lab.test:443:10.77.1.30 https://autre.lab.test/</span></code></pre></div>
+<p><strong>Question 9.</strong> Pourquoi le deuxième test échoue-t-il
+alors que la connexion est bien établie ? Que faudrait-il faire pour que
+les navigateurs des postes du laboratoire acceptent le site sans alerte
+?</p>
+<p><strong>Question 10.</strong> Expliquez le contrôle négatif : quelle
+vérification a échoué, et pourquoi est-ce le comportement souhaité ?
+Quel protocole TLS a été négocié avec <code>s_client</code>, et quelle
+ligne de la configuration Nginx limite les versions acceptées ?</p>
+<p><strong>Question 11.</strong> Entre Nginx et Apache, sur
+<code>127.0.0.1:8080</code>, le trafic est-il chiffré ? Est-ce
+acceptable ici ? Dans quel cas ne le serait-il plus ?</p>
+<p>Repères pour interpréter une erreur :</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Observation</th>
+<th>Cause probable</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Connection refused</code> sur 443</td>
+<td>Nginx n’écoute pas en HTTPS</td>
+<td><code>nginx -t</code>, <code>ss -ltnp</code>, bloc
+<code>listen 443 ssl</code></td>
+</tr>
+<tr>
+<td><code>unable to get local issuer certificate</code></td>
+<td>Autorité inconnue du client</td>
+<td>Option <code>--cacert</code>, magasin de certificats</td>
+</tr>
+<tr>
+<td><code>no alternative certificate subject name matches</code></td>
+<td>Nom demandé absent du certificat</td>
+<td><code>-ext subjectAltName</code>, nom utilisé</td>
+</tr>
+<tr>
+<td><code>certificate has expired</code></td>
+<td>Date dépassée ou horloge fausse</td>
+<td><code>-dates</code>, <code>date</code> sur les deux VM</td>
+</tr>
+<tr>
+<td><code>502 Bad Gateway</code></td>
+<td>Nginx répond, Apache non joignable</td>
+<td><code>systemctl status apache2</code>, <code>ss</code> sur 8080</td>
+</tr>
+</tbody>
+</table>
+<p>Pour les rapides : ajoutez l’en-tête
+<code>Strict-Transport-Security</code> (HSTS) avec une durée courte et
+expliquez le risque qu’il évite, puis ce qu’il impose en cas d’erreur de
+certificat.</p>
+<h3 id="livrable-restitution-et-repli-documentaire">6. Livrable,
+restitution et repli documentaire</h3>
+<p>Rendez un dossier court : schéma des rôles, adresses et ports (client
+→ Nginx 80/443 → Apache 127.0.0.1:8080) ; configurations Apache et Nginx
+; tableau <strong>commande / attendu / observé / conclusion</strong> ;
+extraits de journaux reliés à vos requêtes ; réponses aux questions.
+Aucune clé privée, phrase de passe ou donnée personnelle dans le dossier
+: seuls les certificats et les CSR, publics, peuvent y figurer.</p>
+<p>Chaque étudiant rédige une conclusion de <strong>6 à 8
+lignes</strong> : ce que l’accès HTTPS au laboratoire garantit
+(confidentialité, intégrité, authentification du serveur), ce qu’il ne
+garantit pas, et la preuve qui appuie chaque affirmation. Signalez les
+contrôles faits sur documents.</p>
+<p><strong>Réussite :</strong> <code>200 OK</code> via Nginx avec le
+marqueur du binôme, Apache inaccessible depuis le client,
+<code>301</code> vers HTTPS, <code>200 OK</code> en HTTPS avec
+<code>--cacert</code>, échec argumenté sans <code>--cacert</code> et sur
+un nom absent du certificat.</p>
+<h4 id="repli-documentaire">Repli documentaire</h4>
+<p>Ces sorties <strong>fictives</strong> permettent de répondre aux
+questions si une VM n’est pas prête. Intitulez alors votre conclusion «
+analyse sur documents » et n’attribuez pas ces sorties à vos VM.</p>
+<pre class="text"><code>$ sudo ss -ltnp
+LISTEN 0.0.0.0:80       users:((&quot;nginx&quot;,pid=812))
+LISTEN 0.0.0.0:443      users:((&quot;nginx&quot;,pid=812))
+LISTEN 127.0.0.1:8080   users:((&quot;apache2&quot;,pid=640))
+
+$ curl -I --resolve web.lab.test:80:10.77.1.30 http://web.lab.test/
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.22.1
+Location: https://web.lab.test/
+
+$ curl -i --resolve web.lab.test:443:10.77.1.30 https://web.lab.test/
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+
+$ curl -i --cacert ca-lab.crt --resolve ... https://web.lab.test/
+HTTP/1.1 200 OK
+Server: nginx/1.22.1
+&lt;h1&gt;Laboratoire SISR — binôme B07&lt;/h1&gt;</code></pre>
+<pre class="text"><code>nginx  access.log : 10.77.1.20 - - &quot;GET / HTTP/1.1&quot; 200 312
+apache lab-access : 127.0.0.1 - - &quot;GET / HTTP/1.0&quot; 200 312
+
+$ openssl s_client ... | grep ...
+subject=CN = web.lab.test
+issuer=CN = Autorite Laboratoire SISR B07
+Protocol  : TLSv1.3
+Cipher    : TLS_AES_256_GCM_SHA384
+Verify return code: 0 (ok)</code></pre>
+<h3 id="repères">Repères</h3>
+<p>HTTP transporte la page ; TLS chiffre et authentifie le canal ; le
+certificat lie une clé publique à des noms, sous la signature d’une
+autorité. Références : <a href="https://httpd.apache.org/docs/2.4/fr/vhosts/">Apache, hôtes
+virtuels</a>, <a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html">Nginx,
+proxy inverse</a>, <a href="https://nginx.org/en/docs/http/configuring_https_servers.html">Nginx,
+HTTPS</a>, <a href="https://docs.openssl.org/3.0/man1/openssl-req/">OpenSSL,
+req</a>.</p>
+<p>L’IA peut expliquer un message d’erreur après une première analyse
+personnelle. Vérifiez toute commande avant de l’exécuter, ne transmettez
+ni clé privée ni phrase de passe, et rédigez votre conclusion
+vous-même.</p>
