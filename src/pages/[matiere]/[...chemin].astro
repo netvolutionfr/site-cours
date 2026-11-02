@@ -1,6 +1,7 @@
 ---
 import type { MarkdownInstance } from 'astro';
 import Binaire, { headings as headingsBinaire } from '../../components/Binaire.astro';
+import Pyxel, { headings as headingsPyxel } from '../../components/Pyxel.astro';
 import { readFileSync } from 'node:fs';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { Badge, LinkButton } from '@astrojs/starlight/components';
@@ -15,11 +16,11 @@ export function getStaticPaths() {
 
 const { s } = Astro.props;
 const markdown = import.meta.glob<MarkdownInstance<Record<string, unknown>>>('../../../contenu/pages/*.md', { eager: true });
-if (s.composant && !['Binaire', 'Markdown'].includes(s.composant)) throw new Error(`Composant inconnu : ${s.composant}`);
+if (s.composant && !['Binaire', 'Pyxel', 'Markdown'].includes(s.composant)) throw new Error(`Composant inconnu : ${s.composant}`);
 const page = s.composant === 'Markdown' ? markdown[`../../../contenu/pages/${s.slug.replaceAll('/', '--')}.md`] : undefined;
 if (s.composant === 'Markdown' && !page) throw new Error(`Markdown absent : ${s.slug}`);
 const Content = page?.Content;
-const headings = page ? await page.getHeadings() : s.composant === 'Binaire' ? headingsBinaire : s.titres;
+const headings = page ? await page.getHeadings() : s.composant === 'Binaire' ? headingsBinaire : s.composant === 'Pyxel' ? headingsPyxel : s.titres;
 const html = s.composant || s.brut ? '' : readFileSync(`contenu/pages/${s.slug.replaceAll('/', '--')}.html`, 'utf-8');
 const seq = parSequence.get(s.sequence);
 const voisins = seq?.supports ?? [];
@@ -56,7 +57,7 @@ const voisin = (slug?: string) => {
 			</p>
 		)}
 	</div>
-	{Content ? <Content /> : s.composant === 'Binaire' ? <Binaire /> : s.brut ? <iframe class="brut" src={s.brut} title={s.titre}></iframe> : <Fragment set:html={html} />}
+	{Content ? <Content /> : s.composant === 'Binaire' ? <Binaire /> : s.composant === 'Pyxel' ? <Pyxel /> : s.brut ? <iframe class="brut" src={s.brut} title={s.titre}></iframe> : <Fragment set:html={html} />}
 </StarlightPage>
 
 <script>

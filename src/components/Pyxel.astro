@@ -1,6 +1,6 @@
 ---
-// Prototype non publié dans le manifeste : atelier Pyxel pour le jeu fil rouge NSI 1G.
-import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+// Atelier Pyxel (essai du jeu fil rouge NSI 1G) : fonction testée dans le worker Pyodide, puis appelée par le moteur Pyxel.
+export const headings = [{ depth: 2, slug: 'deplacer', text: 'Déplacer le héros' }];
 const depart = `def deplacer(x, direction):
     """Renvoie la nouvelle abscisse du héros.
     x : abscisse actuelle, entier entre 0 et 120
@@ -50,7 +50,7 @@ Jeu()
 `;
 ---
 
-<StarlightPage frontmatter={{ title: 'Atelier Pyxel (prototype)', description: 'Fonction testée dans le navigateur, puis appelée par le moteur de jeu.' }}>
+<div class="pyxel">
 	<p>Complétez <code>deplacer</code>, vérifiez les tests, puis lancez le jeu. Flèches gauche et droite pour déplacer le héros.</p>
 	<section class="exo-py" data-fichier="deplacer.py">
 		<h2 id="deplacer">Déplacer le héros</h2>
@@ -74,7 +74,7 @@ Jeu()
 	<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python…</div>
 	<script is:inline define:vars={{ moteur }}>window.MOTEUR_PYXEL = moteur;</script>
 	<script is:inline src="https://cdn.jsdelivr.net/gh/kitao/pyxel@v2.8.7/wasm/pyxel.js"></script>
-	<script src="../../scripts/binaire.js"></script>
+	<script src="../scripts/binaire.js"></script>
 	<script>
 		const zone = document.querySelector<HTMLTextAreaElement>('#code-deplacer')!;
 		// SDL écoute le clavier sur window : sans ce barrage, les flèches et la frappe dans l'éditeur pilotent le jeu.
@@ -92,4 +92,4 @@ Jeu()
 		.ecran { position: relative; width: min(100%, 512px); aspect-ratio: 1; margin: 1rem auto 0; }
 		.consigne { text-align: center; font-size: var(--sl-text-sm); }
 	</style>
-</StarlightPage>
+</div>
