@@ -1,0 +1,307 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Administrer à distance un serveur Debian réellement exposé sur
+Internet.</li>
+<li>Publier un site avec Nginx et vérifier le lien nom → adresse.</li>
+<li>Obtenir un certificat d’une autorité publique par le protocole ACME,
+puis passer en HTTPS.</li>
+<li>Automatiser le renouvellement et mesurer ce que l’exposition
+publique implique.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Votre paire de clés SSH, générée lundi ; la clé publique a été
+transmise à l’enseignant.</li>
+<li>DNS (enregistrement A), requête HTTP, codes 200, 301 et 404.</li>
+<li>Certificat X.509, autorité de certification, clé privée (Bloc 3, P01
+et P06).</li>
+</ul>
+</section>
+<section id="étapes" class="outline">
+<h3>Étapes</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Travail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Prendre possession du serveur</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Nginx en HTTP</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Un certificat Let’s Encrypt</td>
+</tr>
+<tr>
+<td>4</td>
+<td>HTTPS, redirection et preuves</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Renouvellement et exposition publique</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Livrable et restitution</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="votre-mission">Votre mission</h3>
+<p>Chacun dispose d’un <strong>serveur Debian chez un hébergeur
+cloud</strong> (OVHcloud, instance d2-2 : 1 vCPU, 2 Go de mémoire), avec
+une adresse IPv4 publique et un nom DNS de la forme
+<code>sisrN.tp.siovision.fr</code>, où <strong>N est le numéro donné par
+l’enseignant</strong>. Remplacez <code>N</code> partout dans ce
+document.</p>
+<p>Contrairement au laboratoire, ce serveur est joignable par n’importe
+qui sur Internet. Vous y installez Nginx, puis vous obtenez un
+certificat d’une autorité <strong>publique</strong>, Let’s Encrypt :
+tout navigateur fera confiance à votre site, sans manipulation côté
+client.</p>
+<p><strong>Travail individuel</strong>, un serveur par étudiant. Le
+serveur est détruit en fin de TP : rien de ce que vous y placez ne doit
+être personnel ni réutilisé ailleurs. Complétez un tableau
+<strong>commande / attendu / observé / conclusion</strong> au fil des
+étapes.</p>
+<h3 id="prendre-possession-du-serveur">1. Prendre possession du
+serveur</h3>
+<p>Depuis votre poste, avec la clé générée lundi :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> etudiant@sisrN.tp.siovision.fr</span></code></pre></div>
+<p>À la première connexion, SSH affiche l’empreinte de la clé du
+<strong>serveur</strong> et demande confirmation. Acceptez, puis
+vérifiez où vous êtes :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span> <span class="at">-f</span><span class="kw">;</span> <span class="ex">ip</span> <span class="at">-br</span> address<span class="kw">;</span> <span class="ex">ip</span> route</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ss <span class="at">-ltnp</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">getent</span> ahostsv4 sisrN.tp.siovision.fr</span></code></pre></div>
+<p><strong>Question 1.</strong> Comparez l’adresse IPv4 de
+<code>ip -br address</code> et la réponse de <code>getent</code>.
+Qu’est-ce qui garantit que le nom mène bien à votre serveur ? Que
+vérifie SSH quand il vous demande d’accepter l’empreinte, et que se
+passerait-il si vous l’acceptiez sans la contrôler sur un serveur de
+production ?</p>
+<p><strong>Question 2.</strong> Quels services écoutent, et sur quelles
+adresses ? Lesquels sont joignables depuis Internet ?</p>
+<h3 id="nginx-en-http">2. Nginx en HTTP</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> nginx certbot</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mkdir <span class="at">-p</span> /var/www/sisrN</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /var/www/sisrN/index.html</span></code></pre></div>
+<p>Rédigez une page courte : un titre et la mention « Serveur sisrN,
+2SISR », sans donnée personnelle. Créez le site
+<code>/etc/nginx/sites-available/sisrN</code> :</p>
+<pre class="nginx"><code>server {
+    listen 80;
+    server_name sisrN.tp.siovision.fr;
+    root /var/www/sisrN;
+
+    access_log /var/log/nginx/sisrN-access.log;
+    error_log  /var/log/nginx/sisrN-error.log;
+}</code></pre>
+<p>Activez-le, <strong>validez avant de recharger</strong> :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ln <span class="at">-s</span> /etc/nginx/sites-available/sisrN /etc/nginx/sites-enabled/</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nginx <span class="at">-t</span> <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> systemctl reload nginx</span></code></pre></div>
+<p>Testez depuis <strong>votre poste</strong>, puis ouvrez l’adresse
+dans un navigateur. Sous Windows, tapez <code>curl.exe</code> (dans
+PowerShell, <code>curl</code> désigne une autre commande).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> http://sisrN.tp.siovision.fr/</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> http://sisrN.tp.siovision.fr/absent</span></code></pre></div>
+<p>Attendu : <code>200 OK</code> avec votre page, puis
+<code>404 Not Found</code>. Le navigateur signale le site comme « non
+sécurisé ».</p>
+<p><strong>Question 3.</strong> Le site Debian par défaut est toujours
+actif. Que renvoie <code>curl -i http://ADRESSE_IP/</code> ? Pourquoi
+?</p>
+<h3 id="un-certificat-lets-encrypt">3. Un certificat Let’s Encrypt</h3>
+<p>Let’s Encrypt ne vous connaît pas. Avant de signer, il doit vérifier
+que <strong>vous contrôlez le nom</strong> demandé. Le protocole ACME
+lui sert à le faire : avec le défi <strong>HTTP-01</strong>, certbot
+dépose un fichier dans <code>/.well-known/acme-challenge/</code> de
+votre site, puis les serveurs de Let’s Encrypt viennent le lire
+<strong>par Internet, sur le port 80</strong>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> certbot certonly <span class="at">--webroot</span> <span class="at">-w</span> /var/www/sisrN <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> sisrN.tp.siovision.fr <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--agree-tos</span> <span class="at">--register-unsafely-without-email</span></span></code></pre></div>
+<p>Pendant l’exécution, surveillez le journal dans un second terminal
+SSH :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> tail <span class="at">-f</span> /var/log/nginx/sisrN-access.log</span></code></pre></div>
+<p><strong>En cas d’échec, lisez le message, diagnostiquez, puis
+relancez.</strong> Let’s Encrypt bloque temporairement un nom après
+plusieurs échecs rapprochés. Journal détaillé :
+<code>/var/log/letsencrypt/letsencrypt.log</code>.</p>
+<p>Inspectez le résultat :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ls <span class="at">-l</span> /etc/letsencrypt/live/sisrN.tp.siovision.fr/</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> openssl x509 <span class="at">-in</span> /etc/letsencrypt/live/sisrN.tp.siovision.fr/cert.pem <span class="dt">\</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-noout</span> <span class="at">-subject</span> <span class="at">-issuer</span> <span class="at">-dates</span> <span class="at">-ext</span> subjectAltName</span></code></pre></div>
+<p><strong>Question 4.</strong> Dans le journal d’accès, retrouvez les
+requêtes de Let’s Encrypt : quelle URL, combien de requêtes, depuis
+combien d’adresses différentes ? Pourquoi plusieurs points de
+vérification ?</p>
+<p><strong>Question 5.</strong> Où se trouve la clé privée du certificat
+? A-t-elle été envoyée à Let’s Encrypt ? En P06, vous transmettiez une
+CSR à l’autorité du laboratoire : quelle étape remplace ici votre
+copier-coller ?</p>
+<p><strong>Question 6.</strong> Quelle est la durée de validité du
+certificat ? Pourquoi une autorité publique choisit-elle une durée aussi
+courte ?</p>
+<h3 id="https-redirection-et-preuves">4. HTTPS, redirection et
+preuves</h3>
+<p>Remplacez le contenu de <code>/etc/nginx/sites-available/sisrN</code>
+par deux blocs : le port 80 ne fait plus que rediriger.</p>
+<pre class="nginx"><code>server {
+    listen 80;
+    server_name sisrN.tp.siovision.fr;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name sisrN.tp.siovision.fr;
+    root /var/www/sisrN;
+
+    ssl_certificate     /etc/letsencrypt/live/sisrN.tp.siovision.fr/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sisrN.tp.siovision.fr/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    access_log /var/log/nginx/sisrN-access.log;
+    error_log  /var/log/nginx/sisrN-error.log;
+}</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nginx <span class="at">-t</span> <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> systemctl reload nginx</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ss <span class="at">-ltnp</span> <span class="kw">|</span> <span class="fu">grep</span> nginx</span></code></pre></div>
+<p>Depuis votre poste, dans cet ordre :</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-I</span> http://sisrN.tp.siovision.fr/</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> https://sisrN.tp.siovision.fr/</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> s_client <span class="at">-connect</span> sisrN.tp.siovision.fr:443 <span class="dt">\</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-servername</span> sisrN.tp.siovision.fr <span class="op">&lt;</span> /dev/null <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="dt">\</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">&#39;subject=|issuer=|Verify return|Protocol|Cipher&#39;</span></span></code></pre></div>
+<p>Attendu : <code>301</code> vers <code>https://…</code>, puis
+<code>200 OK</code> <strong>sans <code>--cacert</code></strong>, puis
+<code>Verify return code: 0 (ok)</code>. Si <code>openssl</code> manque
+sur votre poste, lancez cette commande depuis le serveur : elle passe
+aussi par le nom public. Ouvrez le site dans un navigateur et affichez
+le certificat (cadenas).</p>
+<p><strong>Question 7.</strong> En P06, la même requête
+<code>curl</code> échouait sans <code>--cacert</code>. Pourquoi
+réussit-elle ici sans aucune option ? Où se trouve le certificat de
+l’autorité qui permet cette vérification ?</p>
+<p><strong>Question 8.</strong> Nginx utilise <code>fullchain.pem</code>
+et non <code>cert.pem</code>. Que contient en plus
+<code>fullchain.pem</code> ? Que se passerait-il chez certains clients
+avec <code>cert.pem</code> seul ?</p>
+<p>Repères pour interpréter une erreur :</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Observation</th>
+<th>Cause probable</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>certbot : <code>Timeout during connect</code></td>
+<td>Port 80 injoignable depuis Internet</td>
+<td><code>ss -ltnp</code>, Nginx actif, pare-feu</td>
+</tr>
+<tr>
+<td>certbot : <code>NXDOMAIN</code> ou mauvaise adresse</td>
+<td>Nom non publié ou erroné</td>
+<td><code>getent ahostsv4 sisrN.tp.siovision.fr</code></td>
+</tr>
+<tr>
+<td>certbot : <code>404</code> sur <code>acme-challenge</code></td>
+<td><code>-w</code> différent de la racine du site</td>
+<td><code>root</code> dans Nginx, chemin <code>-w</code></td>
+</tr>
+<tr>
+<td><code>Connection refused</code> sur 443</td>
+<td>Nginx n’écoute pas en HTTPS</td>
+<td><code>nginx -t</code>, <code>listen 443 ssl</code></td>
+</tr>
+<tr>
+<td><code>nginx -t</code> : <code>cannot load certificate</code></td>
+<td>Chemin faux ou certificat absent</td>
+<td><code>sudo ls /etc/letsencrypt/live/</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="renouvellement-et-exposition-publique">5. Renouvellement et
+exposition publique</h3>
+<p>Un certificat court n’a d’intérêt que si son renouvellement est
+<strong>automatique</strong> :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> list-timers <span class="kw">|</span> <span class="fu">grep</span> certbot</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> certbot renew <span class="at">--dry-run</span></span></code></pre></div>
+<p>Après un renouvellement, Nginx doit recharger le nouveau certificat.
+Ajoutez un crochet de déploiement, exécuté par certbot à chaque
+renouvellement réussi :</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&#39;#!/bin/sh\nsystemctl reload nginx\n&#39;</span> <span class="dt">\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/letsencrypt/renewal-hooks/deploy/reload-nginx</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx</span></code></pre></div>
+<p>Mesurez maintenant l’exposition de votre serveur :</p>
+<ul>
+<li>cherchez votre nom sur <a href="https://crt.sh/">crt.sh</a> :
+<code>sisrN.tp.siovision.fr</code> ;</li>
+<li>relisez les journaux :</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> awk <span class="st">&#39;{print $1, $7}&#39;</span> /var/log/nginx/access.log /var/log/nginx/sisrN-access.log <span class="dt">\</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-20</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> journalctl <span class="at">-u</span> ssh <span class="at">--since</span> today <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-cE</span> <span class="st">&#39;Invalid user|Failed&#39;</span></span></code></pre></div>
+<p><strong>Question 9.</strong> Que fait le temporisateur
+<code>certbot.timer</code>, et à quelle fréquence ? Pourquoi le crochet
+de rechargement est-il nécessaire ?</p>
+<p><strong>Question 10.</strong> Votre nom apparaît sur crt.sh quelques
+minutes après l’émission. Pourquoi les autorités publient-elles chaque
+certificat ? Quelle conséquence pour un nom de serveur que l’on voudrait
+garder discret ?</p>
+<p><strong>Question 11.</strong> Quelles requêtes ne viennent ni de vous
+ni de Let’s Encrypt ? Que cherchent-elles ? Proposez deux mesures pour
+réduire l’exposition du serveur (SSH, services, pare-feu).</p>
+<p>Pour les rapides : comparez avec la méthode automatique. Sauvegardez
+votre configuration, lancez
+<code>sudo certbot --nginx -d sisrN.tp.siovision.fr</code>, puis
+<code>diff</code> entre l’ancienne et la nouvelle : qu’a modifié certbot
+? Ajoutez ensuite l’en-tête <code>Strict-Transport-Security</code> avec
+une durée courte et expliquez son rôle.</p>
+<h3 id="livrable-et-restitution">6. Livrable et restitution</h3>
+<p>Rendez un dossier court : schéma (poste → Internet → serveur Nginx
+80/443, Let’s Encrypt qui vient vérifier sur le port 80) ; configuration
+Nginx finale ; tableau <strong>commande / attendu / observé /
+conclusion</strong> ; extraits de journaux reliés à vos requêtes ;
+réponses aux questions. Aucune clé privée dans le dossier : ni
+<code>privkey.pem</code>, ni votre clé SSH.</p>
+<p>Chaque étudiant rédige une conclusion de <strong>6 à 8
+lignes</strong> : en quoi la confiance accordée à votre site diffère de
+celle du laboratoire en P06 (qui vérifie quoi, et comment), et ce que
+l’exposition sur Internet a changé.</p>
+<p><strong>Réussite :</strong> <code>301</code> de HTTP vers HTTPS,
+<code>200 OK</code> en HTTPS sans option depuis votre poste, certificat
+émis par Let’s Encrypt pour votre nom, <code>renew --dry-run</code>
+réussi, explication sans notes de la question 7.</p>
+<h3 id="repères">Repères</h3>
+<p>ACME automatise la preuve de contrôle d’un nom et la délivrance du
+certificat ; la clé privée reste sur le serveur. Références : <a href="https://letsencrypt.org/fr/how-it-works/">Let’s Encrypt,
+fonctionnement</a>, <a href="https://letsencrypt.org/fr/docs/challenge-types/">types de
+défis</a>, <a href="https://eff-certbot.readthedocs.io/">certbot,
+documentation</a>, <a href="https://nginx.org/en/docs/http/configuring_https_servers.html">Nginx,
+HTTPS</a>.</p>
+<p>L’IA peut expliquer un message d’erreur après une première analyse
+personnelle. Vérifiez toute commande avant de l’exécuter, ne transmettez
+jamais de clé privée ni le contenu de <code>/etc/letsencrypt/</code>, et
+rédigez votre conclusion vous-même.</p>

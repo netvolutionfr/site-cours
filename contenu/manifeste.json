@@ -1973,6 +1973,62 @@
    ]
   },
   {
+   "slug": "sio/2sisr-fil-rouge/p07-nginx-letsencrypt-cloud",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Nginx et Let's Encrypt sur un serveur cloud",
+   "sousTitre": "Projet fil rouge · mardi 3 novembre 2026 · Blocs 2 et 3",
+   "nature": "Activité",
+   "date": "2026-11-03",
+   "pdf": "/sio/2sisr-fil-rouge/p07-nginx-letsencrypt-cloud.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "votre-mission",
+     "text": "Votre mission"
+    },
+    {
+     "depth": 3,
+     "slug": "prendre-possession-du-serveur",
+     "text": "1. Prendre possession du serveur"
+    },
+    {
+     "depth": 3,
+     "slug": "nginx-en-http",
+     "text": "2. Nginx en HTTP"
+    },
+    {
+     "depth": 3,
+     "slug": "un-certificat-lets-encrypt",
+     "text": "3. Un certificat Let’s Encrypt"
+    },
+    {
+     "depth": 3,
+     "slug": "https-redirection-et-preuves",
+     "text": "4. HTTPS, redirection et preuves"
+    },
+    {
+     "depth": 3,
+     "slug": "renouvellement-et-exposition-publique",
+     "text": "5. Renouvellement et exposition publique"
+    },
+    {
+     "depth": 3,
+     "slug": "livrable-et-restitution",
+     "text": "6. Livrable et restitution"
+    },
+    {
+     "depth": 3,
+     "slug": "repères",
+     "text": "Repères"
+    }
+   ]
+  },
+  {
    "slug": "mastere/devops/SQ01-p01-culture-devops-cycle",
    "matiere": "mastere",
    "classe": "devops",
@@ -2721,13 +2777,14 @@
    "code": "",
    "titre": "Fil rouge",
    "debut": "2026-10-05",
-   "fin": "2026-11-02",
+   "fin": "2026-11-03",
    "supports": [
     "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
     "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
     "sio/2sisr-fil-rouge/p05-dns-securiser-prouver",
     "sio/2sisr-fil-rouge/p06-web-apache-nginx-https-slides",
-    "sio/2sisr-fil-rouge/p06-web-apache-nginx-https"
+    "sio/2sisr-fil-rouge/p06-web-apache-nginx-https",
+    "sio/2sisr-fil-rouge/p07-nginx-letsencrypt-cloud"
    ]
   }
  ]
