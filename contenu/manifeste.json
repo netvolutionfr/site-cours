@@ -802,6 +802,22 @@
    "composant": "Binaire"
   },
   {
+   "slug": "nsi/1g/atelier-pyxel-deplacer-heros",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/",
+   "titre": "Atelier Pyxel — déplacer le héros",
+   "sousTitre": "Une fonction testée, puis appelée par un moteur de jeu",
+   "nature": "Activité",
+   "date": "2026-11-02",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Pyxel"
+  },
+  {
    "slug": "sio/1sio-bloc1/SQ01-support-eleve",
    "matiere": "sio",
    "classe": "1sio",
@@ -2637,6 +2653,20 @@
     "mastere/laravel/SQ01-p01-p02-modele-migration-eloquent",
     "mastere/laravel/SQ01-p03-route-controleur-blade",
     "mastere/laravel/SQ01-p05-validation-formulaires"
+   ]
+  },
+  {
+   "id": "nsi/1g/",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "rubriqueLibelle": "Général",
+   "code": "",
+   "titre": "Ressources",
+   "debut": "2026-11-02",
+   "fin": "2026-11-02",
+   "supports": [
+    "nsi/1g/atelier-pyxel-deplacer-heros"
    ]
   },
   {
