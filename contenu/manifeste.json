@@ -2694,7 +2694,7 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-11-06",
+   "fin": "2026-11-09",
    "supports": [
     "nsi/1g/SQ01-support-eleve",
     "nsi/1g/SQ01-tp-binaire",
