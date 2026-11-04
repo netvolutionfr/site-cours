@@ -10,11 +10,16 @@ sequence: SQ03
 parties: [P03]
 nature: Cours
 composant: Markdown
+fichiers: facture-soft-tech-fictive.pdf, SQ03-P03-slides-empreinte.pdf
 ---
 
 
 Soft-Tech envoie un devis. Comment le destinataire peut-il vérifier qu'il a reçu le
 même fichier ? Et comment peut-il savoir de qui il vient ?
+
+Pour la démonstration, [téléchargez la facture fictive](facture-soft-tech-fictive.pdf)
+et retrouvez le calculateur SHA-256 après le cours. Le fichier est lu dans votre navigateur.
+Le [diaporama de présentation](SQ03-P03-slides-empreinte.pdf) accompagne la séance.
 
 ## Une empreinte pour comparer
 

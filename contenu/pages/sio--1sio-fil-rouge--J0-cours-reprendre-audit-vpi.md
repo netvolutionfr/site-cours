@@ -10,7 +10,7 @@ sequence: fil-rouge-vpi
 parties: [J0]
 nature: Cours
 composant: Markdown
-fichiers: site-livre-ia.zip
+fichiers: site-livre-ia.zip, J0-slides-audit-vpi.pdf
 ---
 
 
@@ -23,6 +23,7 @@ qualité demande : **peut-on le mettre en ligne en l'état ?**
 L'enseignant présente le site au vidéoprojecteur. Vous n'avez pas besoin d'ordinateur :
 observez, proposez des réponses et gardez une feuille pour les questions et le bilan.
 La fiche et l'archive restent disponibles pour l'activité en demi-groupe.
+Le [diaporama de présentation](J0-slides-audit-vpi.pdf) suit les étapes de ce cours.
 
 ## Un site qui s'affiche est-il prêt ?
 

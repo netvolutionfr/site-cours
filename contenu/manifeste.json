@@ -1559,7 +1559,10 @@
    "nature": "Cours",
    "date": "2026-11-05",
    "pdf": null,
-   "pieces": [],
+   "pieces": [
+    "/sio/1sio-bloc3/facture-soft-tech-fictive.pdf",
+    "/sio/1sio-bloc3/SQ03-P03-slides-empreinte.pdf"
+   ],
    "brut": null,
    "titres": [],
    "composant": "Markdown"
@@ -1766,7 +1769,8 @@
    "date": "2026-11-05",
    "pdf": null,
    "pieces": [
-    "/sio/1sio-fil-rouge/site-livre-ia.zip"
+    "/sio/1sio-fil-rouge/site-livre-ia.zip",
+    "/sio/1sio-fil-rouge/J0-slides-audit-vpi.pdf"
    ],
    "brut": null,
    "titres": [],
