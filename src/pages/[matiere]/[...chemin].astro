@@ -2,6 +2,7 @@
 import type { MarkdownInstance } from 'astro';
 import Binaire, { headings as headingsBinaire } from '../../components/Binaire.astro';
 import Pyxel, { headings as headingsPyxel } from '../../components/Pyxel.astro';
+import CalculSha256 from '../../components/CalculSha256.astro';
 import { readFileSync } from 'node:fs';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { Badge, LinkButton } from '@astrojs/starlight/components';
@@ -58,6 +59,7 @@ const voisin = (slug?: string) => {
 		)}
 	</div>
 	{Content ? <Content /> : s.composant === 'Binaire' ? <Binaire /> : s.composant === 'Pyxel' ? <Pyxel /> : s.brut ? <iframe class="brut" src={s.brut} title={s.titre}></iframe> : <Fragment set:html={html} />}
+	{s.slug === 'sio/1sio-bloc3/SQ03-P03-cours-empreinte-preuve-2026' && <CalculSha256 />}
 </StarlightPage>
 
 <script>
