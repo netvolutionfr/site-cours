@@ -1549,6 +1549,40 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc3/SQ03-P03-cours-empreinte-preuve-2026",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Empreinte et preuve électronique",
+   "sousTitre": "",
+   "nature": "Cours",
+   "date": "2026-11-05",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ03-P04-activite-devis-2026",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ03",
+   "titre": "Vérifier deux devis Soft-Tech",
+   "sousTitre": "",
+   "nature": "Activité",
+   "date": "2026-11-05",
+   "pdf": null,
+   "pieces": [
+    "/sio/1sio-bloc3/devis-soft-tech-eleve.zip"
+   ],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature",
    "matiere": "sio",
    "classe": "1sio",
@@ -1719,6 +1753,24 @@
      "text": "Ce que la signature ajoute"
     }
    ]
+  },
+  {
+   "slug": "sio/1sio-fil-rouge/J0-reprise-audit-2026-11-05",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/1sio-fil-rouge/fil-rouge-vpi",
+   "titre": "VPI : reprendre l'audit et corriger le site",
+   "sousTitre": "",
+   "nature": "Activité",
+   "date": "2026-11-05",
+   "pdf": null,
+   "pieces": [
+    "/sio/1sio-fil-rouge/site-livre-ia.zip"
+   ],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
   },
   {
    "slug": "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia",
@@ -2774,13 +2826,15 @@
    "code": "SQ03",
    "titre": "Identité numérique de l'organisation & preuve électronique",
    "debut": "2026-10-01",
-   "fin": "2026-10-08",
+   "fin": "2026-11-05",
    "supports": [
     "sio/1sio-bloc3/SQ03-support-eleve",
     "sio/1sio-bloc3/SQ03-P01-identite-numerique",
     "sio/1sio-bloc3/SQ03-P02-tp-usurpation",
     "sio/1sio-bloc3/SQ03-P01-distanciel-identite-numerique",
     "sio/1sio-bloc3/SQ03-P01-P02-cours-usurpation",
+    "sio/1sio-bloc3/SQ03-P03-cours-empreinte-preuve-2026",
+    "sio/1sio-bloc3/SQ03-P04-activite-devis-2026",
     "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature"
    ]
   },
@@ -2793,9 +2847,10 @@
    "code": "fil-rouge-vpi",
    "titre": "Fil rouge VPI — du site généré par IA au service web sécurisé",
    "debut": "2026-10-15",
-   "fin": "2026-10-15",
+   "fin": "2026-11-05",
    "supports": [
-    "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia"
+    "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia",
+    "sio/1sio-fil-rouge/J0-reprise-audit-2026-11-05"
    ]
   },
   {
