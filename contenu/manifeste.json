@@ -1755,6 +1755,24 @@
    ]
   },
   {
+   "slug": "sio/1sio-fil-rouge/J0-cours-reprendre-audit-vpi",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/1sio-fil-rouge/fil-rouge-vpi",
+   "titre": "Auditer un site livré par une IA",
+   "sousTitre": "",
+   "nature": "Cours",
+   "date": "2026-11-05",
+   "pdf": null,
+   "pieces": [
+    "/sio/1sio-fil-rouge/site-livre-ia.zip"
+   ],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "sio/1sio-fil-rouge/J0-reprise-audit-2026-11-05",
    "matiere": "sio",
    "classe": "1sio",
@@ -2850,6 +2868,7 @@
    "fin": "2026-11-05",
    "supports": [
     "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia",
+    "sio/1sio-fil-rouge/J0-cours-reprendre-audit-vpi",
     "sio/1sio-fil-rouge/J0-reprise-audit-2026-11-05"
    ]
   },
