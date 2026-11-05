@@ -1047,6 +1047,113 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc1/SQ03-P06-slides-netvolution-studio",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Créer un site sans coder ?",
+   "sousTitre": "CMS visuel et site statique avec Netvolution Studio",
+   "nature": "Diaporama",
+   "date": "2026-11-05",
+   "pdf": "/sio/1sio-bloc1/SQ03-P06-slides-netvolution-studio.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "cms-visuel-et-site-statique-avec-netvolution-studio",
+     "text": "CMS visuel et site statique avec Netvolution Studio"
+    },
+    {
+     "depth": 3,
+     "slug": "min-environ-binôme-un-poste",
+     "text": "30 min environ · binôme · un poste"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P06-tp-netvolution-studio",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Créer un site vitrine avec Netvolution Studio",
+   "sousTitre": "Installer un CMS visuel, prendre en main l'éditeur, livrer un mini-site client",
+   "nature": "Activité",
+   "date": "2026-11-05",
+   "pdf": "/sio/1sio-bloc1/SQ03-P06-tp-netvolution-studio.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "mission-et-organisation",
+     "text": "Mission et organisation"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-installer-et-lancer-le-studio",
+     "text": "Étape 1 — Installer et lancer le Studio"
+    },
+    {
+     "depth": 4,
+     "slug": "vérifier-les-prérequis",
+     "text": "Vérifier les prérequis"
+    },
+    {
+     "depth": 4,
+     "slug": "récupérer-le-code-et-ses-dépendances",
+     "text": "Récupérer le code et ses dépendances"
+    },
+    {
+     "depth": 4,
+     "slug": "lancer-le-studio",
+     "text": "Lancer le Studio"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-premier-projet-découvrir-léditeur",
+     "text": "Étape 2 — Premier projet : découvrir l’éditeur"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3-mini-projet-le-site-dun-client",
+     "text": "Étape 3 — Mini-projet : le site d’un client"
+    },
+    {
+     "depth": 4,
+     "slug": "cahier-des-charges-commun",
+     "text": "Cahier des charges commun"
+    },
+    {
+     "depth": 4,
+     "slug": "client-a-le-fournil-de-clara",
+     "text": "Client A — Le Fournil de Clara"
+    },
+    {
+     "depth": 4,
+     "slug": "client-c-nova-informatique",
+     "text": "Client C — Nova Informatique"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4-contrôler-exporter-expliquer",
+     "text": "Étape 4 — Contrôler, exporter, expliquer"
+    },
+    {
+     "depth": 3,
+     "slug": "pour-aller-plus-loin",
+     "text": "Pour aller plus loin"
+    },
+    {
+     "depth": 3,
+     "slug": "clôture-individuelle",
+     "text": "Clôture individuelle"
+    }
+   ]
+  },
+  {
    "slug": "sio/1sio-bloc1/SQ03-support-eleve",
    "matiere": "sio",
    "classe": "1sio",
@@ -2800,14 +2907,16 @@
    "code": "SQ03",
    "titre": "Le web, HTML, DOM et projet Soft-Tech",
    "debut": "2026-09-17",
-   "fin": "2026-10-15",
+   "fin": "2026-11-05",
    "supports": [
     "sio/1sio-bloc1/SQ03-support-eleve",
     "sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode",
     "sio/1sio-bloc1/SQ03-P03-dom",
     "sio/1sio-bloc1/SQ03-P03-tp-dom-soft-tech",
     "sio/1sio-bloc1/SQ03-P03-distanciel-dom",
-    "sio/1sio-bloc1/SQ03-P03-cours-dom"
+    "sio/1sio-bloc1/SQ03-P03-cours-dom",
+    "sio/1sio-bloc1/SQ03-P06-slides-netvolution-studio",
+    "sio/1sio-bloc1/SQ03-P06-tp-netvolution-studio"
    ]
   },
   {

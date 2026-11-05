@@ -1,0 +1,376 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Installer un outil de développement web à partir de son dépôt Git et
+le lancer en local.</li>
+<li>Expliquer ce qu’est un CMS et ce que produit Netvolution Studio : un
+site <strong>statique</strong>.</li>
+<li>Construire un site de trois pages répondant au besoin d’un client et
+le vérifier sur mobile.</li>
+<li>Exporter le site et identifier les fichiers à déposer chez un
+hébergeur.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Terminal : se déplacer dans un dossier, lancer une commande
+(SQ01).</li>
+<li>HTML : titres <code>h1</code>/<code>h2</code>, paragraphes, liens
+(SQ03 P01-P02).</li>
+<li>Client-serveur : un navigateur envoie une requête, un serveur répond
+(SQ03 P01).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+<th>Moment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Installer et lancer le Studio</td>
+<td>Classe entière</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Premier projet : découvrir l’éditeur</td>
+<td>Classe entière</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Mini-projet : le site d’un client</td>
+<td>Demi-groupe</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Contrôler, exporter, expliquer</td>
+<td>Demi-groupe</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="mission-et-organisation">Mission et organisation</h3>
+<p>Votre agence web vient d’adopter <strong>Netvolution Studio</strong>,
+un CMS visuel : on compose les pages à la souris, comme dans un <em>page
+builder</em>, puis le Studio produit un site Astro
+<strong>statique</strong> (des fichiers HTML, CSS et images) qu’on peut
+héberger n’importe où. Aujourd’hui, vous l’installez puis vous livrez
+une première version du site d’un client.</p>
+<p><strong>En binôme sur un poste.</strong> L’un manipule, l’autre lit
+la fiche, vérifie et note ; changez de rôle à chaque étape. Chacun tient
+<strong>ses propres notes</strong> (réponses « À noter »), qui serviront
+à la restitution.</p>
+<p><strong>IA interdite</strong> : l’assistant IA du Studio n’est pas
+activé, et les textes du client sont fournis. Prendre en main un outil,
+respecter un besoin et vérifier son résultat sont les compétences
+travaillées.</p>
+<h3 id="étape-1-installer-et-lancer-le-studio">Étape 1 — Installer et
+lancer le Studio</h3>
+<h4 id="vérifier-les-prérequis">Vérifier les prérequis</h4>
+<p>Ouvrez un terminal (PowerShell sous Windows) et tapez :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> <span class="at">-v</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> <span class="at">-v</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
+<p>Il faut <strong>Node.js 24 ou plus récent</strong>
+(<code>v24.x</code> ou <code>v26.x</code>) et npm 11. Si
+<code>node</code> ou <code>git</code> est introuvable ou trop ancien,
+appelez l’enseignant : ne lancez pas d’installateur trouvé sur
+Internet.</p>
+<h4 id="récupérer-le-code-et-ses-dépendances">Récupérer le code et ses
+dépendances</h4>
+<p>Placez-vous dans votre dossier de travail, puis :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/netvolutionfr/netvolution-studio.git</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> netvolution-studio</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> ci</span></code></pre></div>
+<ul>
+<li><code>git clone</code> copie le dépôt public du projet (le code
+source) sur le poste.</li>
+<li><code>npm ci</code> installe <strong>exactement</strong> les
+bibliothèques listées dans <code>package-lock.json</code>, dans le
+dossier <code>node_modules</code>. Comptez de quelques secondes à
+quelques minutes selon le réseau.</li>
+</ul>
+<blockquote>
+<p><strong>Sans <code>git</code> ?</strong> Sur la page GitHub du projet
+: bouton <strong>Code</strong> › <strong>Download ZIP</strong>, puis
+extrayez l’archive et ouvrez le terminal dans le dossier extrait.</p>
+</blockquote>
+<h4 id="lancer-le-studio">Lancer le Studio</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run dev</span></code></pre></div>
+<p>Ouvrez <strong>http://127.0.0.1:5173/</strong> dans le navigateur.
+L’écran <strong>Projets</strong> s’affiche, en français si votre
+navigateur est en français. <strong>Laissez le terminal ouvert</strong>
+: le fermer, ou y taper <kbd>Ctrl</kbd> <kbd>C</kbd>, arrête le
+Studio.</p>
+<p><strong>À noter :</strong></p>
+<ol type="1">
+<li>Taille du dossier <code>node_modules</code> (clic droit ›
+Propriétés, ou <code>du -sh node_modules</code>). Pourquoi ce dossier ne
+se trouve-t-il pas dans le dépôt Git ?</li>
+<li>Que signifie l’adresse <code>127.0.0.1</code> ? Votre voisin peut-il
+ouvrir <strong>votre</strong> Studio depuis son poste ?</li>
+</ol>
+<blockquote>
+<p><strong>Ça ne démarre pas ?</strong> Lisez le <strong>dernier
+message</strong> du terminal avant d’appeler : <code>EADDRINUSE</code> =
+le port 5173 est déjà pris (un autre Studio est lancé) ;
+<code>engine</code> ou <code>Unsupported</code> = version de Node trop
+ancienne ; <code>ENOTFOUND</code> ou <code>ETIMEDOUT</code> = réseau ou
+proxy.</p>
+</blockquote>
+<h3 id="étape-2-premier-projet-découvrir-léditeur">Étape 2 — Premier
+projet : découvrir l’éditeur</h3>
+<p>Suivez le tutoriel officiel, accessible depuis le bouton
+<strong>?</strong> du Studio (chapitre « Prise en main en 20 minutes »),
+<strong>étapes 1 à 7</strong> :</p>
+<ol type="1">
+<li>Créez un projet nommé <code>essai-&lt;vos initiales&gt;</code> à
+partir du modèle <strong>Atelier Nord — site vitrine (5
+pages)</strong>.</li>
+<li>Repérez les cinq zones : pages et bibliothèque <strong>à
+gauche</strong>, <strong>canvas</strong> au centre,
+<strong>inspecteur</strong> à droite, barre d’outils en haut,
+arborescence en bas à gauche.</li>
+<li>Modifiez le grand titre de l’accueil ; changez sa taille dans
+l’inspecteur.</li>
+<li>Ajoutez une page « Tarifs » (adresse <code>tarifs</code>) avec la
+composition <strong>Appel à l’action</strong>, puis ajoutez-la au
+<strong>menu principal</strong>.</li>
+<li>Passez en affichage <strong>Mobile</strong> : que devient le menu ?
+Revenez en <strong>Desktop</strong>.</li>
+<li>Enregistrez (<kbd>Ctrl</kbd> <kbd>S</kbd>) : l’état passe à «
+Enregistré ».</li>
+</ol>
+<p><strong>À noter :</strong></p>
+<ol start="3" type="1">
+<li>Sélectionnez le grand titre puis ouvrez l’arborescence : dans quel
+élément est-il rangé ? Quel <strong>niveau</strong> de titre (H1, H2…)
+l’inspecteur indique-t-il ?</li>
+<li>Le projet est enregistré dans <code>data/projects/</code> (fichier
+<code>site.json</code>) : ouvrez ce dossier. Sous quelle forme le site
+est-il stocké ? Est-ce déjà du HTML ?</li>
+</ol>
+<p><strong>Réussite :</strong> la page Tarifs existe, apparaît dans le
+menu, et vous savez retrouver un élément dans le canvas, dans
+l’arborescence et dans l’inspecteur.</p>
+<h3 id="étape-3-mini-projet-le-site-dun-client">Étape 3 — Mini-projet :
+le site d’un client</h3>
+<p>Choisissez <strong>un</strong> client parmi les trois fiches
+ci-dessous (clients fictifs). Créez un <strong>nouveau projet</strong> à
+son nom à partir d’<strong>Atelier Nord</strong>, ou de <strong>Cabinet
+Valéor</strong> si vous voulez une charte plus sobre. Vous adaptez un
+modèle : on ne part pas d’une page blanche, mais tout ce qui reste à
+l’écran doit concerner le client.</p>
+<h4 id="cahier-des-charges-commun">Cahier des charges commun</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Exigence</th>
+<th>Vérification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trois pages : <strong>Accueil</strong>, une page
+<strong>Prestations</strong> (ou Activités),
+<strong>Contact</strong></td>
+<td>Panneau Pages</td>
+</tr>
+<tr>
+<td>Les autres pages du modèle sont supprimées, ou dépubliées</td>
+<td>Œil barré ou page absente</td>
+</tr>
+<tr>
+<td>Menu principal : les trois pages, dans cet ordre</td>
+<td>Header du canvas</td>
+</tr>
+<tr>
+<td>Nom du site, slogan et coordonnées du client dans le header et le
+footer</td>
+<td>Header et footer</td>
+</tr>
+<tr>
+<td><strong>Un seul titre H1 par page</strong>, puis des H2</td>
+<td>Inspecteur › Niveau</td>
+</tr>
+<tr>
+<td>Aucun texte de démonstration (« Lorem ipsum », Atelier Nord…)</td>
+<td>Relecture à deux</td>
+</tr>
+<tr>
+<td>Une <strong>meta description</strong> par page (une phrase, 150
+caractères maximum)</td>
+<td>Inspecteur › Référencement</td>
+</tr>
+<tr>
+<td>Lisible en <strong>Mobile</strong> : rien ne déborde, menu
+utilisable</td>
+<td>Affichage Mobile</td>
+</tr>
+<tr>
+<td>Chaque bouton mène à une page</td>
+<td>Inspecteur › Lien</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Images :</strong> gardez les médias de démonstration du
+modèle, ou n’en mettez pas. Ne copiez pas d’image trouvée sur Internet :
+elle a un auteur et des droits.</p>
+<h4 id="client-a-le-fournil-de-clara">Client A — Le Fournil de
+Clara</h4>
+<p>Boulangerie-pâtisserie artisanale, 12 rue des Tilleuls, 02100
+Saint-Quentin. Tél. 03 23 00 00 00 (numéro fictif). Ouvert du mardi au
+samedi, 6 h 30 – 19 h 30, dimanche 7 h – 12 h 30.</p>
+<p><strong>Slogan :</strong> « Du pain au levain, cuit chaque matin.
+»</p>
+<p><strong>Prestations :</strong> pains au levain et spéciaux ;
+viennoiseries pur beurre ; entremets et gâteaux sur commande (48 h à
+l’avance, par téléphone) ; plateaux pour les entreprises.</p>
+<p><strong>Besoin :</strong> les clients appellent sans cesse pour les
+horaires ; elle veut aussi faire connaître les commandes de gâteaux. ###
+Client B — Atelier Vélo Solidaire</p>
+<p>Association loi 1901, 4 place de la Gare, 02100 Saint-Quentin.
+contact@avs-exemple.fr (adresse fictive). Atelier ouvert le mercredi 14
+h – 18 h et le samedi 10 h – 17 h.</p>
+<p><strong>Slogan :</strong> « Réparez votre vélo, on vous montre
+comment. »</p>
+<p><strong>Activités :</strong> atelier d’autoréparation encadré par des
+bénévoles ; vente de vélos reconditionnés ; marquage antivol ; sorties
+découverte un dimanche par mois. Adhésion annuelle : 15 €, 5 € pour les
+étudiants.</p>
+<p><strong>Besoin :</strong> recruter des adhérents et des bénévoles,
+expliquer le fonctionnement de l’atelier.</p>
+<h4 id="client-c-nova-informatique">Client C — Nova Informatique</h4>
+<p>Dépannage informatique pour particuliers et petites entreprises, 8
+avenue Faidherbe, 02100 Saint-Quentin. Tél. 03 23 00 00 01 (numéro
+fictif). Du lundi au vendredi, 9 h – 18 h ; intervention à domicile sur
+rendez-vous.</p>
+<p><strong>Slogan :</strong> « Votre informatique remise sur pied, sans
+jargon. »</p>
+<p><strong>Prestations :</strong> diagnostic et réparation de PC ;
+installation d’une box et du Wi-Fi ; sauvegarde et récupération de
+données ; mise en place de la messagerie et des postes pour les TPE.
+Diagnostic en atelier : 30 €.</p>
+<p><strong>Besoin :</strong> rassurer des clients peu à l’aise avec
+l’informatique et donner envie d’appeler.</p>
+<blockquote>
+<p><strong>Méthode.</strong> Commencez par le <strong>menu et les
+pages</strong> (squelette), puis le <strong>texte de l’accueil</strong>,
+puis les deux autres pages. Enregistrez souvent : le Studio n’enregistre
+pas automatiquement. Un élément introuvable dans le canvas ? Passez par
+l’<strong>arborescence</strong>. Une erreur ? <kbd>Ctrl</kbd>
+<kbd>Z</kbd>.</p>
+</blockquote>
+<h3 id="étape-4-contrôler-exporter-expliquer">Étape 4 — Contrôler,
+exporter, expliquer</h3>
+<ol type="1">
+<li>Sans rien sélectionner (<kbd>Échap</kbd>), ouvrez l’inspecteur du
+<strong>site</strong> : renseignez son nom, la langue <code>fr</code> et
+l’URL fictive <code>https://www.&lt;client&gt;.example</code>.</li>
+<li>Menu <strong>⋯</strong> › <strong>Exporter le site
+(Astro)…</strong>. Lisez les <strong>contrôles avant export</strong> :
+corrigez chaque <strong>erreur bloquante</strong> et chaque
+avertissement que vous comprenez (cliquer sur un message sélectionne
+l’élément concerné).</li>
+<li>Cochez <strong>Construire aussi le site statique</strong>, puis
+<strong>Exporter</strong>. Patientez.</li>
+<li>Téléchargez le <strong>site statique</strong>
+(<code>.tar.gz</code>), extrayez-le et ouvrez son contenu.</li>
+<li>Menu <strong>⋯</strong> › <strong>Exporter l’archive du
+projet</strong> : c’est votre sauvegarde. Déposez-la dans votre espace
+personnel.</li>
+</ol>
+<p><strong>À noter :</strong></p>
+<ol start="5" type="1">
+<li>Listez les fichiers et dossiers du site statique. Où se trouve la
+page Contact ?</li>
+<li>Ouvrez <code>index.html</code> dans VSCode : retrouvez votre
+<code>&lt;h1&gt;</code> et votre meta description.</li>
+<li>Ce site a-t-il besoin du Studio, de Node.js ou d’une base de données
+pour fonctionner chez l’hébergeur ? Justifiez à partir de ce que vous
+voyez.</li>
+</ol>
+<p><strong>Réussite :</strong> le contrôle avant export ne signale plus
+d’erreur, le site statique est téléchargé, et vous savez expliquer ce
+qu’il faudrait déposer sur un serveur web.</p>
+<h3 id="pour-aller-plus-loin">Pour aller plus loin</h3>
+<ul>
+<li>Ajoutez au client une page <strong>Questions fréquentes</strong>
+avec un <strong>accordéon</strong> (catégorie Structure), reliée au
+menu.</li>
+<li>Dans le <strong>Design system</strong>, changez la couleur
+principale pour l’adapter au client : observez que
+<strong>toutes</strong> les pages changent. Pourquoi est-ce préférable à
+la modification élément par élément ?</li>
+<li>Comparez à WordPress : où seraient stockés les textes, et qu’est-ce
+qui serait exposé en ligne ?</li>
+</ul>
+<h3 id="clôture-individuelle">Clôture individuelle</h3>
+<p>Sans regarder les notes du binôme, complétez dans vos notes :</p>
+<p>« Un CMS sert à… Netvolution Studio tourne sur… et n’est pas
+accessible depuis… parce que… Le site exporté est composé de… ; pour le
+mettre en ligne, il faudrait… »</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Le Studio est installé et je sais le
+relancer (<code>npm run dev</code>, puis l’adresse).</label></li>
+<li><label><input type="checkbox"></input>Le site du client a trois pages, un
+menu, un H1 par page et aucun texte de démonstration.</label></li>
+<li><label><input type="checkbox"></input>Le site est vérifié en mobile et le
+contrôle avant export ne signale aucune erreur.</label></li>
+<li><label><input type="checkbox"></input>J’ai téléchargé le site statique et
+l’archive du projet.</label></li>
+<li><label><input type="checkbox"></input>J’explique la différence entre
+l’outil (le Studio) et le produit (le site statique).</label></li>
+</ul>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<p><strong>1.</strong> Plusieurs centaines de Mo (environ 440 Mo).
+<code>node_modules</code> se <strong>reconstruit</strong> à partir de
+<code>package.json</code> et <code>package-lock.json</code> avec
+<code>npm ci</code> : le versionner alourdirait le dépôt sans rien
+apporter (fichier <code>.gitignore</code>).</p>
+<p><strong>2.</strong> <code>127.0.0.1</code> est l’adresse de
+<strong>boucle locale</strong> : le poste lui-même. Le Studio n’écoute
+que sur cette adresse, donc le voisin ne peut pas l’ouvrir. C’est voulu
+: le Studio n’a <strong>aucune authentification</strong> ; ouvert au
+réseau, n’importe qui pourrait modifier ou supprimer les projets.</p>
+<p><strong>3.</strong> Le titre est rangé dans une section (le hero),
+elle-même dans la page ; c’est le <strong>H1</strong>, unique sur la
+page (référencement et accessibilité). On retrouve l’arbre du DOM vu en
+P03.</p>
+<p><strong>4.</strong> Le projet est un <strong>document JSON</strong>
+(avec ses médias) : une description structurée des pages, pas du HTML.
+Le HTML n’est produit qu’à l’<strong>export</strong> — le JSON est la
+source de vérité.</p>
+<p><strong>5.</strong> <code>index.html</code>,
+<code>contact/index.html</code> (chaque page a son dossier, comme dans
+Soft-Tech), <code>404.html</code>, <code>robots.txt</code>,
+<code>sitemap.xml</code> (l’URL du site est renseignée), dossier
+<code>_astro/</code> et images optimisées. La page Contact :
+<code>contact/index.html</code>, servie à l’adresse
+<code>/contact/</code>.</p>
+<p><strong>6.</strong> Le <code>&lt;h1&gt;</code> est dans le
+<code>&lt;body&gt;</code> ; la description est dans le
+<code>&lt;head&gt;</code> :
+<code>&lt;meta name=&quot;description&quot; content=&quot;…&quot;&gt;</code>.</p>
+<p><strong>7.</strong> Non : ce sont des <strong>fichiers
+statiques</strong>. N’importe quel serveur web (Apache, nginx) les
+envoie tels quels ; il n’y a ni Node.js, ni PHP, ni base de données, ni
+espace d’administration en ligne — donc moins de choses à mettre à jour
+et à attaquer qu’un WordPress. Contrepartie : le client ne modifie pas
+son site lui-même en ligne ; toute modification passe par le Studio puis
+un nouvel export, et <strong>tous</strong> les fichiers en ligne sont
+remplacés.</p>
+</details>
