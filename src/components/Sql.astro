@@ -1,0 +1,212 @@
+---
+// Atelier SQL : SQLite (sql.js, WebAssembly) dans le navigateur, base neuve à chaque exécution, vérification par comparaison au résultat attendu.
+import { ateliers } from '../data/sql/ateliers';
+
+const { nom } = Astro.props as { nom: string };
+const atelier = ateliers[nom];
+if (!atelier) throw new Error(`Atelier SQL inconnu : ${nom}`);
+---
+
+<div class="sql" data-atelier={nom}>
+	<p>{atelier.intro}</p>
+	<p><strong>Internet est nécessaire pour charger le moteur SQL.</strong> Vos requêtes sont enregistrées dans ce navigateur. <kbd>Ctrl</kbd> + <kbd>Entrée</kbd> exécute la requête.</p>
+	<details class="schema" open>
+		<summary>Schéma de la base</summary>
+		<div class="schema-tables">Chargement…</div>
+	</details>
+	{atelier.exercices.map((e) => (
+		<section class:list={['exo-sql', { defi: e.defi }]} data-id={e.id}>
+			<h2 id={`sql-${e.id}`}>{e.titre}</h2>
+			<p set:html={e.demande} />
+			{e.indices?.length ? (
+				<div class="indices">
+					<button type="button" data-action="indice">Un indice ({e.indices.length})</button>
+					<ol hidden>{e.indices.map((i) => <li hidden>{i}</li>)}</ol>
+				</div>
+			) : null}
+			<div class="editeur">
+				<label for={`req-${e.id}`}>Votre requête SQL</label>
+				<div class="zone">
+					<div class="coloration" aria-hidden="true"></div>
+					<textarea id={`req-${e.id}`} spellcheck="false" autocapitalize="off" autocomplete="off">{e.depart ?? ''}</textarea>
+				</div>
+				<div class="barre">
+					<label class="prevision">Lignes prévues <input type="number" min="0" inputmode="numeric" /></label>
+					<button type="button" data-action="executer">Exécuter</button>
+					<button type="button" data-action="tester">Vérifier</button>
+					<button type="button" data-action="reset">Requête de départ</button>
+				</div>
+				<div class="resultats" aria-live="polite"></div>
+			</div>
+		</section>
+	))}
+	<div class="py-etat" id="sql-etat" aria-live="polite">Chargement du moteur SQL…</div>
+	<script type="application/json" class="sql-donnees" set:html={JSON.stringify(atelier)} />
+</div>
+
+<script>
+	import { colorer, comparer, executer, nouvelleBase, traduireErreur } from '../scripts/sql.js';
+
+	const CDN = 'https://cdn.jsdelivr.net/npm/sql.js@1.14.2/dist/';
+	const racine = document.querySelector<HTMLElement>('.sql')!;
+	const { base, exercices } = JSON.parse(racine.querySelector('.sql-donnees')!.textContent!);
+	const etat = document.getElementById('sql-etat')!;
+	const cle = (id: string, quoi: string) => `sql:${racine.dataset.atelier}:${id}:${quoi}`;
+	const lire = (k: string) => { try { return localStorage.getItem(k); } catch { return null; } };
+	const stocker = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch {} };
+	const el = (balise: string, texte = '', classe = '') => { const n = document.createElement(balise); n.textContent = texte; if (classe) n.className = classe; return n; };
+
+	function tableau(colonnes: string[], lignes: unknown[][]) {
+		const t = document.createElement('table');
+		const tr = t.createTHead().insertRow();
+		colonnes.forEach((c) => tr.append(el('th', c)));
+		const corps = t.createTBody();
+		// ponytail: affichage plafonné à 200 lignes, suffisant pour la base boutique ; paginer si une base plus grosse arrive.
+		lignes.slice(0, 200).forEach((l) => { const r = corps.insertRow(); l.forEach((v) => r.insertCell().append(v === null ? el('em', 'NULL') : String(v))); });
+		return t;
+	}
+
+	function progression() {
+		const n = exercices.filter((e: any) => lire(cle(e.id, 'ok'))).length;
+		etat.className = 'py-etat ok';
+		etat.textContent = `Moteur SQL prêt — ${n} demande(s) réussie(s) sur ${exercices.length}.`;
+	}
+
+	function schema(SQL: any) {
+		const db = nouvelleBase(SQL, base);
+		const zone = racine.querySelector('.schema-tables')!;
+		zone.replaceChildren();
+		const noms = new Set<string>();
+		const tables = db.exec("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY rowid")[0].values.map((v: any) => v[0]);
+		for (const t of tables) {
+			const fk = new Map(db.exec(`PRAGMA foreign_key_list(${t})`)[0]?.values.map((v: any) => [v[3], v[2]]) ?? []);
+			const p = el('p');
+			p.append(el('strong', t), ' (');
+			noms.add(t.toLowerCase());
+			db.exec(`PRAGMA table_info(${t})`)[0].values.forEach((c: any, i: number) => {
+				noms.add(String(c[1]).toLowerCase());
+				if (i) p.append(', ');
+				p.append(c[5] ? el('u', c[1]) : c[1]);
+				if (fk.has(c[1])) p.append(el('span', ` → ${fk.get(c[1])}`, 'fk'));
+			});
+			p.append(')');
+			zone.append(p);
+		}
+		zone.append(el('p', 'Souligné : clé primaire. → : clé étrangère vers une autre table.', 'legende'));
+		db.close();
+		return noms;
+	}
+
+	// Coloration en superposition : la zone de saisie (texte transparent) s'allonge avec son contenu, la couche dessous reste alignée.
+	let nomsBase = new Set<string>();
+	function peindre(zone: HTMLTextAreaElement) {
+		(zone.previousElementSibling as HTMLElement).innerHTML = colorer(zone.value, nomsBase);
+		zone.style.height = 'auto';
+		zone.style.height = zone.scrollHeight + 'px';
+	}
+	const zones = [...racine.querySelectorAll<HTMLTextAreaElement>('.zone textarea')];
+	zones.forEach((z) => { z.addEventListener('input', () => peindre(z)); peindre(z); });
+	addEventListener('resize', () => zones.forEach(peindre));
+
+	function brancher(SQL: any) {
+		racine.querySelectorAll<HTMLElement>('.exo-sql').forEach((section) => {
+			const exo = exercices.find((e: any) => e.id === section.dataset.id);
+			const zone = section.querySelector('textarea')!;
+			const prevision = section.querySelector<HTMLInputElement>('.prevision input')!;
+			const sortie = section.querySelector('.resultats')!;
+			const sauve = lire(cle(exo.id, 'requete'));
+			if (sauve !== null) { zone.value = sauve; peindre(zone); }
+			if (lire(cle(exo.id, 'ok'))) section.classList.add('reussi');
+			zone.addEventListener('input', () => stocker(cle(exo.id, 'requete'), zone.value));
+			zone.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); agir('executer'); } });
+
+			function agir(action: string) {
+				sortie.replaceChildren();
+				if (!zone.value.trim()) { sortie.append(el('p', 'Écrivez une requête.', 'ko')); return; }
+				if (action === 'tester' && prevision.value === '') { sortie.append(el('p', 'Notez d\'abord combien de lignes vous attendez, puis vérifiez.', 'ko')); prevision.focus(); return; }
+				let obtenu;
+				try {
+					obtenu = executer(SQL, base, zone.value, exo.controle);
+				} catch (e: any) {
+					sortie.append(el('p', traduireErreur(e.message), 'ko'), el('p', `Message du SGBD : ${e.message}`, 'aide'));
+					return;
+				}
+				const nb = obtenu.ecriture ? obtenu.modifiees : obtenu.lignes.length;
+				if (obtenu.ecriture) sortie.append(el('p', `${obtenu.modifiees} ligne(s) modifiée(s).${exo.controle ? ' Contrôle de la table après votre requête :' : ''}`));
+				if (obtenu.lignes.length) sortie.append(tableau(obtenu.colonnes, obtenu.lignes));
+				else if (!obtenu.ecriture) sortie.append(el('p', 'Aucune ligne ne correspond.'));
+				if (prevision.value !== '') {
+					const prevu = Number(prevision.value);
+					sortie.append(el('p', prevu === nb ? `Prévision juste : ${nb} ligne(s).` : `Vous aviez prévu ${prevu} ligne(s), le SGBD en donne ${nb}. Qu'est-ce qui explique l'écart ?`, prevu === nb ? 'ok' : 'aide'));
+				}
+				if (action !== 'tester') return;
+				const verdict = comparer(obtenu, executer(SQL, base, exo.attendu, exo.controle), exo.ordre);
+				if (verdict.ok) {
+					stocker(cle(exo.id, 'ok'), '1');
+					section.classList.add('reussi');
+					sortie.append(el('p', exo.defi ? 'Défi réussi : passez à la partie suivante.' : 'Demande satisfaite. Pouvez-vous expliquer chaque ligne de votre requête ?', 'ok'));
+					progression();
+				} else sortie.append(el('p', verdict.motif!, 'ko'));
+			}
+
+			section.addEventListener('click', (e) => {
+				const action = (e.target as HTMLElement).closest('button')?.dataset.action;
+				if (!action) return;
+				if (action === 'indice') {
+					const liste = section.querySelector<HTMLElement>('.indices ol')!;
+					liste.hidden = false;
+					const suivant = liste.querySelector<HTMLElement>('li[hidden]');
+					if (suivant) suivant.hidden = false;
+					if (!liste.querySelector('li[hidden]')) (e.target as HTMLButtonElement).disabled = true;
+				} else if (action === 'reset') {
+					if (confirm('Revenir à la requête de départ ?')) { zone.value = exo.depart ?? ''; peindre(zone); stocker(cle(exo.id, 'requete'), zone.value); sortie.replaceChildren(); }
+				} else agir(action);
+			});
+		});
+	}
+
+	const s = document.createElement('script');
+	s.src = CDN + 'sql-wasm.js';
+	s.onload = async () => {
+		try {
+			const SQL = await (window as any).initSqlJs({ locateFile: (f: string) => CDN + f });
+			nomsBase = schema(SQL);
+			zones.forEach(peindre);
+			brancher(SQL);
+			progression();
+		} catch (e: any) {
+			etat.className = 'py-etat ko';
+			etat.textContent = `Le moteur SQL n'a pas pu démarrer : ${e.message}`;
+		}
+	};
+	s.onerror = () => { etat.className = 'py-etat ko'; etat.textContent = 'Le moteur SQL n\'a pas pu être chargé (connexion ?). Rechargez la page.'; };
+	document.head.append(s);
+</script>
+
+<style>
+	.exo-sql { border: 1px solid var(--sl-color-hairline); border-radius: .6rem; padding: .2rem 1rem 1rem; }
+	.exo-sql.reussi { border-color: var(--sl-color-green); }
+	.exo-sql.reussi h2::after { content: ' ✓'; color: var(--sl-color-green); }
+	.exo-sql.defi { border-width: 2px; }
+	.schema { position: sticky; top: calc(var(--sl-nav-height, 3.5rem) + .5rem); z-index: 1; background: var(--sl-color-bg); border: 1px solid var(--sl-color-hairline); border-radius: .6rem; padding: .4rem 1rem; }
+	.schema summary { cursor: pointer; font-weight: 600; }
+	.schema p { margin: .3rem 0; font-family: var(--sl-font-mono); font-size: var(--sl-text-sm); }
+	.schema .fk { color: var(--sl-color-gray-3); }
+	.schema .legende { font-family: inherit; color: var(--sl-color-gray-3); }
+	.prevision { display: inline-flex; align-items: center; gap: .4rem; font-size: var(--sl-text-sm); }
+	.prevision input { width: 5em; font: inherit; padding: .35rem; border-radius: .4rem; border: 1px solid var(--sl-color-hairline); background: var(--sl-color-bg-inline-code); color: var(--sl-color-white); }
+	.resultats table { font-size: var(--sl-text-sm); display: block; overflow-x: auto; max-height: 24rem; }
+	.resultats em { color: var(--sl-color-gray-3); }
+	.indices button { font: inherit; font-size: var(--sl-text-sm); background: none; border: none; color: var(--sl-color-text-accent); cursor: pointer; padding: 0; text-decoration: underline; }
+	.zone { position: relative; }
+	.zone > * { margin: 0; box-sizing: border-box; font: 15px/1.45 var(--sl-font-mono); padding: 10px; tab-size: 4; white-space: pre-wrap; overflow-wrap: break-word; word-break: normal; border-radius: .5rem; }
+	.zone .coloration { position: absolute; inset: 0; overflow: hidden; pointer-events: none; color: var(--sl-color-white); background: var(--sl-color-bg-inline-code); border: 1px solid var(--sl-color-hairline); }
+	.zone textarea { position: relative; display: block; width: 100%; min-height: 6.5em; resize: none; overflow: hidden; color: transparent; caret-color: var(--sl-color-white); background: transparent; border: 1px solid transparent; }
+	.zone textarea:focus-visible { outline: 2px solid var(--sl-color-text-accent); outline-offset: 1px; }
+	.zone :global(.sql-mot) { color: var(--sl-color-blue-high); }
+	.zone :global(.sql-nom) { color: var(--sl-color-purple); }
+	.zone :global(.sql-txt) { color: var(--sl-color-green); }
+	.zone :global(.sql-nb) { color: var(--sl-color-orange); }
+	.zone :global(.sql-com) { color: var(--sl-color-gray-3); }
+	.indices button:disabled { color: var(--sl-color-gray-3); cursor: default; text-decoration: none; }
+</style>
