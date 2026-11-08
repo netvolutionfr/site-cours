@@ -1,0 +1,405 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Publier en HTTPS une application qui ne sait pas le faire, avec un
+proxy inverse.</li>
+<li>Vérifier ce qui est réellement joignable depuis Internet, sans se
+fier à une supposition.</li>
+<li>Fermer un port exposé et expliquer pourquoi la première correction
+ne suffit pas.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Votre clé SSH, utilisée en P07.</li>
+<li>Nginx, certificat Let’s Encrypt, redirection HTTP vers HTTPS
+(P07).</li>
+<li>Port, adresse d’écoute, <code>ss -ltnp</code> (P06).</li>
+</ul>
+</section>
+<section id="étapes" class="outline">
+<h3>Étapes</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Travail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Reprendre un serveur vierge</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Lancer l’application fournie</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Problème 1 : HTTPS par un proxy inverse</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Problème 2 : fermer le port 8080</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Prouver et expliquer</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="votre-mission">Votre mission</h3>
+<p>Un éditeur vous livre une application dans un
+<strong>conteneur</strong> : un programme emballé avec tout ce dont il a
+besoin, qui se lance d’une commande. Elle répond en HTTP sur le port
+8080. Elle ne connaît ni votre nom de domaine, ni les certificats.</p>
+<p>Vous devez la mettre en service sur votre serveur
+<code>sisrN.tp.siovision.fr</code>, où <strong>N est votre
+numéro</strong>. À la fin de la séance, l’enseignant testera depuis
+l’extérieur :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Test</th>
+<th>Résultat attendu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://sisrN.tp.siovision.fr/</code></td>
+<td>La page de l’application, avec <code>Name: sisrN</code>, sans alerte
+de certificat</td>
+</tr>
+<tr>
+<td><code>http://sisrN.tp.siovision.fr/</code></td>
+<td>Redirection <code>301</code> vers HTTPS</td>
+</tr>
+<tr>
+<td><code>http://sisrN.tp.siovision.fr:8080/</code></td>
+<td>Aucune réponse de l’application</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Travail individuel.</strong> Votre serveur est neuf : ce que
+vous aviez fait en P07 n’y est plus. Notez vos preuves au fil de l’eau
+dans un tableau <strong>commande / attendu / observé /
+conclusion</strong> : elles serviront lundi prochain.</p>
+<h3 id="reprendre-un-serveur-vierge">1. Reprendre un serveur vierge</h3>
+<p>Le serveur a été recréé : sa clé a changé, et SSH vous le signale à
+raison. Retirez l’ancienne empreinte, puis connectez-vous :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-R</span> sisrN.tp.siovision.fr</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> etudiant@sisrN.tp.siovision.fr</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> docker.io nginx certbot nftables</span></code></pre></div>
+<h3 id="lancer-lapplication-fournie">2. Lancer l’application
+fournie</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-d</span> <span class="at">--name</span> app <span class="at">--restart</span> unless-stopped <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 8080:8080 traefik/whoami <span class="at">--port</span> 8080 <span class="at">--name</span> sisrN</span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-d</code>, <code>--name app</code></td>
+<td>En arrière-plan, sous le nom <code>app</code></td>
+</tr>
+<tr>
+<td><code>--restart unless-stopped</code></td>
+<td>Relancée après un redémarrage du serveur</td>
+</tr>
+<tr>
+<td><code>-p 8080:8080</code></td>
+<td>Publie le port 8080 du conteneur sur le port 8080 du serveur</td>
+</tr>
+<tr>
+<td><code>traefik/whoami</code></td>
+<td>L’image de l’application</td>
+</tr>
+<tr>
+<td><code>--port 8080 --name sisrN</code></td>
+<td>Options de l’application : son port et le nom qu’elle affiche</td>
+</tr>
+</tbody>
+</table>
+<p>Depuis <strong>votre poste</strong> (<code>curl.exe</code> sous
+Windows), puis dans un navigateur :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> http://sisrN.tp.siovision.fr:8080/</span></code></pre></div>
+<p><strong>Question 1.</strong> Le port répond-il depuis votre poste ?
+Si le réseau du lycée le bloque, demandez à un voisin de tester depuis
+<strong>son</strong> serveur. Pourquoi un test lancé depuis votre propre
+serveur ne prouverait-il rien ?</p>
+<p><strong>Question 2.</strong> Que montre
+<code>sudo ss -ltnp | grep 8080</code> ? Citez deux inconvénients à
+laisser cette application ainsi sur Internet.</p>
+<h3 id="problème-1-https-par-un-proxy-inverse">3. Problème 1 : HTTPS par
+un proxy inverse</h3>
+<p><strong>Objectif :</strong>
+<code>https://sisrN.tp.siovision.fr/</code> affiche l’application. Nginx
+reçoit les visiteurs, porte le certificat et transmet les requêtes au
+conteneur : c’est un <strong>proxy inverse</strong>.</p>
+<p>Vous avez déjà obtenu un certificat en P07. Une différence : plus
+aucun fichier à servir, donc Let’s Encrypt a besoin d’un dossier dédié.
+Créez-le, et publiez ce site sur le port 80 :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mkdir <span class="at">-p</span> /var/www/acme</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/nginx/sites-available/sisrN</span></code></pre></div>
+<pre class="nginx"><code>server {
+    listen 80;
+    server_name sisrN.tp.siovision.fr;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/acme;
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}</code></pre>
+<p><strong>À vous, avec la fiche P07 :</strong></p>
+<ol type="1">
+<li>Activez le site, validez, rechargez Nginx.</li>
+<li>Obtenez le certificat avec <code>certbot certonly --webroot</code>.
+Quel dossier passer à <code>-w</code> ?</li>
+<li>Ajoutez un bloc <code>server</code> sur le port 443. Il reprend
+celui de P07, sans <code>root</code>, avec :</li>
+</ol>
+<pre class="nginx"><code>    location / {
+        proxy_pass http://ADRESSE:PORT;
+    }</code></pre>
+<p><strong>Question 3.</strong> Quelle adresse et quel port mettre à la
+place d’<code>ADRESSE:PORT</code> ? Testez.</p>
+<p><strong>Question 4.</strong> La page affiche ce que l’application
+reçoit. Que valent <code>Host</code> et <code>RemoteAddr</code> ?
+Pourquoi ne voit-on ni votre nom de domaine, ni votre adresse ? Ajoutez
+ces lignes dans la <code>location</code>, puis comparez :</p>
+<pre class="nginx"><code>        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;</code></pre>
+<p><strong>Question 5.</strong> Vérifiez le renouvellement avec
+<code>sudo certbot renew --dry-run</code>. Pourquoi le port 80
+garde-t-il une exception pour <code>/.well-known/acme-challenge/</code>
+au lieu de tout rediriger ? Que répondrait l’application à Let’s Encrypt
+sans elle ?</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Observation</th>
+<th>Cause probable</th>
+<th>Premier contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>502 Bad Gateway</code></td>
+<td>Nginx répond, mais pas l’application</td>
+<td><code>sudo docker ps</code>,
+<code>curl http://127.0.0.1:8080/</code> sur le serveur</td>
+</tr>
+<tr>
+<td>Page Debian au lieu de l’application</td>
+<td>Site non activé, ou mauvais <code>server_name</code></td>
+<td><code>ls -l /etc/nginx/sites-enabled/</code></td>
+</tr>
+<tr>
+<td>certbot : <code>404</code></td>
+<td><code>-w</code> différent du <code>root</code> de la
+<code>location</code></td>
+<td>Chemin <code>/var/www/acme</code></td>
+</tr>
+<tr>
+<td><code>Connection refused</code> sur 443</td>
+<td>Bloc 443 absent ou Nginx non rechargé</td>
+<td><code>sudo nginx -t</code>, <code>sudo ss -ltnp</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="problème-2-fermer-le-port-8080">4. Problème 2 : fermer le port
+8080</h3>
+<p><strong>Objectif :</strong> tout passe par Nginx. Le port 8080 ne
+répond plus depuis Internet.</p>
+<h4 id="une-première-idée-un-pare-feu-sur-le-serveur">Une première idée
+: un pare-feu sur le serveur</h4>
+<p>nftables filtre les paquets dans le noyau. Une erreur de règle peut
+vous couper de votre propre serveur, sans autre accès possible.
+<strong>Programmez d’abord un filet de sécurité</strong>, qui retirera
+vos règles dans cinq minutes :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemd-run <span class="at">--unit</span><span class="op">=</span>filet <span class="at">--on-active</span><span class="op">=</span>5min <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  /usr/sbin/nft delete table inet filtre</span></code></pre></div>
+<p>Remplacez le contenu de <code>/etc/nftables.conf</code> par ce
+fichier, en complétant la liste des ports. Ne laissez ouvert que ce dont
+le service a besoin, et pensez à la validation de Let’s Encrypt :</p>
+<pre class="text"><code>#!/usr/sbin/nft -f
+table inet filtre
+delete table inet filtre
+table inet filtre {
+    chain entree {
+        type filter hook input priority 0; policy drop;
+        iif &quot;lo&quot; accept
+        ct state established,related accept
+        ct state invalid drop
+        ip protocol icmp accept
+        ip6 nexthdr icmpv6 accept
+        tcp dport { ... } accept
+    }
+}</code></pre>
+<p><strong>Avant d’appliquer, prévoyez</strong> : que répondra le port
+8080 ? Le port 443 ? Notez votre prévision, puis appliquez et testez
+depuis l’extérieur :</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nft <span class="at">-c</span> <span class="at">-f</span> /etc/nftables.conf</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nft <span class="at">-f</span> /etc/nftables.conf</span></code></pre></div>
+<p>Toujours connecté ? Annulez le filet avec
+<code>sudo systemctl stop filet.timer</code>. Pour tout nouvel essai de
+règles, relancez-le d’abord.</p>
+<p><strong>Question 6.</strong> Le port 8080 répond-il encore ? Votre
+prévision était-elle juste ? Pour vérifier que votre pare-feu fonctionne
+bien, lancez un petit service sur le serveur, puis testez le port 9090
+depuis l’extérieur, et arrêtez-le avec <code>Ctrl+C</code> :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> http.server 9090</span></code></pre></div>
+<h4 id="comprendre-ce-qui-se-passe">Comprendre ce qui se passe</h4>
+<p>Le pare-feu protège le port 9090, mais pas le port 8080. Cherchez ce
+que Docker a installé :</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nft list table ip nat <span class="kw">|</span> <span class="fu">grep</span> 8080</span></code></pre></div>
+<figure>
+<img role="img" aria-label="Trajet des paquets vers Nginx et vers le conteneur : le port publié par Docker est réécrit avant la chaîne input et ne la traverse jamais." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlRyYWpldCBkZXMgcGFxdWV0cyBzdXIgdW4gc2VydmV1ciBhdmVjIERvY2tlciBldCBuZnRhYmxlczwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPlVuIHBhcXVldCB2ZXJzIGxlIHBvcnQgNDQzIHRyYXZlcnNlIGxhIGNoYcOubmUgcHJlcm91dGluZywgcHVpcyBsYSBjaGHDrm5lIGlucHV0IG/DuSBsYSByw6hnbGUgbmZ0YWJsZXMgbCdhdXRvcmlzZSwgZXQgYXJyaXZlIMOgIE5naW54LCBxdWkgdHJhbnNtZXQgYXUgY29udGVuZXVyIHBhciBsYSBib3VjbGUgbG9jYWxlLiBVbiBwYXF1ZXQgdmVycyBsZSBwb3J0IDgwODAgcHVibGnDqSBwYXIgRG9ja2VyIGVzdCByw6nDqWNyaXQgZGFucyBwcmVyb3V0aW5nIHZlcnMgbCdhZHJlc3NlIGR1IGNvbnRlbmV1ciAxNzIuMTcuMC4yLCBwYXNzZSBwYXIgbGEgY2hhw65uZSBmb3J3YXJkIGV0IG5lIHRyYXZlcnNlIGphbWFpcyBsYSBjaGHDrm5lIGlucHV0IDogbGEgcsOoZ2xlIG4nYSBhdWN1biBlZmZldCBzdXIgbHVpLiBQdWJsaWVyIGxlIHBvcnQgc3VyIDEyNy4wLjAuMSBzdXBwcmltZSBjZSBjaGVtaW4gZGVwdWlzIGwnZXh0w6lyaWV1ci48L2Rlc2M+CiAgPGRlZnM+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYXIiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiNEOTVDNTkiLz48L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImFrIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjNjU3ODhkIi8+PC9tYXJrZXI+CiAgPC9kZWZzPgogIDxzdHlsZT4KICAgIC56b25le2ZpbGw6I2ZmZjtzdHJva2U6IzE3MjAzMztzdHJva2Utd2lkdGg6Mi41fQogICAgLnN2Y3tmaWxsOiNFQUY0RkI7c3Ryb2tlOiMzNTY4RDQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAuc3ZjMntmaWxsOiNGN0Y4RkE7c3Ryb2tlOiM2NTc4OGQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAud2FybntmaWxsOiNGREYwRUY7c3Ryb2tlOiNEOTVDNTk7c3Ryb2tlLXdpZHRoOjJ9CiAgICAub2t7ZmlsbDojRUFGQUYxO3N0cm9rZTojMUU4NDQ5O3N0cm9rZS13aWR0aDoyfQogICAgLnR0bHtmb250OjcwMCAyMnB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLmh7Zm9udDo3MDAgMThweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzE3MjAzM30KICAgIC50e2ZvbnQ6NTAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMzYzRiNWN9CiAgICAuY3tmb250OjYwMCAxNHB4IG1vbm9zcGFjZTtmaWxsOiMxNjRkNzl9CiAgICAubGJ7Zm9udDo3MDAgMTRweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLnRhZ3tmaWxsOiMwODdFOEJ9CiAgICAudGFndHtmb250OjcwMCAxM3B4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojZmZmfQogIDwvc3R5bGU+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIiBmaWxsPSIjRjdGOEZBIi8+CiAgPHRleHQgeD0iNDAiIHk9IjQ0IiBjbGFzcz0idHRsIj5EZXV4IHRyYWpldHMgZGFucyBsZSBtw6ptZSBzZXJ2ZXVyIDogbGEgcsOoZ2xlIGlucHV0IG5lIHZvaXQgcGFzIGxlIHBvcnQgcHVibGnDqSBwYXIgRG9ja2VyPC90ZXh0PgoKICA8IS0tIEludGVybmV0IC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIyMTAiIGhlaWdodD0iNTMwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnIiB4PSI0MCIgeT0iODAiIHdpZHRoPSIyMTAiIGhlaWdodD0iMzQiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWciIHg9IjQwIiB5PSIxMDAiIHdpZHRoPSIyMTAiIGhlaWdodD0iMTQiLz4KICA8dGV4dCB4PSI1NiIgeT0iMTAzIiBjbGFzcz0idGFndCI+SU5URVJORVQ8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjU4IiB5PSIxNjAiIHdpZHRoPSIxNzQiIGhlaWdodD0iMTEwIiByeD0iMTAiLz4KICA8dGV4dCB4PSI3MiIgeT0iMTg4IiBjbGFzcz0iaCI+TmF2aWdhdGV1cjwvdGV4dD4KICA8dGV4dCB4PSI3MiIgeT0iMjE0IiBjbGFzcz0iYyI+aHR0cHM6Ly9zaXNyTjwvdGV4dD4KICA8dGV4dCB4PSI3MiIgeT0iMjM2IiBjbGFzcz0iYyI+LnRwLnNpb3Zpc2lvbi5mcjwvdGV4dD4KICA8cmVjdCBjbGFzcz0ic3ZjMiIgeD0iNTgiIHk9IjQyMCIgd2lkdGg9IjE3NCIgaGVpZ2h0PSIxMTAiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjcyIiB5PSI0NDgiIGNsYXNzPSJoIj5TY2FubmVyPC90ZXh0PgogIDx0ZXh0IHg9IjcyIiB5PSI0NzQiIGNsYXNzPSJjIj5odHRwOi8vc2lzck48L3RleHQ+CiAgPHRleHQgeD0iNzIiIHk9IjQ5NiIgY2xhc3M9ImMiPi4uLjo4MDgwLzwvdGV4dD4KCiAgPCEtLSBTZXJ2ZXVyIC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSIzMzAiIHk9IjgwIiB3aWR0aD0iODMwIiBoZWlnaHQ9IjUzMCIgcng9IjE2Ii8+CiAgPHJlY3QgY2xhc3M9InRhZyIgeD0iMzMwIiB5PSI4MCIgd2lkdGg9IjgzMCIgaGVpZ2h0PSIzNCIgcng9IjE2Ii8+PHJlY3QgY2xhc3M9InRhZyIgeD0iMzMwIiB5PSIxMDAiIHdpZHRoPSI4MzAiIGhlaWdodD0iMTQiLz4KICA8dGV4dCB4PSIzNDYiIHk9IjEwMyIgY2xhc3M9InRhZ3QiPlNFUlZFVVIgc2lzck4gwrcgREVCSUFOIDEzIMK3IE5PWUFVLCBDSEHDjk5FUyBORVRGSUxURVIgRVQgU0VSVklDRVM8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSIzNTIiIHk9IjEzNCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI0NTYiIHJ4PSIxMiIvPgogIDx0ZXh0IHg9IjM2NiIgeT0iMTY0IiBjbGFzcz0iaCI+cHJlcm91dGluZzwvdGV4dD4KICA8dGV4dCB4PSIzNjYiIHk9IjE4OCIgY2xhc3M9InQiPnRhYmxlIGlwIG5hdDwvdGV4dD4KICA8dGV4dCB4PSIzNjYiIHk9IjIxMiIgY2xhc3M9InQiPihjcsOpw6llIHBhciBEb2NrZXIpPC90ZXh0PgogIDx0ZXh0IHg9IjM2NiIgeT0iMzQwIiBjbGFzcz0idCI+UG9ydCA4MDgwID88L3RleHQ+CiAgPHRleHQgeD0iMzY2IiB5PSIzNjQiIGNsYXNzPSJ0Ij5Eb2NrZXIgcsOpw6ljcml0PC90ZXh0PgogIDx0ZXh0IHg9IjM2NiIgeT0iMzg4IiBjbGFzcz0idCI+bGEgZGVzdGluYXRpb24gOjwvdGV4dD4KICA8dGV4dCB4PSIzNjYiIHk9IjQxNiIgY2xhc3M9ImMiPkROQVQgdmVyczwvdGV4dD4KICA8dGV4dCB4PSIzNjYiIHk9IjQzOCIgY2xhc3M9ImMiPjE3Mi4xNy4wLjI8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJvayIgeD0iNTkwIiB5PSIxMzQiIHdpZHRoPSIyMTAiIGhlaWdodD0iMTcwIiByeD0iMTIiLz4KICA8dGV4dCB4PSI2MDQiIHk9IjE2NCIgY2xhc3M9ImgiPmlucHV0PC90ZXh0PgogIDx0ZXh0IHg9IjYwNCIgeT0iMTg4IiBjbGFzcz0idCI+dm90cmUgdGFibGUgaW5ldCBmaWx0cmU8L3RleHQ+CiAgPHRleHQgeD0iNjA0IiB5PSIyMTgiIGNsYXNzPSJjIj5wb2xpY3kgZHJvcDwvdGV4dD4KICA8dGV4dCB4PSI2MDQiIHk9IjI0MiIgY2xhc3M9ImMiPmRwb3J0IDIyLDgwLDQ0MzwvdGV4dD4KICA8dGV4dCB4PSI2MDQiIHk9IjI2NiIgY2xhc3M9ImMiPmFjY2VwdDwvdGV4dD4KICA8dGV4dCB4PSI2MDQiIHk9IjI5MCIgY2xhc3M9InQiPnBvdXIgbGUgc2VydmV1ciBsdWktbcOqbWU8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMiIHg9Ijg3MCIgeT0iMTM0IiB3aWR0aD0iMjY2IiBoZWlnaHQ9IjE3MCIgcng9IjEyIi8+CiAgPHRleHQgeD0iODg0IiB5PSIxNjQiIGNsYXNzPSJoIj5OZ2lueCwgcHJveHkgaW52ZXJzZTwvdGV4dD4KICA8dGV4dCB4PSI4ODQiIHk9IjE5MiIgY2xhc3M9ImMiPjAuMC4wLjA6NDQzPC90ZXh0PgogIDx0ZXh0IHg9Ijg4NCIgeT0iMjE2IiBjbGFzcz0idCI+dGVybWluZSBUTFMsIGpvdXJuYWxpc2U8L3RleHQ+CiAgPHRleHQgeD0iODg0IiB5PSIyNDQiIGNsYXNzPSJjIj5wcm94eV9wYXNzPC90ZXh0PgogIDx0ZXh0IHg9Ijg4NCIgeT0iMjY2IiBjbGFzcz0iYyI+aHR0cDovLzEyNy4wLjAuMTo4MDgwPC90ZXh0PgoKICA8cmVjdCBjbGFzcz0id2FybiIgeD0iNTkwIiB5PSI0MTAiIHdpZHRoPSIyMTAiIGhlaWdodD0iMTcwIiByeD0iMTIiLz4KICA8dGV4dCB4PSI2MDQiIHk9IjQ0MCIgY2xhc3M9ImgiPmZvcndhcmQ8L3RleHQ+CiAgPHRleHQgeD0iNjA0IiB5PSI0NjQiIGNsYXNzPSJ0Ij5jaGHDrm5lcyBkZSBEb2NrZXI8L3RleHQ+CiAgPHRleHQgeD0iNjA0IiB5PSI0OTQiIGNsYXNzPSJ0Ij5MZSBwYXF1ZXQgbmUgcydhZHJlc3NlPC90ZXh0PgogIDx0ZXh0IHg9IjYwNCIgeT0iNTE2IiBjbGFzcz0idCI+cGx1cyBhdSBzZXJ2ZXVyLCBtYWlzPC90ZXh0PgogIDx0ZXh0IHg9IjYwNCIgeT0iNTM4IiBjbGFzcz0idCI+w6AgdW5lIGF1dHJlIGFkcmVzc2UuPC90ZXh0PgoKICA8cmVjdCBjbGFzcz0ic3ZjMiIgeD0iODcwIiB5PSI0MTAiIHdpZHRoPSIyNjYiIGhlaWdodD0iMTcwIiByeD0iMTIiLz4KICA8dGV4dCB4PSI4ODQiIHk9IjQ0MCIgY2xhc3M9ImgiPkNvbnRlbmV1ciBhcHA8L3RleHQ+CiAgPHRleHQgeD0iODg0IiB5PSI0NjgiIGNsYXNzPSJjIj4xNzIuMTcuMC4yOjgwODA8L3RleHQ+CiAgPHRleHQgeD0iODg0IiB5PSI0OTQiIGNsYXNzPSJjIj50cmFlZmlrL3dob2FtaTwvdGV4dD4KICA8dGV4dCB4PSI4ODQiIHk9IjUyMiIgY2xhc3M9InQiPkhUVFAgZW4gY2xhaXIsIHNhbnMgZmlsdHJhZ2U8L3RleHQ+CiAgPHRleHQgeD0iODg0IiB5PSI1NDYiIGNsYXNzPSJ0Ij5uaSBqb3VybmFsIE5naW54PC90ZXh0PgoKICA8IS0tIGZsdXggLS0+CiAgPHBhdGggZD0iTTIzMiAyMTUgTDM1MCAyMTUiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDx0ZXh0IHg9IjI1NiIgeT0iMjAwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPjQ0MzwvdGV4dD4KICA8cGF0aCBkPSJNNTIyIDIxNSBMNTg4IDIxNSIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYWcpIi8+CiAgPHBhdGggZD0iTTgwMCAyMTUgTDg2OCAyMTUiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDxwYXRoIGQ9Ik0xMDAzIDMwNCBMMTAwMyA0MDgiIHN0cm9rZT0iIzY1Nzg4ZCIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDx0ZXh0IHg9IjEwMTQiIHk9IjM1MCIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojNTI2NDc3Ij5ib3VjbGUgbG9jYWxlPC90ZXh0PgogIDx0ZXh0IHg9IjEwMTQiIHk9IjM3MCIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojNTI2NDc3Ij5sZSBjaGVtaW4gdm91bHU8L3RleHQ+CgogIDxwYXRoIGQ9Ik0yMzIgNDc1IEwzNTAgNDc1IiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhcikiLz4KICA8dGV4dCB4PSIyNTYiIHk9IjQ2MCIgY2xhc3M9ImxiIiBzdHlsZT0iZmlsbDojRDk1QzU5Ij44MDgwPC90ZXh0PgogIDxwYXRoIGQ9Ik01MjIgNDc1IEw1ODggNDc1IiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhcikiLz4KICA8cGF0aCBkPSJNODAwIDQ3NSBMODY4IDQ3NSIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYXIpIi8+CiAgPHRleHQgeD0iNTYwIiB5PSIzNjQiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6I0Q5NUM1OSI+SmFtYWlzIGlucHV0IDo8L3RleHQ+CiAgPHRleHQgeD0iNTYwIiB5PSIzODQiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6I0Q5NUM1OSI+dm90cmUgcsOoZ2xlIG5lIHMnYXBwbGlxdWUgcGFzPC90ZXh0PgoKICA8IS0tIHN5bnRow6hzZSAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNjMwIiB3aWR0aD0iMTEyMCIgaGVpZ2h0PSI1MiIgcng9IjEwIiBmaWxsPSIjRUFGQUYxIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjU4IiB5PSI2NjIiIGNsYXNzPSJ0Ij48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSI+w4AgcmV0ZW5pciDCtyA8L3RzcGFuPmF2ZWMgPHRzcGFuIGNsYXNzPSJjIj4tcCAxMjcuMC4wLjE6ODA4MDo4MDgwPC90c3Bhbj4sIGxhIHLDqcOpY3JpdHVyZSBuZSBjb25jZXJuZSBwbHVzIGxlcyBwYXF1ZXRzIHZlbnVzIGQnSW50ZXJuZXQgOiBzZXVsIE5naW54IGF0dGVpbnQgbGUgY29udGVuZXVyLjwvdGV4dD4KPC9zdmc+Cg==" alt="Trajet des paquets vers Nginx et vers le conteneur : le port publié par Docker est réécrit avant la chaîne input et ne la traverse jamais." />
+<figcaption aria-hidden="true">Trajet des paquets vers Nginx et vers le
+conteneur : le port publié par Docker est réécrit avant la chaîne input
+et ne la traverse jamais.</figcaption>
+</figure>
+<p><strong>Question 7.</strong> Avec vos mots : pourquoi votre règle ne
+s’applique-t-elle pas au port 8080 ?</p>
+<h4 id="corriger-à-la-source">Corriger à la source</h4>
+<p>Le conteneur n’a besoin d’être joignable que par Nginx, sur le
+serveur même. Supprimez-le et recréez-le, en publiant son port sur
+<strong>la seule boucle locale</strong> :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> app</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-d</span> <span class="at">--name</span> app <span class="at">--restart</span> unless-stopped <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 127.0.0.1:8080:8080 traefik/whoami <span class="at">--port</span> 8080 <span class="at">--name</span> sisrN</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ss <span class="at">-ltnp</span> <span class="kw">|</span> <span class="fu">grep</span> 8080</span></code></pre></div>
+<p>Testez à nouveau HTTPS et le port 8080.</p>
+<h4 id="rendre-le-pare-feu-permanent">Rendre le pare-feu permanent</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable nftables</span></code></pre></div>
+<p><strong>Ne lancez pas
+<code>systemctl restart nftables</code>.</strong> À l’arrêt, ce service
+vide toutes les règles du serveur, y compris celles de Docker. Les
+conteneurs perdent alors Internet, et un port encore ouvert à tous peut
+sembler fermé : une fausse réussite. Pour appliquer une modification,
+utilisez <code>sudo nft -f /etc/nftables.conf</code>. En cas d’erreur,
+<code>sudo systemctl restart docker</code> recrée les règles de
+Docker.</p>
+<p><strong>Question 8.</strong> Sans nftables, le port 8080 répondrait
+<code>Connection refused</code> ; avec nftables, il ne répond rien.
+Pourquoi cette différence ? Quelles sont les deux protections en place,
+et que couvre chacune ?</p>
+<p><strong>Question 9.</strong> Complétez la matrice des flux de votre
+serveur :</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Destination</th>
+<th>Port</th>
+<th>Protocole</th>
+<th>Décision</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Internet</td>
+<td>Serveur</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Internet</td>
+<td>Serveur</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Lycée, Internet</td>
+<td>Serveur</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Internet</td>
+<td>Serveur</td>
+<td>8080</td>
+<td>TCP</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Nginx (boucle locale)</td>
+<td>Application</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="prouver-et-expliquer">5. Prouver et expliquer</h3>
+<p>Avant la restitution, faites vérifier votre serveur par un voisin,
+depuis le sien :</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-I</span> http://sisrM.tp.siovision.fr/</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> https://sisrM.tp.siovision.fr/ <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">&#39;^Name|X-Real-Ip&#39;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-m</span> 5 http://sisrM.tp.siovision.fr:8080/</span></code></pre></div>
+<p>Soyez prêt à expliquer, sans notes, le chemin d’une requête HTTPS du
+navigateur à l’application, et pourquoi une règle <code>input</code> ne
+suffit pas avec Docker.</p>
+<p><strong>Pour aller plus loin, dans l’ordre que vous voulez
+:</strong></p>
+<ul>
+<li>Comparez <code>RemoteAddr</code> et <code>X-Real-Ip</code> dans la
+page avec l’adresse notée dans <code>/var/log/nginx/access.log</code>.
+Qui voit quoi ?</li>
+<li>Ajoutez un second conteneur, sur le port 8081, et publiez-le sous le
+chemin <code>/deux/</code>.</li>
+<li>Ajoutez l’en-tête <code>Strict-Transport-Security</code> avec une
+durée courte et expliquez son rôle.</li>
+<li>Redémarrez le serveur avec <code>sudo reboot</code>, puis vérifiez
+que tout revient sans intervention.</li>
+</ul>
+<h3 id="repères">Repères</h3>
+<p>Un proxy inverse offre un point d’entrée unique, où se concentrent
+TLS, journaux et filtrage. Sur un serveur exposé, on ferme d’abord à la
+source (adresse d’écoute), puis on ajoute un pare-feu en seconde
+protection. Références : <a href="https://docs.docker.com/engine/network/port-publishing/">Docker,
+publication de ports</a>, <a href="https://docs.docker.com/engine/network/packet-filtering-firewalls/">Docker
+et pare-feu</a>, <a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/">Nginx,
+proxy inverse</a>, <a href="https://wiki.nftables.org/">nftables,
+wiki</a>.</p>
+<p>L’IA peut expliquer un message d’erreur après une première analyse
+personnelle. Vérifiez toute commande avant de l’exécuter, ne transmettez
+jamais de clé privée ni le contenu de <code>/etc/letsencrypt/</code>, et
+formulez vous-même vos explications : elles seront demandées sans
+notes.</p>

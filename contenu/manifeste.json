@@ -2226,6 +2226,77 @@
    ]
   },
   {
+   "slug": "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Proxy inverse et exposition d'un service en conteneur",
+   "sousTitre": "Projet fil rouge · lundi 9 novembre 2026 · Blocs 2 et 3",
+   "nature": "Activité",
+   "date": "2026-11-09",
+   "pdf": "/sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "votre-mission",
+     "text": "Votre mission"
+    },
+    {
+     "depth": 3,
+     "slug": "reprendre-un-serveur-vierge",
+     "text": "1. Reprendre un serveur vierge"
+    },
+    {
+     "depth": 3,
+     "slug": "lancer-lapplication-fournie",
+     "text": "2. Lancer l’application fournie"
+    },
+    {
+     "depth": 3,
+     "slug": "problème-1-https-par-un-proxy-inverse",
+     "text": "3. Problème 1 : HTTPS par un proxy inverse"
+    },
+    {
+     "depth": 3,
+     "slug": "problème-2-fermer-le-port-8080",
+     "text": "4. Problème 2 : fermer le port 8080"
+    },
+    {
+     "depth": 4,
+     "slug": "une-première-idée-un-pare-feu-sur-le-serveur",
+     "text": "Une première idée : un pare-feu sur le serveur"
+    },
+    {
+     "depth": 4,
+     "slug": "comprendre-ce-qui-se-passe",
+     "text": "Comprendre ce qui se passe"
+    },
+    {
+     "depth": 4,
+     "slug": "corriger-à-la-source",
+     "text": "Corriger à la source"
+    },
+    {
+     "depth": 4,
+     "slug": "rendre-le-pare-feu-permanent",
+     "text": "Rendre le pare-feu permanent"
+    },
+    {
+     "depth": 3,
+     "slug": "prouver-et-expliquer",
+     "text": "5. Prouver et expliquer"
+    },
+    {
+     "depth": 3,
+     "slug": "repères",
+     "text": "Repères"
+    }
+   ]
+  },
+  {
    "slug": "mastere/devops/SQ01-p01-culture-devops-cycle",
    "matiere": "mastere",
    "classe": "devops",
@@ -2994,14 +3065,15 @@
    "code": "",
    "titre": "Fil rouge",
    "debut": "2026-10-05",
-   "fin": "2026-11-03",
+   "fin": "2026-11-09",
    "supports": [
     "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
     "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
     "sio/2sisr-fil-rouge/p05-dns-securiser-prouver",
     "sio/2sisr-fil-rouge/p06-web-apache-nginx-https-slides",
     "sio/2sisr-fil-rouge/p06-web-apache-nginx-https",
-    "sio/2sisr-fil-rouge/p07-nginx-letsencrypt-cloud"
+    "sio/2sisr-fil-rouge/p07-nginx-letsencrypt-cloud",
+    "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition"
    ]
   }
  ]
