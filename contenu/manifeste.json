@@ -2226,6 +2226,27 @@
    ]
   },
   {
+   "slug": "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition-slides",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Publier un service sans l'exposer",
+   "sousTitre": "Conteneur, proxy inverse, HTTPS et port fermé",
+   "nature": "Diaporama",
+   "date": "2026-11-09",
+   "pdf": "/sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition-slides.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "conteneur-proxy-inverse-https-et-port-fermé",
+     "text": "Conteneur, proxy inverse, HTTPS et port fermé"
+    }
+   ]
+  },
+  {
    "slug": "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition",
    "matiere": "sio",
    "classe": "2sisr",
@@ -3073,6 +3094,7 @@
     "sio/2sisr-fil-rouge/p06-web-apache-nginx-https-slides",
     "sio/2sisr-fil-rouge/p06-web-apache-nginx-https",
     "sio/2sisr-fil-rouge/p07-nginx-letsencrypt-cloud",
+    "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition-slides",
     "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition"
    ]
   }

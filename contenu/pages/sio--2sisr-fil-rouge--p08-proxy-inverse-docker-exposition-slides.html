@@ -1,0 +1,351 @@
+<section id="publier-un-service-sans-lexposer" class="slide title">
+<h2>Publier un service sans l’exposer</h2>
+<h3 id="conteneur-proxy-inverse-https-et-port-fermé">Conteneur, proxy
+inverse, HTTPS et port fermé</h3>
+<figure>
+<img role="img" aria-label="Situation de départ et objectif de la mise en service." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPk1pc2UgZW4gc2VydmljZSBkZSBsJ2FwcGxpY2F0aW9uIDogc2l0dWF0aW9uIGRlIGTDqXBhcnQgZXQgb2JqZWN0aWY8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5BdSBkw6lwYXJ0LCBsZSB2aXNpdGV1ciBqb2ludCBkaXJlY3RlbWVudCBsJ2FwcGxpY2F0aW9uIHN1ciBsZSBwb3J0IDgwODAsIGVuIEhUVFAgY2xhaXIsIHNhbnMgbm9tIGRlIGRvbWFpbmUgbmkgY2VydGlmaWNhdC4gw4AgbCdhcnJpdsOpZSwgbGUgdmlzaXRldXIgam9pbnQgTmdpbnggZW4gSFRUUFMgc3VyIGxlIHBvcnQgNDQzIGF2ZWMgbGUgbm9tIHNpc3JOLnRwLnNpb3Zpc2lvbi5mciA7IGxlIHBvcnQgODAgcmVkaXJpZ2UgdmVycyBIVFRQUyA7IE5naW54IHRyYW5zbWV0IMOgIGwnYXBwbGljYXRpb24gcGFyIGxhIGJvdWNsZSBsb2NhbGUgOyBsZSBwb3J0IDgwODAgbmUgcsOpcG9uZCBwbHVzIGRlcHVpcyBJbnRlcm5ldC48L2Rlc2M+CiAgPGRlZnM+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYXIiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiNEOTVDNTkiLz48L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImFhIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjRTQ5QTM4Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhayIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzY1Nzg4ZCIvPjwvbWFya2VyPgogIDwvZGVmcz4KICA8c3R5bGU+CiAgICAuem9uZXtmaWxsOiNmZmY7c3Ryb2tlOiMxNzIwMzM7c3Ryb2tlLXdpZHRoOjIuNX0KICAgIC5zdmN7ZmlsbDojRUFGNEZCO3N0cm9rZTojMzU2OEQ0O3N0cm9rZS13aWR0aDoyfQogICAgLnN2YzJ7ZmlsbDojRjdGOEZBO3N0cm9rZTojNjU3ODhkO3N0cm9rZS13aWR0aDoyfQogICAgLmh7Zm9udDo3MDAgMTlweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzE3MjAzM30KICAgIC50e2ZvbnQ6NTAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMzYzRiNWN9CiAgICAuY3tmb250OjYwMCAxNXB4IG1vbm9zcGFjZTtmaWxsOiMxNjRkNzl9CiAgICAubGJ7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLmJhZHtmaWxsOiNEOTVDNTk7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLnRhZ3J7ZmlsbDojRDk1QzU5fQogICAgLnRhZ2d7ZmlsbDojMUU4NDQ5fQogICAgLnRhZ3R7Zm9udDo3MDAgMTRweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I2ZmZn0KICA8L3N0eWxlPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY2MCIgZmlsbD0iI0Y3RjhGQSIvPgoKICA8IS0tIETDqXBhcnQgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjMwIiB5PSIzMCIgd2lkdGg9IjUyMCIgaGVpZ2h0PSI1MjAiIHJ4PSIxNiIvPgogIDxyZWN0IGNsYXNzPSJ0YWdyIiB4PSIzMCIgeT0iMzAiIHdpZHRoPSI1MjAiIGhlaWdodD0iMzYiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWdyIiB4PSIzMCIgeT0iNTAiIHdpZHRoPSI1MjAiIGhlaWdodD0iMTYiLz4KICA8dGV4dCB4PSI0OCIgeT0iNTQiIGNsYXNzPSJ0YWd0Ij5BVSBEw4lQQVJUIMK3IEwnQVBQTElDQVRJT04gVE9VVEUgU0VVTEU8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI2MCIgeT0iMTAwIiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjExMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNzYiIHk9IjEzNCIgY2xhc3M9ImgiPlZpc2l0ZXVyPC90ZXh0PgogIDx0ZXh0IHg9Ijc2IiB5PSIxNjIiIGNsYXNzPSJ0Ij5uYXZpZ2F0ZXVyLDwvdGV4dD4KICA8dGV4dCB4PSI3NiIgeT0iMTg0IiBjbGFzcz0idCI+c2Nhbm5lcuKApjwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjI4MCIgeT0iMzAwIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE1MCIgcng9IjEyIi8+CiAgPHRleHQgeD0iMjk2IiB5PSIzMzIiIGNsYXNzPSJoIj5Db250ZW5ldXIgYXBwPC90ZXh0PgogIDx0ZXh0IHg9IjI5NiIgeT0iMzYyIiBjbGFzcz0iYyI+MC4wLjAuMDo4MDgwPC90ZXh0PgogIDx0ZXh0IHg9IjI5NiIgeT0iMzkyIiBjbGFzcz0idCI+b3V2ZXJ0IMOgIHRvdXM8L3RleHQ+CiAgPHRleHQgeD0iMjk2IiB5PSI0MTgiIGNsYXNzPSJ0Ij5uZSBzYWl0IHBhcyBmYWlyZSBIVFRQUzwvdGV4dD4KCiAgPHBhdGggZD0iTTE3MCAyMTIgQzE5MCAzMzAgMjIwIDM3MCAyNzggMzc0IiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhcikiLz4KICA8dGV4dCB4PSI2MCIgeT0iMzAwIiBjbGFzcz0iYmFkIj5IVFRQIGVuIGNsYWlyPC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSIzMjQiIGNsYXNzPSJiYWQiPnBvcnQgODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iMzQ4IiBjbGFzcz0iYmFkIj5hdWN1biBjZXJ0aWZpY2F0PC90ZXh0PgoKICA8dGV4dCB4PSI2MCIgeT0iNDkwIiBjbGFzcz0idCI+TGUgbm9tIGFmZmljaMOpIGRhbnMgbCdhZHJlc3NlIG4nZXN0IHBhcyBwcm91dsOpLDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iNTE0IiBjbGFzcz0idCI+ZXQgcmllbiBuZSBzJ2ludGVycG9zZSBkZXZhbnQgbCdhcHBsaWNhdGlvbi48L3RleHQ+CgogIDwhLS0gT2JqZWN0aWYgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjU5MCIgeT0iMzAiIHdpZHRoPSI1ODAiIGhlaWdodD0iNTIwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnZyIgeD0iNTkwIiB5PSIzMCIgd2lkdGg9IjU4MCIgaGVpZ2h0PSIzNiIgcng9IjE2Ii8+PHJlY3QgY2xhc3M9InRhZ2ciIHg9IjU5MCIgeT0iNTAiIHdpZHRoPSI1ODAiIGhlaWdodD0iMTYiLz4KICA8dGV4dCB4PSI2MDgiIHk9IjU0IiBjbGFzcz0idGFndCI+TCdPQkpFQ1RJRiDCtyBVTiBTRVVMIFBPSU5UIEQnRU5UUsOJRTwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjYyMCIgeT0iMTAwIiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjExMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNjM2IiB5PSIxMzQiIGNsYXNzPSJoIj5WaXNpdGV1cjwvdGV4dD4KICA8dGV4dCB4PSI2MzYiIHk9IjE2MiIgY2xhc3M9InQiPmh0dHBzOi8vc2lzck48L3RleHQ+CiAgPHRleHQgeD0iNjM2IiB5PSIxODQiIGNsYXNzPSJ0Ij4udHAuc2lvdmlzaW9uLmZyPC90ZXh0PgoKICA8cmVjdCBjbGFzcz0ic3ZjIiB4PSI4OTAiIHk9IjkwIiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjE3MCIgcng9IjEyIi8+CiAgPHRleHQgeD0iOTA2IiB5PSIxMjIiIGNsYXNzPSJoIj5OZ2lueCwgcHJveHkgaW52ZXJzZTwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjE1MiIgY2xhc3M9ImMiPjo4MDwvdGV4dD48dGV4dCB4PSI5NTAiIHk9IjE1MiIgY2xhc3M9InQiPnJlZGlyaWdlIHZlcnMgSFRUUFM8L3RleHQ+CiAgPHRleHQgeD0iOTA2IiB5PSIxODAiIGNsYXNzPSJjIj46NDQzPC90ZXh0Pjx0ZXh0IHg9Ijk1MCIgeT0iMTgwIiBjbGFzcz0idCI+Y2VydGlmaWNhdCwgVExTPC90ZXh0PgogIDx0ZXh0IHg9IjkwNiIgeT0iMjA4IiBjbGFzcz0idCI+am91cm5hbGlzZSwgZmlsdHJlLDwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjIzMiIgY2xhc3M9InQiPnRyYW5zbWV0IMOgIGwnYXBwbGljYXRpb248L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI4OTAiIHk9IjM2MCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIxNTAiIHJ4PSIxMiIvPgogIDx0ZXh0IHg9IjkwNiIgeT0iMzkyIiBjbGFzcz0iaCI+Q29udGVuZXVyIGFwcDwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjQyMiIgY2xhc3M9ImMiPjo4MDgwPC90ZXh0PgogIDx0ZXh0IHg9IjkwNiIgeT0iNDUwIiBjbGFzcz0idCI+csOpc2VydsOpIMOgIE5naW54LDwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjQ3NCIgY2xhc3M9InQiPm5lIHLDqXBvbmQgcGx1cyDDoCBJbnRlcm5ldDwvdGV4dD4KCiAgPHBhdGggZD0iTTc5MCAxNDAgTDg4OCAxNDAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDx0ZXh0IHg9IjgwMCIgeT0iMTI4IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPkhUVFBTPC90ZXh0PgogIDxwYXRoIGQ9Ik03OTAgMTg2IEw4ODggMTg2IiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iOCA2IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FhKSIvPgogIDx0ZXh0IHg9IjgwMCIgeT0iMjEwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNDQTZGMUUiPkhUVFAg4oaSIDMwMTwvdGV4dD4KICA8cGF0aCBkPSJNMTAxOCAyNjIgTDEwMTggMzU4IiBzdHJva2U9IiM2NTc4OGQiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhaykiLz4KICA8dGV4dCB4PSIxMDMwIiB5PSIzMDYiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzUyNjQ3NyI+c3VyIGxlIHNlcnZldXI8L3RleHQ+CiAgPHRleHQgeD0iMTAzMCIgeT0iMzI2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiM1MjY0NzciPkhUVFAgaW50ZXJuZTwvdGV4dD4KCiAgPHBhdGggZD0iTTcwMCAyMTIgQzcxMCAzNDAgNzYwIDQyMCA4NjAgNDMyIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iNCA2IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZD0iTTg1MiA0MjAgbDI0IDI0IE04NzYgNDIwIGwtMjQgMjQiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPHRleHQgeD0iNjIwIiB5PSI0MDAiIGNsYXNzPSJiYWQiPlBvcnQgODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MjAiIHk9IjQyNCIgY2xhc3M9ImJhZCI+ZGVwdWlzIEludGVybmV0IDo8L3RleHQ+CiAgPHRleHQgeD0iNjIwIiB5PSI0NDgiIGNsYXNzPSJiYWQiPmF1Y3VuZSByw6lwb25zZTwvdGV4dD4KCiAgPCEtLSBzeW50aMOoc2UgLS0+CiAgPHJlY3QgeD0iMzAiIHk9IjU4MCIgd2lkdGg9IjExNDAiIGhlaWdodD0iNTYiIHJ4PSIxMCIgZmlsbD0iI0VBRkFGMSIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSI1MCIgeT0iNjE0IiBjbGFzcz0idCI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiPkxlIHRyYXZhaWwgZHUgam91ciDCtyA8L3RzcGFuPnBhc3NlciBkZSBnYXVjaGUgw6AgZHJvaXRlLCBldCBsZSBwcm91dmVyIGRlcHVpcyBsJ2V4dMOpcmlldXIgZHUgc2VydmV1ci48L3RleHQ+Cjwvc3ZnPgo=" alt="Situation de départ et objectif de la mise en service." />
+<figcaption aria-hidden="true">Situation de départ et objectif de la
+mise en service.</figcaption>
+</figure>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Publier</strong> en HTTPS une application qui ne sait pas le
+faire.</li>
+<li><strong>Vérifier</strong> ce qui est réellement joignable depuis
+Internet.</li>
+<li><strong>Fermer</strong> un port exposé, et
+<strong>expliquer</strong> ce qui l’a fermé.</li>
+</ul>
+<p><strong>Prérequis :</strong> votre clé SSH, adresse et port,
+certificat. Absent le 3/11 : la fiche P07 sert de guide pour le
+certificat.</p>
+</section>
+<section id="on-vous-livre-une-application.-vous-en-faites-quoi" class="slide concept">
+<h2>On vous livre une application. Vous en faites quoi ?</h2>
+<p>Un éditeur vous donne un programme prêt à lancer. Il répond en HTTP,
+sur le port 8080.</p>
+<table>
+<thead>
+<tr>
+<th>Il ne connaît pas</th>
+<th>Il ne fait pas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Votre nom de domaine</td>
+<td>HTTPS, ni certificat</td>
+</tr>
+<tr>
+<td>Vos visiteurs</td>
+<td>Le tri des requêtes</td>
+</tr>
+<tr>
+<td>Internet et ses scanners</td>
+<td>Votre protection</td>
+</tr>
+</tbody>
+</table>
+<p>Le lancer sur un serveur public, c’est facile. <strong>Le mettre en
+service, c’est autre chose.</strong></p>
+</section>
+<section id="un-conteneur-le-programme-et-ce-quil-lui-faut" class="slide compare">
+<h2>Un conteneur : le programme et ce qu’il lui faut</h2>
+<p>Comme un conteneur maritime : on ne regarde pas dedans, on le pose et
+on branche.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Machine virtuelle</th>
+<th>Conteneur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contient</td>
+<td>Un système complet</td>
+<td>L’application et ses dépendances</td>
+</tr>
+<tr>
+<td>Démarrage</td>
+<td>En minutes</td>
+<td>En secondes</td>
+</tr>
+<tr>
+<td>Isolation</td>
+<td>Forte, un système par VM</td>
+<td>Partage le noyau du serveur</td>
+</tr>
+<tr>
+<td>Vous l’utilisez</td>
+<td>Proxmox, cloud</td>
+<td><code>docker run</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Aujourd’hui, Docker reste une boîte fournie.</strong>
+Compose, volumes et secrets viendront plus tard.</p>
+</section>
+<section id="rappel-doù-vient-le-cadenas" class="slide concept">
+<h2>Rappel : d’où vient le cadenas ?</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse vue en P07</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Que lie un certificat ?</td>
+<td>Une clé publique à un nom, sous la signature d’une autorité</td>
+</tr>
+<tr>
+<td>Comment Let’s Encrypt vous croit-il ?</td>
+<td>Il vient lire un jeton sur le port 80 de votre serveur</td>
+</tr>
+<tr>
+<td>Où reste la clé privée ?</td>
+<td>Sur le serveur, elle ne voyage jamais</td>
+</tr>
+<tr>
+<td>Pourquoi pas d’alerte du navigateur ?</td>
+<td>L’autorité est déjà connue de tous les postes</td>
+</tr>
+</tbody>
+</table>
+<p>Absent le 3/11 ? Tout est dans la fiche P07, et vous repartez d’un
+serveur neuf comme les autres.</p>
+</section>
+<section id="le-proxy-inverse-laccueil-de-limmeuble" class="slide concept">
+<h2>Le proxy inverse : l’accueil de l’immeuble</h2>
+<p>Personne ne monte directement dans les bureaux : on passe par
+l’accueil, qui oriente.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ce qu’il centralise</th>
+<th>Ce que ça change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Un seul point d’entrée</strong></td>
+<td>L’application n’a plus à être exposée</td>
+</tr>
+<tr>
+<td><strong>Le certificat et TLS</strong></td>
+<td>Un seul endroit à gérer et à renouveler</td>
+</tr>
+<tr>
+<td><strong>Les journaux</strong></td>
+<td>On sait qui a demandé quoi</td>
+</tr>
+<tr>
+<td><strong>Le filtrage et la charge</strong></td>
+<td>Protection et répartition possibles devant l’application</td>
+</tr>
+</tbody>
+</table>
+<p>Produits courants : Nginx, HAProxy, Traefik, Caddy.</p>
+</section>
+<section id="le-travail-du-jour" class="slide full-image">
+<h2>Le travail du jour</h2>
+<figure>
+<img role="img" aria-label="À gauche, l’application jointe directement en HTTP sur le port 8080. À droite, Nginx reçoit en HTTPS et transmet à l’application, dont le port ne répond plus depuis Internet." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPk1pc2UgZW4gc2VydmljZSBkZSBsJ2FwcGxpY2F0aW9uIDogc2l0dWF0aW9uIGRlIGTDqXBhcnQgZXQgb2JqZWN0aWY8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5BdSBkw6lwYXJ0LCBsZSB2aXNpdGV1ciBqb2ludCBkaXJlY3RlbWVudCBsJ2FwcGxpY2F0aW9uIHN1ciBsZSBwb3J0IDgwODAsIGVuIEhUVFAgY2xhaXIsIHNhbnMgbm9tIGRlIGRvbWFpbmUgbmkgY2VydGlmaWNhdC4gw4AgbCdhcnJpdsOpZSwgbGUgdmlzaXRldXIgam9pbnQgTmdpbnggZW4gSFRUUFMgc3VyIGxlIHBvcnQgNDQzIGF2ZWMgbGUgbm9tIHNpc3JOLnRwLnNpb3Zpc2lvbi5mciA7IGxlIHBvcnQgODAgcmVkaXJpZ2UgdmVycyBIVFRQUyA7IE5naW54IHRyYW5zbWV0IMOgIGwnYXBwbGljYXRpb24gcGFyIGxhIGJvdWNsZSBsb2NhbGUgOyBsZSBwb3J0IDgwODAgbmUgcsOpcG9uZCBwbHVzIGRlcHVpcyBJbnRlcm5ldC48L2Rlc2M+CiAgPGRlZnM+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYXIiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiNEOTVDNTkiLz48L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImFhIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjRTQ5QTM4Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhayIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzY1Nzg4ZCIvPjwvbWFya2VyPgogIDwvZGVmcz4KICA8c3R5bGU+CiAgICAuem9uZXtmaWxsOiNmZmY7c3Ryb2tlOiMxNzIwMzM7c3Ryb2tlLXdpZHRoOjIuNX0KICAgIC5zdmN7ZmlsbDojRUFGNEZCO3N0cm9rZTojMzU2OEQ0O3N0cm9rZS13aWR0aDoyfQogICAgLnN2YzJ7ZmlsbDojRjdGOEZBO3N0cm9rZTojNjU3ODhkO3N0cm9rZS13aWR0aDoyfQogICAgLmh7Zm9udDo3MDAgMTlweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzE3MjAzM30KICAgIC50e2ZvbnQ6NTAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMzYzRiNWN9CiAgICAuY3tmb250OjYwMCAxNXB4IG1vbm9zcGFjZTtmaWxsOiMxNjRkNzl9CiAgICAubGJ7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLmJhZHtmaWxsOiNEOTVDNTk7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmfQogICAgLnRhZ3J7ZmlsbDojRDk1QzU5fQogICAgLnRhZ2d7ZmlsbDojMUU4NDQ5fQogICAgLnRhZ3R7Zm9udDo3MDAgMTRweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I2ZmZn0KICA8L3N0eWxlPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY2MCIgZmlsbD0iI0Y3RjhGQSIvPgoKICA8IS0tIETDqXBhcnQgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjMwIiB5PSIzMCIgd2lkdGg9IjUyMCIgaGVpZ2h0PSI1MjAiIHJ4PSIxNiIvPgogIDxyZWN0IGNsYXNzPSJ0YWdyIiB4PSIzMCIgeT0iMzAiIHdpZHRoPSI1MjAiIGhlaWdodD0iMzYiIHJ4PSIxNiIvPjxyZWN0IGNsYXNzPSJ0YWdyIiB4PSIzMCIgeT0iNTAiIHdpZHRoPSI1MjAiIGhlaWdodD0iMTYiLz4KICA8dGV4dCB4PSI0OCIgeT0iNTQiIGNsYXNzPSJ0YWd0Ij5BVSBEw4lQQVJUIMK3IEwnQVBQTElDQVRJT04gVE9VVEUgU0VVTEU8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI2MCIgeT0iMTAwIiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjExMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNzYiIHk9IjEzNCIgY2xhc3M9ImgiPlZpc2l0ZXVyPC90ZXh0PgogIDx0ZXh0IHg9Ijc2IiB5PSIxNjIiIGNsYXNzPSJ0Ij5uYXZpZ2F0ZXVyLDwvdGV4dD4KICA8dGV4dCB4PSI3NiIgeT0iMTg0IiBjbGFzcz0idCI+c2Nhbm5lcuKApjwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjI4MCIgeT0iMzAwIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE1MCIgcng9IjEyIi8+CiAgPHRleHQgeD0iMjk2IiB5PSIzMzIiIGNsYXNzPSJoIj5Db250ZW5ldXIgYXBwPC90ZXh0PgogIDx0ZXh0IHg9IjI5NiIgeT0iMzYyIiBjbGFzcz0iYyI+MC4wLjAuMDo4MDgwPC90ZXh0PgogIDx0ZXh0IHg9IjI5NiIgeT0iMzkyIiBjbGFzcz0idCI+b3V2ZXJ0IMOgIHRvdXM8L3RleHQ+CiAgPHRleHQgeD0iMjk2IiB5PSI0MTgiIGNsYXNzPSJ0Ij5uZSBzYWl0IHBhcyBmYWlyZSBIVFRQUzwvdGV4dD4KCiAgPHBhdGggZD0iTTE3MCAyMTIgQzE5MCAzMzAgMjIwIDM3MCAyNzggMzc0IiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhcikiLz4KICA8dGV4dCB4PSI2MCIgeT0iMzAwIiBjbGFzcz0iYmFkIj5IVFRQIGVuIGNsYWlyPC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSIzMjQiIGNsYXNzPSJiYWQiPnBvcnQgODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iMzQ4IiBjbGFzcz0iYmFkIj5hdWN1biBjZXJ0aWZpY2F0PC90ZXh0PgoKICA8dGV4dCB4PSI2MCIgeT0iNDkwIiBjbGFzcz0idCI+TGUgbm9tIGFmZmljaMOpIGRhbnMgbCdhZHJlc3NlIG4nZXN0IHBhcyBwcm91dsOpLDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iNTE0IiBjbGFzcz0idCI+ZXQgcmllbiBuZSBzJ2ludGVycG9zZSBkZXZhbnQgbCdhcHBsaWNhdGlvbi48L3RleHQ+CgogIDwhLS0gT2JqZWN0aWYgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjU5MCIgeT0iMzAiIHdpZHRoPSI1ODAiIGhlaWdodD0iNTIwIiByeD0iMTYiLz4KICA8cmVjdCBjbGFzcz0idGFnZyIgeD0iNTkwIiB5PSIzMCIgd2lkdGg9IjU4MCIgaGVpZ2h0PSIzNiIgcng9IjE2Ii8+PHJlY3QgY2xhc3M9InRhZ2ciIHg9IjU5MCIgeT0iNTAiIHdpZHRoPSI1ODAiIGhlaWdodD0iMTYiLz4KICA8dGV4dCB4PSI2MDgiIHk9IjU0IiBjbGFzcz0idGFndCI+TCdPQkpFQ1RJRiDCtyBVTiBTRVVMIFBPSU5UIEQnRU5UUsOJRTwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjYyMCIgeT0iMTAwIiB3aWR0aD0iMTcwIiBoZWlnaHQ9IjExMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNjM2IiB5PSIxMzQiIGNsYXNzPSJoIj5WaXNpdGV1cjwvdGV4dD4KICA8dGV4dCB4PSI2MzYiIHk9IjE2MiIgY2xhc3M9InQiPmh0dHBzOi8vc2lzck48L3RleHQ+CiAgPHRleHQgeD0iNjM2IiB5PSIxODQiIGNsYXNzPSJ0Ij4udHAuc2lvdmlzaW9uLmZyPC90ZXh0PgoKICA8cmVjdCBjbGFzcz0ic3ZjIiB4PSI4OTAiIHk9IjkwIiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjE3MCIgcng9IjEyIi8+CiAgPHRleHQgeD0iOTA2IiB5PSIxMjIiIGNsYXNzPSJoIj5OZ2lueCwgcHJveHkgaW52ZXJzZTwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjE1MiIgY2xhc3M9ImMiPjo4MDwvdGV4dD48dGV4dCB4PSI5NTAiIHk9IjE1MiIgY2xhc3M9InQiPnJlZGlyaWdlIHZlcnMgSFRUUFM8L3RleHQ+CiAgPHRleHQgeD0iOTA2IiB5PSIxODAiIGNsYXNzPSJjIj46NDQzPC90ZXh0Pjx0ZXh0IHg9Ijk1MCIgeT0iMTgwIiBjbGFzcz0idCI+Y2VydGlmaWNhdCwgVExTPC90ZXh0PgogIDx0ZXh0IHg9IjkwNiIgeT0iMjA4IiBjbGFzcz0idCI+am91cm5hbGlzZSwgZmlsdHJlLDwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjIzMiIgY2xhc3M9InQiPnRyYW5zbWV0IMOgIGwnYXBwbGljYXRpb248L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMyIiB4PSI4OTAiIHk9IjM2MCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIxNTAiIHJ4PSIxMiIvPgogIDx0ZXh0IHg9IjkwNiIgeT0iMzkyIiBjbGFzcz0iaCI+Q29udGVuZXVyIGFwcDwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjQyMiIgY2xhc3M9ImMiPjo4MDgwPC90ZXh0PgogIDx0ZXh0IHg9IjkwNiIgeT0iNDUwIiBjbGFzcz0idCI+csOpc2VydsOpIMOgIE5naW54LDwvdGV4dD4KICA8dGV4dCB4PSI5MDYiIHk9IjQ3NCIgY2xhc3M9InQiPm5lIHLDqXBvbmQgcGx1cyDDoCBJbnRlcm5ldDwvdGV4dD4KCiAgPHBhdGggZD0iTTc5MCAxNDAgTDg4OCAxNDAiIHN0cm9rZT0iIzFFODQ0OSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FnKSIvPgogIDx0ZXh0IHg9IjgwMCIgeT0iMTI4IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiMxRTg0NDkiPkhUVFBTPC90ZXh0PgogIDxwYXRoIGQ9Ik03OTAgMTg2IEw4ODggMTg2IiBzdHJva2U9IiNFNDlBMzgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iOCA2IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FhKSIvPgogIDx0ZXh0IHg9IjgwMCIgeT0iMjEwIiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiNDQTZGMUUiPkhUVFAg4oaSIDMwMTwvdGV4dD4KICA8cGF0aCBkPSJNMTAxOCAyNjIgTDEwMTggMzU4IiBzdHJva2U9IiM2NTc4OGQiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhaykiLz4KICA8dGV4dCB4PSIxMDMwIiB5PSIzMDYiIGNsYXNzPSJsYiIgc3R5bGU9ImZpbGw6IzUyNjQ3NyI+c3VyIGxlIHNlcnZldXI8L3RleHQ+CiAgPHRleHQgeD0iMTAzMCIgeT0iMzI2IiBjbGFzcz0ibGIiIHN0eWxlPSJmaWxsOiM1MjY0NzciPkhUVFAgaW50ZXJuZTwvdGV4dD4KCiAgPHBhdGggZD0iTTcwMCAyMTIgQzcxMCAzNDAgNzYwIDQyMCA4NjAgNDMyIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iNCA2IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZD0iTTg1MiA0MjAgbDI0IDI0IE04NzYgNDIwIGwtMjQgMjQiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPHRleHQgeD0iNjIwIiB5PSI0MDAiIGNsYXNzPSJiYWQiPlBvcnQgODA4MDwvdGV4dD4KICA8dGV4dCB4PSI2MjAiIHk9IjQyNCIgY2xhc3M9ImJhZCI+ZGVwdWlzIEludGVybmV0IDo8L3RleHQ+CiAgPHRleHQgeD0iNjIwIiB5PSI0NDgiIGNsYXNzPSJiYWQiPmF1Y3VuZSByw6lwb25zZTwvdGV4dD4KCiAgPCEtLSBzeW50aMOoc2UgLS0+CiAgPHJlY3QgeD0iMzAiIHk9IjU4MCIgd2lkdGg9IjExNDAiIGhlaWdodD0iNTYiIHJ4PSIxMCIgZmlsbD0iI0VBRkFGMSIgc3Ryb2tlPSIjMUU4NDQ5IiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSI1MCIgeT0iNjE0IiBjbGFzcz0idCI+PHRzcGFuIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxRTg0NDkiPkxlIHRyYXZhaWwgZHUgam91ciDCtyA8L3RzcGFuPnBhc3NlciBkZSBnYXVjaGUgw6AgZHJvaXRlLCBldCBsZSBwcm91dmVyIGRlcHVpcyBsJ2V4dMOpcmlldXIgZHUgc2VydmV1ci48L3RleHQ+Cjwvc3ZnPgo=" alt="À gauche, l’application jointe directement en HTTP sur le port 8080. À droite, Nginx reçoit en HTTPS et transmet à l’application, dont le port ne répond plus depuis Internet." />
+<figcaption aria-hidden="true">À gauche, l’application jointe
+directement en HTTP sur le port 8080. À droite, Nginx reçoit en HTTPS et
+transmet à l’application, dont le port ne répond plus depuis
+Internet.</figcaption>
+</figure>
+</section>
+<section id="fermer-un-port-deux-leviers" class="slide compare">
+<h2>Fermer un port : deux leviers</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>L’adresse d’écoute</th>
+<th>Le pare-feu (nftables)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Question posée</td>
+<td>Sur quelle porte le service attend-il ?</td>
+<td>Quels paquets laisse-t-on passer ?</td>
+</tr>
+<tr>
+<td>Où ça se règle</td>
+<td>Dans le service</td>
+<td>Dans le noyau du serveur</td>
+</tr>
+<tr>
+<td>Exemple</td>
+<td><code>0.0.0.0</code> : partout ; <code>127.0.0.1</code> : en
+local</td>
+<td><code>policy drop</code>, puis ce qui est autorisé</td>
+</tr>
+<tr>
+<td>Comment l’observer</td>
+<td><code>ss -ltnp</code></td>
+<td><code>nft list ruleset</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Vous allez prévoir, tester, puis expliquer ce que vous
+observez.</strong></p>
+</section>
+<section id="un-pare-feu-peut-vous-enfermer-dehors" class="slide warning">
+<h2>Un pare-feu peut vous enfermer dehors</h2>
+<p>Ce serveur est sur Internet, et une règle fausse coupe aussi votre
+SSH.</p>
+<ul>
+<li><strong>Avant toute règle :</strong> programmer le filet de
+sécurité, qui annule tout au bout de cinq minutes.</li>
+<li><strong>Un test ne vaut que depuis l’extérieur :</strong> depuis le
+serveur lui-même, il ne prouve rien.</li>
+<li><strong>Ce qui « devrait » marcher n’est pas une preuve :</strong>
+on regarde ce qui répond vraiment.</li>
+</ul>
+</section>
+<section id="ce-quon-cherche-à-apprendre" class="slide concept">
+<h2>Ce qu’on cherche à apprendre</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Ce que vous saurez</th>
+<th>À quoi ça sert</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Un modèle</strong></td>
+<td>Suivre le trajet d’une requête, du navigateur à l’application</td>
+<td>Raisonner sur Nginx, Stormshield, n’importe quel équipement</td>
+</tr>
+<tr>
+<td><strong>Un geste</strong></td>
+<td>Configurer, valider, recharger, vérifier</td>
+<td>Le quotidien d’un administrateur</td>
+</tr>
+<tr>
+<td><strong>Une méthode</strong></td>
+<td>Observé, attendu, hypothèse, test</td>
+<td>Dépanner sans changer dix choses au hasard</td>
+</tr>
+</tbody>
+</table>
+<p>Les commandes s’oublient et se retrouvent. <strong>Le raisonnement,
+c’est ce qui reste.</strong></p>
+</section>
+<section id="à-quoi-ça-sert-pour-le-bts" class="slide concept">
+<h2>À quoi ça sert pour le BTS ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Épreuve</th>
+<th>Ce qu’on y demande</th>
+<th>Ce que vous faites aujourd’hui</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>E7</strong>, Gaura 2025, A2.5</td>
+<td>Écrire la configuration d’un proxy inverse Nginx</td>
+<td>Vous l’écrivez et elle tourne</td>
+</tr>
+<tr>
+<td><strong>E7</strong>, Gaura 2025, A2.3 et A2.4</td>
+<td>Justifier certificats et chiffrement TLS</td>
+<td>Vous gérez un vrai certificat</td>
+</tr>
+<tr>
+<td><strong>E7</strong>, Sparcle 2026, B1.6</td>
+<td>Écrire des règles : source, destination, port, décision</td>
+<td>Matrice des flux, question 9</td>
+</tr>
+<tr>
+<td><strong>E6</strong>, portfolio</td>
+<td>Prouver un accès sécurisé à un service</td>
+<td>Vos tests sont déjà des preuves</td>
+</tr>
+</tbody>
+</table>
+<p>À l’écrit, on vous demandera de <strong>justifier</strong>, pas de
+réciter.</p>
+</section>
+<section id="comment-on-saura-que-cest-réussi" class="slide summary">
+<h2>Comment on saura que c’est réussi</h2>
+<p>Je testerai votre serveur depuis l’extérieur, en fin de séance,
+devant tout le monde :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Test</th>
+<th>Attendu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://sisrN.tp.siovision.fr/</code></td>
+<td>La page avec <code>Name: sisrN</code>, sans alerte</td>
+</tr>
+<tr>
+<td><code>http://sisrN.tp.siovision.fr/</code></td>
+<td>Redirection <code>301</code> vers HTTPS</td>
+</tr>
+<tr>
+<td><code>http://sisrN.tp.siovision.fr:8080/</code></td>
+<td>Aucune réponse de l’application</td>
+</tr>
+</tbody>
+</table>
+<p>Et il faudra <strong>expliquer sans notes</strong> le chemin d’une
+requête.</p>
+</section>
+<section id="et-maintenant-à-vous" class="slide activity">
+<h2>Et maintenant, à vous</h2>
+<p><strong>Sur ordinateur · individuel · un serveur chacun · jusqu’à la
+restitution</strong></p>
+<p><strong>À produire :</strong> les trois tests réussis, et vos preuves
+commande / attendu / observé / conclusion.</p>
+<ol type="1">
+<li><strong>Démarrer :</strong> fiche P08 sur le site, étapes 1 et 2 :
+serveur neuf et application lancée.</li>
+<li><strong>Problème 1 :</strong> HTTPS par le proxy inverse.</li>
+<li><strong>Problème 2 :</strong> fermer le port 8080. Notez votre
+prévision avant de tester.</li>
+</ol>
+</section>
