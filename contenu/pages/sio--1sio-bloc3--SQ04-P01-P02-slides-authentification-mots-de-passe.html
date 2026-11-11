@@ -1,0 +1,433 @@
+<section id="prouver-qui-lon-est" class="slide title">
+<h2>Prouver qui l’on est</h2>
+<h3 id="identification-authentification-et-mots-de-passe">Identification,
+authentification et mots de passe</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Distinguer</strong> identification, authentification et
+autorisation.</li>
+<li><strong>Estimer</strong> la force d’un mot de passe, et repérer ce
+que le calcul ne voit pas.</li>
+<li><strong>Expliquer</strong> pourquoi on ne réutilise jamais un mot de
+passe.</li>
+</ul>
+<p><strong>Prérequis :</strong> les besoins DICP et l’usurpation
+d’identité, vus en début d’année.</p>
+</section>
+<section id="ce-matin-chez-soft-tech" class="slide concept">
+<h2>Ce matin, chez Soft-Tech</h2>
+<p>À 3 h 12, quelqu’un s’est connecté à l’outil de facturation avec le
+compte de Léa, technicienne. Le mot de passe était
+<strong>correct</strong>. Léa assure qu’elle dormait.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Question</th>
+<th>Ce qu’on va comprendre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le site s’est-il trompé ?</td>
+<td>Ce qu’il vérifie vraiment</td>
+</tr>
+<tr>
+<td>Comment connaître ce mot de passe ?</td>
+<td>Deviner, ou le récupérer ailleurs</td>
+</tr>
+<tr>
+<td>Qu’aurait-il fallu faire ?</td>
+<td>Les bons usages, et les outils</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="trois-étapes-quon-confond" class="slide compare">
+<h2>Trois étapes qu’on confond</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Identification</th>
+<th>Authentification</th>
+<th>Autorisation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Question</td>
+<td>Qui dites-vous être ?</td>
+<td>Pouvez-vous le prouver ?</td>
+<td>Avez-vous le droit ?</td>
+</tr>
+<tr>
+<td>Exemple</td>
+<td><code>lea.martin@soft-tech.fr</code></td>
+<td>Le mot de passe</td>
+<td>Créer une facture : oui</td>
+</tr>
+<tr>
+<td>Secret ?</td>
+<td>Non, souvent public</td>
+<td><strong>Oui</strong></td>
+<td>Décidé par l’organisation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Le site vérifie un secret, pas une personne.</strong> Celui
+qui connaît le secret devient Léa.</p>
+</section>
+<section id="trois-façons-de-prouver" class="slide concept">
+<h2>Trois façons de prouver</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Facteur</th>
+<th>Exemples</th>
+<th>Point faible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ce que je sais</strong></td>
+<td>Mot de passe, code PIN</td>
+<td>Se devine, se vole, se réutilise</td>
+</tr>
+<tr>
+<td><strong>Ce que je possède</strong></td>
+<td>Téléphone, clé de sécurité, carte</td>
+<td>Se perd, se vole</td>
+</tr>
+<tr>
+<td><strong>Ce que je suis</strong></td>
+<td>Empreinte digitale, visage</td>
+<td>Ne se change pas s’il fuit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MFA</strong> (authentification multifacteur) : deux facteurs
+de familles <strong>différentes</strong>. Deux mots de passe, ce n’est
+pas de la MFA.</p>
+</section>
+<section id="des-secrets-partout-dans-un-si" class="slide concept">
+<h2>Des secrets partout dans un SI</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Secret</th>
+<th>Qui s’en sert</th>
+<th>S’il fuit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mot de passe</td>
+<td>Une personne</td>
+<td>Usurpation de son compte</td>
+</tr>
+<tr>
+<td>Clé d’API</td>
+<td>Un programme</td>
+<td>Le service est utilisé à vos frais</td>
+</tr>
+<tr>
+<td>Jeton de session</td>
+<td>Le navigateur, après connexion</td>
+<td>Connexion volée sans mot de passe</td>
+</tr>
+<tr>
+<td>Code PIN</td>
+<td>Une personne, sur un appareil</td>
+<td>Accès à l’appareil</td>
+</tr>
+</tbody>
+</table>
+<p>Même règle pour tous : <strong>ne se partage pas, ne s’écrit pas en
+clair, se change dès qu’il a fui.</strong></p>
+</section>
+<section id="deviner-un-mot-de-passe" class="slide compare">
+<h2>Deviner un mot de passe</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Force brute</th>
+<th>Attaque par dictionnaire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Principe</td>
+<td>Essayer <strong>toutes</strong> les combinaisons</td>
+<td>Essayer les mots de passe <strong>probables</strong></td>
+</tr>
+<tr>
+<td>Liste utilisée</td>
+<td><code>aaaa</code>, <code>aaab</code>, <code>aaac</code>…</td>
+<td>Mots courants, fuites passées, variantes</td>
+</tr>
+<tr>
+<td>Efficace contre</td>
+<td>Les mots de passe courts</td>
+<td>Les mots de passe « humains »</td>
+</tr>
+</tbody>
+</table>
+<p>Sur une page de connexion qui bloque après cinq essais, seul le
+dictionnaire a une chance : <strong>les cinq premiers mots de sa
+liste.</strong></p>
+</section>
+<section id="lentropie-mesurer-le-hasard" class="slide definition">
+<h2>L’entropie : mesurer le hasard</h2>
+<p>Nombre de combinaisons = N<sup>L</sup>, avec <strong>N</strong>
+caractères possibles et une longueur <strong>L</strong>. On l’exprime en
+bits : <strong>entropie = L × log₂(N)</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Caractères utilisés</th>
+<th>N</th>
+<th>Bits par caractère</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chiffres</td>
+<td>10</td>
+<td>3,3</td>
+</tr>
+<tr>
+<td>Minuscules</td>
+<td>26</td>
+<td>4,7</td>
+</tr>
+<tr>
+<td>Minuscules et majuscules</td>
+<td>52</td>
+<td>5,7</td>
+</tr>
+<tr>
+<td>Lettres et chiffres</td>
+<td>62</td>
+<td>6,0</td>
+</tr>
+<tr>
+<td>Tout le clavier</td>
+<td>95</td>
+<td>6,6</td>
+</tr>
+</tbody>
+</table>
+<p>Chaque bit en plus <strong>double</strong> le nombre d’essais
+nécessaires.</p>
+</section>
+<section id="calculons" class="slide concept">
+<h2>Calculons</h2>
+<p>Hypothèse : un attaquant équipé teste <strong>un milliard</strong> de
+combinaisons par seconde.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mot de passe tiré au hasard</th>
+<th>Calcul</th>
+<th>Entropie</th>
+<th>Tout essayer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code de 4 chiffres</td>
+<td>4 × 3,3</td>
+<td>13 bits</td>
+<td>Instantané</td>
+</tr>
+<tr>
+<td>8 caractères, tout le clavier</td>
+<td>8 × 6,6</td>
+<td>53 bits</td>
+<td>Environ 77 jours</td>
+</tr>
+<tr>
+<td>12 minuscules</td>
+<td>12 × 4,7</td>
+<td>56 bits</td>
+<td>Environ 3 ans</td>
+</tr>
+<tr>
+<td>14 caractères, lettres et chiffres</td>
+<td>14 × 6,0</td>
+<td>83 bits</td>
+<td>Des centaines de millions d’années</td>
+</tr>
+</tbody>
+</table>
+<p><strong>La longueur pèse plus que la complexité.</strong> Au-delà de
+80 bits, la force brute devient irréaliste.</p>
+</section>
+<section id="le-calcul-ne-voit-pas-le-dictionnaire" class="slide warning">
+<h2>Le calcul ne voit pas le dictionnaire</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mot de passe</th>
+<th>Selon la formule</th>
+<th>En réalité</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>azerty</code></td>
+<td>28 bits</td>
+<td>Dans toutes les listes, trouvé au premier essai</td>
+</tr>
+<tr>
+<td><code>P@ssw0rd!</code></td>
+<td>59 bits</td>
+<td>Variante connue, trouvée en quelques secondes</td>
+</tr>
+<tr>
+<td><code>Mistral2019!</code></td>
+<td>79 bits</td>
+<td>Mot + année + <code>!</code> : le schéma le plus courant</td>
+</tr>
+</tbody>
+</table>
+<p>L’entropie ne mesure que le <strong>hasard réel</strong>. Un mot de
+passe choisi par un humain en a beaucoup moins que la formule ne le
+dit.</p>
+</section>
+<section id="la-phrase-de-passe" class="slide concept">
+<h2>La phrase de passe</h2>
+<p>Cinq mots <strong>tirés au hasard</strong> dans une liste de 7 776
+mots : 7 776<sup>5</sup> combinaisons, soit <strong>65 bits</strong>, et
+ça se retient.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Exemple, à ne pas réutiliser</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oui</td>
+<td><code>tulipe-orbite-glacier-banjo-sept</code></td>
+<td>Mots sans lien, tirés au dé ou par un outil</td>
+</tr>
+<tr>
+<td>Non</td>
+<td><code>Le petit chat est mort</code></td>
+<td>Citation connue : elle est dans les dictionnaires</td>
+</tr>
+</tbody>
+</table>
+<p>On compte l’entropie <strong>par mot</strong>, pas par lettre :
+l’attaquant connaît la liste.</p>
+</section>
+<section id="une-fuite-toutes-les-portes" class="slide full-image">
+<h2>Une fuite, toutes les portes</h2>
+<figure>
+<img role="img" aria-label="Le forum RétroGamers se fait voler sa base. Le robot de l’attaquant essaie le même couple adresse et mot de passe sur la messagerie personnelle, la boutique, la messagerie et la facturation Soft-Tech de Léa, qui s’ouvrent toutes. Un mot de passe par site, un gestionnaire, un second facteur ou une alerte l’auraient arrêté." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlVuZSBmdWl0ZSwgdG91dGVzIGxlcyBwb3J0ZXMgOiBsYSByw6l1dGlsaXNhdGlvbiBkJ3VuIG1vdCBkZSBwYXNzZTwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPkxlIGZvcnVtIFLDqXRyb0dhbWVycyBzZSBmYWl0IHZvbGVyIHNhIGJhc2UgOiBhZHJlc3NlcyBlLW1haWwgZXQgbW90cyBkZSBwYXNzZSBzb250IHB1Ymxpw6lzLiBMJ2F0dGFxdWFudCBlc3NhaWUgYXV0b21hdGlxdWVtZW50IGxlIGNvdXBsZSB0cm91dsOpIHN1ciBkJ2F1dHJlcyBzaXRlcy4gTMOpYSBheWFudCB1dGlsaXPDqSBsZSBtw6ptZSBtb3QgZGUgcGFzc2UgcGFydG91dCwgc2EgbWVzc2FnZXJpZSBwZXJzb25uZWxsZSwgc2EgYm91dGlxdWUgZW4gbGlnbmUsIHNhIG1lc3NhZ2VyaWUgU29mdC1UZWNoIGV0IGwnb3V0aWwgZGUgZmFjdHVyYXRpb24gU29mdC1UZWNoIHMnb3V2cmVudC4gQXZlYyB1biBtb3QgZGUgcGFzc2UgZGlmZsOpcmVudCBwYXIgc2l0ZSwgc2V1bCBsZSBmb3J1bSBlc3QgdG91Y2jDqS48L2Rlc2M+CiAgPGRlZnM+CiAgICA8bWFya2VyIGlkPSJhciIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iI0Q5NUM1OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYWsiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiM2NTc4OGQiLz48L21hcmtlcj4KICA8L2RlZnM+CiAgPHN0eWxlPgogICAgLnpvbmV7ZmlsbDojZmZmO3N0cm9rZTojMTcyMDMzO3N0cm9rZS13aWR0aDoyLjV9CiAgICAubGVha3tmaWxsOiNGREVERUM7c3Ryb2tlOiNEOTVDNTk7c3Ryb2tlLXdpZHRoOjIuNX0KICAgIC5zdmN7ZmlsbDojRjdGOEZBO3N0cm9rZTojNjU3ODhkO3N0cm9rZS13aWR0aDoyfQogICAgLnByb3tmaWxsOiNFQUY0RkI7c3Ryb2tlOiMzNTY4RDQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAuaHtmb250OjcwMCAxOXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLnR7Zm9udDo1MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzNjNGI1Y30KICAgIC5je2ZvbnQ6NjAwIDE0cHggbW9ub3NwYWNlO2ZpbGw6IzE2NGQ3OX0KICAgIC5iYWR7Zm9udDo3MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I0Q5NUM1OX0KICAgIC5va3tmb250OjcwMCAxNXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMUU4NDQ5fQogICAgLnRhZ3R7Zm9udDo3MDAgMTRweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I2ZmZn0KICA8L3N0eWxlPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY2MCIgZmlsbD0iI0Y3RjhGQSIvPgoKICA8IS0tIEZ1aXRlIC0tPgogIDxyZWN0IGNsYXNzPSJsZWFrIiB4PSIzMCIgeT0iNDAiIHdpZHRoPSIzMzAiIGhlaWdodD0iMjUwIiByeD0iMTQiLz4KICA8cmVjdCB4PSIzMCIgeT0iNDAiIHdpZHRoPSIzMzAiIGhlaWdodD0iMzYiIHJ4PSIxNCIgZmlsbD0iI0Q5NUM1OSIvPjxyZWN0IHg9IjMwIiB5PSI2MCIgd2lkdGg9IjMzMCIgaGVpZ2h0PSIxNiIgZmlsbD0iI0Q5NUM1OSIvPgogIDx0ZXh0IHg9IjQ4IiB5PSI2NCIgY2xhc3M9InRhZ3QiPjEgwrcgTEUgRk9SVU0gU0UgRkFJVCBWT0xFUiBTQSBCQVNFPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIxMDgiIGNsYXNzPSJoIj5Gb3J1bSBSw6l0cm9HYW1lcnM8L3RleHQ+CiAgPHRleHQgeD0iNTAiIHk9IjEzNiIgY2xhc3M9InQiPkZpY2hpZXIgcHVibGnDqSBzdXIgSW50ZXJuZXQgOjwvdGV4dD4KICA8cmVjdCB4PSI1MCIgeT0iMTUwIiB3aWR0aD0iMjkwIiBoZWlnaHQ9IjcwIiByeD0iOCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjRDk1QzU5Ii8+CiAgPHRleHQgeD0iNjIiIHk9IjE3NiIgY2xhc3M9ImMiPmxlYS5tYXJ0aW4ucGVyc29AZXhlbXBsZS5mcjwvdGV4dD4KICA8dGV4dCB4PSI2MiIgeT0iMjA0IiBjbGFzcz0iYyI+TWlzdHJhbDIwMTkhPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyNTAiIGNsYXNzPSJ0Ij5Mw6lhIG4neSBwZXV0IHJpZW4gOiBsYSBmYXV0ZTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMjcyIiBjbGFzcz0idCI+ZXN0IGNlbGxlIGR1IGZvcnVtLjwvdGV4dD4KCiAgPCEtLSBBdHRhcXVhbnQgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjcwIiB5PSIzNTAiIHdpZHRoPSIyNTAiIGhlaWdodD0iMTUwIiByeD0iMTQiLz4KICA8dGV4dCB4PSI5MCIgeT0iMzg0IiBjbGFzcz0iaCI+QXR0YXF1YW50PC90ZXh0PgogIDx0ZXh0IHg9IjkwIiB5PSI0MTIiIGNsYXNzPSJ0Ij51biByb2JvdCBlc3NhaWUgbGUgY291cGxlPC90ZXh0PgogIDx0ZXh0IHg9IjkwIiB5PSI0MzQiIGNsYXNzPSJ0Ij5zdXIgZGVzIGNlbnRhaW5lcyBkZSBzaXRlcyw8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjQ1NiIgY2xhc3M9InQiPmV0IGRldmluZSBsJ2FkcmVzc2UgcHJvIDo8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjQ4MCIgY2xhc3M9ImMiPnByw6lub20ubm9tQHNvZnQtdGVjaC5mcjwvdGV4dD4KICA8cGF0aCBkPSJNMTk1IDI5MiBMMTk1IDM0NiIgc3Ryb2tlPSIjRDk1QzU5IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIG1hcmtlci1lbmQ9InVybCgjYXIpIi8+CiAgPHRleHQgeD0iMjA4IiB5PSIzMjYiIGNsYXNzPSJiYWQiPnLDqWN1cMOocmU8L3RleHQ+CgogIDwhLS0gQ2libGVzIC0tPgogIDx0ZXh0IHg9IjQzMCIgeT0iNjQiIGNsYXNzPSJoIj4yIMK3IE3Dqm1lIG1vdCBkZSBwYXNzZSBhaWxsZXVycyA6IGNoYXF1ZSBwb3J0ZSBzJ291dnJlPC90ZXh0PgoKICA8cmVjdCBjbGFzcz0ic3ZjIiB4PSI0MzAiIHk9IjkwIiB3aWR0aD0iMzQwIiBoZWlnaHQ9Ijk2IiByeD0iMTIiLz4KICA8dGV4dCB4PSI0NDgiIHk9IjEyMiIgY2xhc3M9ImgiPk1lc3NhZ2VyaWUgcGVyc29ubmVsbGU8L3RleHQ+CiAgPHRleHQgeD0iNDQ4IiB5PSIxNDgiIGNsYXNzPSJ0Ij5yZcOnb2l0IGxlcyBsaWVucyDCqyBtb3QgZGUgcGFzc2Ugb3VibGnDqSDCuzwvdGV4dD4KICA8dGV4dCB4PSI0NDgiIHk9IjE3MiIgY2xhc3M9ImJhZCI+4oaSIHRvdXMgbGVzIGF1dHJlcyBjb21wdGVzPC90ZXh0PgoKICA8cmVjdCBjbGFzcz0ic3ZjIiB4PSI0MzAiIHk9IjIwNiIgd2lkdGg9IjM0MCIgaGVpZ2h0PSI5NiIgcng9IjEyIi8+CiAgPHRleHQgeD0iNDQ4IiB5PSIyMzgiIGNsYXNzPSJoIj5Cb3V0aXF1ZSBlbiBsaWduZTwvdGV4dD4KICA8dGV4dCB4PSI0NDgiIHk9IjI2NCIgY2xhc3M9InQiPmFkcmVzc2UsIGNhcnRlIGVucmVnaXN0csOpZTwvdGV4dD4KICA8dGV4dCB4PSI0NDgiIHk9IjI4OCIgY2xhc3M9ImJhZCI+4oaSIGFjaGF0cywgZG9ubsOpZXMgcGVyc288L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJwcm8iIHg9IjQzMCIgeT0iMzIyIiB3aWR0aD0iMzQwIiBoZWlnaHQ9Ijk2IiByeD0iMTIiLz4KICA8dGV4dCB4PSI0NDgiIHk9IjM1NCIgY2xhc3M9ImgiPk1lc3NhZ2VyaWUgU29mdC1UZWNoPC90ZXh0PgogIDx0ZXh0IHg9IjQ0OCIgeT0iMzgwIiBjbGFzcz0idCI+Y2xpZW50cywgZGV2aXMsIGZhY3R1cmVzPC90ZXh0PgogIDx0ZXh0IHg9IjQ0OCIgeT0iNDA0IiBjbGFzcz0iYmFkIj7ihpIgZmF1c3NlcyBmYWN0dXJlcyAoQywgUCk8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJwcm8iIHg9IjQzMCIgeT0iNDM4IiB3aWR0aD0iMzQwIiBoZWlnaHQ9Ijk2IiByeD0iMTIiLz4KICA8dGV4dCB4PSI0NDgiIHk9IjQ3MCIgY2xhc3M9ImgiPkZhY3R1cmF0aW9uIFNvZnQtVGVjaDwvdGV4dD4KICA8dGV4dCB4PSI0NDgiIHk9IjQ5NiIgY2xhc3M9InQiPm1vbnRhbnRzLCBSSUIsIGhpc3RvcmlxdWU8L3RleHQ+CiAgPHRleHQgeD0iNDQ4IiB5PSI1MjAiIGNsYXNzPSJiYWQiPuKGkiBkb25uw6llcyBtb2RpZmnDqWVzIChJLCBEKTwvdGV4dD4KCiAgPHBhdGggZD0iTTMyMiA0MTAgQzM3MCA0MTAgMzgwIDE0MCA0MjYgMTM4IiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhcikiLz4KICA8cGF0aCBkPSJNMzIyIDQyMCBDMzgwIDQyMCAzOTAgMjU0IDQyNiAyNTQiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FyKSIvPgogIDxwYXRoIGQ9Ik0zMjIgNDMwIEw0MjYgMzcwIiBzdHJva2U9IiNEOTVDNTkiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgbWFya2VyLWVuZD0idXJsKCNhcikiLz4KICA8cGF0aCBkPSJNMzIyIDQ0MCBDMzgwIDQ0MCAzOTAgNDg2IDQyNiA0ODYiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FyKSIvPgoKICA8IS0tIFBhcmFkZSAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iODEwIiB5PSI5MCIgd2lkdGg9IjM2MCIgaGVpZ2h0PSI0NDQiIHJ4PSIxNCIvPgogIDxyZWN0IHg9IjgxMCIgeT0iOTAiIHdpZHRoPSIzNjAiIGhlaWdodD0iMzYiIHJ4PSIxNCIgZmlsbD0iIzFFODQ0OSIvPjxyZWN0IHg9IjgxMCIgeT0iMTEwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjE2IiBmaWxsPSIjMUU4NDQ5Ii8+CiAgPHRleHQgeD0iODI4IiB5PSIxMTQiIGNsYXNzPSJ0YWd0Ij4zIMK3IENFIFFVSSBBVVJBSVQgQVJSw4pUw4kgTEUgUk9CT1Q8L3RleHQ+CiAgPHRleHQgeD0iODMwIiB5PSIxNjQiIGNsYXNzPSJvayI+VW4gbW90IGRlIHBhc3NlIGRpZmbDqXJlbnQgcGFyIHNpdGU8L3RleHQ+CiAgPHRleHQgeD0iODMwIiB5PSIxODgiIGNsYXNzPSJ0Ij5sYSBmdWl0ZSBuZSB0b3VjaGUgcXVlIGxlIGZvcnVtPC90ZXh0PgogIDx0ZXh0IHg9IjgzMCIgeT0iMjM2IiBjbGFzcz0ib2siPlVuIGdlc3Rpb25uYWlyZSBkZSBtb3RzIGRlIHBhc3NlPC90ZXh0PgogIDx0ZXh0IHg9IjgzMCIgeT0iMjYwIiBjbGFzcz0idCI+aWwgbGVzIGNyw6llIGV0IGxlcyByZXRpZW50IDo8L3RleHQ+CiAgPHRleHQgeD0iODMwIiB5PSIyODIiIGNsYXNzPSJ0Ij51biBzZXVsIHNlY3JldCDDoCBjb25uYcOudHJlPC90ZXh0PgogIDx0ZXh0IHg9IjgzMCIgeT0iMzMwIiBjbGFzcz0ib2siPlVuIHNlY29uZCBmYWN0ZXVyIChNRkEpPC90ZXh0PgogIDx0ZXh0IHg9IjgzMCIgeT0iMzU0IiBjbGFzcz0idCI+bGUgbW90IGRlIHBhc3NlIHNldWwgbmUgc3VmZml0IHBsdXM8L3RleHQ+CiAgPHRleHQgeD0iODMwIiB5PSI0MDIiIGNsYXNzPSJvayI+VW5lIGFsZXJ0ZSBkZSBjb25uZXhpb248L3RleHQ+CiAgPHRleHQgeD0iODMwIiB5PSI0MjYiIGNsYXNzPSJ0Ij5Mw6lhIHZvaXQgbCdhY2PDqHMgaW5oYWJpdHVlbDwvdGV4dD4KICA8dGV4dCB4PSI4MzAiIHk9IjQ3NCIgY2xhc3M9InQiPkxlIG1vdCBkZSBwYXNzZSBkZSBMw6lhIG4nw6l0YWl0PC90ZXh0PgogIDx0ZXh0IHg9IjgzMCIgeT0iNDk2IiBjbGFzcz0idCI+cGFzIMKrIGZhaWJsZSDCuyA6IGlsIMOpdGFpdCA8dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCI+csOpdXRpbGlzw6k8L3RzcGFuPi48L3RleHQ+CgogIDxyZWN0IHg9IjMwIiB5PSI1ODAiIHdpZHRoPSIxMTQwIiBoZWlnaHQ9IjU2IiByeD0iMTAiIGZpbGw9IiNGREVERUMiIHN0cm9rZT0iI0Q5NUM1OSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iNTAiIHk9IjYxNCIgY2xhc3M9InQiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDk1QzU5Ij7DgCByZXRlbmlyIMK3IDwvdHNwYW4+dW4gbW90IGRlIHBhc3NlIHLDqXV0aWxpc8OpLCBjJ2VzdCBsYSBtw6ptZSBjbMOpIHBvdXIgdG91dGVzIGxlcyBwb3J0ZXMgOiBsYSBwbHVzIG1hbCBnYXJkw6llIGxlcyBvdXZyZSB0b3V0ZXMuPC90ZXh0Pgo8L3N2Zz4K" alt="Le forum RétroGamers se fait voler sa base. Le robot de l’attaquant essaie le même couple adresse et mot de passe sur la messagerie personnelle, la boutique, la messagerie et la facturation Soft-Tech de Léa, qui s’ouvrent toutes. Un mot de passe par site, un gestionnaire, un second facteur ou une alerte l’auraient arrêté." />
+<figcaption aria-hidden="true">Le forum RétroGamers se fait voler sa
+base. Le robot de l’attaquant essaie le même couple adresse et mot de
+passe sur la messagerie personnelle, la boutique, la messagerie et la
+facturation Soft-Tech de Léa, qui s’ouvrent toutes. Un mot de passe par
+site, un gestionnaire, un second facteur ou une alerte l’auraient
+arrêté.</figcaption>
+</figure>
+</section>
+<section id="vérification-individuelle" class="slide activity">
+<h2>Vérification individuelle</h2>
+<p><strong>Sur papier · seul · 5 minutes</strong></p>
+<p><strong>À produire :</strong> quatre réponses courtes, corrigées
+ensemble.</p>
+<ol type="1">
+<li>Classez : saisir son adresse, taper son code reçu par SMS, accéder
+au dossier RH.</li>
+<li>Mot de passe de 10 minuscules tirées au hasard : son entropie ?</li>
+<li>Pourquoi <code>Soleil2026!</code> est-il faible malgré ses 11
+caractères ?</li>
+<li>Un mot de passe de 90 bits utilisé sur trois sites est-il sûr ?
+Justifiez.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authentification</td>
+<td>Prouver avec un secret, que le site vérifie à la place de la
+personne</td>
+</tr>
+<tr>
+<td>Entropie</td>
+<td>L × log₂(N) : la longueur compte plus que les symboles</td>
+</tr>
+<tr>
+<td>Dictionnaire</td>
+<td>Un mot de passe humain est bien plus faible que son calcul</td>
+</tr>
+<tr>
+<td>Réutilisation</td>
+<td>Le site le plus mal protégé ouvre tous les autres</td>
+</tr>
+</tbody>
+</table>
+<p><strong>En demi-groupe :</strong> le cas de Léa en détail, et le
+gestionnaire de mots de passe.</p>
+</section>

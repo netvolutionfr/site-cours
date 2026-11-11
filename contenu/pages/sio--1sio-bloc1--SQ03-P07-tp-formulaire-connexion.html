@@ -1,0 +1,192 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Afficher un mot de passe masqué avec l’inspecteur, puis avec
+JavaScript.</li>
+<li>Observer où part le mot de passe avec <code>GET</code>, puis avec
+<code>POST</code>.</li>
+<li>Expliquer pourquoi les contrôles du navigateur ne protègent
+rien.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Balises HTML et attributs, inspecteur du navigateur.</li>
+<li><code>querySelector</code> et <code>addEventListener</code>
+(activité DOM).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Étape 1</td>
+<td>Lire le formulaire et l’inspecter (10 min)</td>
+</tr>
+<tr>
+<td>Étape 2</td>
+<td>Envoyer en <code>GET</code>, puis en <code>POST</code> (10 min)</td>
+</tr>
+<tr>
+<td>Étape 3</td>
+<td>Programmer le bouton « Afficher » (20 min)</td>
+</tr>
+<tr>
+<td>Étape 4</td>
+<td>Défi : ce que voit un script (10 min)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="consignes">Consignes</h3>
+<p><strong>En binôme, sur poste, 50 minutes.</strong> Chacun note ses
+réponses. Travaillez sans IA : il s’agit de lire quelques lignes et de
+vérifier ce que fait le navigateur.</p>
+<blockquote>
+<p><strong>Règle.</strong> N’utilisez que des mots de passe inventés
+pour l’exercice, par exemple <code>Exercice-2026-soft</code>. Jamais un
+de vos vrais mots de passe.</p>
+</blockquote>
+<p><a href="connexion-soft-tech.zip">Télécharger le projet
+connexion-soft-tech (ZIP)</a>.</p>
+<p>Extrayez le dossier, ouvrez-le dans VSCode, puis ouvrez
+<code>index.html</code> dans le navigateur.</p>
+<h3 id="étape-1-lire-et-inspecter">Étape 1 — Lire et inspecter</h3>
+<p><strong>10 minutes.</strong></p>
+<ol type="1">
+<li>Dans <code>index.html</code>, repérez les deux champs. Quelles sont
+leurs valeurs de <code>type</code>, <code>id</code> et <code>name</code>
+?</li>
+<li>Saisissez une adresse et un mot de passe fictifs. Que voyez-vous
+dans le champ ?</li>
+<li>Clic droit sur le champ mot de passe, <strong>Inspecter</strong>.
+Double-cliquez sur <code>password</code> dans
+<code>type=&quot;password&quot;</code> et remplacez-le par <code>text</code>. Que
+se passe-t-il ?</li>
+</ol>
+<p><strong>À produire :</strong> une phrase qui dit ce que
+<code>type=&quot;password&quot;</code> protège, et ce qu’il ne protège pas.</p>
+<h3 id="étape-2-où-part-le-mot-de-passe">Étape 2 — Où part le mot de
+passe ?</h3>
+<p><strong>10 minutes.</strong></p>
+<ol type="1">
+<li>Rechargez la page, remplissez les champs, puis cliquez sur
+<strong>Se connecter</strong>.</li>
+<li>Regardez la barre d’adresse. Recopiez ce qui suit le
+<code>?</code>.</li>
+<li>Dans <code>index.html</code>, remplacez <code>method=&quot;get&quot;</code>
+par <code>method=&quot;post&quot;</code>. Enregistrez, rechargez, recommencez. Que
+contient l’URL maintenant ?</li>
+</ol>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Avec <code>POST</code>, le navigateur peut afficher une erreur : une
+page ouverte depuis votre disque ne sait pas recevoir de données. C’est
+normal, regardez seulement l’URL. Un vrai serveur les recevrait.</p>
+</div>
+<ol start="4" type="1">
+<li>Citez deux endroits où un mot de passe envoyé en <code>GET</code>
+resterait écrit.</li>
+</ol>
+<p><strong>À produire :</strong> l’URL obtenue en <code>GET</code>, et
+votre réponse à la question 4.</p>
+<h3 id="étape-3-le-bouton-afficher">Étape 3 — Le bouton « Afficher
+»</h3>
+<p><strong>20 minutes.</strong> Le bouton <code>bouton-oeil</code>
+existe déjà dans la page, mais il ne fait rien. Dans
+<code>script.js</code>, recopiez ce code et remplacez les
+<code>...</code> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> champ <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">&quot;...&quot;</span>)<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bouton <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">&quot;...&quot;</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>bouton<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&quot;click&quot;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (champ<span class="op">.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&quot;password&quot;</span>) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    champ<span class="op">.</span><span class="at">type</span> <span class="op">=</span> <span class="st">&quot;...&quot;</span><span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    bouton<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">&quot;...&quot;</span><span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    champ<span class="op">.</span><span class="at">type</span> <span class="op">=</span> <span class="st">&quot;...&quot;</span><span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    bouton<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">&quot;...&quot;</span><span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Le <code>if</code> teste le type actuel du champ : s’il est masqué,
+on l’affiche, sinon on le masque. Le texte du bouton doit toujours
+annoncer ce que fera le prochain clic.</p>
+<p><strong>À produire :</strong> un bouton qui affiche puis masque le
+mot de passe à chaque clic, avec le bon texte.</p>
+<h3 id="étape-4-défi-ce-que-voit-un-script">Étape 4 — Défi : ce que voit
+un script</h3>
+<p><strong>10 minutes.</strong></p>
+<ol type="1">
+<li>Saisissez un mot de passe fictif, laissez-le masqué. Ouvrez la
+<strong>Console</strong> des outils de développement et tapez :
+<code>document.querySelector(&quot;#mot-de-passe&quot;).value</code>.
+Qu’obtenez-vous ?</li>
+<li>Un site charge un script de statistiques hébergé chez une autre
+entreprise. Que pourrait faire ce script ?</li>
+<li>Le champ exige 12 caractères (<code>minlength=&quot;12&quot;</code>). Dans
+l’inspecteur, supprimez cet attribut et envoyez un mot de passe de 3
+caractères. Qui doit vérifier la longueur, finalement ?</li>
+</ol>
+<p><strong>À produire :</strong> deux phrases : ce qu’un script peut
+lire, et qui doit faire les vérifications.</p>
+<h3 id="vérification-avant-de-terminer">Vérification avant de
+terminer</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Je sais afficher un mot de passe
+masqué avec l’inspecteur.</label></li>
+<li><label><input type="checkbox"></input>J’ai vu le mot de passe dans l’URL
+avec <code>GET</code>, et plus avec <code>POST</code>.</label></li>
+<li><label><input type="checkbox"></input>Mon bouton affiche puis masque le
+mot de passe, et son texte change.</label></li>
+<li><label><input type="checkbox"></input>Je sais expliquer pourquoi
+<code>POST</code> ne suffit pas sans HTTPS.</label></li>
+</ul>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="étape-1">Étape 1</h3>
+<p>Champs : <code>type=&quot;email&quot;</code>, <code>id</code> et
+<code>name</code> <code>identifiant</code> ;
+<code>type=&quot;password&quot;</code>, <code>id</code> et <code>name</code>
+<code>mot-de-passe</code>. Le passage de <code>password</code> à
+<code>text</code> affiche le mot de passe en clair :
+<code>type=&quot;password&quot;</code> protège l’écran du regard d’un voisin, pas
+le secret lui-même.</p>
+<h3 id="étape-2">Étape 2</h3>
+<p>En <code>GET</code>, l’URL se termine par
+<code>?identifiant=…&amp;mot-de-passe=Exercice-2026-soft</code>. En
+<code>POST</code>, l’URL ne contient plus les données : elles voyagent
+dans le corps de la requête. Un mot de passe en <code>GET</code> reste
+dans l’historique du navigateur, les favoris, les journaux du serveur,
+ou sur un écran partagé.</p>
+<h3 id="étape-3">Étape 3</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> champ <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">&quot;#mot-de-passe&quot;</span>)<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bouton <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">&quot;#bouton-oeil&quot;</span>)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>bouton<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&quot;click&quot;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (champ<span class="op">.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&quot;password&quot;</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    champ<span class="op">.</span><span class="at">type</span> <span class="op">=</span> <span class="st">&quot;text&quot;</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    bouton<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">&quot;Masquer&quot;</span><span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    champ<span class="op">.</span><span class="at">type</span> <span class="op">=</span> <span class="st">&quot;password&quot;</span><span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    bouton<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">&quot;Afficher&quot;</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Piège fréquent : un <code>&lt;button&gt;</code> placé dans un
+formulaire envoie le formulaire par défaut. Le bouton fourni porte
+<code>type=&quot;button&quot;</code> pour l’éviter.</p>
+<h3 id="étape-4">Étape 4</h3>
+<p>La console affiche le mot de passe en clair : tout script de la page
+peut le lire, et donc un script tiers peut l’envoyer ailleurs. Les
+contrôles du navigateur (<code>minlength</code>, <code>required</code>)
+se retirent en deux clics : seul le <strong>serveur</strong> peut
+vérifier de façon fiable.</p>
+</details>

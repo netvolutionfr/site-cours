@@ -1,0 +1,262 @@
+<section id="le-mot-de-passe-dans-la-page" class="slide title">
+<h2>Le mot de passe dans la page</h2>
+<h3 id="formulaire-de-connexion-champ-masqué-et-envoi">Formulaire de
+connexion, champ masqué et envoi</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Écrire</strong> un formulaire de connexion en HTML.</li>
+<li><strong>Montrer</strong> qu’un champ <code>password</code> ne cache
+le secret qu’à l’écran.</li>
+<li><strong>Comparer</strong> l’envoi en <code>GET</code> et en
+<code>POST</code>.</li>
+</ul>
+<p><strong>Prérequis :</strong> balises HTML, inspecteur,
+<code>querySelector</code> et <code>addEventListener</code> (cours sur
+le DOM).</p>
+</section>
+<section id="soft-tech-ouvre-un-espace-client" class="slide concept">
+<h2>Soft-Tech ouvre un espace client</h2>
+<p>Les clients veulent suivre leurs réparations et télécharger leurs
+factures sans appeler.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Il faut</th>
+<th>Côté navigateur, aujourd’hui</th>
+<th>Côté serveur, plus tard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Savoir qui se connecte</td>
+<td>Champ adresse e-mail</td>
+<td>Retrouver le compte</td>
+</tr>
+<tr>
+<td>Vérifier que c’est bien lui</td>
+<td>Champ mot de passe</td>
+<td>Comparer le secret</td>
+</tr>
+<tr>
+<td>Montrer ses factures, pas celles des autres</td>
+<td>—</td>
+<td>Contrôler les droits</td>
+</tr>
+</tbody>
+</table>
+<p>Ce matin : identification, authentification, autorisation.
+<strong>Cet après-midi : la page.</strong></p>
+</section>
+<section id="le-formulaire" class="slide code">
+<h2>Le formulaire</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> method</span><span class="op">=</span><span class="st">&quot;get&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">&quot;identifiant&quot;</span><span class="dt">&gt;</span>Adresse e-mail<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;email&quot;</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;identifiant&quot;</span><span class="ot"> name</span><span class="op">=</span><span class="st">&quot;identifiant&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">&quot;mot-de-passe&quot;</span><span class="dt">&gt;</span>Mot de passe<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;password&quot;</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;mot-de-passe&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ot">         name</span><span class="op">=</span><span class="st">&quot;mot-de-passe&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;submit&quot;</span><span class="dt">&gt;</span>Se connecter<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code></pre></div>
+<p><code>name</code> donne le nom de la donnée envoyée ;
+<code>for</code> relie l’étiquette à son champ.</p>
+</section>
+<section id="text-ou-password-quest-ce-qui-change" class="slide compare">
+<h2><code>text</code> ou <code>password</code> : qu’est-ce qui change
+?</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>type=&quot;text&quot;</code></th>
+<th><code>type=&quot;password&quot;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Affichage à l’écran</td>
+<td><code>Mistral2019!</code></td>
+<td><code>●●●●●●●●●●●●</code></td>
+</tr>
+<tr>
+<td>Valeur dans la page</td>
+<td><code>Mistral2019!</code></td>
+<td><code>Mistral2019!</code></td>
+</tr>
+<tr>
+<td>Lisible par un script</td>
+<td>Oui</td>
+<td><strong>Oui</strong></td>
+</tr>
+<tr>
+<td>Envoyé au serveur</td>
+<td>En clair</td>
+<td><strong>En clair</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Une seule ligne change : l’affichage.</strong> Le masquage
+protège du regard par-dessus l’épaule.</p>
+</section>
+<section id="démonstration-linspecteur" class="slide concept">
+<h2>Démonstration : l’inspecteur</h2>
+<ol type="1">
+<li>Saisir un mot de passe fictif dans le champ.</li>
+<li>Clic droit sur le champ, <strong>Inspecter</strong>.</li>
+<li>Remplacer <code>type=&quot;password&quot;</code> par <code>type=&quot;text&quot;</code>
+dans le code affiché.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Prévoyez avant de voir</th>
+<th>Ce qu’on observe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le mot de passe apparaît-il ?</td>
+<td>En clair, instantanément</td>
+</tr>
+<tr>
+<td>Faut-il être administrateur ?</td>
+<td>Non : c’est votre navigateur</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lœil-la-même-chose-en-javascript" class="slide code">
+<h2>L’œil : la même chose en JavaScript</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> champ <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">&quot;#mot-de-passe&quot;</span>)<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bouton <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">&quot;#bouton-oeil&quot;</span>)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>bouton<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&quot;click&quot;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (champ<span class="op">.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&quot;password&quot;</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    champ<span class="op">.</span><span class="at">type</span> <span class="op">=</span> <span class="st">&quot;text&quot;</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    champ<span class="op">.</span><span class="at">type</span> <span class="op">=</span> <span class="st">&quot;password&quot;</span><span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Le bouton « œil » des sites ne fait rien d’autre : il <strong>change
+le type</strong> du champ.</p>
+</section>
+<section id="le-trajet-dun-mot-de-passe" class="slide full-image">
+<h2>Le trajet d’un mot de passe</h2>
+<figure>
+<img role="img" aria-label="Le mot de passe est masqué à l’écran mais en clair dans la page. En GET il part dans l’URL, en POST dans le corps de la requête. HTTP le transporte en clair, HTTPS le chiffre. Le serveur le reçoit en clair et doit le vérifier." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkxlIHRyYWpldCBkJ3VuIG1vdCBkZSBwYXNzZSwgZHUgY2xhdmllciBhdSBzZXJ2ZXVyPC90aXRsZT4KICA8ZGVzYyBpZD0iZGVzYyI+TGUgbW90IGRlIHBhc3NlIHRhcMOpIGF1IGNsYXZpZXIgZXN0IG1hc3F1w6kgw6AgbCfDqWNyYW4gcGFyIGRlcyBwb2ludHMsIG1haXMgaWwgZXN0IHN0b2Nrw6kgZW4gY2xhaXIgZGFucyBsYSBwcm9wcmnDqXTDqSB2YWx1ZSBkdSBjaGFtcCwgbGlzaWJsZSBwYXIgdG91dCBzY3JpcHQgZGUgbGEgcGFnZS4gw4AgbCdlbnZvaSwgbGEgbcOpdGhvZGUgR0VUIGxlIHBsYWNlIGRhbnMgbCdVUkwsIGRvbmMgZGFucyBsJ2hpc3RvcmlxdWUgZXQgbGVzIGpvdXJuYXV4IDsgbGEgbcOpdGhvZGUgUE9TVCBsZSBwbGFjZSBkYW5zIGxlIGNvcnBzIGRlIGxhIHJlcXXDqnRlLiBTdXIgbGUgcsOpc2VhdSwgSFRUUCBsZSB0cmFuc3BvcnRlIGVuIGNsYWlyLCBIVFRQUyBsZSBjaGlmZnJlLiBMZSBzZXJ2ZXVyIFNvZnQtVGVjaCBsZSByZcOnb2l0IGVuIGNsYWlyIGV0IGRvaXQgbGUgdsOpcmlmaWVyLjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFnIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjMUU4NDQ5Ii8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhciIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iI0Q5NUM1OSIvPjwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYWsiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCAwTDEwIDVMMCAxMHoiIGZpbGw9IiM2NTc4OGQiLz48L21hcmtlcj4KICA8L2RlZnM+CiAgPHN0eWxlPgogICAgLnpvbmV7ZmlsbDojZmZmO3N0cm9rZTojMTcyMDMzO3N0cm9rZS13aWR0aDoyLjV9CiAgICAuc3Zje2ZpbGw6I0VBRjRGQjtzdHJva2U6IzM1NjhENDtzdHJva2Utd2lkdGg6Mn0KICAgIC5zdmMye2ZpbGw6I0Y3RjhGQTtzdHJva2U6IzY1Nzg4ZDtzdHJva2Utd2lkdGg6Mn0KICAgIC5oe2ZvbnQ6NzAwIDE4cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMxNzIwMzN9CiAgICAudHtmb250OjUwMCAxNXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojM2M0YjVjfQogICAgLmN7Zm9udDo2MDAgMTRweCBtb25vc3BhY2U7ZmlsbDojMTY0ZDc5fQogICAgLmJhZHtmb250OjcwMCAxNXB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojRDk1QzU5fQogICAgLm9re2ZvbnQ6NzAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMxRTg0NDl9CiAgICAudGFndHtmb250OjcwMCAxNHB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojZmZmfQogIDwvc3R5bGU+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjYwIiBmaWxsPSIjRjdGOEZBIi8+CgogIDwhLS0gTmF2aWdhdGV1ciAtLT4KICA8cmVjdCBjbGFzcz0iem9uZSIgeD0iMzAiIHk9IjMwIiB3aWR0aD0iNTYwIiBoZWlnaHQ9IjUyMCIgcng9IjE2Ii8+CiAgPHJlY3QgeD0iMzAiIHk9IjMwIiB3aWR0aD0iNTYwIiBoZWlnaHQ9IjM2IiByeD0iMTYiIGZpbGw9IiMzNTY4RDQiLz48cmVjdCB4PSIzMCIgeT0iNTAiIHdpZHRoPSI1NjAiIGhlaWdodD0iMTYiIGZpbGw9IiMzNTY4RDQiLz4KICA8dGV4dCB4PSI0OCIgeT0iNTQiIGNsYXNzPSJ0YWd0Ij5EQU5TIExFIE5BVklHQVRFVVIgREUgTCdVVElMSVNBVEVVUjwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjU2IiB5PSI5MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMTAiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjcyIiB5PSIxMjAiIGNsYXNzPSJoIj4xIMK3IEwnw6ljcmFuPC90ZXh0PgogIDxyZWN0IHg9IjcyIiB5PSIxMzQiIHdpZHRoPSIyMDAiIGhlaWdodD0iMzAiIHJ4PSI1IiBmaWxsPSIjZmZmIiBzdHJva2U9IiM2NTc4OGQiLz4KICA8dGV4dCB4PSI4MiIgeT0iMTU1IiBjbGFzcz0iYyI+4peP4peP4peP4peP4peP4peP4peP4peP4peP4peP4peP4pePPC90ZXh0PgogIDx0ZXh0IHg9IjcyIiB5PSIxODgiIGNsYXNzPSJvayI+bWFzcXXDqSBhdSByZWdhcmQ8L3RleHQ+CgogIDxyZWN0IGNsYXNzPSJzdmMiIHg9IjMyMCIgeT0iOTAiIHdpZHRoPSIyNDYiIGhlaWdodD0iMTEwIiByeD0iMTAiLz4KICA8dGV4dCB4PSIzMzYiIHk9IjEyMCIgY2xhc3M9ImgiPjIgwrcgTGEgcGFnZSAoRE9NKTwvdGV4dD4KICA8dGV4dCB4PSIzMzYiIHk9IjE0OCIgY2xhc3M9ImMiPmNoYW1wLnZhbHVlPC90ZXh0PgogIDx0ZXh0IHg9IjMzNiIgeT0iMTcwIiBjbGFzcz0iYyI+Ik1pc3RyYWwyMDE5ISI8L3RleHQ+CiAgPHRleHQgeD0iMzM2IiB5PSIxOTIiIGNsYXNzPSJiYWQiPmVuIGNsYWlyPC90ZXh0PgoKICA8cGF0aCBkPSJNMjk4IDE0NSBMMzE2IDE0NSIgc3Ryb2tlPSIjNjU3ODhkIiBzdHJva2Utd2lkdGg9IjMiIG1hcmtlci1lbmQ9InVybCgjYWspIi8+CgogIDx0ZXh0IHg9IjU2IiB5PSIyMzYiIGNsYXNzPSJ0Ij5Ub3V0IHNjcmlwdCBjaGFyZ8OpIHBhciBsYSBwYWdlIHBldXQgbGlyZSA8dHNwYW4gY2xhc3M9ImMiPnZhbHVlPC90c3Bhbj4gOjwvdGV4dD4KICA8dGV4dCB4PSI1NiIgeT0iMjU4IiBjbGFzcz0idCI+bGUgdsO0dHJlIChib3V0b24gwqsgxZNpbCDCuyksIG1haXMgYXVzc2kgdW4gc2NyaXB0IHRpZXJzPC90ZXh0PgogIDx0ZXh0IHg9IjU2IiB5PSIyODAiIGNsYXNzPSJ0Ij4oc3RhdGlzdGlxdWVzLCBwdWJsaWNpdMOpLCBleHRlbnNpb24gZHUgbmF2aWdhdGV1cikuPC90ZXh0PgoKICA8dGV4dCB4PSI1NiIgeT0iMzIyIiBjbGFzcz0iaCI+MyDCtyBMJ2Vudm9pIGR1IGZvcm11bGFpcmU8L3RleHQ+CiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjU2IiB5PSIzMzYiIHdpZHRoPSIyNDYiIGhlaWdodD0iMTkwIiByeD0iMTAiIHN0eWxlPSJzdHJva2U6I0Q5NUM1OSIvPgogIDx0ZXh0IHg9IjcyIiB5PSIzNjQiIGNsYXNzPSJiYWQiPm1ldGhvZD0iZ2V0IjwvdGV4dD4KICA8dGV4dCB4PSI3MiIgeT0iMzkwIiBjbGFzcz0idCI+ZGFucyBsJ1VSTCA6PC90ZXh0PgogIDx0ZXh0IHg9IjcyIiB5PSI0MTIiIGNsYXNzPSJjIj4/bW90LWRlLXBhc3NlPTwvdGV4dD4KICA8dGV4dCB4PSI3MiIgeT0iNDMyIiBjbGFzcz0iYyI+TWlzdHJhbDIwMTkhPC90ZXh0PgogIDx0ZXh0IHg9IjcyIiB5PSI0NjIiIGNsYXNzPSJ0Ij5oaXN0b3JpcXVlLCBmYXZvcmlzLDwvdGV4dD4KICA8dGV4dCB4PSI3MiIgeT0iNDg0IiBjbGFzcz0idCI+am91cm5hdXggZHUgc2VydmV1ciw8L3RleHQ+CiAgPHRleHQgeD0iNzIiIHk9IjUwNiIgY2xhc3M9InQiPsOpY3JhbiBwYXJ0YWfDqeKApjwvdGV4dD4KCiAgPHJlY3QgY2xhc3M9InN2YzIiIHg9IjMyMCIgeT0iMzM2IiB3aWR0aD0iMjQ2IiBoZWlnaHQ9IjE5MCIgcng9IjEwIiBzdHlsZT0ic3Ryb2tlOiMxRTg0NDkiLz4KICA8dGV4dCB4PSIzMzYiIHk9IjM2NCIgY2xhc3M9Im9rIj5tZXRob2Q9InBvc3QiPC90ZXh0PgogIDx0ZXh0IHg9IjMzNiIgeT0iMzkwIiBjbGFzcz0idCI+ZGFucyBsZSBjb3JwczwvdGV4dD4KICA8dGV4dCB4PSIzMzYiIHk9IjQxMiIgY2xhc3M9InQiPmRlIGxhIHJlcXXDqnRlLDwvdGV4dD4KICA8dGV4dCB4PSIzMzYiIHk9IjQzNCIgY2xhc3M9InQiPmFic2VudCBkZSBsJ1VSTDwvdGV4dD4KICA8dGV4dCB4PSIzMzYiIHk9IjQ3NCIgY2xhc3M9InQiPm1haXMgdG91am91cnM8L3RleHQ+CiAgPHRleHQgeD0iMzM2IiB5PSI0OTYiIGNsYXNzPSJiYWQiPmVuIGNsYWlyPC90ZXh0PgoKICA8IS0tIFLDqXNlYXUgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjYzMCIgeT0iMTUwIiB3aWR0aD0iMjIwIiBoZWlnaHQ9IjMwMCIgcng9IjE2Ii8+CiAgPHRleHQgeD0iNjUwIiB5PSIxODYiIGNsYXNzPSJoIj40IMK3IExlIHLDqXNlYXU8L3RleHQ+CiAgPHRleHQgeD0iNjUwIiB5PSIyMzAiIGNsYXNzPSJiYWQiPkhUVFA8L3RleHQ+CiAgPHRleHQgeD0iNjUwIiB5PSIyNTQiIGNsYXNzPSJ0Ij5saXNpYmxlIHBhciBxdWk8L3RleHQ+CiAgPHRleHQgeD0iNjUwIiB5PSIyNzYiIGNsYXNzPSJ0Ij7DqWNvdXRlIGxlIFdpLUZpPC90ZXh0PgogIDx0ZXh0IHg9IjY1MCIgeT0iMzMwIiBjbGFzcz0ib2siPkhUVFBTPC90ZXh0PgogIDx0ZXh0IHg9IjY1MCIgeT0iMzU0IiBjbGFzcz0idCI+Y2hpZmZyw6kgZW50cmUgbGU8L3RleHQ+CiAgPHRleHQgeD0iNjUwIiB5PSIzNzYiIGNsYXNzPSJ0Ij5uYXZpZ2F0ZXVyIGV0PC90ZXh0PgogIDx0ZXh0IHg9IjY1MCIgeT0iMzk4IiBjbGFzcz0idCI+bGUgc2VydmV1cjwvdGV4dD4KCiAgPHBhdGggZD0iTTU5MiAzMDAgTDYyNiAzMDAiIHN0cm9rZT0iIzY1Nzg4ZCIgc3Ryb2tlLXdpZHRoPSI0IiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDxwYXRoIGQ9Ik04NTIgMzAwIEw4ODYgMzAwIiBzdHJva2U9IiM2NTc4OGQiIHN0cm9rZS13aWR0aD0iNCIgbWFya2VyLWVuZD0idXJsKCNhaykiLz4KCiAgPCEtLSBTZXJ2ZXVyIC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSI4OTAiIHk9IjE1MCIgd2lkdGg9IjI4MCIgaGVpZ2h0PSIzMDAiIHJ4PSIxNiIvPgogIDxyZWN0IHg9Ijg5MCIgeT0iMTUwIiB3aWR0aD0iMjgwIiBoZWlnaHQ9IjM2IiByeD0iMTYiIGZpbGw9IiMxRTg0NDkiLz48cmVjdCB4PSI4OTAiIHk9IjE3MCIgd2lkdGg9IjI4MCIgaGVpZ2h0PSIxNiIgZmlsbD0iIzFFODQ0OSIvPgogIDx0ZXh0IHg9IjkwOCIgeT0iMTc0IiBjbGFzcz0idGFndCI+NSDCtyBMRSBTRVJWRVVSIFNPRlQtVEVDSDwvdGV4dD4KICA8dGV4dCB4PSI5MTAiIHk9IjIyMiIgY2xhc3M9InQiPnJlw6dvaXQgbGUgbW90IGRlIHBhc3NlPC90ZXh0PgogIDx0ZXh0IHg9IjkxMCIgeT0iMjQ0IiBjbGFzcz0idCI+ZW4gY2xhaXIsIGV0IGTDqWNpZGUgOjwvdGV4dD4KICA8dGV4dCB4PSI5MTAiIHk9IjI4MiIgY2xhc3M9ImgiPmNvbm5leGlvbiBhY2NlcHTDqWU8L3RleHQ+CiAgPHRleHQgeD0iOTEwIiB5PSIzMDYiIGNsYXNzPSJoIj5vdSByZWZ1c8OpZTwvdGV4dD4KICA8dGV4dCB4PSI5MTAiIHk9IjM1MCIgY2xhc3M9InQiPkNvbW1lbnQgbGUgY29tcGFyZS10LWlsPC90ZXh0PgogIDx0ZXh0IHg9IjkxMCIgeT0iMzcyIiBjbGFzcz0idCI+c2FucyBnYXJkZXIgbGVzIG1vdHM8L3RleHQ+CiAgPHRleHQgeD0iOTEwIiB5PSIzOTQiIGNsYXNzPSJ0Ij5kZSBwYXNzZSBlbiBjbGFpciA/PC90ZXh0PgogIDx0ZXh0IHg9IjkxMCIgeT0iNDI4IiBjbGFzcz0iYmFkIj7ihpIgcHJvY2hhaW5lIHPDqWFuY2U8L3RleHQ+CgogIDxyZWN0IHg9IjMwIiB5PSI1ODAiIHdpZHRoPSIxMTQwIiBoZWlnaHQ9IjU2IiByeD0iMTAiIGZpbGw9IiNFQUY0RkIiIHN0cm9rZT0iIzM1NjhENCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iNTAiIHk9IjYxNCIgY2xhc3M9InQiPjx0c3BhbiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMTY0ZDc5Ij7DgCByZXRlbmlyIMK3IDwvdHNwYW4+bGUgY2hhbXAgwqsgcGFzc3dvcmQgwrsgbmUgcHJvdMOoZ2UgcXVlIGwnw6ljcmFuLiBQYXJ0b3V0IGFpbGxldXJzLCBsZSBtb3QgZGUgcGFzc2UgZXhpc3RlIGVuIGNsYWlyLjwvdGV4dD4KPC9zdmc+Cg==" alt="Le mot de passe est masqué à l’écran mais en clair dans la page. En GET il part dans l’URL, en POST dans le corps de la requête. HTTP le transporte en clair, HTTPS le chiffre. Le serveur le reçoit en clair et doit le vérifier." />
+<figcaption aria-hidden="true">Le mot de passe est masqué à l’écran mais
+en clair dans la page. En GET il part dans l’URL, en POST dans le corps
+de la requête. HTTP le transporte en clair, HTTPS le chiffre. Le serveur
+le reçoit en clair et doit le vérifier.</figcaption>
+</figure>
+</section>
+<section id="get-ou-post" class="slide compare">
+<h2><code>GET</code> ou <code>POST</code> ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th><code>method=&quot;get&quot;</code></th>
+<th><code>method=&quot;post&quot;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Où vont les données</td>
+<td>Dans l’URL : <code>?mot-de-passe=…</code></td>
+<td>Dans le corps de la requête</td>
+</tr>
+<tr>
+<td>Visibles dans</td>
+<td>Barre d’adresse, historique, journaux du serveur</td>
+<td>Outils de développement seulement</td>
+</tr>
+<tr>
+<td>À utiliser pour</td>
+<td>Une recherche, un filtre</td>
+<td><strong>Un mot de passe</strong>, toute donnée sensible</td>
+</tr>
+</tbody>
+</table>
+<p><code>POST</code> ne chiffre rien : c’est <strong>HTTPS</strong> qui
+protège le trajet.</p>
+</section>
+<section id="ce-que-le-navigateur-ne-protège-pas" class="slide warning">
+<h2>Ce que le navigateur ne protège pas</h2>
+<ul>
+<li><strong>Le masquage</strong> : un clic dans l’inspecteur
+l’annule.</li>
+<li><strong><code>required</code>, <code>minlength</code></strong> : se
+retirent aussi dans l’inspecteur. Le serveur doit revérifier.</li>
+<li><strong>Les scripts de la page</strong> : tout script chargé peut
+lire le champ, même celui d’un site tiers.</li>
+<li><strong>Le trajet</strong> : sans HTTPS, le mot de passe circule en
+clair sur le réseau.</li>
+</ul>
+<p><strong>Ce qui protège vraiment se passe sur le serveur.</strong>
+Prochaine étape : comment il garde les mots de passe.</p>
+</section>
+<section id="en-demi-groupe-à-vous" class="slide activity">
+<h2>En demi-groupe : à vous</h2>
+<p><strong>Sur poste · en binôme, réponses individuelles · 50
+minutes</strong></p>
+<p><strong>À produire :</strong> la page de connexion Soft-Tech avec un
+bouton « Afficher » qui fonctionne, et vos observations <code>GET</code>
+/ <code>POST</code>.</p>
+<ol type="1">
+<li>Télécharger <code>connexion-soft-tech.zip</code> sur la page du
+TP.</li>
+<li>Suivre les étapes de la fiche, dans l’ordre.</li>
+<li>Cocher la checklist avant de montrer votre travail.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type=&quot;password&quot;</code></td>
+<td>Masque l’affichage, rien d’autre</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>Le mot de passe en clair, lisible par tout script de la page</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td>Les données dans l’URL : jamais pour un mot de passe</td>
+</tr>
+<tr>
+<td><code>POST</code> et HTTPS</td>
+<td>Hors de l’URL, et chiffré sur le réseau</td>
+</tr>
+<tr>
+<td>Contrôles du navigateur</td>
+<td>Pratiques pour l’utilisateur, aucune sécurité</td>
+</tr>
+</tbody>
+</table>
+</section>

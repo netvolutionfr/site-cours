@@ -1154,6 +1154,95 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc1/SQ03-P07-slides-formulaire-connexion",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "Le mot de passe dans la page",
+   "sousTitre": "Formulaire de connexion, champ masqué et envoi",
+   "nature": "Diaporama",
+   "date": "2026-11-12",
+   "pdf": "/sio/1sio-bloc1/SQ03-P07-slides-formulaire-connexion.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "formulaire-de-connexion-champ-masqué-et-envoi",
+     "text": "Formulaire de connexion, champ masqué et envoi"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ03-P07-tp-formulaire-connexion",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ03",
+   "titre": "La page de connexion Soft-Tech",
+   "sousTitre": "Activité — champ masqué, bouton « Afficher » et envoi du formulaire",
+   "nature": "Activité",
+   "date": "2026-11-12",
+   "pdf": "/sio/1sio-bloc1/SQ03-P07-tp-formulaire-connexion.pdf",
+   "pieces": [
+    "/sio/1sio-bloc1/connexion-soft-tech.zip"
+   ],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes",
+     "text": "Consignes"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-lire-et-inspecter",
+     "text": "Étape 1 — Lire et inspecter"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-où-part-le-mot-de-passe",
+     "text": "Étape 2 — Où part le mot de passe ?"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3-le-bouton-afficher",
+     "text": "Étape 3 — Le bouton « Afficher »"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4-défi-ce-que-voit-un-script",
+     "text": "Étape 4 — Défi : ce que voit un script"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-terminer",
+     "text": "Vérification avant de terminer"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1",
+     "text": "Étape 1"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2",
+     "text": "Étape 2"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3",
+     "text": "Étape 3"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4",
+     "text": "Étape 4"
+    }
+   ]
+  },
+  {
    "slug": "sio/1sio-bloc1/SQ03-support-eleve",
    "matiere": "sio",
    "classe": "1sio",
@@ -1861,6 +1950,88 @@
      "depth": 4,
      "slug": "ce-que-la-signature-ajoute",
      "text": "Ce que la signature ajoute"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ04-P01-P02-slides-authentification-mots-de-passe",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ04",
+   "titre": "Prouver qui l'on est",
+   "sousTitre": "Identification, authentification et mots de passe",
+   "nature": "Diaporama",
+   "date": "2026-11-12",
+   "pdf": "/sio/1sio-bloc3/SQ04-P01-P02-slides-authentification-mots-de-passe.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "identification-authentification-et-mots-de-passe",
+     "text": "Identification, authentification et mots de passe"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ04-P02-tp-reutilisation-gestionnaire",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ04",
+   "titre": "Un secret par site",
+   "sousTitre": "Activité — réutilisation des mots de passe et gestionnaire",
+   "nature": "Activité",
+   "date": "2026-11-12",
+   "pdf": "/sio/1sio-bloc3/SQ04-P02-tp-reutilisation-gestionnaire.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes",
+     "text": "Consignes"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-le-cas-de-léa",
+     "text": "Étape 1 — Le cas de Léa"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-mesurer-six-mots-de-passe",
+     "text": "Étape 2 — Mesurer six mots de passe"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3-choisir-un-gestionnaire",
+     "text": "Étape 3 — Choisir un gestionnaire"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4-trace-individuelle",
+     "text": "Étape 4 — Trace individuelle"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-terminer",
+     "text": "Vérification avant de terminer"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1",
+     "text": "Étape 1"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2",
+     "text": "Étape 2"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3",
+     "text": "Étape 3"
     }
    ]
   },
@@ -2999,7 +3170,7 @@
    "code": "SQ03",
    "titre": "Le web, HTML, DOM et projet Soft-Tech",
    "debut": "2026-09-17",
-   "fin": "2026-11-05",
+   "fin": "2026-11-12",
    "supports": [
     "sio/1sio-bloc1/SQ03-support-eleve",
     "sio/1sio-bloc1/SQ03-P02-tp-soft-tech-vscode",
@@ -3008,7 +3179,9 @@
     "sio/1sio-bloc1/SQ03-P03-distanciel-dom",
     "sio/1sio-bloc1/SQ03-P03-cours-dom",
     "sio/1sio-bloc1/SQ03-P06-slides-netvolution-studio",
-    "sio/1sio-bloc1/SQ03-P06-tp-netvolution-studio"
+    "sio/1sio-bloc1/SQ03-P06-tp-netvolution-studio",
+    "sio/1sio-bloc1/SQ03-P07-slides-formulaire-connexion",
+    "sio/1sio-bloc1/SQ03-P07-tp-formulaire-connexion"
    ]
   },
   {
@@ -3059,6 +3232,21 @@
     "sio/1sio-bloc3/SQ03-P03-cours-empreinte-preuve-2026",
     "sio/1sio-bloc3/SQ03-P04-activite-devis-2026",
     "sio/1sio-bloc3/SQ03-P04-tp-empreinte-signature"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc3/SQ04",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "rubriqueLibelle": "Bloc 3",
+   "code": "SQ04",
+   "titre": "Identification, authentification et mots de passe",
+   "debut": "2026-11-12",
+   "fin": "2026-11-12",
+   "supports": [
+    "sio/1sio-bloc3/SQ04-P01-P02-slides-authentification-mots-de-passe",
+    "sio/1sio-bloc3/SQ04-P02-tp-reutilisation-gestionnaire"
    ]
   },
   {
