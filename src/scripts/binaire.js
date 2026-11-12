@@ -114,12 +114,15 @@ document.querySelectorAll(".exo-py").forEach((exo, i) => {
   const cle = "exo-py:" + location.pathname + ":" + i;
   const sauve = lire(cle);
   if (sauve !== null) zone.value = sauve;
+  // La zone suit la hauteur du code : plus besoin de l'agrandir à la main.
+  const ajuster = () => { if (!zone.offsetParent) return; zone.style.height = "auto"; zone.style.height = zone.scrollHeight + 2 + "px"; };
+  ajuster();
   const tests = JSON.parse(exo.querySelector("script.tests").textContent);
   const sortie = exo.querySelector(".sortie");
   const resultats = exo.querySelector(".resultats");
 
-  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); }
-  zone.addEventListener("input", () => stocker(cle, zone.value));
+  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); ajuster(); }
+  zone.addEventListener("input", () => { stocker(cle, zone.value); ajuster(); });
   zone.addEventListener("keydown", (e) => {
     // Tab conserve la navigation au clavier ; le bouton insère quatre espaces.
     if (e.key === "Enter") {
@@ -140,7 +143,7 @@ document.querySelectorAll(".exo-py").forEach((exo, i) => {
       lien.download = exo.dataset.fichier; lien.click(); setTimeout(() => URL.revokeObjectURL(lien.href), 1000); return;
     }
     if (action === "indenter") return inserer("    ");
-    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); resultats.replaceChildren(); sortie.hidden = true; } return; }
+    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); ajuster(); resultats.replaceChildren(); sortie.hidden = true; } return; }
     if (occupe) return;
     occupe = true;
     const boutons = document.querySelectorAll('[data-action="tester"], [data-action="executer"]');
