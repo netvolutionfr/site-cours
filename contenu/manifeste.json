@@ -802,6 +802,22 @@
    "composant": "Binaire"
   },
   {
+   "slug": "nsi/1g/atelier-pyxel-compteur-8-bits",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Atelier Pyxel — le compteur 8 bits",
+   "sousTitre": "Un score sur 8 bits, affiché en voyants, qui déborde au-delà de 255",
+   "nature": "Activité",
+   "date": "2026-11-13",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Pyxel"
+  },
+  {
    "slug": "nsi/1g/atelier-pyxel-deplacer-heros",
    "matiere": "nsi",
    "classe": "1g",
@@ -3267,13 +3283,14 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-11-09",
+   "fin": "2026-11-13",
    "supports": [
     "nsi/1g/SQ01-support-eleve",
     "nsi/1g/SQ01-tp-binaire",
     "nsi/1g/SQ01-distanciel-boucle-variables-chaines",
     "nsi/1g/SQ01-p02-etat-variables-bases-python",
-    "nsi/1g/SQ01-p03-taille-ecriture-binaire"
+    "nsi/1g/SQ01-p03-taille-ecriture-binaire",
+    "nsi/1g/atelier-pyxel-compteur-8-bits"
    ]
   },
   {
