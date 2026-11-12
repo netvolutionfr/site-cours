@@ -3243,7 +3243,7 @@
    "code": "SQ04",
    "titre": "Identification, authentification et autorisations",
    "debut": "2026-11-12",
-   "fin": "2026-11-12",
+   "fin": "2026-11-19",
    "supports": [
     "sio/1sio-bloc3/SQ04-P01-P02-slides-authentification-mots-de-passe",
     "sio/1sio-bloc3/SQ04-P02-tp-reutilisation-gestionnaire"
