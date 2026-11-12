@@ -1,0 +1,93 @@
+---
+// Calculatrice d'entropie d'un mot de passe : remplace chaque <div class="calcul-entropie">
+// produite par la fiche (Markdown ::: {.calcul-entropie}). Hors ligne, le texte de repli
+// du div reste affiché.
+---
+
+<script>
+  const ALPHABETS: [string, number][] = [
+    ['Chiffres (10)', 10],
+    ['Minuscules (26)', 26],
+    ['Minuscules et majuscules (52)', 52],
+    ['Lettres et chiffres (62)', 62],
+    ['Tout le clavier (95)', 95],
+    ['Mots d\'une liste de 7 776 (phrase de passe)', 7776],
+  ];
+  const ESSAIS_PAR_SECONDE = 1e9;
+  const nombre = (x: number, d = 1) => x.toLocaleString('fr-FR', { maximumFractionDigits: d, minimumFractionDigits: d });
+
+  function duree(bits: number): string {
+    const log10s = bits * Math.log10(2) - Math.log10(ESSAIS_PAR_SECONDE);
+    if (log10s > 17.6) return 'plus que l\'âge de l\'Univers';
+    const s = 10 ** log10s;
+    const unites: [number, string][] = [[31557600e6, 'millions d\'années'], [31557600, 'ans'], [86400, 'jours'], [3600, 'heures'], [60, 'minutes'], [1, 'secondes']];
+    if (s < 1) return 'moins d\'une seconde';
+    for (const [u, nom] of unites) if (s >= u) return `environ ${Math.round(s / u).toLocaleString('fr-FR')} ${nom}`;
+    return 'moins d\'une seconde';
+  }
+
+  function combinaisons(bits: number): string {
+    const e = bits * Math.log10(2);
+    if (e < 9) return Math.round(10 ** e).toLocaleString('fr-FR');
+    const exp = Math.floor(e);
+    return `≈ ${nombre(10 ** (e - exp))} × 10<sup>${exp}</sup>`;
+  }
+
+  document.querySelectorAll<HTMLElement>('div.calcul-entropie').forEach((hote, i) => {
+    const id = `entropie-${i}`;
+    hote.innerHTML = `
+      <section class="entropie-calc" aria-labelledby="${id}-titre">
+        <h3 id="${id}-titre">Calculatrice d'entropie</h3>
+        <p>Entropie = L × log₂(N). Entrez des valeurs, pas un mot de passe.</p>
+        <div class="entropie-champs">
+          <label>Longueur L
+            <input type="number" min="1" max="200" step="1" value="8" data-l inputmode="numeric">
+            <small>en caractères, ou en mots pour une phrase de passe</small></label>
+          <label>Caractères possibles N
+            <select data-choix>${ALPHABETS.map(([nom, n]) => `<option value="${n}"${n === 95 ? ' selected' : ''}>${nom}</option>`).join('')}<option value="autre">Autre valeur…</option></select></label>
+          <label data-autre hidden>N personnalisé
+            <input type="number" min="2" max="100000" step="1" value="36" data-n inputmode="numeric"></label>
+        </div>
+        <output class="entropie-resultat" aria-live="polite"></output>
+      </section>`;
+    const l = hote.querySelector<HTMLInputElement>('[data-l]')!;
+    const choix = hote.querySelector<HTMLSelectElement>('[data-choix]')!;
+    const autre = hote.querySelector<HTMLElement>('[data-autre]')!;
+    const nPerso = hote.querySelector<HTMLInputElement>('[data-n]')!;
+    const sortie = hote.querySelector<HTMLOutputElement>('output')!;
+
+    const calculer = () => {
+      autre.hidden = choix.value !== 'autre';
+      const L = Math.floor(Number(l.value));
+      const N = Math.floor(Number(choix.value === 'autre' ? nPerso.value : choix.value));
+      if (!(L >= 1 && L <= 200 && N >= 2 && N <= 100000)) {
+        sortie.innerHTML = '<p>Choisissez une longueur entre 1 et 200, et au moins 2 caractères possibles.</p>';
+        return;
+      }
+      const log2 = Math.log2(N);
+      const bits = L * log2;
+      sortie.innerHTML = `
+        <p>log₂(${N.toLocaleString('fr-FR')}) ≈ <strong>${nombre(log2, 2)}</strong></p>
+        <p class="entropie-bits">${L} × ${nombre(log2, 2)} ≈ <strong>${nombre(bits)} bits</strong></p>
+        <p>Combinaisons : ${combinaisons(bits)}<br>
+        Tout essayer à un milliard d'essais par seconde : <strong>${duree(bits)}</strong></p>
+        <p class="entropie-note">Valable pour un mot de passe tiré au hasard. S'il figure dans un dictionnaire, ce calcul surestime sa force.</p>`;
+    };
+    hote.addEventListener('input', calculer);
+    calculer();
+  });
+</script>
+
+<style is:global>
+  .entropie-calc { margin-block: 1.5rem; padding: 1rem 1.25rem; border: 1px solid var(--sl-color-gray-5); border-radius: .5rem; }
+  .entropie-calc h3 { margin-top: 0; }
+  .entropie-champs { display: flex; flex-wrap: wrap; gap: 1rem; margin-block: .75rem; }
+  .entropie-champs label { display: flex; flex-direction: column; gap: .3rem; font-weight: 600; min-width: 12rem; flex: 1; }
+  .entropie-champs small { font-weight: 400; }
+  .entropie-champs label[hidden] { display: none; }
+  .entropie-champs input, .entropie-champs select { font: inherit; padding: .35rem .5rem; max-width: 100%; }
+  .entropie-resultat { display: block; padding: .5rem .9rem; background: var(--sl-color-gray-6); border-radius: .4rem; }
+  .entropie-resultat p { margin: .4rem 0; }
+  .entropie-bits { font-size: 1.25rem; }
+  .entropie-note { font-size: .9rem; }
+</style>
