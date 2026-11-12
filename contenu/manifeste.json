@@ -2036,6 +2036,98 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc3/SQ04-P04-slides-hachage-mots-de-passe",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ04",
+   "titre": "Garder un secret sans le connaître",
+   "sousTitre": "Le hachage des mots de passe",
+   "nature": "Diaporama",
+   "date": "2026-11-19",
+   "pdf": "/sio/1sio-bloc3/SQ04-P04-slides-hachage-mots-de-passe.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "le-hachage-des-mots-de-passe",
+     "text": "Le hachage des mots de passe"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ04-P04-tp-hachage-mots-de-passe",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ04",
+   "titre": "Ce que le site enregistre",
+   "sousTitre": "Activité — empreintes, vérification d'une connexion et sel",
+   "nature": "Activité",
+   "date": "2026-11-19",
+   "pdf": "/sio/1sio-bloc3/SQ04-P04-tp-hachage-mots-de-passe.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "consignes",
+     "text": "Consignes"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1-observer-des-empreintes",
+     "text": "Étape 1 — Observer des empreintes"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2-vérifier-une-connexion",
+     "text": "Étape 2 — Vérifier une connexion"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3-lire-une-base-sans-sel",
+     "text": "Étape 3 — Lire une base sans sel"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4-ajouter-un-sel",
+     "text": "Étape 4 — Ajouter un sel"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-5-trace-individuelle",
+     "text": "Étape 5 — Trace individuelle"
+    },
+    {
+     "depth": 3,
+     "slug": "vérification-avant-de-terminer",
+     "text": "Vérification avant de terminer"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-1",
+     "text": "Étape 1"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-2",
+     "text": "Étape 2"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-3",
+     "text": "Étape 3"
+    },
+    {
+     "depth": 3,
+     "slug": "étape-4",
+     "text": "Étape 4"
+    }
+   ]
+  },
+  {
    "slug": "sio/1sio-fil-rouge/J0-cours-reprendre-audit-vpi",
    "matiere": "sio",
    "classe": "1sio",
@@ -3246,7 +3338,9 @@
    "fin": "2026-11-19",
    "supports": [
     "sio/1sio-bloc3/SQ04-P01-P02-slides-authentification-mots-de-passe",
-    "sio/1sio-bloc3/SQ04-P02-tp-reutilisation-gestionnaire"
+    "sio/1sio-bloc3/SQ04-P02-tp-reutilisation-gestionnaire",
+    "sio/1sio-bloc3/SQ04-P04-slides-hachage-mots-de-passe",
+    "sio/1sio-bloc3/SQ04-P04-tp-hachage-mots-de-passe"
    ]
   },
   {

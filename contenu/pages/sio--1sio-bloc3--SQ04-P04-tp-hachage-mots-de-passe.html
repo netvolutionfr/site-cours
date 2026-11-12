@@ -1,0 +1,322 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Constater les propriétés d’une fonction de hachage avec un
+outil.</li>
+<li>Vérifier une connexion en comparant des empreintes, sans connaître
+le mot de passe.</li>
+<li>Expliquer ce qu’apporte le sel quand une base d’empreintes est
+volée.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Le cours du matin : empreinte, vérification, sel, fonction
+lente.</li>
+<li>La réutilisation des mots de passe et les dictionnaires
+(12/11).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Étape 1</td>
+<td>Observer des empreintes (10 min)</td>
+</tr>
+<tr>
+<td>Étape 2</td>
+<td>Vérifier une connexion (10 min)</td>
+</tr>
+<tr>
+<td>Étape 3</td>
+<td>Lire une base sans sel (15 min)</td>
+</tr>
+<tr>
+<td>Étape 4</td>
+<td>Ajouter un sel (10 min)</td>
+</tr>
+<tr>
+<td>Étape 5</td>
+<td>Trace individuelle (10 min)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="consignes">Consignes</h3>
+<p><strong>En binôme, sur poste, 55 minutes.</strong> Chacun rédige ses
+réponses. IA interdite.</p>
+<blockquote>
+<p><strong>Règle.</strong> Les mots de passe de cette fiche sont
+fictifs. N’entrez <strong>jamais</strong> un de vos vrais mots de passe
+dans la calculatrice, ni dans aucun site de calcul d’empreinte.</p>
+</blockquote>
+<div class="calcul-empreinte">
+<p><strong>Calculatrice d’empreinte SHA-256</strong> : elle est
+disponible sur la page web de cette activité. Sur papier, les empreintes
+utiles sont données dans les corrigés.</p>
+</div>
+<h3 id="étape-1-observer-des-empreintes">Étape 1 — Observer des
+empreintes</h3>
+<p><strong>10 minutes.</strong> Avec la calculatrice, calculez
+l’empreinte de chaque texte et notez ses huit premiers caractères.</p>
+<table>
+<thead>
+<tr>
+<th>Texte</th>
+<th>8 premiers caractères de l’empreinte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>velo</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Velo</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>velo</code> suivi d’une espace</td>
+<td></td>
+</tr>
+<tr>
+<td>Une phrase entière de votre choix</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Recalculez l’empreinte de <code>velo</code> : obtenez-vous la même ?
+Quelle propriété cela montre-t-il ?</li>
+<li>Comparez <code>velo</code> et <code>Velo</code>. Quelle propriété le
+montre ?</li>
+<li>Combien de caractères compte chaque empreinte, quelle que soit la
+longueur du texte ?</li>
+</ol>
+<p><strong>À produire :</strong> le tableau, et une propriété nommée
+pour chaque question.</p>
+<h3 id="étape-2-vérifier-une-connexion">Étape 2 — Vérifier une
+connexion</h3>
+<p><strong>10 minutes.</strong> Le site de VéloCité a enregistré, pour
+le compte <code>a.petit@exemple.fr</code>, l’empreinte :</p>
+<p><code>7c90885eb7f31b380982a02ed1869aa86846054c1f8bc8dadc830de8a500035a</code></p>
+<p>Trois tentatives de connexion arrivent :
+<code>guidon-orage-pomm3</code>, <code>Guidon-orage-pomme</code>,
+<code>guidon-orage-pomme</code>.</p>
+<ol type="1">
+<li>Pour chaque tentative, calculez l’empreinte et dites si le site
+accepte la connexion.</li>
+<li>À quel moment le site a-t-il eu besoin de connaître le mot de passe
+enregistré ?</li>
+</ol>
+<p><strong>À produire :</strong> la décision du site pour chaque
+tentative, et la réponse à la question 2.</p>
+<h3 id="étape-3-lire-une-base-sans-sel">Étape 3 — Lire une base sans
+sel</h3>
+<p><strong>15 minutes.</strong> Une ancienne version de l’application
+stockait des empreintes SHA-256 <strong>sans sel</strong>. Voici un
+extrait de la table, qui aurait pu être volée.</p>
+<table>
+<thead>
+<tr>
+<th>Compte</th>
+<th>Empreinte enregistrée (début)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>l.bernard@exemple.fr</code></td>
+<td><code>ddadc448f590…</code></td>
+</tr>
+<tr>
+<td><code>m.durand@exemple.fr</code></td>
+<td><code>f2d81a260dea…</code></td>
+</tr>
+<tr>
+<td><code>s.roux@exemple.fr</code></td>
+<td><code>7c90885eb7f3…</code></td>
+</tr>
+<tr>
+<td><code>k.morel@exemple.fr</code></td>
+<td><code>f2d81a260dea…</code></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Sans rien calculer : que peut-on dire de <code>m.durand</code> et de
+<code>k.morel</code> ?</li>
+<li>Calculez les empreintes de <code>azerty</code>, <code>soleil</code>
+et <code>123456</code>, trois mots de passe parmi les plus courants. Que
+découvrez-vous ?</li>
+<li>Le compte <code>s.roux</code> a la même empreinte que celle de
+l’étape 2. Était-ce prévisible ? Pourquoi son mot de passe a-t-il tenu,
+alors que d’autres n’ont pas tenu ?</li>
+</ol>
+<p><strong>À produire :</strong> les comptes exposés et une phrase qui
+explique pourquoi.</p>
+<h3 id="étape-4-ajouter-un-sel">Étape 4 — Ajouter un sel</h3>
+<p><strong>10 minutes.</strong> La nouvelle version tire un sel au
+hasard pour chaque compte et hache <code>sel:mot de passe</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Compte</th>
+<th>Sel</th>
+<th>Mot de passe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>m.durand@exemple.fr</code></td>
+<td><code>x7Qk</code></td>
+<td><code>azerty</code></td>
+</tr>
+<tr>
+<td><code>k.morel@exemple.fr</code></td>
+<td><code>p2Lm</code></td>
+<td><code>azerty</code></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Calculez les empreintes de <code>x7Qk:azerty</code> et de
+<code>p2Lm:azerty</code>. Les deux comptes ont-ils encore la même
+empreinte ?</li>
+<li>L’empreinte de <code>azerty</code> calculée à l’étape 3 permet-elle
+encore de repérer ces deux comptes ?</li>
+<li>Le sel est enregistré dans la base, à côté de l’empreinte. Pourquoi
+n’est-ce pas grave ?</li>
+<li>Le sel suffit-il à protéger <code>azerty</code> si l’attaquant
+connaît le sel ? Que faut-il en plus ?</li>
+</ol>
+<p><strong>À produire :</strong> vos réponses, avec les huit premiers
+caractères des deux empreintes.</p>
+<h3 id="étape-5-trace-individuelle">Étape 5 — Trace individuelle</h3>
+<p><strong>10 minutes, seul.</strong> Trois phrases, sans regarder la
+fiche :</p>
+<ol type="1">
+<li>Comment un site vérifie un mot de passe sans le garder.</li>
+<li>Pourquoi une base d’empreintes sans sel reste dangereuse pour les
+mots de passe courants.</li>
+<li>Ce que le sel et une fonction lente changent pour l’attaquant.</li>
+</ol>
+<h3 id="vérification-avant-de-terminer">Vérification avant de
+terminer</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Je sais nommer trois propriétés
+d’une fonction de hachage.</label></li>
+<li><label><input type="checkbox"></input>J’ai vérifié une connexion par
+comparaison d’empreintes.</label></li>
+<li><label><input type="checkbox"></input>Je sais expliquer pourquoi deux
+empreintes identiques trahissent un même mot de passe.</label></li>
+<li><label><input type="checkbox"></input>Je sais expliquer le rôle du sel, et
+pourquoi il n’a pas besoin d’être secret.</label></li>
+</ul>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="étape-1">Étape 1</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Texte</th>
+<th>Empreinte SHA-256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>velo</code></td>
+<td><code>cd1e45e8b94d27b2562ab5ae45b4bff61e2bc89d9ca4ffe117e70aa5ac8ef1eb</code></td>
+</tr>
+<tr>
+<td><code>Velo</code></td>
+<td><code>5d1e437e74a365f9b15ce20130505fd6470219dc43c7b884247dae5627b9a7c0</code></td>
+</tr>
+<tr>
+<td><code>velo</code> + espace</td>
+<td><code>dcb58e1533c6df9657b2ed9fa0e258a751e70f225881ee85cbc55011f95fff5c</code></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Même empreinte : la fonction est <strong>déterministe</strong>.</li>
+<li>Une seule lettre change et toute l’empreinte change : <strong>effet
+avalanche</strong>.</li>
+<li>Toujours 64 caractères : <strong>taille fixe</strong>.</li>
+</ol>
+<h3 id="étape-2">Étape 2</h3>
+<table>
+<thead>
+<tr>
+<th>Tentative</th>
+<th>Empreinte (début)</th>
+<th>Décision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>guidon-orage-pomm3</code></td>
+<td><code>390e6b8c84ec…</code></td>
+<td>Refusée</td>
+</tr>
+<tr>
+<td><code>Guidon-orage-pomme</code></td>
+<td><code>b3588843301…</code></td>
+<td>Refusée</td>
+</tr>
+<tr>
+<td><code>guidon-orage-pomme</code></td>
+<td><code>7c90885eb7f3…</code></td>
+<td><strong>Acceptée</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Jamais : le site compare des empreintes. Il n’a besoin que de celle
+enregistrée à l’inscription.</p>
+<h3 id="étape-3">Étape 3</h3>
+<ol type="1">
+<li>Même empreinte : ils ont <strong>le même mot de passe</strong>, sans
+qu’on sache encore lequel.</li>
+<li><code>azerty</code> donne <code>f2d81a260dea…</code> :
+<code>m.durand</code> et <code>k.morel</code> utilisent
+<code>azerty</code>. <code>soleil</code> (<code>e93e24c1b877…</code>) et
+<code>123456</code> (<code>8d969eef6eca…</code>) n’apparaissent pas dans
+l’extrait. Le mot de passe de <code>l.bernard</code> reste inconnu avec
+ces trois mots seulement, mais une liste plus longue, avec les
+transformations vues le 12/11 (nom de ville, année, <code>!</code>), le
+trouverait.</li>
+<li>Oui : c’est la même empreinte que <code>guidon-orage-pomme</code>,
+donc le même mot de passe. Il a tenu parce qu’une phrase de mots tirés
+au hasard ne figure dans aucune liste de mots courants : impossible de «
+deviner et comparer ». Le hachage protège bien les mots de passe forts,
+mal les faibles.</li>
+</ol>
+<h3 id="étape-4">Étape 4</h3>
+<ol type="1">
+<li><code>x7Qk:azerty</code> donne <code>0b7ef626e317…</code>,
+<code>p2Lm:azerty</code> donne <code>4ebe301aecee…</code> : les
+empreintes sont différentes.</li>
+<li>Non : l’empreinte de <code>azerty</code> seul ne correspond à aucune
+des deux.</li>
+<li>Le sel n’a pas besoin d’être secret : il rend chaque empreinte
+unique, ce qui empêche de repérer les doublons et rend inutiles les
+listes d’empreintes calculées à l’avance.</li>
+<li>Non : un attaquant qui connaît le sel peut encore essayer les mots
+courants <strong>compte par compte</strong>. Il faut aussi une fonction
+<strong>lente</strong> (bcrypt, Argon2) pour que chaque essai coûte
+cher, et surtout un mot de passe qui n’est dans aucune liste.</li>
+</ol>
+</details>

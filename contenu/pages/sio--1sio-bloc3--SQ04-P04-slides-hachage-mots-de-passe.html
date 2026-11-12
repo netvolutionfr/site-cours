@@ -1,0 +1,320 @@
+<section id="garder-un-secret-sans-le-connaître" class="slide title">
+<h2>Garder un secret sans le connaître</h2>
+<h3 id="le-hachage-des-mots-de-passe">Le hachage des mots de passe</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Expliquer</strong> comment un site vérifie un mot de passe
+sans l’enregistrer.</li>
+<li><strong>Décrire</strong> les propriétés d’une fonction de
+hachage.</li>
+<li><strong>Justifier</strong> l’usage du sel et d’une fonction
+lente.</li>
+</ul>
+<p><strong>Prérequis :</strong> la page de connexion (le mot de passe
+arrive en clair au serveur), la réutilisation des mots de passe et les
+dictionnaires.</p>
+</section>
+<section id="le-serveur-reçoit-velo.-il-en-fait-quoi" class="slide concept">
+<h2>Le serveur reçoit <code>velo</code>. Il en fait quoi ?</h2>
+<p>La semaine dernière : le mot de passe quitte le navigateur et arrive
+<strong>en clair</strong> au serveur. Il faudra le vérifier à chaque
+connexion.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Si le site enregistre…</th>
+<th>Qui peut le lire ?</th>
+<th>Si la base est volée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le mot de passe en clair</td>
+<td>Tout administrateur, tout voleur</td>
+<td>Tous les comptes, et les autres sites où il est réutilisé</td>
+</tr>
+<tr>
+<td>Le mot de passe chiffré</td>
+<td>Celui qui a la clé</td>
+<td>Tout, si la clé est volée avec la base</td>
+</tr>
+<tr>
+<td>Une <strong>empreinte</strong> du mot de passe</td>
+<td>Personne</td>
+<td>Pas de retour possible au mot de passe</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="une-fonction-de-hachage" class="slide definition">
+<h2>Une fonction de hachage</h2>
+<p>Elle transforme n’importe quel texte en une
+<strong>empreinte</strong> de taille fixe. SHA-256 : 64 caractères.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Propriété</th>
+<th>Ce que ça veut dire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Déterministe</strong></td>
+<td>Même texte, même empreinte, sur n’importe quel ordinateur</td>
+</tr>
+<tr>
+<td><strong>À sens unique</strong></td>
+<td>Impossible de retrouver le texte à partir de l’empreinte</td>
+</tr>
+<tr>
+<td><strong>Effet avalanche</strong></td>
+<td>Un caractère change : l’empreinte change entièrement</td>
+</tr>
+<tr>
+<td><strong>Taille fixe</strong></td>
+<td><code>velo</code> ou un roman : toujours 64 caractères</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="un-caractère-tout-change" class="slide compare">
+<h2>Un caractère, tout change</h2>
+<table>
+<thead>
+<tr>
+<th>Texte</th>
+<th>Début de l’empreinte SHA-256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>velo</code></td>
+<td><code>cd1e45e8b94d27b2…</code></td>
+</tr>
+<tr>
+<td><code>Velo</code></td>
+<td><code>5d1e437e74a365f9…</code></td>
+</tr>
+<tr>
+<td><code>velo␣</code> (avec une espace)</td>
+<td><code>dcb58e1533c6df96…</code></td>
+</tr>
+</tbody>
+</table>
+<p>Aucune ressemblance entre les empreintes, alors que les textes sont
+presque identiques : l’empreinte ne laisse rien deviner du texte.</p>
+</section>
+<section id="vérifier-sans-enregistrer" class="slide full-image">
+<h2>Vérifier sans enregistrer</h2>
+<figure>
+<img role="img" aria-label="À l’inscription, le site n’enregistre que l’empreinte du mot de passe. À la connexion, il calcule l’empreinte du mot de passe saisi et la compare. Si la base est volée, elle ne contient que des empreintes." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlbDqXJpZmllciB1biBtb3QgZGUgcGFzc2Ugc2FucyBsJ2VucmVnaXN0cmVyPC90aXRsZT4KICA8ZGVzYyBpZD0iZGVzYyI+w4AgbCdpbnNjcmlwdGlvbiwgbGUgc2l0ZSBjYWxjdWxlIGwnZW1wcmVpbnRlIGR1IG1vdCBkZSBwYXNzZSBjaG9pc2kgZXQgbidlbnJlZ2lzdHJlIHF1ZSBjZXR0ZSBlbXByZWludGUgZGFucyBsYSBiYXNlLiDDgCBsYSBjb25uZXhpb24sIGlsIGNhbGN1bGUgbCdlbXByZWludGUgZHUgbW90IGRlIHBhc3NlIHNhaXNpIGV0IGxhIGNvbXBhcmUgw6AgY2VsbGUgZW5yZWdpc3Ryw6llIDogaWRlbnRpcXVlcywgbGEgY29ubmV4aW9uIGVzdCBhY2NlcHTDqWUgOyBkaWZmw6lyZW50ZXMsIGVsbGUgZXN0IHJlZnVzw6llLiBTaSBsYSBiYXNlIGVzdCB2b2zDqWUsIGVsbGUgbmUgY29udGllbnQgcXVlIGRlcyBlbXByZWludGVzLCBkJ2/DuSBsJ29uIG5lIHBldXQgcGFzIHJldmVuaXIgYXUgbW90IGRlIHBhc3NlLjwvZGVzYz4KICA8ZGVmcz4KICAgIDxtYXJrZXIgaWQ9ImFrIiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjkiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAgMEwxMCA1TDAgMTB6IiBmaWxsPSIjM2M0YjVjIi8+PC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJhZyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzFFODQ0OSIvPjwvbWFya2VyPgogIDwvZGVmcz4KICA8c3R5bGU+CiAgICAuem9uZXtmaWxsOiNmZmY7c3Ryb2tlOiMxNzIwMzM7c3Ryb2tlLXdpZHRoOjIuNX0KICAgIC5pbntmaWxsOiNGN0Y4RkE7c3Ryb2tlOiM2NTc4OGQ7c3Ryb2tlLXdpZHRoOjJ9CiAgICAuZm57ZmlsbDojRUFGNEZCO3N0cm9rZTojMzU2OEQ0O3N0cm9rZS13aWR0aDoyLjV9CiAgICAuZGJ7ZmlsbDojRUFGQUYxO3N0cm9rZTojMUU4NDQ5O3N0cm9rZS13aWR0aDoyLjV9CiAgICAuaHtmb250OjcwMCAyMHB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLnN7Zm9udDo3MDAgMTdweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzE3MjAzM30KICAgIC50e2ZvbnQ6NTAwIDE1cHggQXJpYWwsc2Fucy1zZXJpZjtmaWxsOiMzYzRiNWN9CiAgICAuY3tmb250OjYwMCAxNXB4IG1vbm9zcGFjZTtmaWxsOiMxNjRkNzl9CiAgICAub2t7Zm9udDo3MDAgMTZweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzFFODQ0OX0KICAgIC5rb3tmb250OjcwMCAxNnB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojRDk1QzU5fQogICAgLmF7c3Ryb2tlOiMzYzRiNWM7c3Ryb2tlLXdpZHRoOjM7ZmlsbDpub25lfQogICAgLnRhZ3R7Zm9udDo3MDAgMTRweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6I2ZmZn0KICA8L3N0eWxlPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY2MCIgZmlsbD0iI0Y3RjhGQSIvPgoKICA8IS0tIEluc2NyaXB0aW9uIC0tPgogIDxyZWN0IGNsYXNzPSJ6b25lIiB4PSIzMCIgeT0iMzAiIHdpZHRoPSI1NDAiIGhlaWdodD0iMzAwIiByeD0iMTQiLz4KICA8cmVjdCB4PSIzMCIgeT0iMzAiIHdpZHRoPSI1NDAiIGhlaWdodD0iMzYiIHJ4PSIxNCIgZmlsbD0iIzM1NjhENCIvPjxyZWN0IHg9IjMwIiB5PSI1MCIgd2lkdGg9IjU0MCIgaGVpZ2h0PSIxNiIgZmlsbD0iIzM1NjhENCIvPgogIDx0ZXh0IHg9IjQ4IiB5PSI1NCIgY2xhc3M9InRhZ3QiPjEgwrcgw4AgTCdJTlNDUklQVElPTjwvdGV4dD4KICA8cmVjdCBjbGFzcz0iaW4iIHg9IjU0IiB5PSI5MiIgd2lkdGg9IjIwMCIgaGVpZ2h0PSI3NCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNzAiIHk9IjEyMCIgY2xhc3M9InMiPk1vdCBkZSBwYXNzZSBjaG9pc2k8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjE0OCIgY2xhc3M9ImMiPnZlbG88L3RleHQ+CiAgPHJlY3QgY2xhc3M9ImZuIiB4PSIzMDAiIHk9IjkyIiB3aWR0aD0iMjQwIiBoZWlnaHQ9Ijc0IiByeD0iMTAiLz4KICA8dGV4dCB4PSIzMTYiIHk9IjEyMCIgY2xhc3M9InMiPkZvbmN0aW9uIGRlIGhhY2hhZ2U8L3RleHQ+CiAgPHRleHQgeD0iMzE2IiB5PSIxNDgiIGNsYXNzPSJ0Ij5TSEEtMjU2LCBiY3J5cHQsIEFyZ29uMuKApjwvdGV4dD4KICA8cGF0aCBjbGFzcz0iYSIgZD0iTTI1NiAxMjkgTDI5NiAxMjkiIG1hcmtlci1lbmQ9InVybCgjYWspIi8+CiAgPHJlY3QgY2xhc3M9ImRiIiB4PSI1NCIgeT0iMjA2IiB3aWR0aD0iNDg2IiBoZWlnaHQ9IjEwMCIgcng9IjEwIi8+CiAgPHRleHQgeD0iNzAiIHk9IjIzNCIgY2xhc3M9InMiPkVucmVnaXN0csOpIGRhbnMgbGEgYmFzZSA6IGwnZW1wcmVpbnRlIHNldWxlbWVudDwvdGV4dD4KICA8dGV4dCB4PSI3MCIgeT0iMjYyIiBjbGFzcz0iYyI+Y2QxZTQ1ZThiOTRkMjdiMjU2MmFiNWFlNDViNGJmZjY8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjI4NCIgY2xhc3M9ImMiPjFlMmJjODlkOWNhNGZmZTExN2U3MGFhNWFjOGVmMWViPC90ZXh0PgogIDxwYXRoIGNsYXNzPSJhIiBkPSJNNDIwIDE2OCBMNDIwIDIwMiIgbWFya2VyLWVuZD0idXJsKCNhaykiLz4KCiAgPCEtLSBDb25uZXhpb24gLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjYzMCIgeT0iMzAiIHdpZHRoPSI1NDAiIGhlaWdodD0iNDIwIiByeD0iMTQiLz4KICA8cmVjdCB4PSI2MzAiIHk9IjMwIiB3aWR0aD0iNTQwIiBoZWlnaHQ9IjM2IiByeD0iMTQiIGZpbGw9IiMxRTg0NDkiLz48cmVjdCB4PSI2MzAiIHk9IjUwIiB3aWR0aD0iNTQwIiBoZWlnaHQ9IjE2IiBmaWxsPSIjMUU4NDQ5Ii8+CiAgPHRleHQgeD0iNjQ4IiB5PSI1NCIgY2xhc3M9InRhZ3QiPjIgwrcgw4AgQ0hBUVVFIENPTk5FWElPTjwvdGV4dD4KICA8cmVjdCBjbGFzcz0iaW4iIHg9IjY1NCIgeT0iOTIiIHdpZHRoPSIyMDAiIGhlaWdodD0iNzQiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjY3MCIgeT0iMTIwIiBjbGFzcz0icyI+TW90IGRlIHBhc3NlIHNhaXNpPC90ZXh0PgogIDx0ZXh0IHg9IjY3MCIgeT0iMTQ4IiBjbGFzcz0iYyI+dmVsbzwvdGV4dD4KICA8cmVjdCBjbGFzcz0iZm4iIHg9IjkwMCIgeT0iOTIiIHdpZHRoPSIyNDAiIGhlaWdodD0iNzQiIHJ4PSIxMCIvPgogIDx0ZXh0IHg9IjkxNiIgeT0iMTIwIiBjbGFzcz0icyI+TcOqbWUgZm9uY3Rpb248L3RleHQ+CiAgPHRleHQgeD0iOTE2IiB5PSIxNDgiIGNsYXNzPSJ0Ij5tw6ptZSBlbXByZWludGUgc2kgbcOqbWUgdGV4dGU8L3RleHQ+CiAgPHBhdGggY2xhc3M9ImEiIGQ9Ik04NTYgMTI5IEw4OTYgMTI5IiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDxyZWN0IGNsYXNzPSJmbiIgeD0iNjU0IiB5PSIyMDYiIHdpZHRoPSI0ODYiIGhlaWdodD0iODgiIHJ4PSIxMCIgc3R5bGU9ImZpbGw6I2ZmZiIvPgogIDx0ZXh0IHg9IjY3MCIgeT0iMjM2IiBjbGFzcz0icyI+Q29tcGFyYWlzb24gZGVzIGRldXggZW1wcmVpbnRlczwvdGV4dD4KICA8dGV4dCB4PSI2NzAiIHk9IjI2NCIgY2xhc3M9InQiPmNlbGxlIHF1aSB2aWVudCBkJ8OqdHJlIGNhbGN1bMOpZTwvdGV4dD4KICA8dGV4dCB4PSI2NzAiIHk9IjI4NCIgY2xhc3M9InQiPmV0IGNlbGxlIGVucmVnaXN0csOpZSDDoCBsJ2luc2NyaXB0aW9uPC90ZXh0PgogIDxwYXRoIGNsYXNzPSJhIiBkPSJNMTAyMCAxNjggTDEwMjAgMjAyIiBtYXJrZXItZW5kPSJ1cmwoI2FrKSIvPgogIDxwYXRoIGNsYXNzPSJhIiBkPSJNNTQyIDI1NiBMNjUwIDI1MCIgbWFya2VyLWVuZD0idXJsKCNhaykiLz4KICA8dGV4dCB4PSI1NjAiIHk9IjIzNiIgY2xhc3M9InQiPmx1ZTwvdGV4dD4KICA8dGV4dCB4PSI2NzAiIHk9IjM0MCIgY2xhc3M9Im9rIj5JZGVudGlxdWVzIOKGkiBjb25uZXhpb24gYWNjZXB0w6llPC90ZXh0PgogIDx0ZXh0IHg9IjY3MCIgeT0iMzcyIiBjbGFzcz0ia28iPkRpZmbDqXJlbnRlcyDihpIgY29ubmV4aW9uIHJlZnVzw6llPC90ZXh0PgogIDx0ZXh0IHg9IjY3MCIgeT0iNDIwIiBjbGFzcz0idCI+TGUgc2l0ZSBuJ2EgamFtYWlzIGV1IGJlc29pbiBkZSBnYXJkZXIgbGUgbW90IGRlIHBhc3NlLjwvdGV4dD4KCiAgPCEtLSBWb2wgLS0+CiAgPHJlY3QgY2xhc3M9InpvbmUiIHg9IjMwIiB5PSIzNjAiIHdpZHRoPSI1NDAiIGhlaWdodD0iMTkwIiByeD0iMTQiIHN0eWxlPSJzdHJva2U6I0Q5NUM1OSIvPgogIDxyZWN0IHg9IjMwIiB5PSIzNjAiIHdpZHRoPSI1NDAiIGhlaWdodD0iMzYiIHJ4PSIxNCIgZmlsbD0iI0Q5NUM1OSIvPjxyZWN0IHg9IjMwIiB5PSIzODAiIHdpZHRoPSI1NDAiIGhlaWdodD0iMTYiIGZpbGw9IiNEOTVDNTkiLz4KICA8dGV4dCB4PSI0OCIgeT0iMzg0IiBjbGFzcz0idGFndCI+MyDCtyBTSSBMQSBCQVNFIEVTVCBWT0zDiUU8L3RleHQ+CiAgPHRleHQgeD0iNTQiIHk9IjQyOCIgY2xhc3M9InQiPkxlIHZvbGV1ciBvYnRpZW50IGRlcyBlbXByZWludGVzLCBwYXMgZGVzIG1vdHMgZGUgcGFzc2UgOjwvdGV4dD4KICA8dGV4dCB4PSI1NCIgeT0iNDUyIiBjbGFzcz0idCI+bGEgZm9uY3Rpb24gZXN0IMOgIHNlbnMgdW5pcXVlLCBvbiBuZSByZW1vbnRlIHBhcyBhdSB0ZXh0ZS48L3RleHQ+CiAgPHRleHQgeD0iNTQiIHk9IjQ5MiIgY2xhc3M9ImtvIj5MaW1pdGUgOiBpbCBwZXV0IGhhY2hlciBkZXMgbW90cyBjb3VyYW50czwvdGV4dD4KICA8dGV4dCB4PSI1NCIgeT0iNTE2IiBjbGFzcz0ia28iPmV0IGNoZXJjaGVyIGxlcyBlbXByZWludGVzIGlkZW50aXF1ZXMuPC90ZXh0PgogIDx0ZXh0IHg9IjU0IiB5PSI1NDAiIGNsYXNzPSJ0Ij5EJ2/DuSBsZSBzZWwgZXQgbGVzIGZvbmN0aW9ucyBsZW50ZXMuPC90ZXh0PgoKICA8cmVjdCB4PSIzMCIgeT0iNTgwIiB3aWR0aD0iMTE0MCIgaGVpZ2h0PSI1NiIgcng9IjEwIiBmaWxsPSIjRUFGQUYxIiBzdHJva2U9IiMxRTg0NDkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2MTQiIGNsYXNzPSJ0Ij48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFFODQ0OSI+w4AgcmV0ZW5pciDCtyA8L3RzcGFuPnVuIHNpdGUgc8OpcmlldXggbmUgY29ubmHDrnQgcGFzIHZvdHJlIG1vdCBkZSBwYXNzZSA6IGlsIGdhcmRlIHNvbiBlbXByZWludGUgZXQgY29tcGFyZS48L3RleHQ+Cjwvc3ZnPgo=" alt="À l’inscription, le site n’enregistre que l’empreinte du mot de passe. À la connexion, il calcule l’empreinte du mot de passe saisi et la compare. Si la base est volée, elle ne contient que des empreintes." />
+<figcaption aria-hidden="true">À l’inscription, le site n’enregistre que
+l’empreinte du mot de passe. À la connexion, il calcule l’empreinte du
+mot de passe saisi et la compare. Si la base est volée, elle ne contient
+que des empreintes.</figcaption>
+</figure>
+</section>
+<section id="la-limite-les-mots-de-passe-courants" class="slide warning">
+<h2>La limite : les mots de passe courants</h2>
+<p>Même texte, même empreinte : c’est utile pour vérifier, mais aussi
+pour l’attaquant.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ce que voit le voleur dans la base</th>
+<th>Ce qu’il en déduit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deux comptes ont la même empreinte</td>
+<td>Ils ont le même mot de passe</td>
+</tr>
+<tr>
+<td>Une empreinte égale à celle de <code>azerty</code></td>
+<td>Le mot de passe est <code>azerty</code></td>
+</tr>
+</tbody>
+</table>
+<p>Il lui suffit de hacher les mots de passe courants et de
+<strong>comparer</strong>. Un mot de passe aléatoire et long, lui, n’est
+dans aucune liste.</p>
+</section>
+<section id="le-sel-une-valeur-différente-pour-chaque-compte" class="slide concept">
+<h2>Le sel : une valeur différente pour chaque compte</h2>
+<p>À l’inscription, le site tire au hasard un <strong>sel</strong>,
+l’enregistre, et hache <strong>sel + mot de passe</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Compte</th>
+<th>Sel (enregistré)</th>
+<th>Mot de passe</th>
+<th>Empreinte enregistrée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Léa</td>
+<td><code>x7Qk</code></td>
+<td><code>azerty</code></td>
+<td><code>0b7ef626e317…</code></td>
+</tr>
+<tr>
+<td>Hugo</td>
+<td><code>p2Lm</code></td>
+<td><code>azerty</code></td>
+<td><code>4ebe301aecee…</code></td>
+</tr>
+</tbody>
+</table>
+<p>Même mot de passe, empreintes différentes : on ne repère plus les
+doublons, et une liste d’empreintes préparée à l’avance ne sert plus à
+rien. Le sel n’est pas un secret : il protège par sa
+<strong>diversité</strong>.</p>
+</section>
+<section id="rapide-ou-lente" class="slide compare">
+<h2>Rapide ou lente ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>SHA-256</th>
+<th>bcrypt, Argon2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conçue pour</td>
+<td>Vérifier vite des fichiers, des téléchargements</td>
+<td>Stocker des mots de passe</td>
+</tr>
+<tr>
+<td>Vitesse</td>
+<td>Des milliards d’empreintes par seconde</td>
+<td>Volontairement lente, réglable</td>
+</tr>
+<tr>
+<td>Pour l’utilisateur</td>
+<td>—</td>
+<td>Une connexion : quelques centièmes de seconde, invisible</td>
+</tr>
+<tr>
+<td>Pour l’attaquant</td>
+<td>Essayer une liste entière : rapide</td>
+<td>Chaque essai coûte : des années au lieu de minutes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pour les mots de passe : une fonction lente, avec un
+sel</strong>, comme le recommandent l’ANSSI et la CNIL.</p>
+</section>
+<section id="hacher-nest-pas-chiffrer" class="slide compare">
+<h2>Hacher n’est pas chiffrer</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Chiffrer</th>
+<th>Hacher</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Retour au texte</td>
+<td>Oui, avec la clé</td>
+<td><strong>Jamais</strong></td>
+</tr>
+<tr>
+<td>Clé</td>
+<td>Indispensable</td>
+<td>Aucune</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Protéger un message à relire : HTTPS, disque</td>
+<td>Vérifier sans connaître : mots de passe, intégrité d’un fichier</td>
+</tr>
+</tbody>
+</table>
+<p>Le même principe sert aussi à vérifier qu’un fichier téléchargé n’a
+pas été modifié : on compare son empreinte à celle publiée par
+l’éditeur.</p>
+</section>
+<section id="vérification-individuelle" class="slide activity">
+<h2>Vérification individuelle</h2>
+<p><strong>Sur papier · seul · 5 minutes</strong></p>
+<p><strong>À produire :</strong> quatre réponses courtes, corrigées
+ensemble.</p>
+<ol type="1">
+<li>Pourquoi le site n’a-t-il pas besoin de garder le mot de passe
+?</li>
+<li>Deux comptes ont la même empreinte SHA-256 sans sel : qu’en conclure
+?</li>
+<li>À quoi sert le sel, puisqu’il n’est pas secret ?</li>
+<li>Un site vous renvoie votre mot de passe par courriel quand vous
+l’oubliez : que révèle-t-il ?</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empreinte</td>
+<td>Résultat d’une fonction à sens unique, de taille fixe</td>
+</tr>
+<tr>
+<td>Vérifier</td>
+<td>Hacher le mot de passe saisi et comparer à l’empreinte
+enregistrée</td>
+</tr>
+<tr>
+<td>Sel</td>
+<td>Une valeur aléatoire par compte : même mot de passe, empreintes
+différentes</td>
+</tr>
+<tr>
+<td>Fonction lente</td>
+<td>bcrypt ou Argon2 : chaque essai coûte cher à l’attaquant</td>
+</tr>
+</tbody>
+</table>
+<p><strong>En demi-groupe :</strong> calculer des empreintes, vérifier
+une connexion, constater l’effet du sel.</p>
+</section>
