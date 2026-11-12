@@ -1,0 +1,470 @@
+<section id="du-tableur-à-la-base-de-données" class="slide title">
+<h2>Du tableur à la base de données</h2>
+<h3 id="tables-lignes-clés-ranger-les-données-dune-boutique">Tables,
+lignes, clés : ranger les données d’une boutique</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Expliquer</strong> pourquoi un tableau unique produit
+doublons et incohérences.</li>
+<li><strong>Lire</strong> le schéma d’une base : tables, attributs, clés
+primaires et étrangères.</li>
+<li><strong>Retrouver</strong> une information en suivant les clés d’une
+table à l’autre.</li>
+</ul>
+<p><strong>Prérequis :</strong> le site dynamique de Netvolution Studio.
+Où un site range-t-il ses données ?</p>
+</section>
+<section id="le-tableur-de-la-gérante" class="slide concept">
+<h2>Le tableur de la gérante</h2>
+<p>Jeux et consoles reconditionnés, vendus en ligne. Une ligne par
+article vendu :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Date</th>
+<th style="text-align: left;">Client</th>
+<th style="text-align: left;">Ville</th>
+<th style="text-align: left;">Article</th>
+<th style="text-align: right;">Prix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">03/09</td>
+<td style="text-align: left;">Léa Martin</td>
+<td style="text-align: left;">Lille</td>
+<td style="text-align: left;">Switch OLED</td>
+<td style="text-align: right;">249,90</td>
+</tr>
+<tr>
+<td style="text-align: left;">03/09</td>
+<td style="text-align: left;">Léa Martin</td>
+<td style="text-align: left;">Lille</td>
+<td style="text-align: left;">Mario Kart 8</td>
+<td style="text-align: right;">39,90</td>
+</tr>
+<tr>
+<td style="text-align: left;">21/09</td>
+<td style="text-align: left;">Lea MARTIN</td>
+<td style="text-align: left;">Roubaix</td>
+<td style="text-align: left;">Zelda</td>
+<td style="text-align: right;">49,90</td>
+</tr>
+<tr>
+<td style="text-align: left;">02/11</td>
+<td style="text-align: left;">Tom Lefebvre</td>
+<td style="text-align: left;">Lens</td>
+<td style="text-align: left;">Mario Kart 8</td>
+<td style="text-align: right;">34,90</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Repérez trois problèmes avant la slide suivante.</strong></p>
+</section>
+<section id="ce-qui-coince" class="slide compare">
+<h2>Ce qui coince</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Problème</th>
+<th>Dans le tableur</th>
+<th>Conséquence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Redondance</strong></td>
+<td>Le nom et la ville de Léa sont recopiés à chaque achat</td>
+<td>Un déménagement : toutes ses lignes à corriger</td>
+</tr>
+<tr>
+<td><strong>Incohérence</strong></td>
+<td>« Léa Martin » et « Lea MARTIN », Lille et Roubaix</td>
+<td>Une ou deux clientes ? Quelle adresse est la bonne ?</td>
+</tr>
+<tr>
+<td><strong>Contradiction</strong></td>
+<td>Mario Kart à 39,90 € puis 34,90 €</td>
+<td>Quel est le prix actuel ?</td>
+</tr>
+<tr>
+<td><strong>Recherche à la main</strong></td>
+<td>« Quels articles sont en rupture ? »</td>
+<td>Le stock n’est même pas dans le tableau</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="une-table-par-chose" class="slide concept">
+<h2>Une table par chose</h2>
+<p>On range chaque chose <strong>une seule fois</strong>, dans sa propre
+table.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Table</th>
+<th>Une ligne représente</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clients</code></td>
+<td>Un client</td>
+<td>Léa Martin, Lille</td>
+</tr>
+<tr>
+<td><code>produits</code></td>
+<td>Un article du catalogue</td>
+<td>Mario Kart 8 Deluxe, 39,90 €, 12 en stock</td>
+</tr>
+<tr>
+<td><code>commandes</code></td>
+<td>Une commande d’un client, à une date</td>
+<td>Commande 3 du 21/09, livrée</td>
+</tr>
+<tr>
+<td><code>lignes_commande</code></td>
+<td>Un produit dans une commande</td>
+<td>Commande 3 : 1 Zelda à 49,90 €</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="table-ligne-attribut" class="slide definition">
+<h2>Table, ligne, attribut</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">id</th>
+<th style="text-align: left;">nom</th>
+<th style="text-align: left;">prenom</th>
+<th style="text-align: left;">ville</th>
+<th style="text-align: left;">date_inscription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Martin</td>
+<td style="text-align: left;">Léa</td>
+<td style="text-align: left;">Lille</td>
+<td style="text-align: left;">2025-03-12</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Bernard</td>
+<td style="text-align: left;">Hugo</td>
+<td style="text-align: left;">Arras</td>
+<td style="text-align: left;">2025-06-02</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Leroy</td>
+<td style="text-align: left;">Jules</td>
+<td style="text-align: left;"><em>(vide)</em></td>
+<td style="text-align: left;">2026-05-09</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Table</strong> : l’ensemble, ici <code>clients</code>.</li>
+<li><strong>Ligne</strong> (ou enregistrement) : un client.</li>
+<li><strong>Attribut</strong> (ou colonne) : une information, avec un
+type : texte, nombre, date.</li>
+<li>Une case peut rester vide : la ville de Jules n’est pas connue.</li>
+</ul>
+</section>
+<section id="la-clé-primaire" class="slide definition">
+<h2>La clé primaire</h2>
+<p>Un attribut qui <strong>identifie chaque ligne sans
+ambiguïté</strong> : deux lignes n’ont jamais la même valeur.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Candidat</th>
+<th>Bonne clé ?</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nom</code></td>
+<td>Non</td>
+<td>Deux clients peuvent s’appeler Martin</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>Pas idéal</td>
+<td>Unique, mais un client peut en changer</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><strong>Oui</strong></td>
+<td>Un numéro attribué une fois pour toutes, qui ne change jamais</td>
+</tr>
+</tbody>
+</table>
+<p>Dans <code>lignes_commande</code>, la clé est un
+<strong>couple</strong> : (<code>commande_id</code>,
+<code>produit_id</code>).</p>
+</section>
+<section id="la-clé-étrangère" class="slide definition">
+<h2>La clé étrangère</h2>
+<p>Un attribut qui <strong>renvoie à la clé primaire d’une autre
+table</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">client_id</th>
+<th>date_commande</th>
+<th>statut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"><strong>1</strong></td>
+<td>2026-09-03</td>
+<td>livrée</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"><strong>1</strong></td>
+<td>2026-09-21</td>
+<td>livrée</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"><strong>4</strong></td>
+<td>2026-10-02</td>
+<td>annulée</td>
+</tr>
+</tbody>
+</table>
+<p><code>client_id = 1</code> veut dire « le client dont
+l’<code>id</code> vaut 1 » : Léa Martin. Son nom n’est écrit qu’une
+fois, dans <code>clients</code>. S’il change, <strong>une seule
+ligne</strong> est à corriger.</p>
+</section>
+<section id="le-schéma-de-la-base" class="slide full-image">
+<h2>Le schéma de la base</h2>
+<figure>
+<img role="img" aria-label="Les quatre tables clients, commandes, lignes_commande et produits, leurs attributs, leurs clés primaires et les trois clés étrangères qui les relient." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlNjaMOpbWEgZGUgbGEgYmFzZSBkZSBkb25uw6llcyBkZSBsYSBib3V0aXF1ZTwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPlF1YXRyZSB0YWJsZXMgYWxpZ27DqWVzLiBjbGllbnRzIChpZCBjbMOpIHByaW1haXJlLCBub20sIHByZW5vbSwgZW1haWwsIHZpbGxlLCBkYXRlX2luc2NyaXB0aW9uKS4gY29tbWFuZGVzIChpZCBjbMOpIHByaW1haXJlLCBjbGllbnRfaWQgY2zDqSDDqXRyYW5nw6hyZSB2ZXJzIGNsaWVudHMuaWQsIGRhdGVfY29tbWFuZGUsIHN0YXR1dCkuIGxpZ25lc19jb21tYW5kZSAoY29tbWFuZGVfaWQgY2zDqSDDqXRyYW5nw6hyZSB2ZXJzIGNvbW1hbmRlcy5pZCwgcHJvZHVpdF9pZCBjbMOpIMOpdHJhbmfDqHJlIHZlcnMgcHJvZHVpdHMuaWQsIHF1YW50aXRlLCBwcml4X3VuaXRhaXJlIDsgbGEgY2zDqSBwcmltYWlyZSBlc3QgbGUgY291cGxlIGNvbW1hbmRlX2lkLCBwcm9kdWl0X2lkKS4gcHJvZHVpdHMgKGlkIGNsw6kgcHJpbWFpcmUsIG5vbSwgY2F0ZWdvcmllLCBwbGF0ZWZvcm1lLCBwcml4LCBzdG9jaykuIFVuIGNsaWVudCBwYXNzZSBwbHVzaWV1cnMgY29tbWFuZGVzIDsgdW5lIGNvbW1hbmRlIGNvbnRpZW50IHBsdXNpZXVycyBsaWduZXMgOyB1biBwcm9kdWl0IGFwcGFyYcOudCBkYW5zIHBsdXNpZXVycyBsaWduZXMuPC9kZXNjPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wIDBMMTAgNUwwIDEweiIgZmlsbD0iIzM1NjhENCIvPjwvbWFya2VyPgogIDwvZGVmcz4KICA8c3R5bGU+CiAgICAuYm94e2ZpbGw6I2ZmZjtzdHJva2U6IzE3MjAzMztzdHJva2Utd2lkdGg6Mi41fQogICAgLmhlYWR7ZmlsbDojMTY0ZDc5fQogICAgLmh0e2ZvbnQ6NzAwIDE5cHggbW9ub3NwYWNlO2ZpbGw6I2ZmZn0KICAgIC5me2ZvbnQ6NTAwIDE2cHggbW9ub3NwYWNlO2ZpbGw6IzE3MjAzM30KICAgIC5wa3tmb250OjcwMCAxNnB4IG1vbm9zcGFjZTtmaWxsOiMxNzIwMzN9CiAgICAuZmt7Zm9udDo2MDAgMTZweCBtb25vc3BhY2U7ZmlsbDojMzU2OEQ0fQogICAgLnRhZ3tmb250OjcwMCAxMnB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojZmZmfQogICAgLnR7Zm9udDo1MDAgMTVweCBBcmlhbCxzYW5zLXNlcmlmO2ZpbGw6IzNjNGI1Y30KICAgIC5sYntmb250OjcwMCAxNXB4IG1vbm9zcGFjZTtmaWxsOiMzNTY4RDR9CiAgICAuaHtmb250OjcwMCAxNnB4IEFyaWFsLHNhbnMtc2VyaWY7ZmlsbDojMTcyMDMzfQogICAgLmx7c3Ryb2tlOiMzNTY4RDQ7c3Ryb2tlLXdpZHRoOjM7ZmlsbDpub25lfQogIDwvc3R5bGU+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjYwIiBmaWxsPSIjRjdGOEZBIi8+CgogIDwhLS0gY2xpZW50cyAtLT4KICA8cmVjdCBjbGFzcz0iYm94IiB4PSIzMCIgeT0iNDAiIHdpZHRoPSIyNTAiIGhlaWdodD0iMjMwIiByeD0iMTAiLz4KICA8cmVjdCBjbGFzcz0iaGVhZCIgeD0iMzAiIHk9IjQwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjQwIiByeD0iMTAiLz48cmVjdCBjbGFzcz0iaGVhZCIgeD0iMzAiIHk9IjYwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjIwIi8+CiAgPHRleHQgeD0iNDgiIHk9IjY3IiBjbGFzcz0iaHQiPmNsaWVudHM8L3RleHQ+CiAgPHJlY3QgeD0iNDQiIHk9Ijk0IiB3aWR0aD0iMzQiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjRTQ5QTM4Ii8+PHRleHQgeD0iNTAiIHk9IjEwOSIgY2xhc3M9InRhZyI+UEs8L3RleHQ+CiAgPHRleHQgeD0iODgiIHk9IjExMCIgY2xhc3M9InBrIj5pZDwvdGV4dD4KICA8dGV4dCB4PSI4OCIgeT0iMTM4IiBjbGFzcz0iZiI+bm9tPC90ZXh0PgogIDx0ZXh0IHg9Ijg4IiB5PSIxNjQiIGNsYXNzPSJmIj5wcmVub208L3RleHQ+CiAgPHRleHQgeD0iODgiIHk9IjE5MCIgY2xhc3M9ImYiPmVtYWlsPC90ZXh0PgogIDx0ZXh0IHg9Ijg4IiB5PSIyMTYiIGNsYXNzPSJmIj52aWxsZTwvdGV4dD4KICA8dGV4dCB4PSI4OCIgeT0iMjQyIiBjbGFzcz0iZiI+ZGF0ZV9pbnNjcmlwdGlvbjwvdGV4dD4KCiAgPCEtLSBjb21tYW5kZXMgLS0+CiAgPHJlY3QgY2xhc3M9ImJveCIgeD0iMzQwIiB5PSI0MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxODAiIHJ4PSIxMCIvPgogIDxyZWN0IGNsYXNzPSJoZWFkIiB4PSIzNDAiIHk9IjQwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjQwIiByeD0iMTAiLz48cmVjdCBjbGFzcz0iaGVhZCIgeD0iMzQwIiB5PSI2MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIyMCIvPgogIDx0ZXh0IHg9IjM1OCIgeT0iNjciIGNsYXNzPSJodCI+Y29tbWFuZGVzPC90ZXh0PgogIDxyZWN0IHg9IjM1NCIgeT0iOTQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyMCIgcng9IjQiIGZpbGw9IiNFNDlBMzgiLz48dGV4dCB4PSIzNjAiIHk9IjEwOSIgY2xhc3M9InRhZyI+UEs8L3RleHQ+CiAgPHRleHQgeD0iMzk4IiB5PSIxMTAiIGNsYXNzPSJwayI+aWQ8L3RleHQ+CiAgPHJlY3QgeD0iMzU0IiB5PSIxMjIiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyMCIgcng9IjQiIGZpbGw9IiMzNTY4RDQiLz48dGV4dCB4PSIzNjAiIHk9IjEzNyIgY2xhc3M9InRhZyI+Rks8L3RleHQ+CiAgPHRleHQgeD0iMzk4IiB5PSIxMzgiIGNsYXNzPSJmayI+Y2xpZW50X2lkPC90ZXh0PgogIDx0ZXh0IHg9IjM5OCIgeT0iMTY0IiBjbGFzcz0iZiI+ZGF0ZV9jb21tYW5kZTwvdGV4dD4KICA8dGV4dCB4PSIzOTgiIHk9IjE5MCIgY2xhc3M9ImYiPnN0YXR1dDwvdGV4dD4KCiAgPCEtLSBsaWduZXNfY29tbWFuZGUgLS0+CiAgPHJlY3QgY2xhc3M9ImJveCIgeD0iNjUwIiB5PSI0MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxODAiIHJ4PSIxMCIvPgogIDxyZWN0IGNsYXNzPSJoZWFkIiB4PSI2NTAiIHk9IjQwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjQwIiByeD0iMTAiLz48cmVjdCBjbGFzcz0iaGVhZCIgeD0iNjUwIiB5PSI2MCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIyMCIvPgogIDx0ZXh0IHg9IjY2OCIgeT0iNjciIGNsYXNzPSJodCI+bGlnbmVzX2NvbW1hbmRlPC90ZXh0PgogIDxyZWN0IHg9IjY2NCIgeT0iOTQiIHdpZHRoPSI1OCIgaGVpZ2h0PSIyMCIgcng9IjQiIGZpbGw9IiMzNTY4RDQiLz48dGV4dCB4PSI2NjkiIHk9IjEwOSIgY2xhc3M9InRhZyI+UEssIEZLPC90ZXh0PgogIDx0ZXh0IHg9IjczMCIgeT0iMTEwIiBjbGFzcz0iZmsiPmNvbW1hbmRlX2lkPC90ZXh0PgogIDxyZWN0IHg9IjY2NCIgeT0iMTIyIiB3aWR0aD0iNTgiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjMzU2OEQ0Ii8+PHRleHQgeD0iNjY5IiB5PSIxMzciIGNsYXNzPSJ0YWciPlBLLCBGSzwvdGV4dD4KICA8dGV4dCB4PSI3MzAiIHk9IjEzOCIgY2xhc3M9ImZrIj5wcm9kdWl0X2lkPC90ZXh0PgogIDx0ZXh0IHg9IjczMCIgeT0iMTY0IiBjbGFzcz0iZiI+cXVhbnRpdGU8L3RleHQ+CiAgPHRleHQgeD0iNzMwIiB5PSIxOTAiIGNsYXNzPSJmIj5wcml4X3VuaXRhaXJlPC90ZXh0PgoKICA8IS0tIHByb2R1aXRzIC0tPgogIDxyZWN0IGNsYXNzPSJib3giIHg9Ijk2MCIgeT0iNDAiIHdpZHRoPSIyMTAiIGhlaWdodD0iMjMwIiByeD0iMTAiLz4KICA8cmVjdCBjbGFzcz0iaGVhZCIgeD0iOTYwIiB5PSI0MCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSI0MCIgcng9IjEwIi8+PHJlY3QgY2xhc3M9ImhlYWQiIHg9Ijk2MCIgeT0iNjAiIHdpZHRoPSIyMTAiIGhlaWdodD0iMjAiLz4KICA8dGV4dCB4PSI5NzgiIHk9IjY3IiBjbGFzcz0iaHQiPnByb2R1aXRzPC90ZXh0PgogIDxyZWN0IHg9Ijk3NCIgeT0iOTQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyMCIgcng9IjQiIGZpbGw9IiNFNDlBMzgiLz48dGV4dCB4PSI5ODAiIHk9IjEwOSIgY2xhc3M9InRhZyI+UEs8L3RleHQ+CiAgPHRleHQgeD0iMTAxOCIgeT0iMTEwIiBjbGFzcz0icGsiPmlkPC90ZXh0PgogIDx0ZXh0IHg9IjEwMTgiIHk9IjEzOCIgY2xhc3M9ImYiPm5vbTwvdGV4dD4KICA8dGV4dCB4PSIxMDE4IiB5PSIxNjQiIGNsYXNzPSJmIj5jYXRlZ29yaWU8L3RleHQ+CiAgPHRleHQgeD0iMTAxOCIgeT0iMTkwIiBjbGFzcz0iZiI+cGxhdGVmb3JtZTwvdGV4dD4KICA8dGV4dCB4PSIxMDE4IiB5PSIyMTYiIGNsYXNzPSJmIj5wcml4PC90ZXh0PgogIDx0ZXh0IHg9IjEwMTgiIHk9IjI0MiIgY2xhc3M9ImYiPnN0b2NrPC90ZXh0PgoKICA8IS0tIGxpZW5zIC0tPgogIDxwYXRoIGNsYXNzPSJsIiBkPSJNMzUyIDEzMiBMMjg2IDEwNiIgbWFya2VyLWVuZD0idXJsKCNhKSIvPgogIDxwYXRoIGNsYXNzPSJsIiBkPSJNNjYyIDEwNCBMNTk2IDEwNCIgbWFya2VyLWVuZD0idXJsKCNhKSIvPgogIDxwYXRoIGNsYXNzPSJsIiBkPSJNOTAyIDEzMiBMOTU0IDEwNiIgbWFya2VyLWVuZD0idXJsKCNhKSIvPgogIDx0ZXh0IHg9IjMwOCIgeT0iMTUyIiBjbGFzcz0ibGIiPuKRoDwvdGV4dD4KICA8dGV4dCB4PSI2MTgiIHk9Ijk2IiBjbGFzcz0ibGIiPuKRoTwvdGV4dD4KICA8dGV4dCB4PSI5MjAiIHk9IjEwNCIgY2xhc3M9ImxiIj7ikaI8L3RleHQ+CgogIDwhLS0gcmVsYXRpb25zIGV4cGxpcXXDqWVzIC0tPgogIDxyZWN0IHg9IjMwIiB5PSIzMzAiIHdpZHRoPSIxMTQwIiBoZWlnaHQ9IjE5MCIgcng9IjEwIiBmaWxsPSIjZmZmIiBzdHJva2U9IiM2NTc4OGQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgPHRleHQgeD0iNTAiIHk9IjM2NCIgY2xhc3M9ImgiPkxlcyBsaWVucyBlbnRyZSB0YWJsZXM8L3RleHQ+CiAgPHRleHQgeD0iNTAiIHk9IjM5OCIgY2xhc3M9ImxiIj7ikaAgY29tbWFuZGVzLmNsaWVudF9pZCDihpIgY2xpZW50cy5pZDwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iNDIyIiBjbGFzcz0idCI+VW4gY2xpZW50IHBhc3NlIHBsdXNpZXVycyBjb21tYW5kZXMgOyBjaGFxdWUgY29tbWFuZGUgZMOpc2lnbmUgdW4gc2V1bCBjbGllbnQuPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSI0NTYiIGNsYXNzPSJsYiI+4pGhIGxpZ25lc19jb21tYW5kZS5jb21tYW5kZV9pZCDihpIgY29tbWFuZGVzLmlkPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSI0ODAiIGNsYXNzPSJ0Ij5VbmUgY29tbWFuZGUgY29udGllbnQgcGx1c2lldXJzIGxpZ25lcywgdW5lIHBhciBwcm9kdWl0IGFjaGV0w6kuPC90ZXh0PgogIDx0ZXh0IHg9IjYyMCIgeT0iMzk4IiBjbGFzcz0ibGIiPuKRoiBsaWduZXNfY29tbWFuZGUucHJvZHVpdF9pZCDihpIgcHJvZHVpdHMuaWQ8L3RleHQ+CiAgPHRleHQgeD0iNjIwIiB5PSI0MjIiIGNsYXNzPSJ0Ij5VbiBwcm9kdWl0IHBldXQgYXBwYXJhw650cmUgZGFucyBwbHVzaWV1cnMgY29tbWFuZGVzLjwvdGV4dD4KICA8cmVjdCB4PSI2MjAiIHk9IjQ0NCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iI0U0OUEzOCIvPjx0ZXh0IHg9IjYyNiIgeT0iNDU5IiBjbGFzcz0idGFnIj5QSzwvdGV4dD4KICA8dGV4dCB4PSI2NjQiIHk9IjQ2MCIgY2xhc3M9InQiPmNsw6kgcHJpbWFpcmUgOiBpZGVudGlmaWUgdW5lIGxpZ25lLCBzYW5zIGRvdWJsb248L3RleHQ+CiAgPHJlY3QgeD0iNjIwIiB5PSI0NzQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyMCIgcng9IjQiIGZpbGw9IiMzNTY4RDQiLz48dGV4dCB4PSI2MjYiIHk9IjQ4OSIgY2xhc3M9InRhZyI+Rks8L3RleHQ+CiAgPHRleHQgeD0iNjY0IiB5PSI0OTAiIGNsYXNzPSJ0Ij5jbMOpIMOpdHJhbmfDqHJlIDogcmVudm9pZSDDoCBsYSBjbMOpIHByaW1haXJlIGQndW5lIGF1dHJlIHRhYmxlPC90ZXh0PgoKICA8cmVjdCB4PSIzMCIgeT0iNTYwIiB3aWR0aD0iMTE0MCIgaGVpZ2h0PSI1NiIgcng9IjEwIiBmaWxsPSIjRUFGNEZCIiBzdHJva2U9IiMzNTY4RDQiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwIiB5PSI1OTQiIGNsYXNzPSJ0Ij48dHNwYW4gZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE2NGQ3OSI+w4AgcmV0ZW5pciDCtyA8L3RzcGFuPmxlIGNsaWVudCBuJ2VzdCDDqWNyaXQgcXUndW5lIGZvaXMgOyB1bmUgY29tbWFuZGUgbGUgZMOpc2lnbmUgcGFyIHNvbiBpZCwgY29tbWUgdW4gcmVudm9pLjwvdGV4dD4KPC9zdmc+Cg==" alt="Les quatre tables clients, commandes, lignes_commande et produits, leurs attributs, leurs clés primaires et les trois clés étrangères qui les relient." />
+<figcaption aria-hidden="true">Les quatre tables clients, commandes,
+lignes_commande et produits, leurs attributs, leurs clés primaires et
+les trois clés étrangères qui les relient.</figcaption>
+</figure>
+</section>
+<section id="suivre-les-clés-à-la-main" class="slide activity">
+<h2>Suivre les clés à la main</h2>
+<p><strong>Sur papier · seul, puis comparaison avec son voisin · 10
+minutes</strong></p>
+<p><strong>À produire :</strong> quatre réponses, avec le chemin suivi
+d’une table à l’autre.</p>
+<ol type="1">
+<li>Qui a passé la commande 3 ?</li>
+<li>Quels produits contient-elle, et pour quel montant total ?</li>
+<li>Combien de commandes Léa Martin a-t-elle passées ?</li>
+<li>Léa déménage à Roubaix. Combien de lignes faut-il modifier dans la
+base ? Et dans le tableur ?</li>
+</ol>
+</section>
+<section id="données-12-clients-et-commandes" class="slide compare">
+<h2>Données 1/2 : clients et commandes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">id</th>
+<th>nom</th>
+<th>prenom</th>
+<th>ville</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Martin</td>
+<td>Léa</td>
+<td>Lille</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Bernard</td>
+<td>Hugo</td>
+<td>Arras</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Thomas</td>
+<td>Nathan</td>
+<td>Douai</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">client_id</th>
+<th>date_commande</th>
+<th>statut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td>2026-09-03</td>
+<td>livrée</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td>2026-09-07</td>
+<td>livrée</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td>2026-09-21</td>
+<td>livrée</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td>2026-10-02</td>
+<td>annulée</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="données-22-lignes-de-commande-et-produits" class="slide compare">
+<h2>Données 2/2 : lignes de commande et produits</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">commande_id</th>
+<th style="text-align: right;">produit_id</th>
+<th style="text-align: right;">quantite</th>
+<th style="text-align: right;">prix_unitaire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">249,90</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39,90</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14,50</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">49,90</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">id</th>
+<th style="text-align: left;">nom</th>
+<th style="text-align: right;">prix</th>
+<th style="text-align: right;">stock</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Mario Kart 8</td>
+<td style="text-align: right;">39,90</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Housse Switch</td>
+<td style="text-align: right;">14,50</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Zelda</td>
+<td style="text-align: right;">49,90</td>
+<td style="text-align: right;">6</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="laisser-la-machine-suivre-les-clés-sql" class="slide code">
+<h2>Laisser la machine suivre les clés : SQL</h2>
+<p>Le SGBD (système de gestion de base de données) répond à des
+<strong>requêtes</strong>. Demande de la gérante : « quels articles sont
+en rupture de stock ? »</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> nom, stock</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> produits</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> stock <span class="op">=</span> <span class="dv">0</span>;</span></code></pre></div>
+<p>Résultat : 4 lignes. Super Mario Odyssey, Console PS4 Slim
+reconditionnée, Super Nintendo, Carte mémoire 64 Go.</p>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<table>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table</td>
+<td>Une chose par table, chaque ligne une seule fois</td>
+</tr>
+<tr>
+<td>Clé primaire</td>
+<td>Identifie une ligne sans ambiguïté</td>
+</tr>
+<tr>
+<td>Clé étrangère</td>
+<td>Renvoie à la clé primaire d’une autre table</td>
+</tr>
+<tr>
+<td>Requête SQL</td>
+<td>Une demande au SGBD, qui suit les clés à notre place</td>
+</tr>
+</tbody>
+</table>
+<p><strong>En demi-groupe :</strong> atelier en ligne, répondre aux
+demandes de l’équipe avec <code>SELECT</code>.</p>
+</section>

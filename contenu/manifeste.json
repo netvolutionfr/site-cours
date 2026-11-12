@@ -1349,6 +1349,43 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc1/SQ04-P01-tableur-base-relationnelle",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ04",
+   "titre": "Du tableur à la base de données",
+   "sousTitre": "Tables, lignes, clés : ranger les données d'une boutique",
+   "nature": "Diaporama",
+   "date": "2026-11-19",
+   "pdf": "/sio/1sio-bloc1/SQ04-P01-tableur-base-relationnelle.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "tables-lignes-clés-ranger-les-données-dune-boutique",
+     "text": "Tables, lignes, clés : ranger les données d’une boutique"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ04-P02-atelier-select",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ04",
+   "titre": "Atelier SQL — répondre aux demandes de la boutique",
+   "sousTitre": "Interroger une table avec SELECT, WHERE et ORDER BY",
+   "nature": "Activité",
+   "date": "2026-11-19",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Sql"
+  },
+  {
    "slug": "sio/1sio-bloc3/SQ01-support-eleve",
    "matiere": "sio",
    "classe": "1sio",
@@ -3274,6 +3311,21 @@
     "sio/1sio-bloc1/SQ03-P06-tp-netvolution-studio",
     "sio/1sio-bloc1/SQ03-P07-slides-formulaire-connexion",
     "sio/1sio-bloc1/SQ03-P07-tp-formulaire-connexion"
+   ]
+  },
+  {
+   "id": "sio/1sio-bloc1/SQ04",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "rubriqueLibelle": "Bloc 1",
+   "code": "SQ04",
+   "titre": "Interroger la base de données d'une boutique en ligne (initiation SQL)",
+   "debut": "2026-11-19",
+   "fin": "2026-11-19",
+   "supports": [
+    "sio/1sio-bloc1/SQ04-P01-tableur-base-relationnelle",
+    "sio/1sio-bloc1/SQ04-P02-atelier-select"
    ]
   },
   {
