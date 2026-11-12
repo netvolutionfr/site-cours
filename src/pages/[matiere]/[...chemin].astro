@@ -1,7 +1,8 @@
 ---
 import type { MarkdownInstance } from 'astro';
 import Binaire, { headings as headingsBinaire } from '../../components/Binaire.astro';
-import Pyxel, { headings as headingsPyxel } from '../../components/Pyxel.astro';
+import Pyxel from '../../components/Pyxel.astro';
+import { titresPyxel } from '../../data/pyxel/ateliers';
 import CalculSha256 from '../../components/CalculSha256.astro';
 import CalculEntropie from '../../components/CalculEntropie.astro';
 import CalculEmpreinte from '../../components/CalculEmpreinte.astro';
@@ -22,11 +23,11 @@ export function getStaticPaths() {
 const { s } = Astro.props;
 const markdown = import.meta.glob<MarkdownInstance<Record<string, unknown>>>('../../../contenu/pages/*.md', { eager: true });
 if (s.composant && !['Binaire', 'Pyxel', 'Markdown', 'Sql'].includes(s.composant)) throw new Error(`Composant inconnu : ${s.composant}`);
-const atelierSql = s.slug.split('/').pop()!;
+const atelierNom = s.slug.split('/').pop()!;
 const page = s.composant === 'Markdown' ? markdown[`../../../contenu/pages/${s.slug.replaceAll('/', '--')}.md`] : undefined;
 if (s.composant === 'Markdown' && !page) throw new Error(`Markdown absent : ${s.slug}`);
 const Content = page?.Content;
-const headings = page ? await page.getHeadings() : s.composant === 'Binaire' ? headingsBinaire : s.composant === 'Pyxel' ? headingsPyxel : s.composant === 'Sql' ? titresAtelier(atelierSql) : s.titres;
+const headings = page ? await page.getHeadings() : s.composant === 'Binaire' ? headingsBinaire : s.composant === 'Pyxel' ? titresPyxel(atelierNom) : s.composant === 'Sql' ? titresAtelier(atelierNom) : s.titres;
 const html = s.composant || s.brut ? '' : readFileSync(`contenu/pages/${s.slug.replaceAll('/', '--')}.html`, 'utf-8');
 const seq = parSequence.get(s.sequence);
 const voisins = seq?.supports ?? [];
@@ -63,7 +64,7 @@ const voisin = (slug?: string) => {
 			</p>
 		)}
 	</div>
-	{Content ? <Content /> : s.composant === 'Binaire' ? <Binaire /> : s.composant === 'Pyxel' ? <Pyxel /> : s.composant === 'Sql' ? <Sql nom={atelierSql} /> : s.brut ? <iframe class="brut" src={s.brut} title={s.titre}></iframe> : <Fragment set:html={html} />}
+	{Content ? <Content /> : s.composant === 'Binaire' ? <Binaire /> : s.composant === 'Pyxel' ? <Pyxel nom={atelierNom} /> : s.composant === 'Sql' ? <Sql nom={atelierNom} /> : s.brut ? <iframe class="brut" src={s.brut} title={s.titre}></iframe> : <Fragment set:html={html} />}
 	{s.slug === 'sio/1sio-bloc3/SQ03-P03-cours-empreinte-preuve-2026' && <CalculSha256 />}
 	{html.includes('class="calcul-entropie"') && <CalculEntropie />}
 	{html.includes('class="calcul-empreinte"') && <CalculEmpreinte />}

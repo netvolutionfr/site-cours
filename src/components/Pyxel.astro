@@ -1,62 +1,21 @@
 ---
-// Atelier Pyxel (essai du jeu fil rouge NSI 1G) : fonction testée dans le worker Pyodide, puis appelée par le moteur Pyxel.
-export const headings = [{ depth: 2, slug: 'deplacer', text: 'Déplacer le héros' }];
-const depart = `def deplacer(x, direction):
-    """Renvoie la nouvelle abscisse du héros.
-    x : abscisse actuelle, entier entre 0 et 120
-    direction : -1 (gauche), 0 (immobile) ou 1 (droite)
-    Le héros avance de 2 pixels sans sortir de l'écran.
-    """
-    return x + ...
-`;
-const tests = ["deplacer(60, 0) == 60", "deplacer(60, 1) == 62", "deplacer(60, -1) == 58", "deplacer(0, -1) == 0", "deplacer(1, -1) == 0", "deplacer(120, 1) == 120", "deplacer(119, 1) == 120"];
-// Moteur fourni, ajouté après le code de l'élève : les numéros de ligne des erreurs restent les siens.
-const moteur = `
-import pyxel
+// Atelier Pyxel : fonctions testées dans le worker Pyodide, puis appelées par le moteur Pyxel.
+// Contenu des ateliers : src/data/pyxel/ateliers.ts, indexé par le nom du support Prof.
+import { ateliersPyxel } from '../data/pyxel/ateliers';
 
-HEROS = [
-    "00088000",
-    "00888800",
-    "00ffff00",
-    "0f1ff1f0",
-    "00ffff00",
-    "08888880",
-    "00c00c00",
-    "00c00c00",
-]
-
-class Jeu:
-    def __init__(self):
-        pyxel.init(128, 128, title="Atelier")
-        pyxel.images[0].set(0, 0, HEROS)
-        self.x = 60
-        pyxel.run(self.update, self.draw)
-
-    def update(self):
-        direction = 0
-        if pyxel.btn(pyxel.KEY_LEFT):
-            direction -= 1
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            direction += 1
-        self.x = deplacer(self.x, direction)
-
-    def draw(self):
-        pyxel.cls(1)
-        pyxel.rect(0, 108, 128, 20, 3)
-        pyxel.blt(self.x, 100, 0, 0, 0, 8, 8, 0)
-        pyxel.text(4, 4, f"x = {self.x}", 7)
-
-Jeu()
-`;
+const { nom } = Astro.props;
+const a = ateliersPyxel[nom];
+if (!a) throw new Error(`Atelier Pyxel inconnu : ${nom}`);
+const moteur = a.moteur;
 ---
 
 <div class="pyxel">
-	<p>Complétez <code>deplacer</code>, vérifiez les tests, puis lancez le jeu. Flèches gauche et droite pour déplacer le héros.</p>
-	<section class="exo-py" data-fichier="deplacer.py">
-		<h2 id="deplacer">Déplacer le héros</h2>
+	<p set:html={a.consigne} />
+	<section class="exo-py" data-fichier={`${a.id}.py`}>
+		<h2 id={a.id}>{a.titre}</h2>
 		<div class="editeur">
-			<label for="code-deplacer">Votre code Python</label>
-			<textarea id="code-deplacer" spellcheck="false" autocapitalize="off">{depart}</textarea>
+			<label for="code-pyxel">Votre code Python</label>
+			<textarea id="code-pyxel" spellcheck="false" autocapitalize="off">{a.depart}</textarea>
 			<div class="barre">
 				<button type="button" data-action="tester">Vérifier les tests</button>
 				<button type="button" data-action="indenter">Insérer 4 espaces</button>
@@ -67,21 +26,21 @@ Jeu()
 			<pre class="sortie" hidden></pre>
 			<div class="resultats" aria-live="polite"></div>
 		</div>
-		<script class="tests" type="application/json" set:html={JSON.stringify(tests)} />
+		<script class="tests" type="application/json" set:html={JSON.stringify(a.tests)} />
 	</section>
 	<div class="ecran"><div id="pyxel-screen"></div></div>
-	<p class="consigne">Cliquez dans l'écran de jeu pour démarrer. Après une modification, « Lancer le jeu » relance avec votre nouveau code.</p>
+	<p class="consigne">{a.commandes}</p>
 	<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python…</div>
 	<script is:inline define:vars={{ moteur }}>window.MOTEUR_PYXEL = moteur;</script>
 	<script is:inline src="https://cdn.jsdelivr.net/gh/kitao/pyxel@v2.8.7/wasm/pyxel.js"></script>
 	<script src="../scripts/binaire.js"></script>
 	<script>
-		const zone = document.querySelector<HTMLTextAreaElement>('#code-deplacer')!;
+		const zone = document.querySelector<HTMLTextAreaElement>('#code-pyxel')!;
 		// SDL écoute le clavier sur window : sans ce barrage, les flèches et la frappe dans l'éditeur pilotent le jeu.
 		for (const type of ['keydown', 'keyup', 'keypress']) zone.addEventListener(type, (e) => e.stopPropagation());
 		let lance = false;
 		document.getElementById('lancer')!.addEventListener('click', () => {
-			// ponytail: une boucle infinie dans deplacer gèle la page (Pyxel tourne sur le fil principal) ; tester d'abord dans le worker si ça arrive en classe.
+			// ponytail: une boucle infinie dans le code élève gèle la page (Pyxel tourne sur le fil principal) ; tester d'abord dans le worker si ça arrive en classe.
 			const script = zone.value + '\n' + (window as any).MOTEUR_PYXEL;
 			const ctx = (window as any).pyxelContext;
 			if (!lance) { lance = true; (window as any).launchPyxel({ command: 'run', script }); }
