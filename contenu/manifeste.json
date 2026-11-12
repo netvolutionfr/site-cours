@@ -3241,7 +3241,7 @@
    "rubrique": "bloc3",
    "rubriqueLibelle": "Bloc 3",
    "code": "SQ04",
-   "titre": "Identification, authentification et mots de passe",
+   "titre": "Identification, authentification et autorisations",
    "debut": "2026-11-12",
    "fin": "2026-11-12",
    "supports": [
