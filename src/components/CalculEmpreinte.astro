@@ -1,0 +1,46 @@
+---
+// Empreinte SHA-256 d'un texte : remplace chaque <div class="calcul-empreinte"> produite par une
+// fiche (Markdown ::: {.calcul-empreinte}). Calcul local (Web Crypto), rien n'est envoyé.
+---
+
+<script>
+  const hex = (buf: ArrayBuffer) => Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, '0')).join('');
+
+  document.querySelectorAll<HTMLElement>('div.calcul-empreinte').forEach((hote, i) => {
+    const id = `empreinte-${i}`;
+    hote.innerHTML = `
+      <section class="empreinte-calc" aria-labelledby="${id}-titre">
+        <h3 id="${id}-titre">Calculatrice d'empreinte SHA-256</h3>
+        <p>Le calcul se fait sur votre appareil. <strong>N'entrez jamais un vrai mot de passe.</strong></p>
+        <label for="${id}-texte">Texte à hacher</label>
+        <input id="${id}-texte" type="text" autocomplete="off" spellcheck="false" placeholder="par exemple : velo">
+        <p class="empreinte-info" aria-live="polite"></p>
+        <output class="empreinte-resultat" for="${id}-texte"></output>
+      </section>`;
+    const champ = hote.querySelector<HTMLInputElement>('input')!;
+    const info = hote.querySelector<HTMLElement>('.empreinte-info')!;
+    const sortie = hote.querySelector<HTMLOutputElement>('output')!;
+    let courant = 0;
+
+    const calculer = async () => {
+      const n = ++courant;
+      if (!globalThis.crypto?.subtle) { info.textContent = 'Calcul indisponible dans ce navigateur.'; return; }
+      const texte = champ.value;
+      const empreinte = hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texte)));
+      if (n !== courant) return;
+      sortie.textContent = empreinte;
+      info.textContent = `${[...texte].length} caractère(s) en entrée, ${empreinte.length} caractères en sortie.`;
+    };
+    champ.addEventListener('input', calculer);
+    calculer();
+  });
+</script>
+
+<style is:global>
+  .empreinte-calc { margin-block: 1.5rem; padding: 1rem 1.25rem; border: 1px solid var(--sl-color-gray-5); border-radius: .5rem; }
+  .empreinte-calc h3 { margin-top: 0; }
+  .empreinte-calc label { display: block; font-weight: 600; margin-block: .75rem .4rem; }
+  .empreinte-calc input { width: 100%; font: inherit; font-family: var(--sl-font-mono); padding: .4rem .5rem; }
+  .empreinte-info { font-size: .9rem; margin: .5rem 0; }
+  .empreinte-resultat { display: block; padding: .6rem .8rem; background: var(--sl-color-gray-6); border-radius: .4rem; font-family: var(--sl-font-mono); overflow-wrap: anywhere; user-select: all; }
+</style>
