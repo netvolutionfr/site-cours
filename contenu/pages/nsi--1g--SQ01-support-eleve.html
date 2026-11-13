@@ -894,6 +894,30 @@ si la somme ne tient pas sur 8 bits.</p>
 <section class="exo-py" data-lettre>
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def deborde(a, b):
     ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["deborde(100, 50) == False","deborde(200, 55) == False","deborde(255, 1) == True","deborde(128, 128) == True"]</script></section>
+<h5 id="exercice-3.3-suite-le-compteur-8-bits-en-jeu">Exercice 3.3
+(suite) — Le compteur 8 bits, en jeu</h5>
+<p>Dans les bornes d’arcade des années 1980, le score ou le numéro de
+niveau tenait souvent sur un octet. Sur la <a href="https://cours.siovision.fr/nsi/1g/atelier-pyxel-compteur-8-bits">page
+de l’atelier Pyxel</a>, le héros attrape des pièces (10 ou 50 points) et
+le score s’affiche en <strong>8 voyants</strong>, avec le poids de
+chaque bit.</p>
+<ol type="1">
+<li>Complétez <code>ajouter_8_bits(score, points)</code> : c’est
+<code>addition_8_bits</code> sous un autre nom.</li>
+<li>Complétez <code>octet(n)</code>, qui renvoie l’écriture binaire de
+<code>n</code> sur <strong>exactement 8 caractères</strong>, par
+divisions successives comme en partie 2.</li>
+<li>Vérifiez les tests, puis lancez le jeu. Notez le score atteint juste
+avant le dépassement, et celui qui s’affiche juste après. Expliquez
+l’écart.</li>
+</ol>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def octet(n):
+    resultat = &quot;&quot;
+    for i in range(8):
+        resultat = str(...) + resultat
+        n = ...
+    return resultat</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["octet(0) == \"00000000\"","octet(5) == \"00000101\"","octet(200) == \"11001000\"","octet(255) == \"11111111\""]</script></section>
 <h5 id="exercice-3.4-vérifier-sa-compréhension">Exercice 3.4 — Vérifier
 sa compréhension</h5>
 <fieldset class="qcm">
@@ -1146,6 +1170,21 @@ au plus <strong>16 bits</strong> (255 × 255 = 65 025).</li>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b <span class="op">&gt;</span> <span class="dv">255</span></span></code></pre></div>
 <p><code>(a + b) % 256</code> garde le reste de la division par 256 =
 2⁸, c’est-à-dire les huit bits de droite.</p>
+<p><strong>Suite, le compteur 8 bits :</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ajouter_8_bits(score, points):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (score <span class="op">+</span> points) <span class="op">%</span> <span class="dv">256</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> octet(n):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        resultat <span class="op">=</span> <span class="bu">str</span>(n <span class="op">%</span> <span class="dv">2</span>) <span class="op">+</span> resultat</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<p><code>octet</code> fait toujours huit tours de boucle : les bits de
+poids fort valent 0 pour un petit nombre, d’où <code>&quot;00000101&quot;</code>
+pour 5. En jeu, à 250 points, une pièce de 50 donne 300 − 256 =
+<strong>44</strong> : les voyants 32, 8 et 4 s’allument, et le score
+semble repartir de presque zéro.</p>
 <h3 id="exercice-3.4">Exercice 3.4</h3>
 <p>Réponses : 7 bits ; 4 294 967 296 adresses ; <code>8</code>.</p>
 <h3 id="exercice-3.5">Exercice 3.5</h3>
