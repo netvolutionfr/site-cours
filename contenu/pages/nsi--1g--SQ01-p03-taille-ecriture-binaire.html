@@ -309,19 +309,38 @@ encadrement entre puissances de 2.</p>
 8 bits par un entier de 4 bits.</li>
 </ol>
 </section>
+<section id="exercice-3.3-lénoncé" class="slide code">
+<h2>Exercice 3.3 — L’énoncé</h2>
+<p>Une machine à 8 bits ne garde que les huit bits de droite d’un
+résultat.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> addition_8_bits(a, b):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Somme de a et b sur 8 bits (a, b entre 0 et 255).&quot;&quot;&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deborde(a, b):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;True si a + b ne tient pas sur 8 bits.&quot;&quot;&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p>Tests : <code>addition_8_bits(100, 50) == 150</code> ·
+<code>addition_8_bits(255, 1) == 0</code> ·
+<code>addition_8_bits(200, 100) == 44</code> ·
+<code>deborde(255, 1) == True</code> ·
+<code>deborde(200, 55) == False</code></p>
+</section>
 <section id="exercices-3.3-et-3.4-simuler-une-machine-à-8-bits" class="slide activity">
 <h2>Exercices 3.3 et 3.4 — Simuler une machine à 8 bits</h2>
-<p><strong>Sur ordinateur · seul · 15 min</strong> — page du cours ou
-EduPython</p>
-<p><strong>À produire :</strong> <code>addition_8_bits(a, b)</code> et
-<code>deborde(a, b)</code> qui passent les tests, puis le QCM 3.4.</p>
+<p><strong>Sur ordinateur · seul · 15 min</strong></p>
+<p><strong>Où :</strong> cours.siovision.fr › NSI 1G › « Du métier
+Jacquard au binaire » › <a href="https://cours.siovision.fr/nsi/1g/SQ01-support-eleve#exercice-3.3-une-addition-sur-8-bits">exercice
+3.3</a>. Éditeur et tests dans la page ; EduPython en repli.</p>
 <ol type="1">
-<li>Garder les huit bits de droite = reste de la division par 256.</li>
-<li><code>deborde</code> renvoie un booléen : une comparaison
-suffit.</li>
-<li>Ensuite : l’atelier Pyxel « Le compteur 8 bits », puis l’exercice
-3.5 pour ceux qui ont fini.</li>
+<li><code>addition_8_bits</code>, puis <code>deborde</code>, jusqu’à ce
+que tous les tests passent.</li>
+<li>Le QCM 3.4, juste en dessous sur la même page.</li>
+<li>Ensuite : l’atelier Pyxel « Le compteur 8 bits » (lien dans
+l’exercice 3.3 suite).</li>
 </ol>
+<p><strong>Indice :</strong> garder les huit bits de droite, c’est
+prendre le reste de la division par 256.</p>
 </section>
 <section id="à-retenir" class="slide summary">
 <h2>À retenir</h2>
