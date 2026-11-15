@@ -650,6 +650,22 @@
    "composant": "Markdown"
   },
   {
+   "slug": "nsi/1g/SQ01-revisions-entiers",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Réviser la représentation des entiers",
+   "sousTitre": "Papier puis programmation Python",
+   "nature": "Activité",
+   "date": "2026-11-20",
+   "pdf": "/nsi/1g/SQ01-revisions-entiers.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "nsi/1g/SQ01-support-eleve",
    "matiere": "nsi",
    "classe": "1g",
@@ -3174,7 +3190,8 @@
     "nsi/1g/SQ01-p03-taille-ecriture-binaire",
     "nsi/1g/atelier-pyxel-compteur-8-bits",
     "nsi/1g/SQ01-p04-relatifs-complement-deux",
-    "nsi/1g/SQ01-p02-bibi-binaire"
+    "nsi/1g/SQ01-p02-bibi-binaire",
+    "nsi/1g/SQ01-revisions-entiers"
    ]
   },
   {
