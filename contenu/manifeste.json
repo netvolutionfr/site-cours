@@ -576,6 +576,22 @@
    ]
   },
   {
+   "slug": "nsi/1g/SQ01-p02-bibi-binaire",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Le bibi-binaire",
+   "sousTitre": "Une autre façon de dire l'hexadécimal",
+   "nature": "Diaporama",
+   "date": "2026-11-20",
+   "pdf": "/nsi/1g/SQ01-p02-bibi-binaire.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "nsi/1g/SQ01-p02-etat-variables-bases-python",
    "matiere": "nsi",
    "classe": "1g",
@@ -618,6 +634,22 @@
    ]
   },
   {
+   "slug": "nsi/1g/SQ01-p04-relatifs-complement-deux",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Écrire les nombres négatifs",
+   "sousTitre": "Entiers relatifs et complément à 2 sur 8 bits",
+   "nature": "Diaporama",
+   "date": "2026-11-16",
+   "pdf": "/nsi/1g/SQ01-p04-relatifs-complement-deux.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "nsi/1g/SQ01-support-eleve",
    "matiere": "nsi",
    "classe": "1g",
@@ -630,158 +662,8 @@
    "pdf": "/nsi/1g/SQ01-support-eleve.pdf",
    "pieces": [],
    "brut": null,
-   "titres": [
-    {
-     "depth": 3,
-     "slug": "partie-1-deux-états-et-le-poids-des-positions",
-     "text": "Partie 1 — Deux états et le poids des positions"
-    },
-    {
-     "depth": 4,
-     "slug": "le-problème",
-     "text": "Le problème"
-    },
-    {
-     "depth": 4,
-     "slug": "le-bit",
-     "text": "Le bit"
-    },
-    {
-     "depth": 4,
-     "slug": "le-poids-dune-position",
-     "text": "Le poids d’une position"
-    },
-    {
-     "depth": 4,
-     "slug": "exercices",
-     "text": "Exercices"
-    },
-    {
-     "depth": 3,
-     "slug": "partie-2-convertir-les-entiers-méthode-base-16-et-python",
-     "text": "Partie 2 — Convertir les entiers : méthode, base 16 et Python"
-    },
-    {
-     "depth": 4,
-     "slug": "suivre-létat-des-variables",
-     "text": "Suivre l’état des variables"
-    },
-    {
-     "depth": 4,
-     "slug": "la-méthode-des-divisions-successives",
-     "text": "La méthode des divisions successives"
-    },
-    {
-     "depth": 4,
-     "slug": "la-base-16",
-     "text": "La base 16"
-    },
-    {
-     "depth": 4,
-     "slug": "les-entiers-en-python",
-     "text": "Les entiers en Python"
-    },
-    {
-     "depth": 4,
-     "slug": "exercices-1",
-     "text": "Exercices"
-    },
-    {
-     "depth": 3,
-     "slug": "partie-3-taille-dune-écriture-binaire",
-     "text": "Partie 3 — Taille d’une écriture binaire"
-    },
-    {
-     "depth": 4,
-     "slug": "combien-de-valeurs-avec-n-bits",
-     "text": "Combien de valeurs avec n bits ?"
-    },
-    {
-     "depth": 4,
-     "slug": "combien-de-bits-pour-écrire-un-entier",
-     "text": "Combien de bits pour écrire un entier ?"
-    },
-    {
-     "depth": 4,
-     "slug": "somme-et-produit",
-     "text": "Somme et produit"
-    },
-    {
-     "depth": 4,
-     "slug": "quand-les-bits-manquent-le-dépassement",
-     "text": "Quand les bits manquent : le dépassement"
-    },
-    {
-     "depth": 4,
-     "slug": "exercices-2",
-     "text": "Exercices"
-    },
-    {
-     "depth": 3,
-     "slug": "partie-4-entiers-relatifs-et-complément-à-2",
-     "text": "Partie 4 — Entiers relatifs et complément à 2"
-    },
-    {
-     "depth": 3,
-     "slug": "partie-1",
-     "text": "Partie 1"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-2.1",
-     "text": "Exercice 2.1"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-2.2",
-     "text": "Exercice 2.2"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-2.3",
-     "text": "Exercice 2.3"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-2.4",
-     "text": "Exercice 2.4"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-2.5",
-     "text": "Exercice 2.5"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-2.6",
-     "text": "Exercice 2.6"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-3.1",
-     "text": "Exercice 3.1"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-3.2",
-     "text": "Exercice 3.2"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-3.3",
-     "text": "Exercice 3.3"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-3.4",
-     "text": "Exercice 3.4"
-    },
-    {
-     "depth": 3,
-     "slug": "exercice-3.5",
-     "text": "Exercice 3.5"
-    }
-   ]
+   "titres": [],
+   "composant": "Markdown"
   },
   {
    "slug": "nsi/1g/SQ01-tp-binaire",
@@ -3283,14 +3165,16 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-11-13",
+   "fin": "2026-11-20",
    "supports": [
     "nsi/1g/SQ01-support-eleve",
     "nsi/1g/SQ01-tp-binaire",
     "nsi/1g/SQ01-distanciel-boucle-variables-chaines",
     "nsi/1g/SQ01-p02-etat-variables-bases-python",
     "nsi/1g/SQ01-p03-taille-ecriture-binaire",
-    "nsi/1g/atelier-pyxel-compteur-8-bits"
+    "nsi/1g/atelier-pyxel-compteur-8-bits",
+    "nsi/1g/SQ01-p04-relatifs-complement-deux",
+    "nsi/1g/SQ01-p02-bibi-binaire"
    ]
   },
   {
