@@ -1,191 +1,296 @@
----
-type: support
-format: handout
-title: Du métier Jacquard au binaire
-subtitle: Représenter les entiers avec deux états, en bases 2, 10 et 16, puis en Python
-niveau: Première NSI
-theme: Représentation des données
-auteur: Stanis Humez
-annee: 2026-2027
-groupe: 1g
-matiere: NSI
-publie: true
-sequence: SQ01
-parties: [P01, P02, P03, P04]
-support: support-eleve
-composant: Markdown
-competences: ["Représentation des données — écriture d’un entier positif dans une base b ≥ 2 (bases 2, 10, 16) ; nombre de bits nécessaire à l’écriture d’un entier, d’une somme ou d’un produit ; représentation binaire d’un entier relatif en complément à 2", "Langages et programmation — mise au point : prévoir et tracer l'état des variables d'une boucle ou d'une fonction"]
-ia: interdite
----
-
-
-::: {.sequence-overview}
-::: {.objectives}
-## Objectifs
-
-À la fin de cette séquence, vous saurez :
-
-- relier une information à deux états à son écriture binaire et expliquer le poids d'une position ;
-- convertir un entier positif entre les bases 2, 10 et 16 par une méthode explicite ;
-- suivre l'état des variables d'une boucle ou d'une fonction dans un tableau ;
-- écrire et convertir des entiers en Python avec `0b`, `0x`, `bin`, `hex` et `int` ;
-- évaluer le nombre de bits nécessaire et représenter un entier relatif en complément à 2.
-:::
-
-::: {.prerequisites}
-## Prérequis
-
-- Écriture positionnelle d'un entier en base 10.
-- Puissances de 10 et additions simples.
-- Python : variables, `if`, boucles `for` et `while`, fonctions avec `return`.
-- Division entière `//` et reste `%`.
-:::
-
-::: {.outline}
-## Sommaire
-
-| Partie | Contenu |
-|---|---|
-| Partie 1 | Deux états et le poids des positions |
-| Partie 2 | Convertir les entiers : méthode, base 16 et Python |
-| Partie 3 | Taille d'une écriture binaire |
-| Partie 4 | Entiers relatifs et complément à 2 |
-:::
-:::
-
-## Partie 1 — Deux états et le poids des positions
-
-### Le problème
-
-Une manufacture textile veut qu'un métier à tisser reproduise automatiquement un motif
-complexe, toujours identique, sur des centaines de mètres de tissu. Comment donner cette
-instruction à une machine ?
-
-Au début du XIX<sup>e</sup> siècle, Joseph Marie Jacquard répond à ce problème avec une
-**carte perforée** : à chaque position de la carte, il y a un trou ou pas de trou. Cette
-information commande le passage des fils, motif après motif.
-
-> **Info.** Une carte perforée ne code pas directement notre écriture binaire actuelle —
-> mais le principe est le même : **deux états suffisent** à commander une mécanique aussi
-> complexe soit-elle.
-
-![Une carte perforée représente huit positions binaires : trou pour 1, absence de trou pour 0.](/nsi/1g/assets/carte-perforee.svg)
-
-### Le bit
-
-trou / pas de trou → deux états → **0 / 1**
-
-Un de ces deux états s'appelle un **bit** (contraction de l'anglais *binary digit*). C'est
-la plus petite unité d'information qu'une machine puisse représenter.
-
-> **Activité.** Avec une seule feuille de papier (vous pouvez écrire, découper, plier —
-> rien d'autre), fabriquez en binôme une machine capable de représenter les entiers de
-> 0 à 255, sans jamais rien écrire ni effacer pour changer de nombre représenté.
->
-> Vous devrez ensuite expliquer : comment un nombre est mémorisé par votre machine, et
-> combien d'éléments de votre machine ont deux états possibles.
-
-### Le poids d'une position
-
-Une écriture en base 10 fonctionne par position : dans 61027, le chiffre 6 ne vaut pas 6,
-il vaut 60000, parce qu'il est en position des dizaines de milliers.
-
-| Position | 10⁴ | 10³ | 10² | 10¹ | 10⁰ |
-|---|---|---|---|---|---|
-| Chiffre | 6 | 1 | 0 | 2 | 7 |
-| Valeur | 60000 | 1000 | 0 | 20 | 7 |
-
-C'est exactement le même principe en base 2 : chaque position a un **poids**, qui est
-une puissance de 2 au lieu d'une puissance de 10.
-
-| Position (poids) | 2⁷ | 2⁶ | 2⁵ | 2⁴ | 2³ | 2² | 2¹ | 2⁰ |
-|---|---|---|---|---|---|---|---|---|
-| Valeur du poids | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
-| Bit (exemple) | 0 | 1 | 0 | 0 | 1 | 1 | 0 | 1 |
-
-La valeur en base 10 est la **somme des poids des positions à 1** :
-
-64 + 8 + 4 + 1 = **77**
-
-L'écriture binaire 01001101 représente donc le nombre 77.
-
-> **À retenir.**
-> 1. Deux états (bit) suffisent à coder n'importe quelle information.
-> 2. Chaque position d'une écriture binaire a un poids, qui est une puissance de 2.
-> 3. La valeur en base 10 est la somme des poids des positions valant 1.
-
-> **Attention.** Le nombre de bits disponibles limite le plus grand nombre représentable.
-> Avec *n* bits, on peut représenter les entiers de 0 à 2ⁿ − 1 (par exemple, 0 à 255 avec
-> 8 bits — un octet).
-
-### Exercices
-
-1. Quelle est l'écriture décimale du nombre d'écriture binaire `10101100` ?
-2. Décomposer 57 à l'aide des puissances de 2 pour retrouver son écriture binaire sur un
-   octet.
-3. Combien de bits faut-il au minimum pour représenter le nombre 200 ?
-4. Vrai ou faux : une écriture binaire de 4 bits permet de coder les entiers de 0 à 16.
-
-## Partie 2 — Convertir les entiers : méthode, base 16 et Python
-
-En partie 1, on devinait la décomposition d'un nombre en puissances de 2. Il faut
-maintenant une **méthode qui marche toujours**, que l'on peut confier à une machine. Pour
-la comprendre, il faut d'abord savoir suivre ce qu'un programme garde en mémoire à chaque
-étape.
-
-### Suivre l'état des variables
-
-L'**état** d'un programme, à un instant donné, c'est la valeur de chacune de ses
-variables. Pour comprendre une boucle, on note cet état dans un **tableau de suivi** :
-une colonne par variable, une ligne par tour, et les valeurs **à la fin** du tour. La
-première ligne contient l'état **avant** la boucle.
-
-> **À retenir.** Tracer d'abord, exécuter ensuite. Un tableau de suivi rempli sur papier
-> montre *pourquoi* le programme donne son résultat ; l'exécution ne montre que *quel*
-> résultat il donne.
-
-#### Exercice 2.1 — Une boucle qui divise
-
-Lisez cette fonction **sans l'exécuter**. `n % 2` est le **reste** de la division de
-`n` par 2 ; `str(…)` transforme un nombre en texte.
-
-::: {.exercice-python}
-```python
-def ecrire_binaire(n):
-    bits = ""
-    while n > 0:
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<p>À la fin de cette séquence, vous saurez :</p>
+<ul>
+<li>relier une information à deux états à son écriture binaire et
+expliquer le poids d’une position ;</li>
+<li>convertir un entier positif entre les bases 2, 10 et 16 par une
+méthode explicite ;</li>
+<li>suivre l’état des variables d’une boucle ou d’une fonction dans un
+tableau ;</li>
+<li>écrire et convertir des entiers en Python avec <code>0b</code>,
+<code>0x</code>, <code>bin</code>, <code>hex</code> et <code>int</code>
+;</li>
+<li>évaluer le nombre de bits nécessaire et représenter un entier
+relatif en complément à 2.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Écriture positionnelle d’un entier en base 10.</li>
+<li>Puissances de 10 et additions simples.</li>
+<li>Python : variables, <code>if</code>, boucles <code>for</code> et
+<code>while</code>, fonctions avec <code>return</code>.</li>
+<li>Division entière <code>//</code> et reste <code>%</code>.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partie 1</td>
+<td>Deux états et le poids des positions</td>
+</tr>
+<tr>
+<td>Partie 2</td>
+<td>Convertir les entiers : méthode, base 16 et Python</td>
+</tr>
+<tr>
+<td>Partie 3</td>
+<td>Taille d’une écriture binaire</td>
+</tr>
+<tr>
+<td>Partie 4</td>
+<td>Entiers relatifs et complément à 2</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<h3 id="partie-1-deux-états-et-le-poids-des-positions">Partie 1 — Deux
+états et le poids des positions</h3>
+<h4 id="le-problème">Le problème</h4>
+<p>Une manufacture textile veut qu’un métier à tisser reproduise
+automatiquement un motif complexe, toujours identique, sur des centaines
+de mètres de tissu. Comment donner cette instruction à une machine ?</p>
+<p>Au début du XIX<sup>e</sup> siècle, Joseph Marie Jacquard répond à ce
+problème avec une <strong>carte perforée</strong> : à chaque position de
+la carte, il y a un trou ou pas de trou. Cette information commande le
+passage des fils, motif après motif.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Une carte perforée ne code pas directement notre écriture binaire
+actuelle — mais le principe est le même : <strong>deux états
+suffisent</strong> à commander une mécanique aussi complexe
+soit-elle.</p>
+</div>
+<figure>
+<img role="img" aria-label="Une carte perforée représente huit positions binaires : trou pour 1, absence de trou pour 0." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgMzQwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjM0MCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jYXJkIHsgZmlsbDogI0Y3RjhGQTsgc3Ryb2tlOiAjMTcyMDMzOyBzdHJva2Utd2lkdGg6IDM7IH0KICAgICAgLmN1dCAgeyBmaWxsOiAjMTcyMDMzOyB9CiAgICAgIC5ob2xlIHsgZmlsbDogI0Y3RjhGQTsgc3Ryb2tlOiAjMzU2OEQ0OyBzdHJva2Utd2lkdGg6IDQ7IH0KICAgICAgLmJpdCAgeyBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywnSUJNIFBsZXggTW9ubycsbW9ub3NwYWNlOyBmb250LXNpemU6IDI4cHg7IGZpbGw6ICMxNzIwMzM7IH0KICAgICAgLmxibCAgeyBmb250LWZhbWlseTogJ0ludGVyJywnU291cmNlIFNhbnMgMycsc2Fucy1zZXJpZjsgZm9udC1zaXplOiAyMHB4OyBmaWxsOiAjNjg3Mzg2OyB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KCiAgPCEtLSBjb3JwcyBkZSBsYSBjYXJ0ZSwgY29pbiBjb3Vww6kgKHJlcMOocmUgZCdvcmllbnRhdGlvbiBKYWNxdWFyZCkgLS0+CiAgPHBhdGggY2xhc3M9ImNhcmQiIGQ9Ik00MCwyMCBIODIwIGE0MCw0MCAwIDAgMSA0MCw0MCBWMzAwIGEyMCwyMCAwIDAgMSAtMjAsMjAgSDYwIGEyMCwyMCAwIDAgMSAtMjAsLTIwIFYyMCBaIiAvPgoKICA8IS0tIDggcG9zaXRpb25zIDogbW90aWYgMCAxIDAgMCAxIDEgMCAxID0gNzcgZW4gYmFzZSAxMCAtLT4KICA8Zz4KICAgIDwhLS0gcG9zaXRpb24gMSA6IDAgLS0+CiAgICA8cmVjdCBjbGFzcz0iY3V0IiB4PSI5MCIgIHk9IjEyMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiAvPgogICAgPCEtLSBwb3NpdGlvbiAyIDogMSAtLT4KICAgIDxjaXJjbGUgY2xhc3M9ImhvbGUiIGN4PSIyMjAiIGN5PSIxNTAiIHI9IjMwIiAvPgogICAgPCEtLSBwb3NpdGlvbiAzIDogMCAtLT4KICAgIDxyZWN0IGNsYXNzPSJjdXQiIHg9IjI4MCIgeT0iMTIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIC8+CiAgICA8IS0tIHBvc2l0aW9uIDQgOiAwIC0tPgogICAgPHJlY3QgY2xhc3M9ImN1dCIgeD0iMzgwIiB5PSIxMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgLz4KICAgIDwhLS0gcG9zaXRpb24gNSA6IDEgLS0+CiAgICA8Y2lyY2xlIGNsYXNzPSJob2xlIiBjeD0iNTEwIiBjeT0iMTUwIiByPSIzMCIgLz4KICAgIDwhLS0gcG9zaXRpb24gNiA6IDEgLS0+CiAgICA8Y2lyY2xlIGNsYXNzPSJob2xlIiBjeD0iNjAwIiBjeT0iMTUwIiByPSIzMCIgLz4KICAgIDwhLS0gcG9zaXRpb24gNyA6IDAgLS0+CiAgICA8cmVjdCBjbGFzcz0iY3V0IiB4PSI2NTAiIHk9IjEyMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiAvPgogICAgPCEtLSBwb3NpdGlvbiA4IDogMSAtLT4KICAgIDxjaXJjbGUgY2xhc3M9ImhvbGUiIGN4PSI3NzAiIGN5PSIxNTAiIHI9IjMwIiAvPgogIDwvZz4KCiAgPCEtLSBsZWN0dXJlIGJpbmFpcmUgc291cyBsYSBjYXJ0ZSAtLT4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIxMDUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIyMDUiIHk9IjI1MCI+MTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIyOTUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSIzOTUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI0OTUiIHk9IjI1MCI+MTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI1ODUiIHk9IjI1MCI+MTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI2NjUiIHk9IjI1MCI+MDwvdGV4dD4KICA8dGV4dCBjbGFzcz0iYml0IiB4PSI3NTUiIHk9IjI1MCI+MTwvdGV4dD4KCiAgPHRleHQgY2xhc3M9ImxibCIgeD0iNjAiIHk9IjI5MCI+dHJvdSA9IDEgKGJpdCBsdSk8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImxibCIgeD0iNjAiIHk9IjMxNiI+cGFzIGRlIHRyb3UgPSAwPC90ZXh0Pgo8L3N2Zz4K" alt="Une carte perforée représente huit positions binaires : trou pour 1, absence de trou pour 0." />
+<figcaption aria-hidden="true">Une carte perforée représente huit
+positions binaires : trou pour 1, absence de trou pour 0.</figcaption>
+</figure>
+<h4 id="le-bit">Le bit</h4>
+<p>trou / pas de trou → deux états → <strong>0 / 1</strong></p>
+<p>Un de ces deux états s’appelle un <strong>bit</strong> (contraction
+de l’anglais <em>binary digit</em>). C’est la plus petite unité
+d’information qu’une machine puisse représenter.</p>
+<div class="callout activity">
+<p><strong>Activité</strong></p>
+<p>Avec une seule feuille de papier (vous pouvez écrire, découper, plier
+— rien d’autre), fabriquez en binôme une machine capable de représenter
+les entiers de 0 à 255, sans jamais rien écrire ni effacer pour changer
+de nombre représenté.</p>
+<p>Vous devrez ensuite expliquer : comment un nombre est mémorisé par
+votre machine, et combien d’éléments de votre machine ont deux états
+possibles.</p>
+</div>
+<h4 id="le-poids-dune-position">Le poids d’une position</h4>
+<p>Une écriture en base 10 fonctionne par position : dans 61027, le
+chiffre 6 ne vaut pas 6, il vaut 60000, parce qu’il est en position des
+dizaines de milliers.</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>10⁴</th>
+<th>10³</th>
+<th>10²</th>
+<th>10¹</th>
+<th>10⁰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chiffre</td>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Valeur</td>
+<td>60000</td>
+<td>1000</td>
+<td>0</td>
+<td>20</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>C’est exactement le même principe en base 2 : chaque position a un
+<strong>poids</strong>, qui est une puissance de 2 au lieu d’une
+puissance de 10.</p>
+<table>
+<thead>
+<tr>
+<th>Position (poids)</th>
+<th>2⁷</th>
+<th>2⁶</th>
+<th>2⁵</th>
+<th>2⁴</th>
+<th>2³</th>
+<th>2²</th>
+<th>2¹</th>
+<th>2⁰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valeur du poids</td>
+<td>128</td>
+<td>64</td>
+<td>32</td>
+<td>16</td>
+<td>8</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Bit (exemple)</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>La valeur en base 10 est la <strong>somme des poids des positions à
+1</strong> :</p>
+<p>64 + 8 + 4 + 1 = <strong>77</strong></p>
+<p>L’écriture binaire 01001101 représente donc le nombre 77.</p>
+<blockquote>
+<p><strong>À retenir.</strong> 1. Deux états (bit) suffisent à coder
+n’importe quelle information. 2. Chaque position d’une écriture binaire
+a un poids, qui est une puissance de 2. 3. La valeur en base 10 est la
+somme des poids des positions valant 1.</p>
+</blockquote>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Le nombre de bits disponibles limite le plus grand nombre
+représentable. Avec <em>n</em> bits, on peut représenter les entiers de
+0 à 2ⁿ − 1 (par exemple, 0 à 255 avec 8 bits — un octet).</p>
+</div>
+<h4 id="exercices">Exercices</h4>
+<ol type="1">
+<li>Quelle est l’écriture décimale du nombre d’écriture binaire
+<code>10101100</code> ?</li>
+<li>Décomposer 57 à l’aide des puissances de 2 pour retrouver son
+écriture binaire sur un octet.</li>
+<li>Combien de bits faut-il au minimum pour représenter le nombre 200
+?</li>
+<li>Vrai ou faux : une écriture binaire de 4 bits permet de coder les
+entiers de 0 à 16.</li>
+</ol>
+<h3 id="partie-2-convertir-les-entiers-méthode-base-16-et-python">Partie
+2 — Convertir les entiers : méthode, base 16 et Python</h3>
+<p>En partie 1, on devinait la décomposition d’un nombre en puissances
+de 2. Il faut maintenant une <strong>méthode qui marche
+toujours</strong>, que l’on peut confier à une machine. Pour la
+comprendre, il faut d’abord savoir suivre ce qu’un programme garde en
+mémoire à chaque étape.</p>
+<h4 id="suivre-létat-des-variables">Suivre l’état des variables</h4>
+<p>L’<strong>état</strong> d’un programme, à un instant donné, c’est la
+valeur de chacune de ses variables. Pour comprendre une boucle, on note
+cet état dans un <strong>tableau de suivi</strong> : une colonne par
+variable, une ligne par tour, et les valeurs <strong>à la fin</strong>
+du tour. La première ligne contient l’état <strong>avant</strong> la
+boucle.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Tracer d’abord, exécuter ensuite. Un
+tableau de suivi rempli sur papier montre <em>pourquoi</em> le programme
+donne son résultat ; l’exécution ne montre que <em>quel</em> résultat il
+donne.</p>
+</blockquote>
+<h5 id="exercice-2.1-une-boucle-qui-divise">Exercice 2.1 — Une boucle
+qui divise</h5>
+<p>Lisez cette fonction <strong>sans l’exécuter</strong>.
+<code>n % 2</code> est le <strong>reste</strong> de la division de
+<code>n</code> par 2 ; <code>str(…)</code> transforme un nombre en
+texte.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def ecrire_binaire(n):
+    bits = &quot;&quot;
+    while n &gt; 0:
         reste = n % 2
         bits = str(reste) + bits
         n = n // 2
     return bits
 
-print(ecrire_binaire(13))
-```
-:::
-
-1. Complétez sur papier le tableau de suivi de `ecrire_binaire(13)`.
-
-   | Tour | `reste` | `bits` à la fin du tour | `n` à la fin du tour |
-   |---:|---:|:---|---:|
-   | avant la boucle | — | `""` | 13 |
-   | 1 | 1 | `"1"` | 6 |
-   | 2 | … | … | … |
-   | 3 | … | … | … |
-   | 4 | … | … | … |
-
-2. Pourquoi la boucle s'arrête-t-elle ? Que renvoie la fonction ? Vérifiez avec la
-   partie 1 : 13 = 8 + 4 + 1.
-3. Dans `bits = str(reste) + bits`, le nouveau chiffre est placé **devant** ceux déjà
-   obtenus. Que renverrait la fonction avec `bits = bits + str(reste)` ?
-4. Que renvoie `ecrire_binaire(0)` ? Est-ce satisfaisant ?
-
-#### Exercice 2.2 — L'état dans une fonction
-
-Prévoyez l'affichage **sans exécuter**, puis vérifiez.
-
-::: {.exercice-python}
-```python
-def moitie(n):
+print(ecrire_binaire(13))</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<ol type="1">
+<li><p>Complétez sur papier le tableau de suivi de
+<code>ecrire_binaire(13)</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>reste</code></th>
+<th style="text-align: left;"><code>bits</code> à la fin du tour</th>
+<th style="text-align: right;"><code>n</code> à la fin du tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: left;"><code>&quot;&quot;</code></td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"><code>&quot;1&quot;</code></td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Pourquoi la boucle s’arrête-t-elle ? Que renvoie la fonction ?
+Vérifiez avec la partie 1 : 13 = 8 + 4 + 1.</p></li>
+<li><p>Dans <code>bits = str(reste) + bits</code>, le nouveau chiffre
+est placé <strong>devant</strong> ceux déjà obtenus. Que renverrait la
+fonction avec <code>bits = bits + str(reste)</code> ?</p></li>
+<li><p>Que renvoie <code>ecrire_binaire(0)</code> ? Est-ce satisfaisant
+?</p></li>
+</ol>
+<h5 id="exercice-2.2-létat-dans-une-fonction">Exercice 2.2 — L’état dans
+une fonction</h5>
+<p>Prévoyez l’affichage <strong>sans exécuter</strong>, puis
+vérifiez.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def moitie(n):
     n = n // 2
     return n
 
@@ -193,723 +298,1262 @@ n = 26
 m = moitie(n)
 print(n, m)
 m = moitie(m)
-print(n, m)
-```
-:::
-
-1. Qu'affiche le programme ?
-2. La fonction modifie `n`. Pourquoi le `n` du programme principal vaut-il toujours 26 ?
-
-> **À retenir.** Un paramètre et les variables créées dans une fonction sont **locaux** :
-> ils naissent à l'appel et disparaissent au `return`. Le programme principal ne récupère
-> que la **valeur renvoyée**, et seulement s'il la range dans une variable.
-
-### La méthode des divisions successives
-
-La fonction `ecrire_binaire` applique une méthode que l'on peut faire à la main :
-
-1. diviser le nombre par 2, noter le **reste** (0 ou 1) et garder le **quotient** ;
-2. recommencer avec le quotient, jusqu'à obtenir un quotient nul ;
-3. lire les restes **du dernier au premier**.
-
-| Division | Quotient | Reste |
-|---|---:|---:|
-| 13 ÷ 2 | 6 | **1** |
-| 6 ÷ 2 | 3 | **0** |
-| 3 ÷ 2 | 1 | **1** |
-| 1 ÷ 2 | 0 | **1** |
-
-En lisant les restes de bas en haut : 13 s'écrit **1101** en base 2.
-
-Le premier reste dit si le nombre est pair ou impair : c'est le bit de poids 1, celui de
-**droite**. Chaque division par 2 décale l'écriture d'un cran vers la droite et fait
-« tomber » le bit suivant. Voilà pourquoi les restes se lisent à l'envers.
-
-> **Info.** La méthode fonctionne dans n'importe quelle base *b* ≥ 2 : on divise par *b*
-> et les restes vont de 0 à *b* − 1.
-
-### La base 16
-
-Un octet s'écrit avec huit chiffres en binaire : c'est long et on s'y trompe vite. On
-utilise donc souvent la **base 16** (hexadécimal). Il faut seize chiffres : 0 à 9, puis
-les lettres A à F.
-
-| Base 10 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Base 16 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F |
-
-Les poids sont les puissances de 16 : 1, 16, 256, 4096… Par exemple
-`2F` vaut 2 × 16 + 15 = **47**.
-
-Le grand intérêt de la base 16 : 16 = 2⁴, donc **un chiffre hexadécimal correspond
-exactement à quatre bits** (un quartet). Pour passer du binaire à l'hexadécimal, on
-découpe l'écriture en paquets de quatre bits **à partir de la droite**, puis on lit
-chaque paquet avec les poids 8, 4, 2, 1 — comme `lire_quartet` du travail à distance.
-
-| Quartet | 1011 | 0110 |
-|---|---|---|
-| Valeur | 8 + 2 + 1 = 11 | 4 + 2 = 6 |
-| Chiffre hexadécimal | B | 6 |
-
-L'octet `10110110` s'écrit donc **B6** en base 16. Le chemin inverse est aussi direct :
-chaque chiffre hexadécimal redonne ses quatre bits.
-
-> **Info.** L'hexadécimal est partout où l'on manipule des octets : couleurs du web
-> (`#FF8800` = trois octets rouge, vert, bleu), adresses MAC des cartes réseau
-> (`3C:52:82:1A:F0:07`), adresses IPv6, contenu brut d'un fichier.
-
-### Les entiers en Python
-
-Python sait écrire et lire un entier dans les trois bases. Ce sont **les mêmes nombres**
-écrits autrement : la machine, elle, stocke toujours du binaire.
-
-```python
->>> 0b1101          # écriture binaire
-13
->>> 0x2F            # écriture hexadécimale
-47
->>> 0b1101 == 13 == 0xD
-True
-```
-
-| Écriture | Résultat | Type du résultat |
-|---|---|---|
-| `bin(13)` | `'0b1101'` | texte (`str`) |
-| `hex(47)` | `'0x2f'` | texte (`str`) |
-| `int("1101", 2)` | `13` | entier (`int`) |
-| `int("2F", 16)` | `47` | entier (`int`) |
-
-`bin` et `hex` vont **de l'entier vers le texte** ; `int(texte, base)` va **du texte
-vers l'entier**. Le préfixe `0b` ou `0x` indique la base de l'écriture.
-
-> **Attention.** `bin(5) + 1` provoque une erreur `TypeError` : `bin(5)` est du texte, pas
-> un nombre. Pour calculer, on travaille sur l'entier ; on convertit en texte seulement
-> pour afficher.
-
-Contrairement à l'octet de la machine des nombres, un entier Python n'est pas limité à
-8, 32 ou 64 bits : `2 ** 100` s'affiche en entier. Python réserve autant de mémoire que
-nécessaire. Dans la plupart des autres langages, la taille d'un entier est fixée à
-l'avance — nous verrons en partie 3 ce que cela change.
-
-> **À retenir.**
-> 1. Divisions successives par *b* : les restes, lus du dernier au premier, donnent
->    l'écriture en base *b*.
-> 2. Un chiffre hexadécimal = quatre bits.
-> 3. En Python, `0b…` et `0x…` écrivent un entier ; `bin`, `hex` produisent du texte ;
->    `int(texte, base)` redonne un entier.
-
-### Exercices
-
-#### Exercice 2.3 — Écrire `ecrire_binaire`
-
-Réécrivez `ecrire_binaire(n)` **sans regarder** l'exercice 2.1. Elle doit aussi
-renvoyer `"0"` pour `n = 0`. N'utilisez ni `bin` ni `format`.
-
-::: {.exercice-python}
-```python
-def ecrire_binaire(n):
-    ...
-```
-
-```{.tests}
-ecrire_binaire(0) == "0"
-ecrire_binaire(1) == "1"
-ecrire_binaire(13) == "1101"
-ecrire_binaire(57) == "111001"
-ecrire_binaire(128) == "10000000"
-ecrire_binaire(255) == "11111111"
-ecrire_binaire(1000) == "1111101000"
-```
-:::
-
-#### Exercice 2.4 — À la main
-
-Sur papier, en montrant la méthode :
-
-1. Écrire 45 en base 2 par divisions successives.
-2. Écrire l'octet `11010011` en base 16.
-3. Écrire `0x3A` en base 2, puis en base 10.
-4. La couleur web `#1E90FF` est formée de trois octets (rouge, vert, bleu). Donner
-   chacun en base 10.
-
-#### Exercice 2.5 — Prévoir Python
-
-Répondez sans exécuter, puis vérifiez dans la console.
-
-::: {.qcm}
-Que vaut `int("101", 2) + 1` ?
-
-- [ ] `"1011"`
-- [ ] `102`
-- [x] `6`
-- [ ] Une erreur
-
-> `int("101", 2)` lit le texte en base 2 : c'est l'entier 5. On ajoute 1 : 6.
-:::
-
-::: {.qcm}
-Que produit `bin(10)` ?
-
-- [ ] L'entier `1010`
-- [x] Le texte `'0b1010'`
-- [ ] Le texte `'1010'`
-- [ ] L'entier `10`
-
-> `bin` renvoie toujours du texte, préfixé par `0b`.
-:::
-
-::: {.qcm}
-Que se passe-t-il avec `hex(255) + 1` ?
-
-- [ ] On obtient `256`
-- [ ] On obtient `'0x100'`
-- [x] Une erreur `TypeError`
-- [ ] On obtient `'0xff1'`
-
-> `hex(255)` est le texte `'0xff'` : on ne peut pas ajouter un nombre à un texte.
-:::
-
-::: {.qcm}
-Laquelle de ces expressions vaut `True` ?
-
-- [ ] `0b11 == 11`
-- [x] `0xF == 15`
-- [ ] `bin(3) == 0b11`
-- [ ] `int("F", 2) == 15`
-
-> `0xF` est l'entier 15. `bin(3)` est un texte, `0b11` un entier : ils ne sont pas
-> égaux. `"F"` n'est pas un chiffre de la base 2 : `int("F", 2)` provoque une erreur.
-:::
-
-#### Exercice 2.6 — Pour aller plus loin : écrire en base 16
-
-Adaptez la méthode à la base 16. Un reste va de 0 à 15 ; pour obtenir son chiffre, on
-utilise le texte `chiffres = "0123456789ABCDEF"` : `chiffres[11]` vaut `"B"`.
-
-::: {.exercice-python}
-```python
-def ecrire_hexa(n):
-    chiffres = "0123456789ABCDEF"
-    ...
-```
-
-```{.tests}
-ecrire_hexa(0) == "0"
-ecrire_hexa(9) == "9"
-ecrire_hexa(11) == "B"
-ecrire_hexa(47) == "2F"
-ecrire_hexa(255) == "FF"
-ecrire_hexa(256) == "100"
-ecrire_hexa(48879) == "BEEF"
-```
-:::
-
-## Partie 3 — Taille d'une écriture binaire
-
-Dans la machine des nombres, huit bits s'arrêtaient à 255. Python, lui, écrit `2 ** 100`
-sans broncher. Mais la plupart des langages et des processeurs travaillent avec une taille
-**fixée à l'avance** : 8, 16, 32 ou 64 bits. Il faut donc savoir prévoir combien de bits
-un nombre demande, et ce qui arrive quand il n'y en a pas assez.
-
-### Combien de valeurs avec *n* bits ?
-
-Chaque bit ajouté double le nombre de configurations possibles : avec *n* bits, on écrit
-**2ⁿ valeurs**, de 0 à **2ⁿ − 1**.
-
-| Bits | Valeurs différentes | Plus grand entier positif | Exemple d'usage |
-|---:|---:|---:|---|
-| 1 | 2 | 1 | vrai / faux |
-| 4 | 16 | 15 | un chiffre hexadécimal |
-| 8 | 256 | 255 | un octet, une composante de couleur |
-| 16 | 65 536 | 65 535 | numéro de port TCP |
-| 32 | 4 294 967 296 | environ 4,3 milliards | adresse IPv4 |
-| 64 | environ 1,8 × 10¹⁹ | environ 1,8 × 10¹⁹ | entiers d'un processeur actuel |
-
-> **Info.** 2¹⁰ = 1024, à peu près 1000. D'où un calcul mental rapide : 2²⁰ ≈ un million,
-> 2³⁰ ≈ un milliard.
-
-### Combien de bits pour écrire un entier ?
-
-Le nombre de bits nécessaire pour écrire un entier *N* ≥ 1 est le plus petit *n* tel que
-*N* ≤ 2ⁿ − 1, autrement dit tel que *N* < 2ⁿ. C'est aussi la **longueur de son écriture
-binaire**, sans zéros à gauche.
-
-Exemple : 200. On a 2⁷ = 128 ≤ 200 < 256 = 2⁸, donc 200 demande **8 bits**
-(`11001000`). Et 256 demande 9 bits : `100000000`.
-
-> **À retenir.** *N* demande *n* bits quand 2ⁿ⁻¹ ≤ *N* < 2ⁿ : on encadre *N* entre deux
-> puissances de 2 consécutives.
-
-En Python, deux façons d'obtenir ce nombre de bits :
-
-```python
->>> len(bin(200)) - 2      # on retire le préfixe 0b
-8
->>> (200).bit_length()
-8
-```
-
-#### Exercice 3.1 — Compter les divisions
-
-Lisez cette fonction **sans l'exécuter**.
-
-::: {.exercice-python}
-```python
-def nb_bits(n):
+print(n, m)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<ol type="1">
+<li>Qu’affiche le programme ?</li>
+<li>La fonction modifie <code>n</code>. Pourquoi le <code>n</code> du
+programme principal vaut-il toujours 26 ?</li>
+</ol>
+<blockquote>
+<p><strong>À retenir.</strong> Un paramètre et les variables créées dans
+une fonction sont <strong>locaux</strong> : ils naissent à l’appel et
+disparaissent au <code>return</code>. Le programme principal ne récupère
+que la <strong>valeur renvoyée</strong>, et seulement s’il la range dans
+une variable.</p>
+</blockquote>
+<h4 id="la-méthode-des-divisions-successives">La méthode des divisions
+successives</h4>
+<p>La fonction <code>ecrire_binaire</code> applique une méthode que l’on
+peut faire à la main :</p>
+<ol type="1">
+<li>diviser le nombre par 2, noter le <strong>reste</strong> (0 ou 1) et
+garder le <strong>quotient</strong> ;</li>
+<li>recommencer avec le quotient, jusqu’à obtenir un quotient nul ;</li>
+<li>lire les restes <strong>du dernier au premier</strong>.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Division</th>
+<th style="text-align: right;">Quotient</th>
+<th style="text-align: right;">Reste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>13 ÷ 2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;"><strong>1</strong></td>
+</tr>
+<tr>
+<td>6 ÷ 2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"><strong>0</strong></td>
+</tr>
+<tr>
+<td>3 ÷ 2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"><strong>1</strong></td>
+</tr>
+<tr>
+<td>1 ÷ 2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>En lisant les restes de bas en haut : 13 s’écrit
+<strong>1101</strong> en base 2.</p>
+<p>Le premier reste dit si le nombre est pair ou impair : c’est le bit
+de poids 1, celui de <strong>droite</strong>. Chaque division par 2
+décale l’écriture d’un cran vers la droite et fait « tomber » le bit
+suivant. Voilà pourquoi les restes se lisent à l’envers.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>La méthode fonctionne dans n’importe quelle base <em>b</em> ≥ 2 : on
+divise par <em>b</em> et les restes vont de 0 à <em>b</em> − 1.</p>
+</div>
+<h4 id="la-base-16">La base 16</h4>
+<p>Un octet s’écrit avec huit chiffres en binaire : c’est long et on s’y
+trompe vite. On utilise donc souvent la <strong>base 16</strong>
+(hexadécimal). Il faut seize chiffres : 0 à 9, puis les lettres A à
+F.</p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr>
+<th>Base 10</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base 16</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<p>Les poids sont les puissances de 16 : 1, 16, 256, 4096… Par exemple
+<code>2F</code> vaut 2 × 16 + 15 = <strong>47</strong>.</p>
+<p>Le grand intérêt de la base 16 : 16 = 2⁴, donc <strong>un chiffre
+hexadécimal correspond exactement à quatre bits</strong> (un quartet).
+Pour passer du binaire à l’hexadécimal, on découpe l’écriture en paquets
+de quatre bits <strong>à partir de la droite</strong>, puis on lit
+chaque paquet avec les poids 8, 4, 2, 1 — comme
+<code>lire_quartet</code> du travail à distance.</p>
+<table>
+<thead>
+<tr>
+<th>Quartet</th>
+<th>1011</th>
+<th>0110</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valeur</td>
+<td>8 + 2 + 1 = 11</td>
+<td>4 + 2 = 6</td>
+</tr>
+<tr>
+<td>Chiffre hexadécimal</td>
+<td>B</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p>L’octet <code>10110110</code> s’écrit donc <strong>B6</strong> en
+base 16. Le chemin inverse est aussi direct : chaque chiffre hexadécimal
+redonne ses quatre bits.</p>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>L’hexadécimal est partout où l’on manipule des octets : couleurs du
+web (<code>#FF8800</code> = trois octets rouge, vert, bleu), adresses
+MAC des cartes réseau (<code>3C:52:82:1A:F0:07</code>), adresses IPv6,
+contenu brut d’un fichier.</p>
+</div>
+<h4 id="les-entiers-en-python">Les entiers en Python</h4>
+<p>Python sait écrire et lire un entier dans les trois bases. Ce sont
+<strong>les mêmes nombres</strong> écrits autrement : la machine, elle,
+stocke toujours du binaire.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0b1101</span>          <span class="co"># écriture binaire</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0x2F</span>            <span class="co"># écriture hexadécimale</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0b1101</span> <span class="op">==</span> <span class="dv">13</span> <span class="op">==</span> <span class="bn">0xD</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Écriture</th>
+<th>Résultat</th>
+<th>Type du résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bin(13)</code></td>
+<td><code>&#39;0b1101&#39;</code></td>
+<td>texte (<code>str</code>)</td>
+</tr>
+<tr>
+<td><code>hex(47)</code></td>
+<td><code>&#39;0x2f&#39;</code></td>
+<td>texte (<code>str</code>)</td>
+</tr>
+<tr>
+<td><code>int(&quot;1101&quot;, 2)</code></td>
+<td><code>13</code></td>
+<td>entier (<code>int</code>)</td>
+</tr>
+<tr>
+<td><code>int(&quot;2F&quot;, 16)</code></td>
+<td><code>47</code></td>
+<td>entier (<code>int</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><code>bin</code> et <code>hex</code> vont <strong>de l’entier vers le
+texte</strong> ; <code>int(texte, base)</code> va <strong>du texte vers
+l’entier</strong>. Le préfixe <code>0b</code> ou <code>0x</code> indique
+la base de l’écriture.</p>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p><code>bin(5) + 1</code> provoque une erreur <code>TypeError</code> :
+<code>bin(5)</code> est du texte, pas un nombre. Pour calculer, on
+travaille sur l’entier ; on convertit en texte seulement pour
+afficher.</p>
+</div>
+<p>Contrairement à l’octet de la machine des nombres, un entier Python
+n’est pas limité à 8, 32 ou 64 bits : <code>2 ** 100</code> s’affiche en
+entier. Python réserve autant de mémoire que nécessaire. Dans la plupart
+des autres langages, la taille d’un entier est fixée à l’avance — nous
+verrons en partie 3 ce que cela change.</p>
+<blockquote>
+<p><strong>À retenir.</strong> 1. Divisions successives par <em>b</em> :
+les restes, lus du dernier au premier, donnent l’écriture en base
+<em>b</em>. 2. Un chiffre hexadécimal = quatre bits. 3. En Python,
+<code>0b…</code> et <code>0x…</code> écrivent un entier ;
+<code>bin</code>, <code>hex</code> produisent du texte ;
+<code>int(texte, base)</code> redonne un entier.</p>
+</blockquote>
+<h4 id="exercices-1">Exercices</h4>
+<h5 id="exercice-2.3-écrire-ecrire_binaire">Exercice 2.3 — Écrire
+<code>ecrire_binaire</code></h5>
+<p>Réécrivez <code>ecrire_binaire(n)</code> <strong>sans
+regarder</strong> l’exercice 2.1. Elle doit aussi renvoyer
+<code>&quot;0&quot;</code> pour <code>n = 0</code>. N’utilisez ni <code>bin</code>
+ni <code>format</code>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def ecrire_binaire(n):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["ecrire_binaire(0) == \"0\"","ecrire_binaire(1) == \"1\"","ecrire_binaire(13) == \"1101\"","ecrire_binaire(57) == \"111001\"","ecrire_binaire(128) == \"10000000\"","ecrire_binaire(255) == \"11111111\"","ecrire_binaire(1000) == \"1111101000\""]</script></section>
+<h5 id="exercice-2.4-à-la-main">Exercice 2.4 — À la main</h5>
+<p>Sur papier, en montrant la méthode :</p>
+<ol type="1">
+<li>Écrire 45 en base 2 par divisions successives.</li>
+<li>Écrire l’octet <code>11010011</code> en base 16.</li>
+<li>Écrire <code>0x3A</code> en base 2, puis en base 10.</li>
+<li>La couleur web <code>#1E90FF</code> est formée de trois octets
+(rouge, vert, bleu). Donner chacun en base 10.</li>
+</ol>
+<h5 id="exercice-2.5-prévoir-python">Exercice 2.5 — Prévoir Python</h5>
+<p>Répondez sans exécuter, puis vérifiez dans la console.</p>
+<fieldset class="qcm">
+<p>Que vaut <code>int(&quot;101&quot;, 2) + 1</code> ?</p>
+<label><input type="radio" name="qcm-1" value="1"> <span>
+<code>&quot;1011&quot;</code>
+</span></label>
+<label><input type="radio" name="qcm-1" value="2"> <span>
+<code>102</code>
+</span></label>
+<label><input type="radio" name="qcm-1" value="3" data-ok> <span>
+<code>6</code>
+</span></label>
+<label><input type="radio" name="qcm-1" value="4"> <span>
+Une erreur
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p><code>int(&quot;101&quot;, 2)</code> lit le texte en base 2 : c’est l’entier 5.
+On ajoute 1 : 6.</p>
+</div></fieldset>
+<fieldset class="qcm">
+<p>Que produit <code>bin(10)</code> ?</p>
+<label><input type="radio" name="qcm-2" value="1"> <span>
+L’entier <code>1010</code>
+</span></label>
+<label><input type="radio" name="qcm-2" value="2" data-ok> <span>
+Le texte <code>&#39;0b1010&#39;</code>
+</span></label>
+<label><input type="radio" name="qcm-2" value="3"> <span>
+Le texte <code>&#39;1010&#39;</code>
+</span></label>
+<label><input type="radio" name="qcm-2" value="4"> <span>
+L’entier <code>10</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p><code>bin</code> renvoie toujours du texte, préfixé par
+<code>0b</code>.</p>
+</div></fieldset>
+<fieldset class="qcm">
+<p>Que se passe-t-il avec <code>hex(255) + 1</code> ?</p>
+<label><input type="radio" name="qcm-3" value="1"> <span>
+On obtient <code>256</code>
+</span></label>
+<label><input type="radio" name="qcm-3" value="2"> <span>
+On obtient <code>&#39;0x100&#39;</code>
+</span></label>
+<label><input type="radio" name="qcm-3" value="3" data-ok> <span>
+Une erreur <code>TypeError</code>
+</span></label>
+<label><input type="radio" name="qcm-3" value="4"> <span>
+On obtient <code>&#39;0xff1&#39;</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p><code>hex(255)</code> est le texte <code>&#39;0xff&#39;</code> : on ne peut
+pas ajouter un nombre à un texte.</p>
+</div></fieldset>
+<fieldset class="qcm">
+<p>Laquelle de ces expressions vaut <code>True</code> ?</p>
+<label><input type="radio" name="qcm-4" value="1"> <span>
+<code>0b11 == 11</code>
+</span></label>
+<label><input type="radio" name="qcm-4" value="2" data-ok> <span>
+<code>0xF == 15</code>
+</span></label>
+<label><input type="radio" name="qcm-4" value="3"> <span>
+<code>bin(3) == 0b11</code>
+</span></label>
+<label><input type="radio" name="qcm-4" value="4"> <span>
+<code>int(&quot;F&quot;, 2) == 15</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p><code>0xF</code> est l’entier 15. <code>bin(3)</code> est un texte,
+<code>0b11</code> un entier : ils ne sont pas égaux. <code>&quot;F&quot;</code>
+n’est pas un chiffre de la base 2 : <code>int(&quot;F&quot;, 2)</code> provoque
+une erreur.</p>
+</div></fieldset>
+<h5 id="exercice-2.6-pour-aller-plus-loin-écrire-en-base-16">Exercice
+2.6 — Pour aller plus loin : écrire en base 16</h5>
+<p>Adaptez la méthode à la base 16. Un reste va de 0 à 15 ; pour obtenir
+son chiffre, on utilise le texte
+<code>chiffres = &quot;0123456789ABCDEF&quot;</code> : <code>chiffres[11]</code>
+vaut <code>&quot;B&quot;</code>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def ecrire_hexa(n):
+    chiffres = &quot;0123456789ABCDEF&quot;
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["ecrire_hexa(0) == \"0\"","ecrire_hexa(9) == \"9\"","ecrire_hexa(11) == \"B\"","ecrire_hexa(47) == \"2F\"","ecrire_hexa(255) == \"FF\"","ecrire_hexa(256) == \"100\"","ecrire_hexa(48879) == \"BEEF\""]</script></section>
+<h3 id="partie-3-taille-dune-écriture-binaire">Partie 3 — Taille d’une
+écriture binaire</h3>
+<p>Dans la machine des nombres, huit bits s’arrêtaient à 255. Python,
+lui, écrit <code>2 ** 100</code> sans broncher. Mais la plupart des
+langages et des processeurs travaillent avec une taille <strong>fixée à
+l’avance</strong> : 8, 16, 32 ou 64 bits. Il faut donc savoir prévoir
+combien de bits un nombre demande, et ce qui arrive quand il n’y en a
+pas assez.</p>
+<h4 id="combien-de-valeurs-avec-n-bits">Combien de valeurs avec
+<em>n</em> bits ?</h4>
+<p>Chaque bit ajouté double le nombre de configurations possibles : avec
+<em>n</em> bits, on écrit <strong>2ⁿ valeurs</strong>, de 0 à <strong>2ⁿ
+− 1</strong>.</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: right;">Bits</th>
+<th style="text-align: right;">Valeurs différentes</th>
+<th style="text-align: right;">Plus grand entier positif</th>
+<th>Exemple d’usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td>vrai / faux</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">15</td>
+<td>un chiffre hexadécimal</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">255</td>
+<td>un octet, une composante de couleur</td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">65 536</td>
+<td style="text-align: right;">65 535</td>
+<td>numéro de port TCP</td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">4 294 967 296</td>
+<td style="text-align: right;">environ 4,3 milliards</td>
+<td>adresse IPv4</td>
+</tr>
+<tr>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">environ 1,8 × 10¹⁹</td>
+<td style="text-align: right;">environ 1,8 × 10¹⁹</td>
+<td>entiers d’un processeur actuel</td>
+</tr>
+</tbody>
+</table>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>2¹⁰ = 1024, à peu près 1000. D’où un calcul mental rapide : 2²⁰ ≈ un
+million, 2³⁰ ≈ un milliard.</p>
+</div>
+<h4 id="combien-de-bits-pour-écrire-un-entier">Combien de bits pour
+écrire un entier ?</h4>
+<p>Le nombre de bits nécessaire pour écrire un entier <em>N</em> ≥ 1 est
+le plus petit <em>n</em> tel que <em>N</em> ≤ 2ⁿ − 1, autrement dit tel
+que <em>N</em> &lt; 2ⁿ. C’est aussi la <strong>longueur de son écriture
+binaire</strong>, sans zéros à gauche.</p>
+<p>Exemple : 200. On a 2⁷ = 128 ≤ 200 &lt; 256 = 2⁸, donc 200 demande
+<strong>8 bits</strong> (<code>11001000</code>). Et 256 demande 9 bits :
+<code>100000000</code>.</p>
+<blockquote>
+<p><strong>À retenir.</strong> <em>N</em> demande <em>n</em> bits quand
+2ⁿ⁻¹ ≤ <em>N</em> &lt; 2ⁿ : on encadre <em>N</em> entre deux puissances
+de 2 consécutives.</p>
+</blockquote>
+<p>En Python, deux façons d’obtenir ce nombre de bits :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">len</span>(<span class="bu">bin</span>(<span class="dv">200</span>)) <span class="op">-</span> <span class="dv">2</span>      <span class="co"># on retire le préfixe 0b</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> (<span class="dv">200</span>).bit_length()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span></span></code></pre></div>
+<h5 id="exercice-3.1-compter-les-divisions">Exercice 3.1 — Compter les
+divisions</h5>
+<p>Lisez cette fonction <strong>sans l’exécuter</strong>.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def nb_bits(n):
     compteur = 1
-    while n > 1:
+    while n &gt; 1:
         n = n // 2
         compteur = compteur + 1
     return compteur
 
-print(nb_bits(13))
-```
-:::
-
-1. Complétez le tableau de suivi de `nb_bits(13)`.
-
-   | Tour | `n` à la fin du tour | `compteur` à la fin du tour |
-   |---:|---:|---:|
-   | avant la boucle | 13 | 1 |
-   | 1 | … | … |
-   | 2 | … | … |
-   | 3 | … | … |
-
-2. Que renvoie `nb_bits(13)` ? Est-ce cohérent avec `1101` ?
-3. Prévoyez `nb_bits(15)` et `nb_bits(16)` sans tableau complet, puis vérifiez.
-4. Pourquoi le compteur commence-t-il à 1 et non à 0 ? Que renvoie `nb_bits(0)` ?
-
-### Somme et produit
-
-Combien de bits faut-il pour le **résultat** d'un calcul ? On raisonne sur les plus grandes
-valeurs possibles.
-
-| Opération | Plus grand résultat | Taille du résultat |
-|---|---|---|
-| Somme de deux entiers de *n* bits | (2ⁿ − 1) + (2ⁿ − 1) = 2ⁿ⁺¹ − 2 | au plus **n + 1** bits |
-| Produit d'un entier de *n* bits par un entier de *m* bits | (2ⁿ − 1)(2ᵐ − 1) < 2ⁿ⁺ᵐ | au plus **n + m** bits |
-
-Exemples sur 8 bits : 255 + 255 = 510 demande 9 bits ; 255 × 255 = 65 025 demande
-16 bits.
-
-### Quand les bits manquent : le dépassement
-
-Sur une taille fixe, un résultat trop grand **ne tient pas** : le bit en trop est perdu.
-Sur 8 bits, 255 + 1 donne `1 00000000` ; seuls les huit bits de droite restent, et le
-résultat vaut **0**. C'est un **dépassement de capacité** (*overflow*). On compte alors
-« modulo 256 », comme un compteur kilométrique qui repasse à zéro.
-
-| Système | Taille | Ce qui s'est produit |
-|---|---|---|
-| Pac-Man (1980) | compteur de niveau sur 8 bits | au niveau 256, la moitié de l'écran devient illisible |
-| Ariane 5, vol 501 (1996) | entier sur 16 bits | une valeur trop grande pour 16 bits provoque l'arrêt du calculateur et la perte du lanceur |
-| Compteur de vues YouTube (2014) | entier signé sur 32 bits | *Gangnam Style* approche 2 147 483 647 vues : passage à 64 bits |
-| Horloge Unix | entier signé sur 32 bits | le 19 janvier 2038, le compteur de secondes dépasse sa limite |
-
-> **Attention.** Python ne déborde pas sur ses entiers, mais les programmes qui échangent
-> avec des fichiers, des réseaux ou des capteurs manipulent des tailles fixes. Vérifier
-> qu'un résultat tient dans la taille prévue fait partie de la **mise au point**.
-
-### Exercices
-
-#### Exercice 3.2 — À la main
-
-1. Combien de bits faut-il pour écrire 100 ? 255 ? 256 ? 1000 ?
-2. Combien de bits faut-il pour écrire un million ? Utilisez 2¹⁰ ≈ 1000.
-3. Deux entiers s'écrivent chacun sur 8 bits. Combien de bits au plus pour leur somme ?
-   pour leur produit ?
-4. Un entier de 8 bits est multiplié par un entier de 4 bits. Donnez le plus grand produit
-   possible et le nombre de bits nécessaire.
-
-#### Exercice 3.3 — Une addition sur 8 bits
-
-Écrivez `addition_8_bits(a, b)` qui simule une machine à 8 bits : elle renvoie la somme
-de `a` et `b` en ne gardant que les huit bits de droite. Indice : garder les huit bits de
-droite revient à prendre le reste de la division par 256.
-
-::: {.exercice-python}
-```python
-def addition_8_bits(a, b):
-    ...
-```
-
-```{.tests}
-addition_8_bits(100, 50) == 150
-addition_8_bits(200, 55) == 255
-addition_8_bits(255, 1) == 0
-addition_8_bits(200, 100) == 44
-addition_8_bits(255, 255) == 254
-```
-:::
-
-Puis écrivez `deborde(a, b)` qui renvoie `True` si la somme ne tient pas sur 8 bits.
-
-::: {.exercice-python}
-```python
-def deborde(a, b):
-    ...
-```
-
-```{.tests}
-deborde(100, 50) == False
-deborde(200, 55) == False
-deborde(255, 1) == True
-deborde(128, 128) == True
-```
-:::
-
-#### Exercice 3.3 (suite) — Le compteur 8 bits, en jeu
-
-Dans les bornes d'arcade des années 1980, le score ou le numéro de niveau tenait souvent sur un
-octet. Sur la [page de l'atelier Pyxel](https://cours.siovision.fr/nsi/1g/atelier-pyxel-compteur-8-bits), le héros attrape des
-pièces (10 ou 50 points) et le score s'affiche en **8 voyants**, avec le poids de chaque bit.
-
-1. Complétez `ajouter_8_bits(score, points)` : c'est `addition_8_bits` sous un autre nom.
-2. Complétez `octet(n)`, qui renvoie l'écriture binaire de `n` sur **exactement 8 caractères**,
-   par divisions successives comme en partie 2.
-3. Vérifiez les tests, puis lancez le jeu. Notez le score atteint juste avant le dépassement, et
-   celui qui s'affiche juste après. Expliquez l'écart.
-
-::: {.exercice-python}
-```python
-def octet(n):
-    resultat = ""
+print(nb_bits(13))</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<ol type="1">
+<li><p>Complétez le tableau de suivi de <code>nb_bits(13)</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>n</code> à la fin du tour</th>
+<th style="text-align: right;"><code>compteur</code> à la fin du
+tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Que renvoie <code>nb_bits(13)</code> ? Est-ce cohérent avec
+<code>1101</code> ?</p></li>
+<li><p>Prévoyez <code>nb_bits(15)</code> et <code>nb_bits(16)</code>
+sans tableau complet, puis vérifiez.</p></li>
+<li><p>Pourquoi le compteur commence-t-il à 1 et non à 0 ? Que renvoie
+<code>nb_bits(0)</code> ?</p></li>
+</ol>
+<h4 id="somme-et-produit">Somme et produit</h4>
+<p>Combien de bits faut-il pour le <strong>résultat</strong> d’un calcul
+? On raisonne sur les plus grandes valeurs possibles.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Opération</th>
+<th>Plus grand résultat</th>
+<th>Taille du résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Somme de deux entiers de <em>n</em> bits</td>
+<td>(2ⁿ − 1) + (2ⁿ − 1) = 2ⁿ⁺¹ − 2</td>
+<td>au plus <strong>n + 1</strong> bits</td>
+</tr>
+<tr>
+<td>Produit d’un entier de <em>n</em> bits par un entier de <em>m</em>
+bits</td>
+<td>(2ⁿ − 1)(2ᵐ − 1) &lt; 2ⁿ⁺ᵐ</td>
+<td>au plus <strong>n + m</strong> bits</td>
+</tr>
+</tbody>
+</table>
+<p>Exemples sur 8 bits : 255 + 255 = 510 demande 9 bits ; 255 × 255 = 65
+025 demande 16 bits.</p>
+<h4 id="quand-les-bits-manquent-le-dépassement">Quand les bits manquent
+: le dépassement</h4>
+<p>Sur une taille fixe, un résultat trop grand <strong>ne tient
+pas</strong> : le bit en trop est perdu. Sur 8 bits, 255 + 1 donne
+<code>1 00000000</code> ; seuls les huit bits de droite restent, et le
+résultat vaut <strong>0</strong>. C’est un <strong>dépassement de
+capacité</strong> (<em>overflow</em>). On compte alors « modulo 256 »,
+comme un compteur kilométrique qui repasse à zéro.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Système</th>
+<th>Taille</th>
+<th>Ce qui s’est produit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pac-Man (1980)</td>
+<td>compteur de niveau sur 8 bits</td>
+<td>au niveau 256, la moitié de l’écran devient illisible</td>
+</tr>
+<tr>
+<td>Ariane 5, vol 501 (1996)</td>
+<td>entier sur 16 bits</td>
+<td>une valeur trop grande pour 16 bits provoque l’arrêt du calculateur
+et la perte du lanceur</td>
+</tr>
+<tr>
+<td>Compteur de vues YouTube (2014)</td>
+<td>entier signé sur 32 bits</td>
+<td><em>Gangnam Style</em> approche 2 147 483 647 vues : passage à 64
+bits</td>
+</tr>
+<tr>
+<td>Horloge Unix</td>
+<td>entier signé sur 32 bits</td>
+<td>le 19 janvier 2038, le compteur de secondes dépasse sa limite</td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Python ne déborde pas sur ses entiers, mais les programmes qui
+échangent avec des fichiers, des réseaux ou des capteurs manipulent des
+tailles fixes. Vérifier qu’un résultat tient dans la taille prévue fait
+partie de la <strong>mise au point</strong>.</p>
+</div>
+<h4 id="exercices-2">Exercices</h4>
+<h5 id="exercice-3.2-à-la-main">Exercice 3.2 — À la main</h5>
+<ol type="1">
+<li>Combien de bits faut-il pour écrire 100 ? 255 ? 256 ? 1000 ?</li>
+<li>Combien de bits faut-il pour écrire un million ? Utilisez 2¹⁰ ≈
+1000.</li>
+<li>Deux entiers s’écrivent chacun sur 8 bits. Combien de bits au plus
+pour leur somme ? pour leur produit ?</li>
+<li>Un entier de 8 bits est multiplié par un entier de 4 bits. Donnez le
+plus grand produit possible et le nombre de bits nécessaire.</li>
+</ol>
+<h5 id="exercice-3.3-une-addition-sur-8-bits">Exercice 3.3 — Une
+addition sur 8 bits</h5>
+<p>Écrivez <code>addition_8_bits(a, b)</code> qui simule une machine à 8
+bits : elle renvoie la somme de <code>a</code> et <code>b</code> en ne
+gardant que les huit bits de droite. Indice : garder les huit bits de
+droite revient à prendre le reste de la division par 256.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def addition_8_bits(a, b):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["addition_8_bits(100, 50) == 150","addition_8_bits(200, 55) == 255","addition_8_bits(255, 1) == 0","addition_8_bits(200, 100) == 44","addition_8_bits(255, 255) == 254"]</script></section>
+<p>Puis écrivez <code>deborde(a, b)</code> qui renvoie <code>True</code>
+si la somme ne tient pas sur 8 bits.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def deborde(a, b):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["deborde(100, 50) == False","deborde(200, 55) == False","deborde(255, 1) == True","deborde(128, 128) == True"]</script></section>
+<h5 id="exercice-3.3-suite-le-compteur-8-bits-en-jeu">Exercice 3.3
+(suite) — Le compteur 8 bits, en jeu</h5>
+<p>Dans les bornes d’arcade des années 1980, le score ou le numéro de
+niveau tenait souvent sur un octet. Sur la <a href="https://cours.siovision.fr/nsi/1g/atelier-pyxel-compteur-8-bits">page
+de l’atelier Pyxel</a>, le héros attrape des pièces (10 ou 50 points) et
+le score s’affiche en <strong>8 voyants</strong>, avec le poids de
+chaque bit.</p>
+<ol type="1">
+<li>Complétez <code>ajouter_8_bits(score, points)</code> : c’est
+<code>addition_8_bits</code> sous un autre nom.</li>
+<li>Complétez <code>octet(n)</code>, qui renvoie l’écriture binaire de
+<code>n</code> sur <strong>exactement 8 caractères</strong>, par
+divisions successives comme en partie 2.</li>
+<li>Vérifiez les tests, puis lancez le jeu. Notez le score atteint juste
+avant le dépassement, et celui qui s’affiche juste après. Expliquez
+l’écart.</li>
+</ol>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def octet(n):
+    resultat = &quot;&quot;
     for i in range(8):
         resultat = str(...) + resultat
         n = ...
-    return resultat
-```
-
-```{.tests}
-octet(0) == "00000000"
-octet(5) == "00000101"
-octet(200) == "11001000"
-octet(255) == "11111111"
-```
-:::
-
-#### Exercice 3.4 — Vérifier sa compréhension
-
-::: {.qcm}
-Combien de bits faut-il pour écrire 64 ?
-
-- [ ] 6
-- [x] 7
-- [ ] 8
-- [ ] 64
-
-> 2⁶ = 64 ≤ 64 < 128 = 2⁷ : il faut 7 bits, `1000000`.
-:::
-
-::: {.qcm}
-Combien d'adresses IPv4 différentes peut-on écrire sur 32 bits ?
-
-- [ ] 32
-- [ ] 4 294 967 295
-- [x] 4 294 967 296
-- [ ] 2 147 483 647
-
-> 2³² valeurs : de 0 à 2³² − 1. Il y a donc 2³² = 4 294 967 296 adresses.
-:::
-
-::: {.qcm}
-Que vaut `(255).bit_length()` ?
-
-- [x] `8`
-- [ ] `255`
-- [ ] `9`
-- [ ] `'0b11111111'`
-
-> 255 = `11111111` : huit bits. `bit_length` renvoie un entier.
-:::
-
-#### Exercice 3.5 — Pour aller plus loin : le compteur de *Gangnam Style*
-
-Le compteur de vues de YouTube utilisait un entier sur 32 bits, et sa valeur maximale était
-2 147 483 647.
-
-1. Vérifiez en Python que 2 147 483 647 = 2³¹ − 1.
-2. Avec 32 bits, on pourrait aller jusqu'à 2³² − 1. Proposez une explication à ce bit
-   « manquant » : que faudrait-il pouvoir représenter d'autre qu'un nombre positif ?
-
-## Partie 4 — Entiers relatifs et complément à 2
-
-Jusqu'ici, les huit bits d'un octet représentaient les valeurs de 0 à 255. Mais une
-température, un solde, une altitude ou un résultat de soustraction peuvent être négatifs.
-Il faut donc partager les 256 écritures possibles entre valeurs négatives et positives.
-
-### Un octet signé
-
-Sur 8 bits, le codage utilisé par les ordinateurs est le **complément à 2**. Il représente :
-
-| Bits de gauche | Valeurs représentées |
-|---|---|
-| `0xxxxxxx` | de 0 à 127 |
-| `1xxxxxxx` | de −128 à −1 |
-
-Il y a toujours 256 écritures possibles, mais l'intervalle est maintenant **de −128 à 127**.
-Le bit de gauche n'est pas un simple « signe » qu'il suffirait de changer : les sept autres
-bits participent aussi au codage.
-
-> **À retenir.** Sur *n* bits en complément à 2, on représente les entiers de
-> −2ⁿ⁻¹ à 2ⁿ⁻¹ − 1. Sur 8 bits : de −128 à 127.
-
-### Écrire un nombre négatif
-
-Pour écrire −*N* sur 8 bits :
-
-1. écrire *N* sur 8 bits ;
-2. inverser tous les bits (0 devient 1 et inversement) ;
-3. ajouter 1.
-
-Exemple pour −5 :
-
-| Étape | Écriture sur 8 bits |
-|---|---|
-| +5 | `00000101` |
-| inversion | `11111010` |
-| +1 | `11111011` = **−5** |
-
-Pourquoi ce procédé ? Ainsi, ajouter +5 (`00000101`) et −5 (`11111011`) donne
-`1 00000000` : sur 8 bits, on garde `00000000`, donc 0. La même addition binaire sert
-pour les nombres positifs et négatifs.
-
-### Lire une écriture négative
-
-Si le bit de gauche vaut 0, on lit l'écriture comme avant. S'il vaut 1 :
-
-1. inverser tous les bits ;
-2. ajouter 1 ;
-3. lire le résultat positif et placer le signe moins.
-
-Exemple : `11111011` → `00000100` → `00000101` → **−5**.
-
-Le cas `10000000` représente **−128** : son opposé +128 ne tient pas dans un entier signé
-sur 8 bits, qui s'arrête à +127.
-
-### Dépassement signé
-
-Une addition sur 8 bits conserve toujours huit bits, mais le résultat peut sortir de
-l'intervalle −128 à 127. Par exemple :
-
-```text
-  01111000   =  120
+    return resultat</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["octet(0) == \"00000000\"","octet(5) == \"00000101\"","octet(200) == \"11001000\"","octet(255) == \"11111111\""]</script></section>
+<h5 id="exercice-3.4-vérifier-sa-compréhension">Exercice 3.4 — Vérifier
+sa compréhension</h5>
+<fieldset class="qcm">
+<p>Combien de bits faut-il pour écrire 64 ?</p>
+<label><input type="radio" name="qcm-5" value="1"> <span>
+6
+</span></label>
+<label><input type="radio" name="qcm-5" value="2" data-ok> <span>
+7
+</span></label>
+<label><input type="radio" name="qcm-5" value="3"> <span>
+8
+</span></label>
+<label><input type="radio" name="qcm-5" value="4"> <span>
+64
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p>2⁶ = 64 ≤ 64 &lt; 128 = 2⁷ : il faut 7 bits,
+<code>1000000</code>.</p>
+</div></fieldset>
+<fieldset class="qcm">
+<p>Combien d’adresses IPv4 différentes peut-on écrire sur 32 bits ?</p>
+<label><input type="radio" name="qcm-6" value="1"> <span>
+32
+</span></label>
+<label><input type="radio" name="qcm-6" value="2"> <span>
+4 294 967 295
+</span></label>
+<label><input type="radio" name="qcm-6" value="3" data-ok> <span>
+4 294 967 296
+</span></label>
+<label><input type="radio" name="qcm-6" value="4"> <span>
+2 147 483 647
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p>2³² valeurs : de 0 à 2³² − 1. Il y a donc 2³² = 4 294 967 296
+adresses.</p>
+</div></fieldset>
+<fieldset class="qcm">
+<p>Que vaut <code>(255).bit_length()</code> ?</p>
+<label><input type="radio" name="qcm-7" value="1" data-ok> <span>
+<code>8</code>
+</span></label>
+<label><input type="radio" name="qcm-7" value="2"> <span>
+<code>255</code>
+</span></label>
+<label><input type="radio" name="qcm-7" value="3"> <span>
+<code>9</code>
+</span></label>
+<label><input type="radio" name="qcm-7" value="4"> <span>
+<code>&#39;0b11111111&#39;</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p>255 = <code>11111111</code> : huit bits. <code>bit_length</code>
+renvoie un entier.</p>
+</div></fieldset>
+<h5 id="exercice-3.5-pour-aller-plus-loin-le-compteur-de-gangnam-style">Exercice
+3.5 — Pour aller plus loin : le compteur de <em>Gangnam Style</em></h5>
+<p>Le compteur de vues de YouTube utilisait un entier sur 32 bits, et sa
+valeur maximale était 2 147 483 647.</p>
+<ol type="1">
+<li>Vérifiez en Python que 2 147 483 647 = 2³¹ − 1.</li>
+<li>Avec 32 bits, on pourrait aller jusqu’à 2³² − 1. Proposez une
+explication à ce bit « manquant » : que faudrait-il pouvoir représenter
+d’autre qu’un nombre positif ?</li>
+</ol>
+<h3 id="partie-4-entiers-relatifs-et-complément-à-2">Partie 4 — Entiers
+relatifs et complément à 2</h3>
+<p>Jusqu’ici, les huit bits d’un octet représentaient les valeurs de 0 à
+255. Mais une température, un solde, une altitude ou un résultat de
+soustraction peuvent être négatifs. Il faut donc partager les 256
+écritures possibles entre valeurs négatives et positives.</p>
+<h4 id="un-octet-signé">Un octet signé</h4>
+<p>Sur 8 bits, le codage utilisé par les ordinateurs est le
+<strong>complément à 2</strong>. Il représente :</p>
+<table>
+<thead>
+<tr>
+<th>Bits de gauche</th>
+<th>Valeurs représentées</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0xxxxxxx</code></td>
+<td>de 0 à 127</td>
+</tr>
+<tr>
+<td><code>1xxxxxxx</code></td>
+<td>de −128 à −1</td>
+</tr>
+</tbody>
+</table>
+<p>Il y a toujours 256 écritures possibles, mais l’intervalle est
+maintenant <strong>de −128 à 127</strong>. Le bit de gauche n’est pas un
+simple « signe » qu’il suffirait de changer : les sept autres bits
+participent aussi au codage.</p>
+<blockquote>
+<p><strong>À retenir.</strong> Sur <em>n</em> bits en complément à 2, on
+représente les entiers de −2ⁿ⁻¹ à 2ⁿ⁻¹ − 1. Sur 8 bits : de −128 à
+127.</p>
+</blockquote>
+<h4 id="écrire-un-nombre-négatif">Écrire un nombre négatif</h4>
+<p>Pour écrire −<em>N</em> sur 8 bits :</p>
+<ol type="1">
+<li>écrire <em>N</em> sur 8 bits ;</li>
+<li>inverser tous les bits (0 devient 1 et inversement) ;</li>
+<li>ajouter 1.</li>
+</ol>
+<p>Exemple pour −5 :</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Écriture sur 8 bits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+5</td>
+<td><code>00000101</code></td>
+</tr>
+<tr>
+<td>inversion</td>
+<td><code>11111010</code></td>
+</tr>
+<tr>
+<td>+1</td>
+<td><code>11111011</code> = <strong>−5</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Pourquoi ce procédé ? Ainsi, ajouter +5 (<code>00000101</code>) et −5
+(<code>11111011</code>) donne <code>1 00000000</code> : sur 8 bits, on
+garde <code>00000000</code>, donc 0. La même addition binaire sert pour
+les nombres positifs et négatifs.</p>
+<h4 id="lire-une-écriture-négative">Lire une écriture négative</h4>
+<p>Si le bit de gauche vaut 0, on lit l’écriture comme avant. S’il vaut
+1 :</p>
+<ol type="1">
+<li>inverser tous les bits ;</li>
+<li>ajouter 1 ;</li>
+<li>lire le résultat positif et placer le signe moins.</li>
+</ol>
+<p>Exemple : <code>11111011</code> → <code>00000100</code> →
+<code>00000101</code> → <strong>−5</strong>.</p>
+<p>Le cas <code>10000000</code> représente <strong>−128</strong> : son
+opposé +128 ne tient pas dans un entier signé sur 8 bits, qui s’arrête à
++127.</p>
+<h4 id="dépassement-signé">Dépassement signé</h4>
+<p>Une addition sur 8 bits conserve toujours huit bits, mais le résultat
+peut sortir de l’intervalle −128 à 127. Par exemple :</p>
+<pre class="text"><code>  01111000   =  120
 + 00010100   =   20
 -----------
-  10001100   = −116 sur 8 bits signés
-```
+  10001100   = −116 sur 8 bits signés</code></pre>
+<p>Le calcul mathématique vaut 140, qui ne tient pas. On reconnaît ce
+dépassement lorsque deux nombres de même signe donnent un résultat de
+signe opposé.</p>
+<h4 id="exercices-3">Exercices</h4>
+<h5 id="exercice-4.1-lire-et-écrire-sur-8-bits">Exercice 4.1 — Lire et
+écrire sur 8 bits</h5>
+<ol type="1">
+<li>Lisez, en complément à 2 sur 8 bits : <code>00010110</code>,
+<code>11111011</code> et <code>10000000</code>.</li>
+<li>Écrivez sur 8 bits : +5, −5, −42 et −128. Montrez les trois étapes
+pour −42.</li>
+<li>Pourquoi +128 ne peut-il pas être représenté sur 8 bits signés,
+alors que −128 le peut ?</li>
+</ol>
+<h5 id="exercice-4.2-prévoir-le-résultat">Exercice 4.2 — Prévoir le
+résultat</h5>
+<p>Sans calculatrice, prévoyez d’abord si chaque résultat tient dans un
+entier signé sur 8 bits. Puis effectuez l’addition binaire et
+interprétez les huit bits conservés.</p>
+<ol type="1">
+<li>50 + 60 ;</li>
+<li>120 + 20 ;</li>
+<li>−40 + −100 ;</li>
+<li>−40 + 70.</li>
+</ol>
+<h5 id="exercice-4.3-vérifier-sa-compréhension">Exercice 4.3 — Vérifier
+sa compréhension</h5>
+<fieldset class="qcm">
+<p>Quel intervalle un entier signé sur 8 bits peut-il représenter ?</p>
+<label><input type="radio" name="qcm-8" value="1"> <span>
+de −127 à 127
+</span></label>
+<label><input type="radio" name="qcm-8" value="2" data-ok> <span>
+de −128 à 127
+</span></label>
+<label><input type="radio" name="qcm-8" value="3"> <span>
+de 0 à 255
+</span></label>
+<label><input type="radio" name="qcm-8" value="4"> <span>
+de −255 à 255
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p>Il y a 256 écritures : 128 valeurs négatives (de −128 à −1) et 128
+valeurs non négatives (de 0 à 127).</p>
+</div></fieldset>
+<fieldset class="qcm">
+<p>Quelle écriture représente −1 sur 8 bits en complément à 2 ?</p>
+<label><input type="radio" name="qcm-9" value="1"> <span>
+<code>10000001</code>
+</span></label>
+<label><input type="radio" name="qcm-9" value="2"> <span>
+<code>00000001</code>
+</span></label>
+<label><input type="radio" name="qcm-9" value="3" data-ok> <span>
+<code>11111111</code>
+</span></label>
+<label><input type="radio" name="qcm-9" value="4"> <span>
+<code>01111111</code>
+</span></label>
+<div class="fb" aria-live="polite"></div><div class="explication" hidden>
+<p>Inverser <code>00000001</code> donne <code>11111110</code>, puis
+ajouter 1 donne <code>11111111</code>.</p>
+</div></fieldset>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="partie-1">Partie 1</h3>
+<ol type="1">
+<li><code>10101100</code> vaut 128 + 32 + 8 + 4, soit
+<strong>172</strong> en base 10.</li>
+<li>57 = 32 + 16 + 8 + 1 ; sur un octet, son écriture est donc
+<strong>00111001</strong>.</li>
+<li>7 bits permettent d’aller jusqu’à 127. Il faut donc <strong>8
+bits</strong> pour représenter 200.</li>
+<li><strong>Faux.</strong> Avec 4 bits, les valeurs possibles vont de 0
+à 15 inclus.</li>
+</ol>
+<h3 id="exercice-2.1">Exercice 2.1</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>reste</code></th>
+<th style="text-align: left;"><code>bits</code> à la fin du tour</th>
+<th style="text-align: right;"><code>n</code> à la fin du tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: left;"><code>&quot;&quot;</code></td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"><code>&quot;1&quot;</code></td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;"><code>&quot;01&quot;</code></td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"><code>&quot;101&quot;</code></td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"><code>&quot;1101&quot;</code></td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Voir le tableau.</li>
+<li>Après le 4<sup>e</sup> tour, <code>n</code> vaut 0 : la condition
+<code>n &gt; 0</code> est fausse. La fonction renvoie
+<code>&quot;1101&quot;</code>, et 8 + 4 + 1 = 13.</li>
+<li>Les restes seraient dans l’ordre de leur calcul :
+<code>&quot;1011&quot;</code>, qui vaut 11. L’écriture serait à l’envers.</li>
+<li>Pour 0, on n’entre jamais dans la boucle : la fonction renvoie le
+texte vide <code>&quot;&quot;</code>. Il faudrait renvoyer <code>&quot;0&quot;</code> :
+c’est le cas à traiter à part dans l’exercice 2.3.</li>
+</ol>
+<h3 id="exercice-2.2">Exercice 2.2</h3>
+<ol type="1">
+<li>Le programme affiche <code>26 13</code>, puis
+<code>26 6</code>.</li>
+<li>Le <code>n</code> de la fonction est une autre variable, locale, qui
+reçoit une copie de la valeur 26 à l’appel. La modifier ne change pas le
+<code>n</code> du programme principal. Seule la valeur renvoyée sort de
+la fonction, ici rangée dans <code>m</code>.</li>
+</ol>
+<h3 id="exercice-2.3">Exercice 2.3</h3>
+<p>Indice : commencer par traiter <code>n == 0</code> avec un
+<code>if</code> et un <code>return</code>, puis reprendre la boucle de
+l’exercice 2.1.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ecrire_binaire(n):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;0&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    bits <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        bits <span class="op">=</span> <span class="bu">str</span>(n <span class="op">%</span> <span class="dv">2</span>) <span class="op">+</span> bits</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bits</span></code></pre></div>
+<h3 id="exercice-2.4">Exercice 2.4</h3>
+<ol type="1">
+<li>Restes successifs de 45 : 1, 0, 1, 1, 0, 1. Lus du dernier au
+premier : <strong>101101</strong> (32 + 8 + 4 + 1 = 45).</li>
+<li><code>1101</code> = 13 = D et <code>0011</code> = 3 :
+<strong>D3</strong>.</li>
+<li><code>3</code> = <code>0011</code> et <code>A</code> =
+<code>1010</code> : <strong>00111010</strong> ; 3 × 16 + 10 =
+<strong>58</strong>.</li>
+<li><code>1E</code> = 1 × 16 + 14 = <strong>30</strong> ;
+<code>90</code> = 9 × 16 = <strong>144</strong> ; <code>FF</code> =
+<strong>255</strong>.</li>
+</ol>
+<h3 id="exercice-2.5">Exercice 2.5</h3>
+<p>Réponses : <code>6</code>, le texte <code>&#39;0b1010&#39;</code>, une erreur
+<code>TypeError</code>, <code>0xF == 15</code>.</p>
+<h3 id="exercice-2.6">Exercice 2.6</h3>
+<p>Indice : même structure que <code>ecrire_binaire</code>, avec
+<code>// 16</code> et <code>% 16</code> ; le reste sert de position dans
+<code>chiffres</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ecrire_hexa(n):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    chiffres <span class="op">=</span> <span class="st">&quot;0123456789ABCDEF&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;0&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    texte <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        texte <span class="op">=</span> chiffres[n <span class="op">%</span> <span class="dv">16</span>] <span class="op">+</span> texte</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">16</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> texte</span></code></pre></div>
+<h3 id="exercice-3.1">Exercice 3.1</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Tour</th>
+<th style="text-align: right;"><code>n</code> à la fin du tour</th>
+<th style="text-align: right;"><code>compteur</code> à la fin du
+tour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">avant la boucle</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Voir le tableau : après le 3<sup>e</sup> tour, <code>n</code> vaut 1
+et la boucle s’arrête.</li>
+<li><code>nb_bits(13)</code> renvoie 4 : <code>1101</code> a bien quatre
+chiffres.</li>
+<li><code>nb_bits(15)</code> vaut 4 (<code>1111</code>),
+<code>nb_bits(16)</code> vaut 5 (<code>10000</code>) : 16 = 2⁴ est le
+premier nombre qui demande un bit de plus.</li>
+<li>Un entier supérieur ou égal à 1 demande au moins un bit : on compte
+celui de gauche dès le départ, puis un bit par division.
+<code>nb_bits(0)</code> renvoie 1, ce qui est correct : on écrit 0 avec
+un bit.</li>
+</ol>
+<h3 id="exercice-3.2">Exercice 3.2</h3>
+<ol type="1">
+<li>100 : 64 ≤ 100 &lt; 128, <strong>7 bits</strong>. 255 : <strong>8
+bits</strong>. 256 = 2⁸ : <strong>9 bits</strong>. 1000 : 512 ≤ 1000
+&lt; 1024, <strong>10 bits</strong>.</li>
+<li>2²⁰ ≈ 1 000 000 mais 2²⁰ = 1 048 576 &gt; 1 000 000 et 2¹⁹ = 524 288
+≤ 1 000 000 : <strong>20 bits</strong>.</li>
+<li>Somme : au plus <strong>9 bits</strong> (255 + 255 = 510). Produit :
+au plus <strong>16 bits</strong> (255 × 255 = 65 025).</li>
+<li>255 × 15 = <strong>3825</strong> ; 2048 ≤ 3825 &lt; 4096 :
+<strong>12 bits</strong> = 8 + 4.</li>
+</ol>
+<h3 id="exercice-3.3">Exercice 3.3</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> addition_8_bits(a, b):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (a <span class="op">+</span> b) <span class="op">%</span> <span class="dv">256</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deborde(a, b):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b <span class="op">&gt;</span> <span class="dv">255</span></span></code></pre></div>
+<p><code>(a + b) % 256</code> garde le reste de la division par 256 =
+2⁸, c’est-à-dire les huit bits de droite.</p>
+<p><strong>Suite, le compteur 8 bits :</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ajouter_8_bits(score, points):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (score <span class="op">+</span> points) <span class="op">%</span> <span class="dv">256</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> octet(n):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        resultat <span class="op">=</span> <span class="bu">str</span>(n <span class="op">%</span> <span class="dv">2</span>) <span class="op">+</span> resultat</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<p><code>octet</code> fait toujours huit tours de boucle : les bits de
+poids fort valent 0 pour un petit nombre, d’où <code>&quot;00000101&quot;</code>
+pour 5. En jeu, à 250 points, une pièce de 50 donne 300 − 256 =
+<strong>44</strong> : les voyants 32, 8 et 4 s’allument, et le score
+semble repartir de presque zéro.</p>
+<h3 id="exercice-3.4">Exercice 3.4</h3>
+<p>Réponses : 7 bits ; 4 294 967 296 adresses ; <code>8</code>.</p>
+<h3 id="exercice-3.5">Exercice 3.5</h3>
+<ol type="1">
+<li><code>2 ** 31 - 1 == 2147483647</code> vaut <code>True</code>.</li>
+<li>Un bit sert à indiquer le <strong>signe</strong> : le compteur était
+un entier pouvant être négatif. Il reste 31 bits pour la valeur. La
+partie 4 montre comment on code les entiers négatifs.</li>
+</ol>
+<h3 id="exercice-4.1">Exercice 4.1</h3>
+<ol type="1">
+<li><code>00010110</code> = <strong>22</strong> ; <code>11111011</code>
+= <strong>−5</strong> ; <code>10000000</code> =
+<strong>−128</strong>.</li>
+<li>+5 = <code>00000101</code> ; −5 = <code>11111011</code> ; −42 : +42
+= <code>00101010</code>, inversion <code>11010101</code>, puis +1 =
+<strong><code>11010110</code></strong> ; −128 =
+<code>10000000</code>.</li>
+<li>L’intervalle signé sur 8 bits a 256 valeurs, de −128 à 127. +128
+demanderait une 257<sup>e</sup> valeur : son écriture
+<code>10000000</code> est réservée à −128.</li>
+</ol>
+<h3 id="exercice-4.2">Exercice 4.2</h3>
+<ol type="1">
+<li>50 + 60 = <strong>110</strong>, résultat représentable.</li>
+<li>120 + 20 = 140, hors intervalle.
+<code>01111000 + 00010100 = 10001100</code>, lu <strong>−116</strong> :
+dépassement signé.</li>
+<li>−40 + −100 = −140, hors intervalle. Les deux opérandes négatifs
+donnent un résultat dont le bit de gauche vaut 0 : dépassement
+signé.</li>
+<li>−40 + 70 = <strong>30</strong>, résultat représentable. Des signes
+différents ne provoquent pas ce type de dépassement.</li>
+</ol>
+<h3 id="exercice-4.3">Exercice 4.3</h3>
+<p>Réponses : de <strong>−128 à 127</strong> ;
+<strong><code>11111111</code></strong>.</p>
+</details>
+<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python… (quelques secondes, une seule fois)</div>
+<script>
+// Exercices Python : Pyodide dans un worker (module, exigé par Pyodide ≥ 314), pour pouvoir arrêter une boucle infinie.
+(() => {
+const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+const DELAI_MS = 4000;
+const HARNESS = String.raw`
+import json, sys
 
-Le calcul mathématique vaut 140, qui ne tient pas. On reconnaît ce dépassement lorsque
-deux nombres de même signe donnent un résultat de signe opposé.
+AIDES = {
+    "IndentationError": "Vérifiez les espaces en début de ligne : le bloc sous def, if, for ou while doit être décalé de 4 espaces.",
+    "SyntaxError": "Python ne comprend pas cette ligne : deux-points oubliés après if/for/while/def, parenthèse ou guillemet non fermé ?",
+    "NameError": "Un nom est inconnu : faute de frappe, variable utilisée avant d'avoir reçu une valeur, ou fonction mal nommée ?",
+    "TypeError": "Opération entre types incompatibles (texte et nombre ?) ou mauvais nombre de paramètres.",
+    "ZeroDivisionError": "Division par zéro.",
+    "UnboundLocalError": "Variable utilisée avant d'avoir reçu une valeur dans la fonction : initialisez-la avant la boucle.",
+}
 
-### Exercices
+def _msg(e):
+    nom = type(e).__name__
+    ligne = getattr(e, "lineno", None)
+    if ligne is None:
+        tb = e.__traceback__
+        while tb:
+            if tb.tb_frame.f_code.co_filename == "<votre code>":
+                ligne = tb.tb_lineno
+            tb = tb.tb_next
+    texte = f"{nom} : {getattr(e, 'msg', None) or e}"
+    if ligne:
+        texte += f" (ligne {ligne})"
+    return {"texte": texte, "aide": AIDES.get(nom, "")}
 
-#### Exercice 4.1 — Lire et écrire sur 8 bits
+def _run(code, tests):
+    ns = {"__name__": "__main__"}
+    r = {"erreur": None, "tests": []}
+    try:
+        exec(compile(code, "<votre code>", "exec"), ns)
+    except BaseException as e:
+        r["erreur"] = _msg(e)
+        return json.dumps(r)
+    for t in tests:
+        appel, attendu = t.rsplit(" == ", 1) if " == " in t else (t, "True")
+        item = {"appel": appel.strip(), "attendu": attendu.strip(), "ok": False, "aide": ""}
+        try:
+            v = eval(appel, ns)
+            item["obtenu"] = repr(v)
+            item["ok"] = bool(v == eval(attendu, ns))
+            if v is None:
+                item["aide"] = "La fonction renvoie None : manque-t-il return ? print affiche, mais ne renvoie pas le résultat."
+        except BaseException as e:
+            m = _msg(e)
+            item["obtenu"], item["aide"] = m["texte"], m["aide"]
+        r["tests"].append(item)
+    return json.dumps(r)
 
-1. Lisez, en complément à 2 sur 8 bits : `00010110`, `11111011` et `10000000`.
-2. Écrivez sur 8 bits : +5, −5, −42 et −128. Montrez les trois étapes pour −42.
-3. Pourquoi +128 ne peut-il pas être représenté sur 8 bits signés, alors que −128 le peut ?
+_run(CODE, json.loads(TESTS))
+`;
+const SOURCE_WORKER = `
+import { loadPyodide } from "${PYODIDE}pyodide.mjs";
+const pret = loadPyodide({ indexURL: "${PYODIDE}" });
+pret.then(() => postMessage({ pret: true }), err => postMessage({ echec: String(err) }));
+onmessage = async (e) => {
+  const py = await pret;
+  let sortie = "";
+  py.setStdout({ batched: s => { sortie += s + "\\n"; } });
+  py.setStderr({ batched: s => { sortie += s + "\\n"; } });
+  py.globals.set("CODE", e.data.code);
+  py.globals.set("TESTS", JSON.stringify(e.data.tests));
+  try {
+    const res = py.runPython(e.data.harness);
+    postMessage({ id: e.data.id, sortie, res: JSON.parse(res) });
+  } catch (err) {
+    postMessage({ id: e.data.id, sortie, res: { erreur: { texte: String(err), aide: "" }, tests: [] } });
+  }
+};`;
+const url = URL.createObjectURL(new Blob([SOURCE_WORKER], { type: "text/javascript" }));
+const etat = document.getElementById("py-etat");
+let worker, pret, attente = null, compteur = 0;
 
-#### Exercice 4.2 — Prévoir le résultat
+function demarrer() {
+  worker = new Worker(url, { type: "module" });
+  worker.onerror = (e) => { etat.textContent = "Python n'a pas pu démarrer (" + (e.message || "erreur") + ") : rechargez la page."; etat.className = "py-etat ko"; };
+  pret = new Promise((ok) => {
+    worker.onmessage = (e) => {
+      if (e.data.pret) { etat.textContent = "Python est prêt."; etat.className = "py-etat ok"; ok(); return; }
+      if (e.data.echec) { etat.textContent = "Python n'a pas pu se charger : vérifiez la connexion puis rechargez la page."; etat.className = "py-etat ko"; return; }
+      if (attente && e.data.id === attente.id) { clearTimeout(attente.minuteur); attente.ok(e.data); attente = null; }
+    };
+  });
+}
+demarrer();
 
-Sans calculatrice, prévoyez d'abord si chaque résultat tient dans un entier signé sur 8 bits.
-Puis effectuez l'addition binaire et interprétez les huit bits conservés.
+async function executer(code, tests) {
+  await pret;
+  return new Promise((ok) => {
+    const id = ++compteur;
+    const minuteur = setTimeout(() => {
+      worker.terminate();
+      attente = null;
+      etat.textContent = "Redémarrage de Python…"; etat.className = "py-etat";
+      demarrer();
+      ok({ sortie: "", res: { erreur: { texte: "Le programme tourne depuis plus de " + DELAI_MS / 1000 + " secondes et a été arrêté.", aide: "Boucle infinie ? Vérifiez que la condition du while finit par devenir fausse (la variable testée doit changer dans la boucle)." }, tests: [] } });
+    }, DELAI_MS);
+    attente = { id, ok, minuteur };
+    worker.postMessage({ id, code, tests, harness: HARNESS });
+  });
+}
 
-1. 50 + 60 ;
-2. 120 + 20 ;
-3. −40 + −100 ;
-4. −40 + 70.
+function stocker(cle, valeur) { try { localStorage.setItem(cle, valeur); } catch (e) {} }
+function lire(cle) { try { return localStorage.getItem(cle); } catch (e) { return null; } }
+function texte(balise, contenu, classe) { const el = document.createElement(balise); el.textContent = contenu; if (classe) el.className = classe; return el; }
 
-#### Exercice 4.3 — Vérifier sa compréhension
+const lettres = [];
+function majCoffre() {
+  document.querySelectorAll(".coffre").forEach(c => {
+    const cases = c.querySelector(".cases") || c.appendChild(texte("p", "", "cases"));
+    cases.textContent = lettres.map(l => l.ouverte ? l.valeur : "_").join(" ");
+  });
+}
 
-::: {.qcm}
-Quel intervalle un entier signé sur 8 bits peut-il représenter ?
+document.querySelectorAll(".exo-py").forEach((exo, i) => {
+  const zone = exo.querySelector("textarea");
+  const depart = zone.value;
+  const cle = "exo-py:" + location.pathname + ":" + i;
+  const sauve = lire(cle);
+  if (sauve !== null) zone.value = sauve;
+  // La zone suit la hauteur du code : plus besoin de l'agrandir à la main.
+  const ajuster = () => { if (!zone.offsetParent) return; zone.style.height = "auto"; zone.style.height = zone.scrollHeight + 2 + "px"; };
+  ajuster();
+  const tests = JSON.parse(exo.querySelector("script.tests").textContent);
+  const sortie = exo.querySelector(".sortie");
+  const resultats = exo.querySelector(".resultats");
+  const lettre = { valeur: exo.dataset.lettre, ouverte: lire(cle + ":ok") === "1" };
+  if (lettre.valeur) lettres.push(lettre);
 
-- [ ] de −127 à 127
-- [x] de −128 à 127
-- [ ] de 0 à 255
-- [ ] de −255 à 255
+  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); ajuster(); }
+  zone.addEventListener("input", () => { stocker(cle, zone.value); ajuster(); });
+  zone.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") { e.preventDefault(); inserer("    "); }
+    if (e.key === "Enter") {
+      const debut = zone.value.lastIndexOf("\n", zone.selectionStart - 1) + 1;
+      const ligne = zone.value.slice(debut, zone.selectionStart);
+      const retrait = ligne.match(/^ */)[0] + (ligne.trimEnd().endsWith(":") ? "    " : "");
+      e.preventDefault(); inserer("\n" + retrait);
+    }
+  });
 
-> Il y a 256 écritures : 128 valeurs négatives (de −128 à −1) et 128 valeurs non négatives (de 0 à 127).
-:::
-
-::: {.qcm}
-Quelle écriture représente −1 sur 8 bits en complément à 2 ?
-
-- [ ] `10000001`
-- [ ] `00000001`
-- [x] `11111111`
-- [ ] `01111111`
-
-> Inverser `00000001` donne `11111110`, puis ajouter 1 donne `11111111`.
-:::
-
-# Corrigés
-
-## Partie 1
-
-1. `10101100` vaut 128 + 32 + 8 + 4, soit **172** en base 10.
-2. 57 = 32 + 16 + 8 + 1 ; sur un octet, son écriture est donc **00111001**.
-3. 7 bits permettent d'aller jusqu'à 127. Il faut donc **8 bits** pour représenter 200.
-4. **Faux.** Avec 4 bits, les valeurs possibles vont de 0 à 15 inclus.
-
-## Exercice 2.1
-
-| Tour | `reste` | `bits` à la fin du tour | `n` à la fin du tour |
-|---:|---:|:---|---:|
-| avant la boucle | — | `""` | 13 |
-| 1 | 1 | `"1"` | 6 |
-| 2 | 0 | `"01"` | 3 |
-| 3 | 1 | `"101"` | 1 |
-| 4 | 1 | `"1101"` | 0 |
-
-1. Voir le tableau.
-2. Après le 4<sup>e</sup> tour, `n` vaut 0 : la condition `n > 0` est fausse. La
-   fonction renvoie `"1101"`, et 8 + 4 + 1 = 13.
-3. Les restes seraient dans l'ordre de leur calcul : `"1011"`, qui vaut 11. L'écriture
-   serait à l'envers.
-4. Pour 0, on n'entre jamais dans la boucle : la fonction renvoie le texte vide `""`.
-   Il faudrait renvoyer `"0"` : c'est le cas à traiter à part dans l'exercice 2.3.
-
-## Exercice 2.2
-
-1. Le programme affiche `26 13`, puis `26 6`.
-2. Le `n` de la fonction est une autre variable, locale, qui reçoit une copie de la
-   valeur 26 à l'appel. La modifier ne change pas le `n` du programme principal. Seule
-   la valeur renvoyée sort de la fonction, ici rangée dans `m`.
-
-## Exercice 2.3
-
-Indice : commencer par traiter `n == 0` avec un `if` et un `return`, puis reprendre la
-boucle de l'exercice 2.1.
-
-```python
-def ecrire_binaire(n):
-    if n == 0:
-        return "0"
-    bits = ""
-    while n > 0:
-        bits = str(n % 2) + bits
-        n = n // 2
-    return bits
-```
-
-## Exercice 2.4
-
-1. Restes successifs de 45 : 1, 0, 1, 1, 0, 1. Lus du dernier au premier : **101101**
-   (32 + 8 + 4 + 1 = 45).
-2. `1101` = 13 = D et `0011` = 3 : **D3**.
-3. `3` = `0011` et `A` = `1010` : **00111010** ; 3 × 16 + 10 = **58**.
-4. `1E` = 1 × 16 + 14 = **30** ; `90` = 9 × 16 = **144** ; `FF` = **255**.
-
-## Exercice 2.5
-
-Réponses : `6`, le texte `'0b1010'`, une erreur `TypeError`, `0xF == 15`.
-
-## Exercice 2.6
-
-Indice : même structure que `ecrire_binaire`, avec `// 16` et `% 16` ; le reste sert de
-position dans `chiffres`.
-
-```python
-def ecrire_hexa(n):
-    chiffres = "0123456789ABCDEF"
-    if n == 0:
-        return "0"
-    texte = ""
-    while n > 0:
-        texte = chiffres[n % 16] + texte
-        n = n // 16
-    return texte
-```
-
-## Exercice 3.1
-
-| Tour | `n` à la fin du tour | `compteur` à la fin du tour |
-|---:|---:|---:|
-| avant la boucle | 13 | 1 |
-| 1 | 6 | 2 |
-| 2 | 3 | 3 |
-| 3 | 1 | 4 |
-
-1. Voir le tableau : après le 3<sup>e</sup> tour, `n` vaut 1 et la boucle s'arrête.
-2. `nb_bits(13)` renvoie 4 : `1101` a bien quatre chiffres.
-3. `nb_bits(15)` vaut 4 (`1111`), `nb_bits(16)` vaut 5 (`10000`) : 16 = 2⁴ est le premier
-   nombre qui demande un bit de plus.
-4. Un entier supérieur ou égal à 1 demande au moins un bit : on compte celui de gauche dès
-   le départ, puis un bit par division. `nb_bits(0)` renvoie 1, ce qui est correct :
-   on écrit 0 avec un bit.
-
-## Exercice 3.2
-
-1. 100 : 64 ≤ 100 < 128, **7 bits**. 255 : **8 bits**. 256 = 2⁸ : **9 bits**. 1000 :
-   512 ≤ 1000 < 1024, **10 bits**.
-2. 2²⁰ ≈ 1 000 000 mais 2²⁰ = 1 048 576 > 1 000 000 et 2¹⁹ = 524 288 ≤ 1 000 000 :
-   **20 bits**.
-3. Somme : au plus **9 bits** (255 + 255 = 510). Produit : au plus **16 bits**
-   (255 × 255 = 65 025).
-4. 255 × 15 = **3825** ; 2048 ≤ 3825 < 4096 : **12 bits** = 8 + 4.
-
-## Exercice 3.3
-
-```python
-def addition_8_bits(a, b):
-    return (a + b) % 256
-
-def deborde(a, b):
-    return a + b > 255
-```
-
-`(a + b) % 256` garde le reste de la division par 256 = 2⁸, c'est-à-dire les huit bits de
-droite.
-
-**Suite, le compteur 8 bits :**
-
-```python
-def ajouter_8_bits(score, points):
-    return (score + points) % 256
-
-def octet(n):
-    resultat = ""
-    for i in range(8):
-        resultat = str(n % 2) + resultat
-        n = n // 2
-    return resultat
-```
-
-`octet` fait toujours huit tours de boucle : les bits de poids fort valent 0 pour un petit nombre,
-d'où `"00000101"` pour 5. En jeu, à 250 points, une pièce de 50 donne 300 − 256 = **44** : les
-voyants 32, 8 et 4 s'allument, et le score semble repartir de presque zéro.
-
-## Exercice 3.4
-
-Réponses : 7 bits ; 4 294 967 296 adresses ; `8`.
-
-## Exercice 3.5
-
-1. `2 ** 31 - 1 == 2147483647` vaut `True`.
-2. Un bit sert à indiquer le **signe** : le compteur était un entier pouvant être négatif.
-   Il reste 31 bits pour la valeur. La partie 4 montre comment on code les entiers
-   négatifs.
-
-## Exercice 4.1
-
-1. `00010110` = **22** ; `11111011` = **−5** ; `10000000` = **−128**.
-2. +5 = `00000101` ; −5 = `11111011` ; −42 : +42 = `00101010`, inversion
-   `11010101`, puis +1 = **`11010110`** ; −128 = `10000000`.
-3. L'intervalle signé sur 8 bits a 256 valeurs, de −128 à 127. +128 demanderait une
-   257<sup>e</sup> valeur : son écriture `10000000` est réservée à −128.
-
-## Exercice 4.2
-
-1. 50 + 60 = **110**, résultat représentable.
-2. 120 + 20 = 140, hors intervalle. `01111000 + 00010100 = 10001100`, lu **−116** :
-   dépassement signé.
-3. −40 + −100 = −140, hors intervalle. Les deux opérandes négatifs donnent un résultat
-   dont le bit de gauche vaut 0 : dépassement signé.
-4. −40 + 70 = **30**, résultat représentable. Des signes différents ne provoquent pas
-   ce type de dépassement.
-
-## Exercice 4.3
-
-Réponses : de **−128 à 127** ; **`11111111`**.
+  exo.querySelector(".barre").addEventListener("click", async (e) => {
+    const action = e.target.dataset.action;
+    if (!action) return;
+    if (action === "indenter") return inserer("    ");
+    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); ajuster(); resultats.replaceChildren(); sortie.hidden = true; } return; }
+    resultats.replaceChildren(texte("p", "Exécution…"));
+    const { sortie: out, res } = await executer(zone.value, action === "tester" ? tests : []);
+    sortie.hidden = !out;
+    sortie.textContent = out;
+    resultats.replaceChildren();
+    if (res.erreur) {
+      resultats.append(texte("p", res.erreur.texte, "ko"));
+      if (res.erreur.aide) resultats.append(texte("p", res.erreur.aide, "aide"));
+      return;
+    }
+    if (action !== "tester") { if (!out) resultats.append(texte("p", "Programme exécuté, rien n'a été affiché.")); return; }
+    const table = document.createElement("table");
+    const entete = table.insertRow();
+    ["", "Appel", "Attendu", "Obtenu"].forEach(t => entete.append(texte("th", t)));
+    res.tests.forEach(t => {
+      const tr = table.insertRow();
+      tr.className = t.ok ? "ok" : "ko";
+      [t.ok ? "✓" : "✗", t.appel, t.attendu, t.obtenu].forEach(v => tr.insertCell().textContent = v);
+      if (t.aide) { const a = table.insertRow(); const c = a.insertCell(); c.colSpan = 4; c.textContent = t.aide; c.className = "aide"; }
+    });
+    resultats.append(table);
+    const reussis = res.tests.filter(t => t.ok).length;
+    if (reussis === res.tests.length) {
+      resultats.append(texte("p", "Tous les tests passent." + (lettre.valeur ? " Serrure ouverte : lettre « " + lettre.valeur + " »." : ""), "ok"));
+      lettre.ouverte = true; stocker(cle + ":ok", "1"); majCoffre();
+    } else {
+      resultats.append(texte("p", reussis + " test(s) sur " + res.tests.length + " : lisez la ligne ✗, corrigez, retestez.", "ko"));
+    }
+  });
+});
+majCoffre();
+})();
+</script>
