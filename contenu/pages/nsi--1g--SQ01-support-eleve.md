@@ -1068,6 +1068,11 @@ les nombres positifs et négatifs.</p>
 opposé +128 ne tient pas dans un entier signé sur 8 bits, qui s’arrête à
 +127.</p>
 <h4 id="dépassement-signé">Dépassement signé</h4>
+<p>Pour additionner deux octets en binaire, on additionne colonne par
+colonne de droite à gauche (<code>0 + 0 = 0</code>,
+<code>0 + 1 = 1</code>, <code>1 + 1 = 0</code> avec une retenue de
+<code>1</code>, <code>1 + 1 + 1 = 1</code> avec une retenue de
+<code>1</code>).</p>
 <p>Une addition sur 8 bits conserve toujours huit bits, mais le résultat
 peut sortir de l’intervalle −128 à 127. Par exemple :</p>
 <pre class="text"><code>  01111000   =  120
@@ -1091,13 +1096,18 @@ alors que −128 le peut ?</li>
 <h5 id="exercice-4.2-prévoir-le-résultat">Exercice 4.2 — Prévoir le
 résultat</h5>
 <p>Sans calculatrice, prévoyez d’abord si chaque résultat tient dans un
-entier signé sur 8 bits. Puis effectuez l’addition binaire et
-interprétez les huit bits conservés.</p>
+entier signé sur 8 bits (de −128 à 127). Puis posez l’addition binaire à
+partir des écritures fournies (en ignorant une éventuelle 9<sup>e</sup>
+retenue à gauche) et interprétez les huit bits obtenus :</p>
 <ol type="1">
-<li>50 + 60 ;</li>
-<li>120 + 20 ;</li>
-<li>−40 + −100 ;</li>
-<li>−40 + 70.</li>
+<li>50 + 60, avec <code>50 = 00110010</code> et
+<code>60 = 00111100</code> ;</li>
+<li>120 + 20, avec <code>120 = 01111000</code> et
+<code>20 = 00010100</code> ;</li>
+<li>−40 + (−100), avec <code>−40 = 11011000</code> et
+<code>−100 = 10011100</code> ;</li>
+<li>−40 + 70, avec <code>−40 = 11011000</code> et
+<code>70 = 01000110</code>.</li>
 </ol>
 <h5 id="exercice-4.3-vérifier-sa-compréhension">Exercice 4.3 — Vérifier
 sa compréhension</h5>
@@ -1358,15 +1368,20 @@ demanderait une 257<sup>e</sup> valeur : son écriture
 </ol>
 <h3 id="exercice-4.2">Exercice 4.2</h3>
 <ol type="1">
-<li>50 + 60 = <strong>110</strong>, résultat représentable.</li>
-<li>120 + 20 = 140, hors intervalle.
-<code>01111000 + 00010100 = 10001100</code>, lu <strong>−116</strong> :
-dépassement signé.</li>
-<li>−40 + −100 = −140, hors intervalle. Les deux opérandes négatifs
-donnent un résultat dont le bit de gauche vaut 0 : dépassement
-signé.</li>
-<li>−40 + 70 = <strong>30</strong>, résultat représentable. Des signes
-différents ne provoquent pas ce type de dépassement.</li>
+<li>50 + 60 = <strong>110</strong>, dans <code>[−128 ; 127]</code> :
+<code>00110010 + 00111100 = 01101110</code> (64 + 32 + 8 + 4 + 2 =
+<strong>110</strong>), résultat représentable.</li>
+<li>120 + 20 = 140 &gt; 127, hors intervalle :
+<code>01111000 + 00010100 = 10001100</code>, lu <strong>−116</strong>
+(deux positifs donnent un négatif : dépassement signé).</li>
+<li>−40 + (−100) = −140 &lt; −128, hors intervalle :
+<code>11011000 + 10011100 = (1)01110100</code> ; les 8 bits conservés
+valent <code>01110100</code>, lu <strong>+116</strong> (deux négatifs
+donnent un positif : dépassement signé).</li>
+<li>−40 + 70 = <strong>30</strong>, dans <code>[−128 ; 127]</code> :
+<code>11011000 + 01000110 = (1)00011110</code> ; les 8 bits conservés
+valent <code>00011110</code> (16 + 8 + 4 + 2 = <strong>30</strong>),
+résultat représentable.</li>
 </ol>
 <h3 id="exercice-4.3">Exercice 4.3</h3>
 <p>Réponses : de <strong>−128 à 127</strong> ;

@@ -156,11 +156,12 @@ un <strong>dépassement signé</strong>.</p>
 <section id="exercice-4.2-prévoir-avant-de-calculer" class="slide activity">
 <h2>Exercice 4.2 — Prévoir avant de calculer</h2>
 <p><strong>Papier · seul · 15 min</strong></p>
-<p><strong>À produire :</strong> pour 50 + 60, 120 + 20, −40 + −100 et
-−40 + 70 :</p>
+<p><strong>À produire :</strong> pour 50 + 60, 120 + 20, −40 + (−100) et
+−40 + 70 (écritures 8 bits fournies dans le support) :</p>
 <ol type="1">
 <li>dire si le résultat tient sur 8 bits signés ;</li>
-<li>faire l’addition binaire ;</li>
+<li>poser l’addition binaire (<code>1 + 1 = 0</code>, retenue
+<code>1</code>) ;</li>
 <li>interpréter les huit bits conservés.</li>
 </ol>
 </section>
