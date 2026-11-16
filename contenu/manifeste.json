@@ -465,6 +465,22 @@
    ]
   },
   {
+   "slug": "nsi/1g/SQ01-defis-revision",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ01",
+   "titre": "Défis de révision — représentation des entiers",
+   "sousTitre": "12 exercices et 2 problèmes",
+   "nature": "Activité",
+   "date": "2026-11-20",
+   "pdf": "/nsi/1g/SQ01-defis-revision.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "nsi/1g/SQ01-distanciel-boucle-variables-chaines",
    "matiere": "nsi",
    "classe": "1g",
@@ -3223,6 +3239,7 @@
     "nsi/1g/atelier-pyxel-compteur-8-bits",
     "nsi/1g/SQ01-p04-relatifs-complement-deux",
     "nsi/1g/SQ01-p02-bibi-binaire",
+    "nsi/1g/SQ01-defis-revision",
     "nsi/1g/SQ01-revisions-entiers"
    ]
   },
