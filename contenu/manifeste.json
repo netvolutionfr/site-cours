@@ -2580,6 +2580,38 @@
    "composant": "Markdown"
   },
   {
+   "slug": "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream-slides",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Deux applications, un seul point d'entrée",
+   "sousTitre": "Répartir les requêtes avec Nginx sur une instance cloud",
+   "nature": "Diaporama",
+   "date": "2026-11-17",
+   "pdf": "/sio/2sisr-fil-rouge/p10-repartition-nginx-upstream-slides.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Deux applications, un seul point d'entrée",
+   "sousTitre": "P10 — Répartir les requêtes avec Nginx sur une instance cloud",
+   "nature": "Activité",
+   "date": "2026-11-17",
+   "pdf": "/sio/2sisr-fil-rouge/p10-repartition-nginx-upstream.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "mastere/devops/SQ01-p01-culture-devops-cycle",
    "matiere": "mastere",
    "classe": "devops",
@@ -3387,7 +3419,7 @@
    "code": "",
    "titre": "Fil rouge",
    "debut": "2026-10-05",
-   "fin": "2026-11-16",
+   "fin": "2026-11-17",
    "supports": [
     "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
     "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
@@ -3398,7 +3430,9 @@
     "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition-slides",
     "sio/2sisr-fil-rouge/p08-proxy-inverse-docker-exposition",
     "sio/2sisr-fil-rouge/p09-flux-repartition-cloud-slides",
-    "sio/2sisr-fil-rouge/p09-flux-repartition-cloud"
+    "sio/2sisr-fil-rouge/p09-flux-repartition-cloud",
+    "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream-slides",
+    "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream"
    ]
   }
  ]
