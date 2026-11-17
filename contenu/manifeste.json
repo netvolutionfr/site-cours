@@ -2612,6 +2612,38 @@
    "composant": "Markdown"
   },
   {
+   "slug": "sio/2sisr-fil-rouge/p11-panne-diagnostic-disponibilite-slides",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Une panne, quelles preuves ?",
+   "sousTitre": "Diagnostiquer une application arrêtée et mesurer la disponibilité",
+   "nature": "Diaporama",
+   "date": "2026-11-18",
+   "pdf": "/sio/2sisr-fil-rouge/p11-panne-diagnostic-disponibilite-slides.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
+   "slug": "sio/2sisr-fil-rouge/p11-panne-diagnostic-disponibilite",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "fil-rouge",
+   "sequence": "sio/2sisr-fil-rouge/",
+   "titre": "Une panne, quelles preuves ?",
+   "sousTitre": "P11 — Diagnostiquer une application arrêtée et mesurer la disponibilité",
+   "nature": "Activité",
+   "date": "2026-11-18",
+   "pdf": "/sio/2sisr-fil-rouge/p11-panne-diagnostic-disponibilite.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "mastere/devops/SQ01-p01-culture-devops-cycle",
    "matiere": "mastere",
    "classe": "devops",
@@ -3419,7 +3451,7 @@
    "code": "",
    "titre": "Fil rouge",
    "debut": "2026-10-05",
-   "fin": "2026-11-17",
+   "fin": "2026-11-18",
    "supports": [
     "sio/2sisr-fil-rouge/p03-dns-incident-e7-distanciel",
     "sio/2sisr-fil-rouge/p04-dns-zone-diagnostic-distanciel",
@@ -3432,7 +3464,9 @@
     "sio/2sisr-fil-rouge/p09-flux-repartition-cloud-slides",
     "sio/2sisr-fil-rouge/p09-flux-repartition-cloud",
     "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream-slides",
-    "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream"
+    "sio/2sisr-fil-rouge/p10-repartition-nginx-upstream",
+    "sio/2sisr-fil-rouge/p11-panne-diagnostic-disponibilite-slides",
+    "sio/2sisr-fil-rouge/p11-panne-diagnostic-disponibilite"
    ]
   }
  ]
