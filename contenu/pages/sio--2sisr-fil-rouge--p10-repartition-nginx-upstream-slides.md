@@ -149,20 +149,42 @@ soi</strong> ; sur l’hôte, deux ports distincts.</p>
 </section>
 <section id="le-groupe-upstream-dans-nginx" class="slide code">
 <h2>Le groupe <code>upstream</code> dans Nginx</h2>
-<pre class="nginx"><code>upstream applications {          # hors des blocs server
-    server 127.0.0.1:8080;
-    server 127.0.0.1:8081;
-}
-
-server {
-    listen 443 ssl;
-    # certificat, en-têtes : inchangés
-    location / {
-        proxy_pass http://applications;
-    }
+<pre class="nginx"><code>upstream applications {        # hors des blocs server
+  server 127.0.0.1:8080;         # app
+  server 127.0.0.1:8081;         # app2
 }</code></pre>
-<p>Seule la destination de <code>proxy_pass</code> change. Redirection
-HTTP et exception ACME restent en place.</p>
+<p>À placer <strong>en tête</strong> de
+<code>/etc/nginx/sites-available/sisrN</code>, avant les blocs
+<code>server</code>. Le nom <code>applications</code> est libre : c’est
+lui que <code>proxy_pass</code> appellera.</p>
+</section>
+<section id="le-bloc-https-12-inchangé-depuis-p08" class="slide code">
+<h2>Le bloc HTTPS (1/2) : inchangé depuis P08</h2>
+<pre class="nginx"><code>server {
+  listen 443 ssl;
+  server_name sisrN.tp.siovision.fr;
+
+  ssl_certificate     …/fullchain.pem;
+  ssl_certificate_key …/privkey.pem;
+  ssl_protocols       TLSv1.2 TLSv1.3;</code></pre>
+<p><code>…</code> =
+<code>/etc/letsencrypt/live/sisrN.tp.siovision.fr</code> : chemins
+complets dans la fiche P10.</p>
+</section>
+<section id="le-bloc-https-22-la-seule-ligne-modifiée" class="slide code">
+<h2>Le bloc HTTPS (2/2) : la seule ligne modifiée</h2>
+<pre class="nginx"><code>  location / {
+    proxy_pass http://applications;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For
+                     $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}</code></pre>
+<p><code>proxy_pass</code> visait <code>http://127.0.0.1:8080</code> ;
+il vise maintenant le groupe. Le bloc <code>listen 80</code> (exception
+ACME, redirection) ne change pas.</p>
 </section>
 <section id="comment-nginx-choisit-il-la-destination" class="slide compare">
 <h2>Comment Nginx choisit-il la destination ?</h2>

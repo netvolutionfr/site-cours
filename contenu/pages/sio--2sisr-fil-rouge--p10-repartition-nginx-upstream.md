@@ -196,14 +196,51 @@ HTTPS</h3>
 }</code></pre>
 <p>Dans la <code>location /</code> du bloc HTTPS, remplacez seulement la
 destination : <code>proxy_pass http://applications;</code>. Conservez
-certificat, en-têtes, exception ACME et redirection HTTP. Validez
-<strong>avant</strong> de recharger :</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nginx <span class="at">-t</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl reload nginx</span></code></pre></div>
+certificat, en-têtes, exception ACME et redirection HTTP. Le fichier
+complet attendu :</p>
+<pre class="nginx"><code>upstream applications {
+    server 127.0.0.1:8080;
+    server 127.0.0.1:8081;
+}
+
+server {
+    listen 80;
+    server_name sisrN.tp.siovision.fr;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/acme;
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name sisrN.tp.siovision.fr;
+
+    ssl_certificate     /etc/letsencrypt/live/sisrN.tp.siovision.fr/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sisrN.tp.siovision.fr/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    access_log /var/log/nginx/sisrN-access.log;
+    error_log  /var/log/nginx/sisrN-error.log;
+
+    location / {
+        proxy_pass http://applications;    # était http://127.0.0.1:8080
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre>
+<p>Validez <strong>avant</strong> de recharger :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nginx <span class="at">-t</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl reload nginx</span></code></pre></div>
 <p>Si <code>nginx -t</code> échoue, ne rechargez pas : lisez la ligne
 indiquée, corrigez ou restaurez la sauvegarde, testez à nouveau. Puis,
 depuis l’extérieur, répétez six fois :</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> https://sisrN.tp.siovision.fr/ <span class="kw">|</span> <span class="fu">grep</span> Name</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> https://sisrN.tp.siovision.fr/ <span class="kw">|</span> <span class="fu">grep</span> Name</span></code></pre></div>
 <p><strong>Question 2.1.</strong> Relevez les six noms dans l’ordre.
 Quelle règle de distribution semble utilisée ?</p>
 <p><strong>Question 2.2.</strong> Pourquoi ne peut-on pas conclure à une
