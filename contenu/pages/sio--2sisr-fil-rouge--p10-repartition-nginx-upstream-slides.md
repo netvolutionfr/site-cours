@@ -162,8 +162,7 @@ lui que <code>proxy_pass</code> appellera.</p>
 <h2>Le bloc HTTPS (1/2) : inchangé depuis P08</h2>
 <pre class="nginx"><code>server {
   listen 443 ssl;
-  server_name sisrN.tp.siovision.fr;
-
+  server_name sisrN.tp.siovision.fr;&#10;
   ssl_certificate     …/fullchain.pem;
   ssl_certificate_key …/privkey.pem;
   ssl_protocols       TLSv1.2 TLSv1.3;</code></pre>

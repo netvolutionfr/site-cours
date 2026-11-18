@@ -201,31 +201,25 @@ complet attendu :</p>
 <pre class="nginx"><code>upstream applications {
     server 127.0.0.1:8080;
     server 127.0.0.1:8081;
-}
-
+}&#10;
 server {
     listen 80;
-    server_name sisrN.tp.siovision.fr;
-
+    server_name sisrN.tp.siovision.fr;&#10;
     location /.well-known/acme-challenge/ {
         root /var/www/acme;
     }
     location / {
         return 301 https://$host$request_uri;
     }
-}
-
+}&#10;
 server {
     listen 443 ssl;
-    server_name sisrN.tp.siovision.fr;
-
+    server_name sisrN.tp.siovision.fr;&#10;
     ssl_certificate     /etc/letsencrypt/live/sisrN.tp.siovision.fr/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/sisrN.tp.siovision.fr/privkey.pem;
-    ssl_protocols       TLSv1.2 TLSv1.3;
-
+    ssl_protocols       TLSv1.2 TLSv1.3;&#10;
     access_log /var/log/nginx/sisrN-access.log;
-    error_log  /var/log/nginx/sisrN-error.log;
-
+    error_log  /var/log/nginx/sisrN-error.log;&#10;
     location / {
         proxy_pass http://applications;    # était http://127.0.0.1:8080
         proxy_set_header Host $host;
