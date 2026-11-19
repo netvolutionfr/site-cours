@@ -716,6 +716,54 @@
    "composant": "Binaire"
   },
   {
+   "slug": "nsi/1g/SQ02-p01-decouvrir-les-listes",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ02",
+   "titre": "Ranger les scores",
+   "sousTitre": "Lire et modifier une liste Python",
+   "nature": "Diaporama",
+   "date": "2026-11-20",
+   "pdf": "/nsi/1g/SQ02-p01-decouvrir-les-listes.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
+   "slug": "nsi/1g/SQ02-p02-parcourir-transformer",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ02",
+   "titre": "Parcourir les scores",
+   "sousTitre": "Compter et transformer une liste Python",
+   "nature": "Diaporama",
+   "date": "2026-11-23",
+   "pdf": "/nsi/1g/SQ02-p02-parcourir-transformer.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
+   "slug": "nsi/1g/SQ02-support-eleve",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ02",
+   "titre": "Types construits : des scores au tableau de bord",
+   "sousTitre": "Tableaux, tuples et dictionnaires en Python",
+   "nature": "Cours complet",
+   "date": "2026-11-20",
+   "pdf": "/nsi/1g/SQ02-support-eleve.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Markdown"
+  },
+  {
    "slug": "nsi/1g/atelier-pyxel-compteur-8-bits",
    "matiere": "nsi",
    "classe": "1g",
@@ -3305,6 +3353,22 @@
     "nsi/1g/SQ01-p02-bibi-binaire",
     "nsi/1g/SQ01-defis-revision",
     "nsi/1g/SQ01-revisions-entiers"
+   ]
+  },
+  {
+   "id": "nsi/1g/SQ02",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "rubriqueLibelle": "Général",
+   "code": "SQ02",
+   "titre": "Types construits : des scores au tableau de bord",
+   "debut": "2026-11-20",
+   "fin": "2026-11-23",
+   "supports": [
+    "nsi/1g/SQ02-support-eleve",
+    "nsi/1g/SQ02-p01-decouvrir-les-listes",
+    "nsi/1g/SQ02-p02-parcourir-transformer"
    ]
   },
   {
