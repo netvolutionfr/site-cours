@@ -14,6 +14,10 @@ if (!atelier) throw new Error(`Atelier SQL inconnu : ${nom}`);
 		<summary>Schéma de la base</summary>
 		<div class="schema-tables">Chargement…</div>
 	</details>
+	<details class="donnees">
+		<summary>Données de la base (contenu complet des tables)</summary>
+		<div class="donnees-tables">Chargement…</div>
+	</details>
 	{atelier.exercices.map((e) => (
 		<section class:list={['exo-sql', { defi: e.defi }]} data-id={e.id}>
 			<h2 id={`sql-${e.id}`}>{e.titre}</h2>
@@ -93,6 +97,13 @@ if (!atelier) throw new Error(`Atelier SQL inconnu : ${nom}`);
 			zone.append(p);
 		}
 		zone.append(el('p', 'Souligné : clé primaire. → : clé étrangère vers une autre table.', 'legende'));
+		const donnees = racine.querySelector('.donnees-tables')!;
+		donnees.replaceChildren();
+		for (const t of tables) {
+			const r = db.exec(`SELECT * FROM ${t}`)[0];
+			donnees.append(el('h3', `${t} (${r?.values.length ?? 0} lignes)`));
+			if (r) donnees.append(tableau(r.columns, r.values));
+		}
 		db.close();
 		return noms;
 	}
@@ -195,7 +206,10 @@ if (!atelier) throw new Error(`Atelier SQL inconnu : ${nom}`);
 	.schema .legende { font-family: inherit; color: var(--sl-color-gray-3); }
 	.prevision { display: inline-flex; align-items: center; gap: .4rem; font-size: var(--sl-text-sm); }
 	.prevision input { width: 5em; font: inherit; padding: .35rem; border-radius: .4rem; border: 1px solid var(--sl-color-hairline); background: var(--sl-color-bg-inline-code); color: var(--sl-color-white); }
-	.resultats table { font-size: var(--sl-text-sm); display: block; overflow-x: auto; max-height: 24rem; }
+	.donnees { border: 1px solid var(--sl-color-hairline); border-radius: .6rem; padding: .4rem 1rem; }
+	.donnees summary { cursor: pointer; font-weight: 600; }
+	.donnees h3 { font-size: var(--sl-text-base); font-family: var(--sl-font-mono); }
+	.donnees table, .resultats table { font-size: var(--sl-text-sm); display: block; overflow-x: auto; max-height: 24rem; }
 	.resultats em { color: var(--sl-color-gray-3); }
 	.indices button { font: inherit; font-size: var(--sl-text-sm); background: none; border: none; color: var(--sl-color-text-accent); cursor: pointer; padding: 0; text-decoration: underline; }
 	.zone { position: relative; }

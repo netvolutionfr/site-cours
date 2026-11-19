@@ -26,7 +26,7 @@ export const ateliers: Record<string, Atelier> = {
 				id: 'catalogue',
 				titre: '1. Lire une requête',
 				demande:
-					'Le préparateur veut la liste des produits avec leur prix. <strong>Avant d\'exécuter</strong> la requête fournie : combien de lignes et de colonnes va-t-elle afficher ? Aidez-vous du schéma.',
+					'Le préparateur veut la liste des produits avec leur prix. <strong>Avant d\'exécuter</strong> la requête fournie : combien de lignes et de colonnes va-t-elle afficher ? Ouvrez « Données de la base » pour lire la table <code>produits</code>.',
 				depart: 'SELECT nom, prix\nFROM produits;',
 				attendu: 'SELECT nom, prix FROM produits;',
 			},
