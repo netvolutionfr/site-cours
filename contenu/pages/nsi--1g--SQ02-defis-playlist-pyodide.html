@@ -1,0 +1,471 @@
+<p>Une application de musique range vos morceaux dans des listes,
+calcule des durées et vous recommande le morceau suivant. Programmez ces
+fonctions une par une, jusqu’à la recommandation.</p>
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Parcourir une liste pour compter, chercher ou totaliser.</li>
+<li>Construire une nouvelle liste sans modifier l’ancienne.</li>
+<li>Renvoyer un tuple et parcourir une liste de tuples.</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>Variables, <code>if</code>, <code>for</code>, <code>range</code>,
+fonctions et <code>return</code>.</li>
+<li>Une liste, ses indices et <code>len</code> (SQ02, P01).</li>
+<li>Un téléphone ou un ordinateur avec Internet : rien à installer.</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Palier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Palier 1</td>
+<td>Parcourir une liste de titres (défis 1 à 3)</td>
+</tr>
+<tr>
+<td>Palier 2</td>
+<td>Calculer sur les durées (défis 4 à 7)</td>
+</tr>
+<tr>
+<td>Palier 3</td>
+<td>Tuples et recommandation (défis 8 à 10)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Écrivez votre code dans la zone grise, puis appuyez sur <strong>▶
+Tester</strong> : Python s’exécute dans la page et vérifie votre
+fonction sur plusieurs exemples. <strong>Exécuter</strong> lance le code
+sans les tests, pour voir les <code>print</code>. Votre code reste
+enregistré sur cet appareil. Chaque fonction correcte révèle une lettre
+du <strong>mot du coffre</strong>.</p>
+</div>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Travail personnel, sans IA. Prévoyez sur papier avant d’exécuter. Les
+indices et les solutions sont en bas de page : ouvrez-les seulement
+après avoir cherché.</p>
+</div>
+<div class="coffre">
+<p><strong>Mot du coffre</strong></p>
+</div>
+<h3 id="palier-1-parcourir-une-liste-de-titres">Palier 1 — Parcourir une
+liste de titres</h3>
+<h4 id="défi-1-prédire-la-playlist">Défi 1 — Prédire la playlist</h4>
+<p>Lisez ce programme <strong>sans l’exécuter</strong> et notez chaque
+affichage. Vérifiez ensuite avec <strong>Exécuter</strong>. La dernière
+ligne : à quoi ressemble la liste à la fin ?</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">playlist = [&quot;Intro&quot;, &quot;Nuit&quot;, &quot;Pluie&quot;, &quot;Retour&quot;]
+print(playlist[1])
+print(len(playlist))
+playlist[0] = &quot;Ouverture&quot;
+for titre in playlist:
+    print(titre)
+print(playlist)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
+<h4 id="défi-2-compter-les-titres">Défi 2 — Compter les titres</h4>
+<p>Écrivez <code>nb_titres(playlist)</code> qui renvoie le nombre de
+titres <strong>sans utiliser <code>len</code></strong>. Comme pour un
+texte, <code>for titre in playlist</code> fait un tour par élément.</p>
+<section class="exo-py" data-lettre="P">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def nb_titres(playlist):
+    nb = 0
+    ...
+    return nb</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["nb_titres([\"Intro\", \"Nuit\", \"Pluie\"]) == 3","nb_titres([\"Solo\"]) == 1","nb_titres([]) == 0"]</script></section>
+<h4 id="défi-3-le-titre-est-il-déjà-là">Défi 3 — Le titre est-il déjà là
+?</h4>
+<p>Écrivez <code>contient(playlist, titre)</code> qui renvoie
+<code>True</code> si le titre est dans la liste, <code>False</code>
+sinon. N’utilisez pas l’écriture toute faite
+<code>titre in playlist</code> : parcourez la liste.</p>
+<section class="exo-py" data-lettre="L">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def contient(playlist, titre):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["contient([\"Intro\", \"Nuit\", \"Pluie\"], \"Nuit\") == True","contient([\"Intro\", \"Nuit\", \"Pluie\"], \"Soleil\") == False","contient([], \"Nuit\") == False"]</script></section>
+<h3 id="palier-2-calculer-sur-les-durées">Palier 2 — Calculer sur les
+durées</h3>
+<p>Les durées des morceaux sont rangées dans une autre liste, en
+secondes, dans le même ordre que les titres : <code>durees[0]</code> est
+la durée du premier morceau.</p>
+<h4 id="défi-4-durée-totale">Défi 4 — Durée totale</h4>
+<section class="exo-py" data-lettre="A">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def duree_totale(durees):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["duree_totale([200, 185, 240]) == 625","duree_totale([90]) == 90","duree_totale([]) == 0"]</script></section>
+<h4 id="défi-5-le-morceau-le-plus-long">Défi 5 — Le morceau le plus
+long</h4>
+<p>Écrivez <code>plus_long(durees)</code> qui renvoie
+l’<strong>indice</strong> du morceau le plus long dans une liste non
+vide (le premier en cas d’égalité). Il faut l’indice : parcourez avec
+<code>range(len(durees))</code>.</p>
+<section class="exo-py" data-lettre="Y">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def plus_long(durees):
+    i_max = 0
+    for i in range(len(durees)):
+        ...
+    return i_max</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["plus_long([200, 185, 240]) == 2","plus_long([300, 185, 240]) == 0","plus_long([200, 250, 250]) == 1","plus_long([90]) == 0"]</script></section>
+<h4 id="défi-6-les-morceaux-courts">Défi 6 — Les morceaux courts</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> <code>[]</code> est une liste vide.
+<code>liste.append(x)</code> ajoute <code>x</code> <strong>à la
+fin</strong> de la liste.</p>
+</blockquote>
+<p>Écrivez <code>courts(durees, limite)</code> qui renvoie une
+<strong>nouvelle</strong> liste avec, dans l’ordre, les durées
+inférieures ou égales à <code>limite</code>.</p>
+<section class="exo-py" data-lettre="L">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def courts(durees, limite):
+    resultat = []
+    ...
+    return resultat</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["courts([200, 185, 240, 150], 190) == [185, 150]","courts([200, 185], 100) == []","courts([200, 185], 200) == [200, 185]"]</script></section>
+<h4 id="défi-7-lecture-à-lenvers">Défi 7 — Lecture à l’envers</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> <code>+</code> met deux listes bout à bout
+: <code>[1] + [2, 3]</code> vaut <code>[1, 2, 3]</code>. Le résultat est
+une <strong>nouvelle</strong> liste.</p>
+</blockquote>
+<p>Écrivez <code>inverser(playlist)</code> qui renvoie une nouvelle
+liste avec les titres dans l’ordre inverse. Idée : placer chaque titre
+lu <strong>devant</strong> ceux déjà rangés.</p>
+<section class="exo-py" data-lettre="I">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def inverser(playlist):
+    resultat = []
+    for titre in playlist:
+        resultat = ...
+    return resultat</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["inverser([\"Intro\", \"Nuit\", \"Pluie\"]) == [\"Pluie\", \"Nuit\", \"Intro\"]","inverser([\"Solo\"]) == [\"Solo\"]","inverser([]) == []"]</script></section>
+<h3 id="palier-3-tuples-et-recommandation">Palier 3 — Tuples et
+recommandation</h3>
+<h4 id="défi-8-minutes-et-secondes">Défi 8 — Minutes et secondes</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> Un <strong>tuple</strong> regroupe
+plusieurs valeurs entre parenthèses : <code>(3, 20)</code>. Une fonction
+peut renvoyer un tuple pour donner <strong>deux résultats</strong> à la
+fois. On les récupère en une ligne :
+<code>m, s = minutes_secondes(200)</code>.</p>
+</blockquote>
+<p>Écrivez <code>minutes_secondes(duree)</code> qui renvoie le tuple
+<code>(minutes, secondes)</code> d’une durée en secondes. Rappel :
+<code>//</code> est la division entière et <code>%</code> le reste.</p>
+<section class="exo-py" data-lettre="S">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def minutes_secondes(duree):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["minutes_secondes(200) == (3, 20)","minutes_secondes(185) == (3, 5)","minutes_secondes(59) == (0, 59)","minutes_secondes(240) == (4, 0)"]</script></section>
+<h4 id="défi-9-les-morceaux-qui-bougent">Défi 9 — Les morceaux qui
+bougent</h4>
+<p>Chaque morceau est maintenant un tuple
+<code>(titre, tempo, énergie)</code> : le tempo en battements par
+minute, l’énergie notée de 0 à 100. Écrivez
+<code>rapides(morceaux, tempo_min)</code> qui renvoie la liste des
+<strong>titres</strong> dont le tempo atteint
+<code>tempo_min</code>.</p>
+<section class="exo-py" data-lettre="T">
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">morceaux = [(&quot;Nuit&quot;, 70, 20), (&quot;Pluie&quot;, 95, 35),
+            (&quot;Sprint&quot;, 150, 90), (&quot;Club&quot;, 128, 85),
+            (&quot;Ballade&quot;, 80, 30), (&quot;Rock&quot;, 140, 75)]
+
+def rapides(morceaux, tempo_min):
+    resultat = []
+    for morceau in morceaux:
+        titre, tempo, energie = morceau
+        ...
+    return resultat</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["rapides(morceaux, 128) == [\"Sprint\", \"Club\", \"Rock\"]","rapides(morceaux, 200) == []","rapides(morceaux, 0) == [\"Nuit\", \"Pluie\", \"Sprint\", \"Club\", \"Ballade\", \"Rock\"]"]</script></section>
+<h4 id="défi-10-recommander-le-morceau-suivant">Défi 10 — Recommander le
+morceau suivant</h4>
+<p>Vous venez d’écouter un morceau de tempo <code>tempo</code> et
+d’énergie <code>energie</code>. L’application vous recommande le morceau
+<strong>le plus proche</strong> dans la liste : c’est le principe du
+plus proche voisin vu avec les manchots. La fonction
+<code>distance</code> est fournie.</p>
+<section class="exo-py" data-lettre>
+<div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">morceaux = [(&quot;Nuit&quot;, 70, 20), (&quot;Pluie&quot;, 95, 35),
+            (&quot;Sprint&quot;, 150, 90), (&quot;Club&quot;, 128, 85),
+            (&quot;Ballade&quot;, 80, 30), (&quot;Rock&quot;, 140, 75)]
+
+def distance(t1, e1, t2, e2):
+    return ((t1 - t2) ** 2 + (e1 - e2) ** 2) ** 0.5
+
+def recommander(morceaux, tempo, energie):
+    ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["recommander(morceaux, 72, 22) == \"Nuit\"","recommander(morceaux, 130, 80) == \"Club\"","recommander(morceaux, 145, 70) == \"Rock\""]</script></section>
+<p><strong>Pour aller plus loin.</strong> Une vraie application ne
+recommande pas le morceau que vous venez d’écouter. Ajoutez un paramètre
+<code>deja_ecoutes</code> (une liste de titres) et ignorez ces titres.
+Puis renvoyez les <strong>trois</strong> morceaux les plus proches au
+lieu d’un seul.</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<p>Ouvrez d’abord l’indice, réessayez, puis seulement la solution.</p>
+<h3 id="défi-1">Défi 1</h3>
+<p>Affichages : <code>Nuit</code>, <code>4</code>, puis
+<code>Ouverture</code>, <code>Nuit</code>, <code>Pluie</code>,
+<code>Retour</code> sur quatre lignes, et enfin
+<code>[&#39;Ouverture&#39;, &#39;Nuit&#39;, &#39;Pluie&#39;, &#39;Retour&#39;]</code>. La première case
+a été remplacée.</p>
+<h3 id="défi-2">Défi 2</h3>
+<p>Indice : un compteur augmenté de 1 à chaque tour, sans regarder le
+titre.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nb_titres(playlist):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> titre <span class="kw">in</span> playlist:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        nb <span class="op">=</span> nb <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nb</span></code></pre></div>
+<h3 id="défi-3">Défi 3</h3>
+<p>Indice : on peut renvoyer <code>True</code> dès qu’on trouve le
+titre. <code>False</code> ne se décide qu’<strong>après</strong> la
+boucle, quand tout a été lu.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> contient(playlist, titre):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> playlist:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> t <span class="op">==</span> titre:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">False</span></span></code></pre></div>
+<h3 id="défi-4">Défi 4</h3>
+<p>Indice : un accumulateur initialisé à 0 avant la boucle.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> duree_totale(durees):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> durees:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> total <span class="op">+</span> d</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total</span></code></pre></div>
+<h3 id="défi-5">Défi 5</h3>
+<p>Indice : comparer <code>durees[i]</code> avec
+<code>durees[i_max]</code>, strictement, pour garder le premier en cas
+d’égalité.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus_long(durees):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    i_max <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(durees)):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> durees[i] <span class="op">&gt;</span> durees[i_max]:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            i_max <span class="op">=</span> i</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i_max</span></code></pre></div>
+<h3 id="défi-6">Défi 6</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> courts(durees, limite):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> []</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> durees:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> d <span class="op">&lt;=</span> limite:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            resultat.append(d)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<h3 id="défi-7">Défi 7</h3>
+<p>Indice : <code>[titre] + resultat</code> place le titre devant.
+<code>resultat + [titre]</code> recopierait la liste dans le même
+ordre.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inverser(playlist):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    resultat <span class="op">=</span> []</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> titre <span class="kw">in</span> playlist:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        resultat <span class="op">=</span> [titre] <span class="op">+</span> resultat</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<h3 id="défi-8">Défi 8</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> minutes_secondes(duree):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (duree <span class="op">//</span> <span class="dv">60</span>, duree <span class="op">%</span> <span class="dv">60</span>)</span></code></pre></div>
+<h3 id="défi-9">Défi 9</h3>
+<p>Indice : la condition porte sur <code>tempo</code>, mais on ajoute
+<code>titre</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> tempo <span class="op">&gt;=</span> tempo_min:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            resultat.append(titre)</span></code></pre></div>
+<h3 id="défi-10">Défi 10</h3>
+<p>Indice : comme pour le meilleur score, on garde la plus
+<strong>petite</strong> distance vue jusqu’ici et le titre qui va
+avec.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recommander(morceaux, tempo, energie):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    titre_proche <span class="op">=</span> morceaux[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    d_min <span class="op">=</span> distance(tempo, energie, morceaux[<span class="dv">0</span>][<span class="dv">1</span>], morceaux[<span class="dv">0</span>][<span class="dv">2</span>])</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> morceau <span class="kw">in</span> morceaux:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        titre, t, e <span class="op">=</span> morceau</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> distance(tempo, energie, t, e)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> d <span class="op">&lt;</span> d_min:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            d_min <span class="op">=</span> d</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            titre_proche <span class="op">=</span> titre</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> titre_proche</span></code></pre></div>
+<p>Mot du coffre : <strong>PLAYLIST</strong>.</p>
+</details>
+<div class="py-etat" id="py-etat" aria-live="polite">Chargement de Python… (quelques secondes, une seule fois)</div>
+<script>
+// Exercices Python : Pyodide dans un worker (module, exigé par Pyodide ≥ 314), pour pouvoir arrêter une boucle infinie.
+(() => {
+const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+const DELAI_MS = 4000;
+const HARNESS = String.raw`
+import json, sys
+
+AIDES = {
+    "IndentationError": "Vérifiez les espaces en début de ligne : le bloc sous def, if, for ou while doit être décalé de 4 espaces.",
+    "SyntaxError": "Python ne comprend pas cette ligne : deux-points oubliés après if/for/while/def, parenthèse ou guillemet non fermé ?",
+    "NameError": "Un nom est inconnu : faute de frappe, variable utilisée avant d'avoir reçu une valeur, ou fonction mal nommée ?",
+    "TypeError": "Opération entre types incompatibles (texte et nombre ?) ou mauvais nombre de paramètres.",
+    "ZeroDivisionError": "Division par zéro.",
+    "UnboundLocalError": "Variable utilisée avant d'avoir reçu une valeur dans la fonction : initialisez-la avant la boucle.",
+}
+
+def _msg(e):
+    nom = type(e).__name__
+    ligne = getattr(e, "lineno", None)
+    if ligne is None:
+        tb = e.__traceback__
+        while tb:
+            if tb.tb_frame.f_code.co_filename == "<votre code>":
+                ligne = tb.tb_lineno
+            tb = tb.tb_next
+    texte = f"{nom} : {getattr(e, 'msg', None) or e}"
+    if ligne:
+        texte += f" (ligne {ligne})"
+    return {"texte": texte, "aide": AIDES.get(nom, "")}
+
+def _run(code, tests):
+    ns = {"__name__": "__main__"}
+    r = {"erreur": None, "tests": []}
+    try:
+        exec(compile(code, "<votre code>", "exec"), ns)
+    except BaseException as e:
+        r["erreur"] = _msg(e)
+        return json.dumps(r)
+    for t in tests:
+        appel, attendu = t.rsplit(" == ", 1) if " == " in t else (t, "True")
+        item = {"appel": appel.strip(), "attendu": attendu.strip(), "ok": False, "aide": ""}
+        try:
+            v = eval(appel, ns)
+            item["obtenu"] = repr(v)
+            item["ok"] = bool(v == eval(attendu, ns))
+            if v is None:
+                item["aide"] = "La fonction renvoie None : manque-t-il return ? print affiche, mais ne renvoie pas le résultat."
+        except BaseException as e:
+            m = _msg(e)
+            item["obtenu"], item["aide"] = m["texte"], m["aide"]
+        r["tests"].append(item)
+    return json.dumps(r)
+
+_run(CODE, json.loads(TESTS))
+`;
+const SOURCE_WORKER = `
+import { loadPyodide } from "${PYODIDE}pyodide.mjs";
+const pret = loadPyodide({ indexURL: "${PYODIDE}" });
+pret.then(() => postMessage({ pret: true }), err => postMessage({ echec: String(err) }));
+onmessage = async (e) => {
+  const py = await pret;
+  let sortie = "";
+  py.setStdout({ batched: s => { sortie += s + "\\n"; } });
+  py.setStderr({ batched: s => { sortie += s + "\\n"; } });
+  py.globals.set("CODE", e.data.code);
+  py.globals.set("TESTS", JSON.stringify(e.data.tests));
+  try {
+    const res = py.runPython(e.data.harness);
+    postMessage({ id: e.data.id, sortie, res: JSON.parse(res) });
+  } catch (err) {
+    postMessage({ id: e.data.id, sortie, res: { erreur: { texte: String(err), aide: "" }, tests: [] } });
+  }
+};`;
+const url = URL.createObjectURL(new Blob([SOURCE_WORKER], { type: "text/javascript" }));
+const etat = document.getElementById("py-etat");
+let worker, pret, attente = null, compteur = 0;
+
+function demarrer() {
+  worker = new Worker(url, { type: "module" });
+  worker.onerror = (e) => { etat.textContent = "Python n'a pas pu démarrer (" + (e.message || "erreur") + ") : rechargez la page."; etat.className = "py-etat ko"; };
+  pret = new Promise((ok) => {
+    worker.onmessage = (e) => {
+      if (e.data.pret) { etat.textContent = "Python est prêt."; etat.className = "py-etat ok"; ok(); return; }
+      if (e.data.echec) { etat.textContent = "Python n'a pas pu se charger : vérifiez la connexion puis rechargez la page."; etat.className = "py-etat ko"; return; }
+      if (attente && e.data.id === attente.id) { clearTimeout(attente.minuteur); attente.ok(e.data); attente = null; }
+    };
+  });
+}
+demarrer();
+
+async function executer(code, tests) {
+  await pret;
+  return new Promise((ok) => {
+    const id = ++compteur;
+    const minuteur = setTimeout(() => {
+      worker.terminate();
+      attente = null;
+      etat.textContent = "Redémarrage de Python…"; etat.className = "py-etat";
+      demarrer();
+      ok({ sortie: "", res: { erreur: { texte: "Le programme tourne depuis plus de " + DELAI_MS / 1000 + " secondes et a été arrêté.", aide: "Boucle infinie ? Vérifiez que la condition du while finit par devenir fausse (la variable testée doit changer dans la boucle)." }, tests: [] } });
+    }, DELAI_MS);
+    attente = { id, ok, minuteur };
+    worker.postMessage({ id, code, tests, harness: HARNESS });
+  });
+}
+
+function stocker(cle, valeur) { try { localStorage.setItem(cle, valeur); } catch (e) {} }
+function lire(cle) { try { return localStorage.getItem(cle); } catch (e) { return null; } }
+function texte(balise, contenu, classe) { const el = document.createElement(balise); el.textContent = contenu; if (classe) el.className = classe; return el; }
+
+const lettres = [];
+function majCoffre() {
+  document.querySelectorAll(".coffre").forEach(c => {
+    const cases = c.querySelector(".cases") || c.appendChild(texte("p", "", "cases"));
+    cases.textContent = lettres.map(l => l.ouverte ? l.valeur : "_").join(" ");
+  });
+}
+
+document.querySelectorAll(".exo-py").forEach((exo, i) => {
+  const zone = exo.querySelector("textarea");
+  const depart = zone.value;
+  const cle = "exo-py:" + location.pathname + ":" + i;
+  const sauve = lire(cle);
+  if (sauve !== null) zone.value = sauve;
+  // La zone suit la hauteur du code : plus besoin de l'agrandir à la main.
+  const ajuster = () => { if (!zone.offsetParent) return; zone.style.height = "auto"; zone.style.height = zone.scrollHeight + 2 + "px"; };
+  ajuster();
+  const tests = JSON.parse(exo.querySelector("script.tests").textContent);
+  const sortie = exo.querySelector(".sortie");
+  const resultats = exo.querySelector(".resultats");
+  const lettre = { valeur: exo.dataset.lettre, ouverte: lire(cle + ":ok") === "1" };
+  if (lettre.valeur) lettres.push(lettre);
+
+  function inserer(txt) { zone.setRangeText(txt, zone.selectionStart, zone.selectionEnd, "end"); zone.focus(); stocker(cle, zone.value); ajuster(); }
+  zone.addEventListener("input", () => { stocker(cle, zone.value); ajuster(); });
+  zone.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") { e.preventDefault(); inserer("    "); }
+    if (e.key === "Enter") {
+      const debut = zone.value.lastIndexOf("\n", zone.selectionStart - 1) + 1;
+      const ligne = zone.value.slice(debut, zone.selectionStart);
+      const retrait = ligne.match(/^ */)[0] + (ligne.trimEnd().endsWith(":") ? "    " : "");
+      e.preventDefault(); inserer("\n" + retrait);
+    }
+  });
+
+  exo.querySelector(".barre").addEventListener("click", async (e) => {
+    const action = e.target.dataset.action;
+    if (!action) return;
+    if (action === "indenter") return inserer("    ");
+    if (action === "reset") { if (confirm("Revenir au code de départ ?")) { zone.value = depart; stocker(cle, depart); ajuster(); resultats.replaceChildren(); sortie.hidden = true; } return; }
+    resultats.replaceChildren(texte("p", "Exécution…"));
+    const { sortie: out, res } = await executer(zone.value, action === "tester" ? tests : []);
+    sortie.hidden = !out;
+    sortie.textContent = out;
+    resultats.replaceChildren();
+    if (res.erreur) {
+      resultats.append(texte("p", res.erreur.texte, "ko"));
+      if (res.erreur.aide) resultats.append(texte("p", res.erreur.aide, "aide"));
+      return;
+    }
+    if (action !== "tester") { if (!out) resultats.append(texte("p", "Programme exécuté, rien n'a été affiché.")); return; }
+    const table = document.createElement("table");
+    const entete = table.insertRow();
+    ["", "Appel", "Attendu", "Obtenu"].forEach(t => entete.append(texte("th", t)));
+    res.tests.forEach(t => {
+      const tr = table.insertRow();
+      tr.className = t.ok ? "ok" : "ko";
+      [t.ok ? "✓" : "✗", t.appel, t.attendu, t.obtenu].forEach(v => tr.insertCell().textContent = v);
+      if (t.aide) { const a = table.insertRow(); const c = a.insertCell(); c.colSpan = 4; c.textContent = t.aide; c.className = "aide"; }
+    });
+    resultats.append(table);
+    const reussis = res.tests.filter(t => t.ok).length;
+    if (reussis === res.tests.length) {
+      resultats.append(texte("p", "Tous les tests passent." + (lettre.valeur ? " Serrure ouverte : lettre « " + lettre.valeur + " »." : ""), "ok"));
+      lettre.ouverte = true; stocker(cle + ":ok", "1"); majCoffre();
+    } else {
+      resultats.append(texte("p", reussis + " test(s) sur " + res.tests.length + " : lisez la ligne ✗, corrigez, retestez.", "ko"));
+    }
+  });
+});
+majCoffre();
+})();
+</script>

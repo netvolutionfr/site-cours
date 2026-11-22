@@ -716,6 +716,137 @@
    "composant": "Binaire"
   },
   {
+   "slug": "nsi/1g/SQ02-defis-playlist-pyodide",
+   "matiere": "nsi",
+   "classe": "1g",
+   "rubrique": "",
+   "sequence": "nsi/1g/SQ02",
+   "titre": "Défis Python — la playlist",
+   "sousTitre": "Dix défis en ligne sur les listes et les tuples, jusqu'à la recommandation",
+   "nature": "Activité",
+   "date": "2026-11-23",
+   "pdf": "/nsi/1g/SQ02-defis-playlist-pyodide.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "palier-1-parcourir-une-liste-de-titres",
+     "text": "Palier 1 — Parcourir une liste de titres"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-1-prédire-la-playlist",
+     "text": "Défi 1 — Prédire la playlist"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-2-compter-les-titres",
+     "text": "Défi 2 — Compter les titres"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-3-le-titre-est-il-déjà-là",
+     "text": "Défi 3 — Le titre est-il déjà là ?"
+    },
+    {
+     "depth": 3,
+     "slug": "palier-2-calculer-sur-les-durées",
+     "text": "Palier 2 — Calculer sur les durées"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-4-durée-totale",
+     "text": "Défi 4 — Durée totale"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-5-le-morceau-le-plus-long",
+     "text": "Défi 5 — Le morceau le plus long"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-6-les-morceaux-courts",
+     "text": "Défi 6 — Les morceaux courts"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-7-lecture-à-lenvers",
+     "text": "Défi 7 — Lecture à l’envers"
+    },
+    {
+     "depth": 3,
+     "slug": "palier-3-tuples-et-recommandation",
+     "text": "Palier 3 — Tuples et recommandation"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-8-minutes-et-secondes",
+     "text": "Défi 8 — Minutes et secondes"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-9-les-morceaux-qui-bougent",
+     "text": "Défi 9 — Les morceaux qui bougent"
+    },
+    {
+     "depth": 4,
+     "slug": "défi-10-recommander-le-morceau-suivant",
+     "text": "Défi 10 — Recommander le morceau suivant"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-1",
+     "text": "Défi 1"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-2",
+     "text": "Défi 2"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-3",
+     "text": "Défi 3"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-4",
+     "text": "Défi 4"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-5",
+     "text": "Défi 5"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-6",
+     "text": "Défi 6"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-7",
+     "text": "Défi 7"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-8",
+     "text": "Défi 8"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-9",
+     "text": "Défi 9"
+    },
+    {
+     "depth": 3,
+     "slug": "défi-10",
+     "text": "Défi 10"
+    }
+   ]
+  },
+  {
    "slug": "nsi/1g/SQ02-p01-decouvrir-les-listes",
    "matiere": "nsi",
    "classe": "1g",
@@ -3341,7 +3472,7 @@
    "code": "SQ01",
    "titre": "Représentation des entiers",
    "debut": "2026-10-05",
-   "fin": "2026-11-20",
+   "fin": "2026-11-23",
    "supports": [
     "nsi/1g/SQ01-support-eleve",
     "nsi/1g/SQ01-tp-binaire",
@@ -3368,7 +3499,8 @@
    "supports": [
     "nsi/1g/SQ02-support-eleve",
     "nsi/1g/SQ02-p01-decouvrir-les-listes",
-    "nsi/1g/SQ02-p02-parcourir-transformer"
+    "nsi/1g/SQ02-p02-parcourir-transformer",
+    "nsi/1g/SQ02-defis-playlist-pyodide"
    ]
   },
   {
