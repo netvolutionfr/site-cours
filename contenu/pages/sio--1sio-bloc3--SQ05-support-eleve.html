@@ -76,6 +76,42 @@ quoi commencer ?</p>
 Ce qui peut arriver à un service en ligne</h3>
 <h4 id="cinq-mots-pour-décrire-un-incident">Cinq mots pour décrire un
 incident</h4>
+<p>Chaque mot répond à une question.</p>
+<p><strong>Actif — qu’est-ce qui a de la valeur ?</strong> Tout élément
+qui a de la valeur pour l’organisation et qu’elle doit protéger : une
+information, un service, un matériel, un logiciel, une personne, une
+réputation. On distingue ce qui compte (la base clients, la vente en
+ligne) de ce qui le porte (le serveur, le logiciel du site) : on attaque
+souvent le second pour atteindre le premier.</p>
+<p><strong>Vulnérabilité — quelle faiblesse, même sans attaquant
+?</strong> Une faiblesse d’un actif, technique (extension pas à jour),
+humaine (mot de passe faible) ou organisationnelle (sauvegardes sur le
+même serveur), qui pourrait être exploitée. Elle est dans le système :
+l’organisation peut la corriger. Les vulnérabilités logicielles connues
+sont recensées dans un catalogue public mondial, les
+<strong>CVE</strong> : chacune reçoit un identifiant
+(<code>CVE-2021-44228</code> : l’année, puis un numéro) et une fiche qui
+indique les logiciels et versions touchés et une note de gravité de 0 à
+10 (score CVSS). Mettre à jour un logiciel, c’est corriger ses CVE
+connues ; les attaquants lisent le même catalogue.</p>
+<p><strong>Menace — qui, et pour quel motif ?</strong> Une source qui
+pourrait porter atteinte à un actif en exploitant une vulnérabilité,
+avec un motif : l’argent (fraudeur, groupe criminel), la visibilité
+(militant), la vengeance (ancien employé), ou rien de personnel (robot
+qui balaie internet). Elle est hors du système : on ne la supprime pas,
+on s’en protège. Une cause involontaire (panne, erreur, aléa) relève de
+la <strong>sûreté</strong> ; une cause malveillante relève de la
+<strong>sécurité</strong>, l’objet du Bloc 3. Les deux peuvent atteindre
+le même critère : un disque qui lâche et un rançongiciel rendent tous
+deux le serveur indisponible.</p>
+<p><strong>Attaque — quelle action ?</strong> L’action volontaire d’une
+menace qui exploite une vulnérabilité pour atteindre un actif. Repérer
+la fenêtre ouverte n’est pas une attaque ; l’enjamber, si. Une attaque
+peut échouer : la tentative reste une attaque et laisse des traces.</p>
+<p><strong>Impact — quelles conséquences ?</strong> L’ensemble des
+conséquences d’une attaque réussie : techniques, financières,
+juridiques, d’image. On le décrit par le critère atteint (D, I, C, P) et
+on le mesure par sa gravité.</p>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -85,37 +121,36 @@ incident</h4>
 <thead>
 <tr>
 <th>Mot</th>
-<th>Définition</th>
-<th>À la maison</th>
+<th>Comme un portefeuille</th>
+<th>Comme un téléphone</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Actif</strong></td>
-<td>Ce qui a de la valeur pour l’organisation : données, service,
-matériel, réputation</td>
-<td>La maison et ce qu’elle contient</td>
+<td>Actif</td>
+<td>Son contenu compte plus que le portefeuille</td>
+<td>Photos, documents : ils ne se rachètent pas</td>
 </tr>
 <tr>
-<td><strong>Vulnérabilité</strong></td>
-<td>Une faiblesse du système, qui existe même sans attaquant</td>
-<td>La serrure fragile</td>
+<td>Vulnérabilité</td>
+<td>Il dépasse de la poche arrière</td>
+<td>À portée de main, sans code, jamais sauvegardé</td>
 </tr>
 <tr>
-<td><strong>Menace</strong></td>
-<td>Une source qui pourrait exploiter la faiblesse, avec un motif
-(argent, revendication, vengeance, jeu)</td>
-<td>Le cambrioleur du quartier</td>
+<td>Menace</td>
+<td>Le pickpocket du métro ; le perdre seul relève de la sûreté</td>
+<td>Le pickpocket, pour le revendre ou fouiller dedans</td>
 </tr>
 <tr>
-<td><strong>Attaque</strong></td>
-<td>L’action menée pour exploiter la vulnérabilité</td>
-<td>Le crochetage de la serrure</td>
+<td>Attaque</td>
+<td>La main dans la poche, même si elle échoue</td>
+<td>Le prendre, l’ouvrir en essayant <code>0000</code> ou
+<code>1234</code></td>
 </tr>
 <tr>
-<td><strong>Impact</strong></td>
-<td>Les conséquences pour l’organisation</td>
-<td>Le vol, la porte à changer</td>
+<td>Impact</td>
+<td>Billets perdus, papiers à refaire</td>
+<td>Photos perdues, comptes piratés, ligne à bloquer</td>
 </tr>
 </tbody>
 </table>
