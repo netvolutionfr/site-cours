@@ -2397,13 +2397,43 @@
     },
     {
      "depth": 4,
-     "slug": "activité-les-incidents-du-lundi",
-     "text": "Activité — Les incidents du lundi"
+     "slug": "activité-trois-incidents-de-la-semaine",
+     "text": "Activité — Trois incidents de la semaine"
+    },
+    {
+     "depth": 4,
+     "slug": "entraînement-les-incidents-du-lundi",
+     "text": "Entraînement — Les incidents du lundi"
     },
     {
      "depth": 3,
      "slug": "partie-1-message-2-la-page-daccueil-remplacée",
      "text": "Partie 1 — Message 2, la page d’accueil remplacée"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-trois-incidents-de-la-semaine",
+     "text": "Partie 1 — Trois incidents de la semaine"
+    },
+    {
+     "depth": 4,
+     "slug": "incident-1-le-site-de-paiement-de-laviation-civile-dgac",
+     "text": "Incident 1 — Le site de paiement de l’aviation civile (DGAC)"
+    },
+    {
+     "depth": 4,
+     "slug": "incident-2-le-chu-de-la-guadeloupe",
+     "text": "Incident 2 — Le CHU de la Guadeloupe"
+    },
+    {
+     "depth": 4,
+     "slug": "incident-3-les-clients-de-decathlon",
+     "text": "Incident 3 — Les clients de Decathlon"
+    },
+    {
+     "depth": 4,
+     "slug": "synthèse-1",
+     "text": "Synthèse"
     },
     {
      "depth": 3,
