@@ -1,0 +1,49 @@
+/* Tout est préfixé par .cine : la présentation peut vivre seule (index.html) ou dans une page du site. */
+@font-face{font-family:Inter;src:url(assets/Inter-400.woff2)}
+@font-face{font-family:Inter;src:url(assets/Inter-700.woff2);font-weight:700}
+@font-face{font-family:Mono;src:url(assets/JetBrainsMono-400.woff2)}
+.cine{color-scheme:dark;--ink:#121718;--paper:#eeece6;--lime:#d6fd78;--blue:#9abaff;--muted:#a3b0ad;--peach:#ffb69a;--done:#5d6b67;position:relative;overflow:hidden;background:#090d0e;color:var(--paper);font-family:Inter,sans-serif}
+.cine *{box-sizing:border-box}
+.cine.page{height:100dvh;width:100vw}
+.cine.embarque{width:100%;aspect-ratio:16/9;border-radius:8px;outline:none}
+.cine.embarque:focus-visible{box-shadow:0 0 0 3px var(--lime)}
+.cine.embarque:fullscreen{aspect-ratio:auto;border-radius:0}
+.cine #frame{width:1600px;height:900px;position:absolute;left:50%;top:50%;background:var(--ink);overflow:hidden;transform:translate(-50%,-50%) scale(var(--scale,1));transform-origin:center}
+.cine header{position:absolute;top:35px;left:64px;right:64px;display:flex;justify-content:space-between;font-size:15px;letter-spacing:2px;color:var(--muted);z-index:2;margin:0;padding:0;border:0;background:none}
+.cine .brand{color:var(--paper)}.cine header i{font-style:normal;color:var(--lime);margin:0 8px}
+.cine #scene{position:absolute;inset:0}
+.cine svg{width:100%;height:100%;display:block}
+.cine svg text{font-family:Inter,sans-serif;fill:var(--paper)}
+.cine svg .mono{font-family:Mono,monospace;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}
+.cine svg .dim{fill:var(--muted)}.cine svg .lime{fill:var(--lime)}.cine svg .blue{fill:var(--blue)}.cine svg .peach{fill:var(--peach)}
+.cine svg .heavy{font-weight:700;letter-spacing:-3px}.cine svg .label{letter-spacing:2px;font-size:16px}
+.cine svg .wire{fill:none;stroke:#52615c;stroke-width:2}.cine svg .dotted{stroke-dasharray:5 10}
+.cine footer{position:absolute;left:64px;right:64px;bottom:33px;display:flex;justify-content:space-between;align-items:center;z-index:2;margin:0;padding:0;border:0;background:none}
+.cine nav{display:flex;gap:26px}
+.cine nav button{font-size:16px;letter-spacing:1px;padding:12px 0;color:var(--muted);border:0;background:transparent;border-bottom:2px solid transparent;border-radius:0;width:auto;height:auto}
+.cine nav button.active{color:var(--lime);border-color:var(--lime)}
+.cine button{font-family:inherit;cursor:pointer;color:var(--paper);background:transparent;border:1px solid #52615c;transition:background .18s;margin:0}
+.cine button:hover{background:#293630}.cine button:focus-visible{outline:3px solid var(--lime);outline-offset:5px}.cine button:disabled{opacity:.25;cursor:default}
+.cine .controls{display:flex;align-items:center;gap:12px}
+.cine .controls button{width:44px;height:44px;font-size:22px;border-radius:50%;padding:0}
+.cine #notes-button{font-size:16px}.cine #counter{font:16px Mono;min-width:92px;text-align:center}
+.cine #progress{position:absolute;bottom:0;height:3px;left:0;background:var(--lime);transition:width .5s}
+.cine dialog{width:min(720px,92vw);max-height:85dvh;overflow:auto;background:#1b2423;color:var(--paper);border:1px solid #596b60;padding:40px;box-shadow:0 30px 100px #0008}
+.cine dialog::backdrop{background:#000a;backdrop-filter:blur(8px)}
+.cine dialog h2{font-size:32px;letter-spacing:-1px;margin:0 0 .5em}.cine dialog p{line-height:1.65;font-size:20px}
+.cine dialog .eyebrow,.cine dialog .sources,.cine .shortcuts,.cine #note-time{font-size:14px;color:var(--muted)}
+.cine .eyebrow{letter-spacing:2px}.cine #close-notes{position:absolute;right:18px;top:12px;border:0;font-size:30px}
+.cine .shortcuts{border-top:1px solid #52615c;padding-top:20px;line-height:1.8}
+@media(prefers-reduced-motion:reduce){.cine *,.cine *::before,.cine *::after{transition:none!important;animation:none!important}}
+@media(max-width:600px){.cine dialog{padding:25px}.cine dialog h2{font-size:25px}.cine dialog p{font-size:17px}}
+
+/* Thème clair automatique : lisibilité au vidéoprojecteur. Le sombre reste la base. */
+@media (prefers-color-scheme: light){
+.cine{color-scheme:light;--ink:#f7f5ef;--paper:#172022;--muted:#56625e;--lime:#4a7300;--blue:#2a50bf;--peach:#ad4320;--done:#a3aca8;--line:#b5beb9;--surface:#fff;background:#e6e3da}
+.cine dialog{background:#fffdf8;border-color:var(--line);box-shadow:0 30px 100px #0003}.cine dialog::backdrop{background:#0004}
+.cine button{border-color:var(--line)}.cine button:hover{background:#ece9e0}.cine .shortcuts{border-color:var(--line)}.cine svg .wire{stroke:var(--line)}
+.cine svg [fill="#1b2523"],.cine svg [fill="#1c2625"],.cine svg [fill="#192221"]{fill:var(--surface)}
+.cine svg [stroke="#52615c"],.cine svg [stroke="#596b60"]{stroke:var(--line)}.cine svg [stroke="#a3b0ad"]{stroke:#8d9894}.cine svg [fill="#a3b0ad"]{fill:var(--muted)}
+.cine svg [stroke="#d6fd78"]{stroke:#5f8f00}.cine svg [stroke="#9abaff"],.cine svg [fill="#9abaff"]{stroke:var(--blue)}.cine svg [fill="#9abaff"]{fill:var(--blue)}
+.cine svg [fill="#ffb69a"]{fill:var(--peach)}.cine svg [fill="#ffb69a22"]{fill:#ad43201c}
+.cine svg [fill="#121718"]{fill:#e3e7e2}.cine svg [fill="#283330"]{fill:#dde3da}}

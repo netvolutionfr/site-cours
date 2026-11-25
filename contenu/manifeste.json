@@ -1479,6 +1479,23 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc1/SQ04-P02-P03-animation-construire-select",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ04",
+   "titre": "Construire une requête SELECT",
+   "sousTitre": "Animation pas à pas sur la base de la boutique, de FROM aux agrégats",
+   "nature": "Cours",
+   "date": "2026-11-26",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Cinematique",
+   "cinematique": "/sio/1sio-bloc1/sql-cinematic/"
+  },
+  {
    "slug": "sio/1sio-bloc1/SQ04-P02-P03-atelier-select-agregats",
    "matiere": "sio",
    "classe": "1sio",
@@ -3905,6 +3922,7 @@
     "sio/1sio-bloc1/SQ04-P01-tableur-base-relationnelle",
     "sio/1sio-bloc1/SQ04-P02-atelier-select",
     "sio/1sio-bloc1/SQ04-P02-P03-slides-select-agregats",
+    "sio/1sio-bloc1/SQ04-P02-P03-animation-construire-select",
     "sio/1sio-bloc1/SQ04-P02-P03-atelier-select-agregats"
    ]
   },
