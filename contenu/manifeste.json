@@ -2311,6 +2311,72 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc3/SQ05-P01-activite-trois-incidents",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ05",
+   "titre": "Trois incidents de la semaine",
+   "sousTitre": "Enquêter sur une cyberattaque réelle et la décomposer",
+   "nature": "Activité",
+   "date": "2026-11-26",
+   "pdf": "/sio/1sio-bloc3/SQ05-P01-activite-trois-incidents.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "rappel-cinq-mots-cinq-questions",
+     "text": "Rappel : cinq mots, cinq questions"
+    },
+    {
+     "depth": 3,
+     "slug": "méthode-construire-sa-recherche",
+     "text": "Méthode : construire sa recherche"
+    },
+    {
+     "depth": 3,
+     "slug": "la-fiche-dincident",
+     "text": "La fiche d’incident"
+    },
+    {
+     "depth": 3,
+     "slug": "incident-1-le-site-de-paiement-de-laviation-civile",
+     "text": "Incident 1 — Le site de paiement de l’aviation civile"
+    },
+    {
+     "depth": 4,
+     "slug": "fiche-incident-1",
+     "text": "Fiche — incident 1"
+    },
+    {
+     "depth": 3,
+     "slug": "incident-2-un-centre-hospitalier-universitaire-en-mode-dégradé",
+     "text": "Incident 2 — Un centre hospitalier universitaire en mode dégradé"
+    },
+    {
+     "depth": 4,
+     "slug": "fiche-incident-2",
+     "text": "Fiche — incident 2"
+    },
+    {
+     "depth": 3,
+     "slug": "incident-3-les-commandes-dune-enseigne-de-sport",
+     "text": "Incident 3 — Les commandes d’une enseigne de sport"
+    },
+    {
+     "depth": 4,
+     "slug": "fiche-incident-3",
+     "text": "Fiche — incident 3"
+    },
+    {
+     "depth": 3,
+     "slug": "synthèse",
+     "text": "Synthèse"
+    }
+   ]
+  },
+  {
    "slug": "sio/1sio-bloc3/SQ05-P01-slides-menaces-services-en-ligne",
    "matiere": "sio",
    "classe": "1sio",
@@ -2414,26 +2480,6 @@
      "depth": 3,
      "slug": "partie-1-trois-incidents-de-la-semaine",
      "text": "Partie 1 — Trois incidents de la semaine"
-    },
-    {
-     "depth": 4,
-     "slug": "incident-1-le-site-de-paiement-de-laviation-civile-dgac",
-     "text": "Incident 1 — Le site de paiement de l’aviation civile (DGAC)"
-    },
-    {
-     "depth": 4,
-     "slug": "incident-2-le-chu-de-la-guadeloupe",
-     "text": "Incident 2 — Le CHU de la Guadeloupe"
-    },
-    {
-     "depth": 4,
-     "slug": "incident-3-les-clients-de-decathlon",
-     "text": "Incident 3 — Les clients de Decathlon"
-    },
-    {
-     "depth": 4,
-     "slug": "synthèse-1",
-     "text": "Synthèse"
     },
     {
      "depth": 3,
@@ -3941,7 +3987,8 @@
    "fin": "2026-11-26",
    "supports": [
     "sio/1sio-bloc3/SQ05-support-eleve",
-    "sio/1sio-bloc3/SQ05-P01-slides-menaces-services-en-ligne"
+    "sio/1sio-bloc3/SQ05-P01-slides-menaces-services-en-ligne",
+    "sio/1sio-bloc3/SQ05-P01-activite-trois-incidents"
    ]
   },
   {

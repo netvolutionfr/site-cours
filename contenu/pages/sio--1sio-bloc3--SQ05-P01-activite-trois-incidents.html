@@ -1,0 +1,447 @@
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Activité de la partie 1 de la séquence « Menaces et attaques contre
+les services en ligne ». Les définitions des cinq mots sont dans le
+support élève de la séquence.</p>
+</div>
+<h3 id="rappel-cinq-mots-cinq-questions">Rappel : cinq mots, cinq
+questions</h3>
+<table>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Question qu’il pose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif</td>
+<td>Qu’est-ce qui a de la valeur ?</td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>Quelle faiblesse, même sans attaquant ?</td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Qui, et pour quel motif ?</td>
+</tr>
+<tr>
+<td>Attaque</td>
+<td>Quelle action ?</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>Quelles conséquences ? À décrire avec D, I, C, P</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sur poste · seul, fiche individuelle · une heure. Moteur de
+recherche autorisé, IA interdite.</strong></p>
+<p>Les trois incidents ci-dessous ont été rendus publics entre le 23 et
+le 25 novembre 2026. Pour chacun, vous partez d’une dépêche de deux
+lignes et vous <strong>menez l’enquête</strong> : retrouver les sources,
+établir les faits, puis décomposer l’incident avec les cinq mots.</p>
+<h3 id="méthode-construire-sa-recherche">Méthode : construire sa
+recherche</h3>
+<ol type="1">
+<li><strong>Extraire les mots-clés</strong> de la dépêche : la victime,
+le type d’événement, la période. Exemple :
+<code>DGAC piratage site paiement novembre 2026</code>.</li>
+<li><strong>Chercher dans l’onglet Actualités</strong> du moteur de
+recherche. Le résumé généré par IA en tête des résultats n’est pas une
+source : ouvrez les articles.</li>
+<li><strong>Préférer</strong> le communiqué de la victime, la presse
+spécialisée en informatique, la presse régionale du lieu de
+l’incident.</li>
+<li><strong>Croiser deux sources</strong> au moins. Notez le titre du
+média et la date de chaque article.</li>
+<li><strong>Trier chaque information</strong> : fait confirmé par la
+victime, hypothèse (« pourrait », « selon une piste »), ou information
+<strong>absente</strong> des sources.</li>
+</ol>
+<p>Les articles sur un incident récent évoluent : une information
+absente aujourd’hui peut paraître demain. « Les sources ne le disent pas
+» est une réponse juste.</p>
+<h3 id="la-fiche-dincident">La fiche d’incident</h3>
+<p>Pour chaque incident, complétez la fiche vierge qui suit ses
+questions. Ce qu’on attend dans chaque rubrique :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Ce qu’on attend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif touché</td>
+<td>Le plus précis possible : quel service, quelles données, qui les
+utilise ?</td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>La faiblesse exploitée, si les sources la donnent</td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Qui a attaqué, et pour quel motif ?</td>
+</tr>
+<tr>
+<td>Attaque</td>
+<td>Le nom de l’attaque et sa date</td>
+</tr>
+<tr>
+<td>Critère DICP</td>
+<td>D, I, C ou P, le principal en premier</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>Technique, financier, juridique, image</td>
+</tr>
+<tr>
+<td>Sources</td>
+<td>Au moins deux : média et date de l’article</td>
+</tr>
+</tbody>
+</table>
+<p>Dans la dernière colonne, notez <strong>F</strong> (fait confirmé),
+<strong>H</strong> (hypothèse) ou <strong>A</strong> (absent des
+sources).</p>
+<h3 id="incident-1-le-site-de-paiement-de-laviation-civile">Incident 1 —
+Le site de paiement de l’aviation civile</h3>
+<blockquote>
+<p><strong>Dépêche.</strong> L’administration française de l’aviation
+civile annonce que le site sur lequel pilotes et professionnels de
+l’aérien règlent leurs redevances a été piraté début novembre. Des
+données de cartes bancaires font partie du butin.</p>
+</blockquote>
+<p>Questions guidées :</p>
+<ol type="1">
+<li>Quel service exactement a été piraté, et qui l’utilise ?</li>
+<li>Quelles données ont été dérobées ? Classez-les : identité,
+coordonnées, données bancaires, données de connexion.</li>
+<li>L’administration juge les données bancaires « inutilisables ». Une
+donnée pose pourtant question : laquelle ? Cherchez ce que la norme
+<strong>PCI DSS</strong> dit de sa conservation.</li>
+<li>Combien de jours séparent l’attaque de l’information des usagers
+?</li>
+<li>Comment un escroc pourrait-il exploiter ces données, même sans
+numéro de carte complet ?</li>
+</ol>
+<h4 id="fiche-incident-1">Fiche — incident 1</h4>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 50%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Ce que disent les sources</th>
+<th>Fait, hypothèse ou absent ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actif touché</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Vulnérabilité</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Menace</strong> (qui, motif)</td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Attaque</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Critère DICP</strong></td>
+<td><br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Impact</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Sources</strong> (média, date)</td>
+<td><br />
+<br />
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="incident-2-un-centre-hospitalier-universitaire-en-mode-dégradé">Incident
+2 — Un centre hospitalier universitaire en mode dégradé</h3>
+<blockquote>
+<p><strong>Dépêche.</strong> Depuis le samedi 21 novembre, le CHU de la
+Guadeloupe fait face à une cyberattaque « sans précédent ». L’hôpital a
+déclenché son plan blanc.</p>
+</blockquote>
+<p>Questions guidées :</p>
+<ol type="1">
+<li>Que signifie « des données ont été cryptées et ne sont plus
+accessibles » ? De quel type d’attaque s’agit-il, alors que le
+communiqué ne le nomme pas ?</li>
+<li>Quelles conséquences concrètes pour les patients et les soignants
+?</li>
+<li>Par où les attaquants seraient-ils entrés ? Est-ce un fait ou une
+hypothèse ?</li>
+<li>Qui aide l’hôpital à mener l’enquête ?</li>
+<li>Pourquoi les établissements de santé sont-ils des cibles fréquentes
+?</li>
+</ol>
+<h4 id="fiche-incident-2">Fiche — incident 2</h4>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 50%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Ce que disent les sources</th>
+<th>Fait, hypothèse ou absent ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actif touché</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Vulnérabilité</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Menace</strong> (qui, motif)</td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Attaque</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Critère DICP</strong></td>
+<td><br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Impact</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Sources</strong> (média, date)</td>
+<td><br />
+<br />
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="incident-3-les-commandes-dune-enseigne-de-sport">Incident 3 —
+Les commandes d’une enseigne de sport</h3>
+<blockquote>
+<p><strong>Dépêche.</strong> Une grande enseigne d’articles de sport
+confirme qu’un pirate a dérobé des données de clients ayant commandé sur
+son site, fin novembre.</p>
+</blockquote>
+<p>Questions guidées :</p>
+<ol type="1">
+<li>Quelle enseigne, quel nombre de clients ? Les sources donnent-elles
+toutes le même chiffre ? Proposez une explication.</li>
+<li>Par quel intermédiaire le pirate a-t-il eu accès aux données ?</li>
+<li>Quelles données ont été volées, et lesquelles ne l’ont pas été
+?</li>
+<li>« Aucun mot de passe, aucune carte bancaire » : est-ce rassurant ?
+Que peut faire un escroc des indications de livraison ?</li>
+<li>Qu’a fait l’enseigne après la découverte de l’attaque ?</li>
+</ol>
+<h4 id="fiche-incident-3">Fiche — incident 3</h4>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 50%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Ce que disent les sources</th>
+<th>Fait, hypothèse ou absent ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actif touché</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Vulnérabilité</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Menace</strong> (qui, motif)</td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Attaque</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Critère DICP</strong></td>
+<td><br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Impact</strong></td>
+<td><br />
+<br />
+<br />
+</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Sources</strong> (média, date)</td>
+<td><br />
+<br />
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="synthèse">Synthèse</h3>
+<ol type="1">
+<li>Complétez le tableau :</li>
+</ol>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 27%" />
+<col style="width: 19%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Incident</th>
+<th>Actif</th>
+<th>Critère principal</th>
+<th>Impact le plus grave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aviation civile</td>
+<td><br />
+<br />
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CHU</td>
+<td><br />
+<br />
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Enseigne de sport</td>
+<td><br />
+<br />
+</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="1">
+<li><p>Deux incidents sur trois ont un <strong>point commun</strong>
+dans la façon dont l’attaquant est entré. Lequel ? Qu’est-ce que la
+boutique de jeux devrait en retenir ?</p>
+<p><br />
+<br />
+<br />
+</p></li>
+<li><p>Classez les trois incidents du plus grave au moins grave, en une
+phrase chacun.</p>
+<p><br />
+<br />
+<br />
+</p></li>
+</ol>
