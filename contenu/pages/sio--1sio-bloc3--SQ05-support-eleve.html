@@ -1,0 +1,386 @@
+<div class="sequence-overview">
+<section id="objectifs" class="objectives">
+<h3>Objectifs</h3>
+<ul>
+<li>Décomposer un incident en actif, vulnérabilité, menace, attaque et
+impact.</li>
+<li>Reconnaître les principales attaques contre un service en ligne et
+le critère D, I, C ou P que chacune atteint.</li>
+<li>Énoncer les obligations d’une organisation victime (partie 2, à
+venir).</li>
+<li>Évaluer un risque par sa gravité et sa vraisemblance (partie 3, à
+venir).</li>
+</ul>
+</section>
+<section id="prérequis" class="prerequisites">
+<h3>Prérequis</h3>
+<ul>
+<li>DICP : disponibilité, intégrité, confidentialité, preuve (séquence
+1).</li>
+<li>Données personnelles et RGPD (séquence 2).</li>
+<li>Réutilisation des mots de passe, hachage (séquence 4).</li>
+</ul>
+</section>
+<section id="sommaire" class="outline">
+<h3>Sommaire</h3>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partie 1</td>
+<td>Ce qui peut arriver à un service en ligne</td>
+</tr>
+<tr>
+<td>Partie 2</td>
+<td>Après l’attaque : conséquences et obligations</td>
+</tr>
+<tr>
+<td>Partie 3</td>
+<td>Évaluer et traiter un risque</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div class="callout info">
+<p><strong>Info</strong></p>
+<p>Compétence <strong>B3.4</strong> : recenser les menaces et les
+risques associés à un service en ligne. Par rapport au poste de travail,
+on change de dimension : l’application et les données sont celles de
+l’organisation.</p>
+</div>
+<h3 id="le-fil-de-la-séquence">Le fil de la séquence</h3>
+<p>La boutique en ligne de jeux et consoles reconditionnés, celle dont
+vous interrogez la base en SQL, a des comptes clients, une base de
+données, des commandes et des paiements. Lundi matin, la gérante trouve
+six messages en arrivant :</p>
+<ol type="1">
+<li>Des clients signalent des <strong>commandes qu’ils n’ont pas
+passées</strong>.</li>
+<li>La <strong>page d’accueil</strong> affiche une image qui n’est pas
+la sienne.</li>
+<li>Le site <strong>ne répond plus</strong> depuis deux heures.</li>
+<li>Un <strong>fichier de clients</strong> circule sur un forum.</li>
+<li>Le serveur affiche une <strong>demande de rançon</strong>.</li>
+<li>Des clients ont reçu un <strong>courriel « de la boutique »</strong>
+qui ne vient pas d’elle.</li>
+</ol>
+<p>Que s’est-il passé dans chaque cas ? Qu’est-ce qui est abîmé ? Par
+quoi commencer ?</p>
+<h3 id="partie-1-ce-qui-peut-arriver-à-un-service-en-ligne">Partie 1 —
+Ce qui peut arriver à un service en ligne</h3>
+<h4 id="cinq-mots-pour-décrire-un-incident">Cinq mots pour décrire un
+incident</h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Définition</th>
+<th>À la maison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actif</strong></td>
+<td>Ce qui a de la valeur pour l’organisation : données, service,
+matériel, réputation</td>
+<td>La maison et ce qu’elle contient</td>
+</tr>
+<tr>
+<td><strong>Vulnérabilité</strong></td>
+<td>Une faiblesse du système, qui existe même sans attaquant</td>
+<td>La serrure fragile</td>
+</tr>
+<tr>
+<td><strong>Menace</strong></td>
+<td>Une source qui pourrait exploiter la faiblesse, avec un motif
+(argent, revendication, vengeance, jeu)</td>
+<td>Le cambrioleur du quartier</td>
+</tr>
+<tr>
+<td><strong>Attaque</strong></td>
+<td>L’action menée pour exploiter la vulnérabilité</td>
+<td>Le crochetage de la serrure</td>
+</tr>
+<tr>
+<td><strong>Impact</strong></td>
+<td>Les conséquences pour l’organisation</td>
+<td>Le vol, la porte à changer</td>
+</tr>
+</tbody>
+</table>
+<p>Un <strong>exploit</strong> est l’outil ou la technique qui permet de
+profiter d’une vulnérabilité précise.</p>
+<div class="callout warning">
+<p><strong>Attention</strong></p>
+<p>Une vulnérabilité est <strong>dans</strong> le système : la boutique
+peut la corriger. Une menace est <strong>hors</strong> du système : on
+ne la supprime pas, on s’en protège. Question test : « est-ce que ça
+existe même s’il n’y a personne pour attaquer ? » Si oui, c’est une
+vulnérabilité.</p>
+</div>
+<h4 id="un-exemple-décomposé-le-message-1">Un exemple décomposé : le
+message 1</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Pour la boutique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif</td>
+<td>Les comptes clients et le moyen de paiement enregistré</td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>Des clients réutilisent leur mot de passe ; le site accepte un
+nombre illimité d’essais</td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Un fraudeur qui achète une liste d’identifiants issue de la fuite
+d’un autre site</td>
+</tr>
+<tr>
+<td>Attaque</td>
+<td>Bourrage d’identifiants (<em>credential stuffing</em>) : un robot
+essaie chaque couple</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>Remboursements, colis perdus, clients qui ne reviennent pas</td>
+</tr>
+<tr>
+<td>Critère</td>
+<td><strong>C</strong> : les comptes sont ouverts par un tiers ; puis
+<strong>I</strong> : des commandes fausses</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ce-quune-attaque-abîme">Ce qu’une attaque abîme</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Critère</th>
+<th>Atteint quand…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>D</strong>isponibilité</td>
+<td>le service n’est plus accessible quand on en a besoin</td>
+</tr>
+<tr>
+<td><strong>I</strong>ntégrité</td>
+<td>une donnée ou une page est modifiée sans autorisation</td>
+</tr>
+<tr>
+<td><strong>C</strong>onfidentialité</td>
+<td>une donnée est lue ou sort vers une personne non autorisée</td>
+</tr>
+<tr>
+<td><strong>P</strong>reuve</td>
+<td>on ne peut plus prouver qui a fait quoi, ou quelqu’un se fait passer
+pour un autre</td>
+</tr>
+</tbody>
+</table>
+<h4 id="activité-les-incidents-du-lundi">Activité — Les incidents du
+lundi</h4>
+<p><strong>Seul ou en binôme, fiche individuelle. Source :
+cybermalveillance.gouv.fr. IA interdite.</strong></p>
+<p><strong>1.</strong> Pour chacun des six messages, remplissez une
+fiche d’incident :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Ce qu’on attend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif touché</td>
+<td>Le plus précis possible : quelle table, quel service, quel compte
+?</td>
+</tr>
+<tr>
+<td>Vulnérabilité probable</td>
+<td>Supposée : qu’aurait-il fallu faire pour que ça n’arrive pas ?</td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Qui, et pour quel motif ?</td>
+</tr>
+<tr>
+<td>Nom de l’attaque</td>
+<td>Le terme employé sur cybermalveillance.gouv.fr</td>
+</tr>
+<tr>
+<td>Critère atteint</td>
+<td>D, I, C ou P, avec le critère principal en premier</td>
+</tr>
+<tr>
+<td>Impact pour la boutique</td>
+<td>Technique, financier, juridique, image</td>
+</tr>
+<tr>
+<td>Une mesure</td>
+<td>Une seule, qui réduit ce risque</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2.</strong> Classez les six incidents <strong>du plus grave
+au moins grave</strong> pour la boutique. Justifiez chaque place en une
+phrase.</p>
+<p><strong>3.</strong> Comparez votre classement avec celui d’un voisin.
+Sur quel incident êtes-vous en désaccord, et pourquoi ?</p>
+<p><strong>Pour aller plus loin.</strong> Décomposez un septième
+incident : un client annule ses commandes après livraison pour se faire
+rembourser, ou un code promo est réutilisé à l’infini. Où est la
+vulnérabilité ?</p>
+<details class="corriges"><summary>Corrigés — à ouvrir après avoir cherché</summary>
+<h3 id="partie-1-message-2-la-page-daccueil-remplacée">Partie 1 —
+Message 2, la page d’accueil remplacée</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Réponse attendue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif</td>
+<td>Le site, sa page d’accueil, le serveur web</td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>Logiciel du site ou extension non mis à jour ; mot de passe
+d’administration faible</td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Un attaquant qui cherche la visibilité (revendication, jeu) ou à
+nuire à la boutique</td>
+</tr>
+<tr>
+<td>Attaque</td>
+<td>Défacement : modification non autorisée de la page</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>Image dégradée, clients inquiets, ventes perdues ; l’attaquant a
+peut-être d’autres accès</td>
+</tr>
+<tr>
+<td>Critère</td>
+<td><strong>I</strong> (la page est modifiée)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partie-1-les-incidents-du-lundi">Partie 1 — Les incidents du
+lundi</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Message</th>
+<th>Attaque</th>
+<th>Critère principal</th>
+<th>Actif</th>
+<th>Une mesure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Commandes non passées</td>
+<td>Bourrage d’identifiants</td>
+<td>C, puis I</td>
+<td>Comptes clients</td>
+<td>Limiter les essais, double authentification</td>
+</tr>
+<tr>
+<td>Page d’accueil remplacée</td>
+<td>Défacement</td>
+<td>I</td>
+<td>Site, serveur web</td>
+<td>Mises à jour, mot de passe fort pour l’administration</td>
+</tr>
+<tr>
+<td>Site muet depuis 2 h</td>
+<td>Déni de service distribué</td>
+<td>D</td>
+<td>Service en ligne</td>
+<td>Hébergeur avec protection anti-DDoS</td>
+</tr>
+<tr>
+<td>Fichier clients sur un forum</td>
+<td>Fuite ou exfiltration de données</td>
+<td>C</td>
+<td>Table <code>clients</code></td>
+<td>Comptes de base de données à droits minimaux, chiffrement</td>
+</tr>
+<tr>
+<td>Demande de rançon</td>
+<td>Rançongiciel</td>
+<td>D (et C si la base a été copiée avant)</td>
+<td>Serveur, base, sauvegardes</td>
+<td>Sauvegardes hors ligne testées</td>
+</tr>
+<tr>
+<td>Faux courriel « de la boutique »</td>
+<td>Hameçonnage avec faux domaine</td>
+<td>C des comptes clients, P</td>
+<td>Identité numérique de la boutique</td>
+<td>Surveiller les domaines proches, prévenir les clients</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classement.</strong> Plusieurs classements se défendent ;
+c’est la justification qui compte. La fuite du fichier clients et le
+rançongiciel arrivent souvent en tête : données personnelles exposées,
+obligations envers la CNIL, activité arrêtée. Le désaccord sur le
+classement montre qu’il faut deux mesures distinctes : la
+<strong>gravité</strong> (ce que ça coûte) et la
+<strong>vraisemblance</strong> (la probabilité que ça arrive). C’est
+l’objet de la partie 3.</p>
+<p><strong>Pour aller plus loin.</strong> La vulnérabilité n’est pas
+technique : elle est dans les <strong>règles de l’application</strong>
+(pas de contrôle du nombre d’utilisations du code, remboursement sans
+vérifier la livraison). On parle de fraude à la logique métier.</p>
+</details>

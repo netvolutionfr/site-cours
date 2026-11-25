@@ -1,0 +1,261 @@
+<section id="lundi-matin-à-la-boutique" class="slide title">
+<h2>Lundi matin à la boutique</h2>
+<h3 id="ce-qui-peut-arriver-à-un-service-en-ligne">Ce qui peut arriver à
+un service en ligne</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Décomposer</strong> un incident : actif, vulnérabilité,
+menace, attaque, impact.</li>
+<li><strong>Nommer</strong> les attaques courantes contre un service en
+ligne.</li>
+<li><strong>Rattacher</strong> chacune au critère atteint : D, I, C ou
+P.</li>
+</ul>
+<p><strong>Prérequis :</strong> les critères DICP (séquence 1), le RGPD
+(séquence 2), la réutilisation des mots de passe et le hachage (séquence
+4).</p>
+</section>
+<section id="six-messages-en-arrivant" class="slide concept">
+<h2>Six messages en arrivant</h2>
+<p>La gérante de la boutique de jeux et consoles reconditionnés ouvre sa
+messagerie.</p>
+<ol type="1">
+<li>Des clients signalent des <strong>commandes qu’ils n’ont pas
+passées</strong>.</li>
+<li>La <strong>page d’accueil</strong> affiche une image qui n’est pas
+la sienne.</li>
+<li>Le site <strong>ne répond plus</strong> depuis deux heures.</li>
+<li>Un <strong>fichier de clients</strong> circule sur un forum.</li>
+<li>Le serveur affiche une <strong>demande de rançon</strong>.</li>
+<li>Des clients ont reçu un <strong>courriel « de la boutique »</strong>
+qui ne vient pas d’elle.</li>
+</ol>
+<p><strong>Que s’est-il passé ? Qu’est-ce qui est abîmé ? Par quoi
+commence-t-elle ?</strong></p>
+</section>
+<section id="cinq-mots-pour-décrire-un-incident" class="slide compare">
+<h2>Cinq mots pour décrire un incident</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Ce que c’est</th>
+<th>À la maison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actif</strong></td>
+<td>Ce qui a de la valeur pour l’organisation</td>
+<td>La maison, ce qu’elle contient</td>
+</tr>
+<tr>
+<td><strong>Vulnérabilité</strong></td>
+<td>Une faiblesse, qui existe même sans attaquant</td>
+<td>La serrure fragile</td>
+</tr>
+<tr>
+<td><strong>Menace</strong></td>
+<td>Une source qui pourrait exploiter la faiblesse, avec un motif</td>
+<td>Le cambrioleur du quartier</td>
+</tr>
+<tr>
+<td><strong>Attaque</strong></td>
+<td>L’action menée contre l’actif</td>
+<td>Le crochetage de la serrure</td>
+</tr>
+<tr>
+<td><strong>Impact</strong></td>
+<td>Les conséquences pour l’organisation</td>
+<td>Le vol, la porte à changer, la peur</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="message-1-des-commandes-que-personne-na-passées" class="slide concept">
+<h2>Message 1 : des commandes que personne n’a passées</h2>
+<table>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Pour la boutique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif</td>
+<td>Les <strong>comptes clients</strong></td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>Mots de passe <strong>réutilisés</strong>, essais
+<strong>illimités</strong></td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Un fraudeur muni d’une <strong>liste volée</strong> ailleurs</td>
+</tr>
+<tr>
+<td>Attaque</td>
+<td><strong>Bourrage d’identifiants</strong> par un robot</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>Remboursements, clients perdus</td>
+</tr>
+<tr>
+<td>Critère</td>
+<td><strong>C</strong> (comptes ouverts), puis <strong>I</strong>
+(fausses commandes)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vulnérabilité-ou-menace" class="slide compare">
+<h2>Vulnérabilité ou menace ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Vulnérabilité</th>
+<th>Menace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Où elle se trouve</td>
+<td><strong>Dans</strong> le système de la boutique</td>
+<td><strong>Hors</strong> du système</td>
+</tr>
+<tr>
+<td>Existe sans attaquant ?</td>
+<td><strong>Oui</strong></td>
+<td>Non</td>
+</tr>
+<tr>
+<td>Qui peut agir dessus ?</td>
+<td>La boutique : la corriger</td>
+<td>Personne : on s’en protège</td>
+</tr>
+<tr>
+<td>Message 1</td>
+<td>Essais illimités, mots de passe réutilisés</td>
+<td>Le fraudeur et sa liste</td>
+</tr>
+</tbody>
+</table>
+<p>Question test : « <strong>est-ce que ça existe même s’il n’y a
+personne pour attaquer ?</strong> »</p>
+</section>
+<section id="rappel-ce-quune-attaque-abîme" class="slide concept">
+<h2>Rappel : ce qu’une attaque abîme</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Critère</th>
+<th>Question</th>
+<th>Atteint quand…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>D</strong>isponibilité</td>
+<td>Le service est-il accessible quand on en a besoin ?</td>
+<td>le site ne répond plus</td>
+</tr>
+<tr>
+<td><strong>I</strong>ntégrité</td>
+<td>Les données sont-elles exactes et non modifiées ?</td>
+<td>une page ou une commande est falsifiée</td>
+</tr>
+<tr>
+<td><strong>C</strong>onfidentialité</td>
+<td>Seules les personnes autorisées y ont-elles accès ?</td>
+<td>des données sortent</td>
+</tr>
+<tr>
+<td><strong>P</strong>reuve</td>
+<td>Peut-on prouver qui a fait quoi ?</td>
+<td>quelqu’un se fait passer pour un autre</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="à-vous-le-message-2" class="slide question">
+<h2>À vous : le message 2</h2>
+<p><strong>Papier · seul, puis comparaison avec le voisin · 7
+minutes</strong></p>
+<p><strong>À produire :</strong> un tableau de cinq lignes (actif,
+vulnérabilité, menace, attaque, impact) pour « la page d’accueil affiche
+une image qui n’est pas la sienne », puis le critère atteint.</p>
+<p>La vulnérabilité n’est pas donnée : supposez-la. Que fallait-il faire
+pour que ça n’arrive pas ?</p>
+</section>
+<section id="en-demi-groupe-les-incidents-du-lundi" class="slide activity">
+<h2>En demi-groupe : les incidents du lundi</h2>
+<p><strong>Sur poste · seul ou en binôme, fiches individuelles ·
+jusqu’au classement</strong></p>
+<p><strong>À produire :</strong> une fiche par message (actif,
+vulnérabilité, menace, nom de l’attaque, critère, impact, une mesure),
+puis le classement des six incidents du plus grave au moins grave.</p>
+<ol type="1">
+<li>Ouvrir le support élève de la séquence, partie 1.</li>
+<li>Se documenter sur cybermalveillance.gouv.fr : le nom de l’attaque et
+une mesure.</li>
+<li>Classer, en une phrase de justification par incident.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actif</td>
+<td>Ce qui a de la valeur : comptes, base clients, site, serveur</td>
+</tr>
+<tr>
+<td>Vulnérabilité</td>
+<td>Une faiblesse du système, présente même sans attaquant</td>
+</tr>
+<tr>
+<td>Menace</td>
+<td>Une source extérieure qui a un motif d’exploiter la faiblesse</td>
+</tr>
+<tr>
+<td>Attaque</td>
+<td>L’action qui exploite la vulnérabilité</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>Les conséquences, à décrire avec D, I, C, P</td>
+</tr>
+</tbody>
+</table>
+</section>

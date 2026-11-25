@@ -1,0 +1,255 @@
+<section id="des-listes-aux-chiffres" class="slide title">
+<h2>Des listes aux chiffres</h2>
+<h3 id="sélectionner-sur-une-table-puis-compter-et-totaliser">Sélectionner
+sur une table, puis compter et totaliser</h3>
+</section>
+<section id="objectifs" class="slide concept">
+<h2>Objectifs</h2>
+<ul>
+<li><strong>Traduire</strong> une demande de l’équipe en requête
+<code>SELECT</code> filtrée et triée, sans aide.</li>
+<li><strong>Calculer</strong> un indicateur avec <code>COUNT</code>,
+<code>SUM</code>, <code>AVG</code>, <code>MIN</code> ou
+<code>MAX</code>.</li>
+<li><strong>Prévoir</strong> la valeur d’un calcul avant d’exécuter la
+requête.</li>
+</ul>
+<p><strong>Prérequis :</strong> <code>SELECT</code>, <code>WHERE</code>,
+<code>AND</code>/<code>OR</code>, <code>LIKE</code>,
+<code>ORDER BY</code>, <code>DISTINCT</code> (atelier du 19/11).</p>
+</section>
+<section id="reprise-trois-demandes-de-léquipe" class="slide activity">
+<h2>Reprise : trois demandes de l’équipe</h2>
+<p><strong>Papier · seul, sans notes · 8 minutes</strong></p>
+<p><strong>À produire :</strong> pour chaque demande, la requête et le
+nombre de lignes que vous attendez.</p>
+<ol type="1">
+<li>Les <strong>accessoires</strong>, du moins cher au plus cher : nom
+et prix.</li>
+<li>Les produits <strong>presque épuisés</strong> (stock de 1 à 3) : nom
+et stock.</li>
+<li>Les commandes <strong>en préparation</strong>, de la plus ancienne à
+la plus récente : numéro et date.</li>
+</ol>
+</section>
+<section id="la-gérante-veut-des-chiffres-pas-des-listes" class="slide compare">
+<h2>La gérante veut des chiffres, pas des listes</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Une liste</th>
+<th>Un chiffre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SELECT nom</code></td>
+<td><code>SELECT COUNT(*)</code></td>
+</tr>
+<tr>
+<td><code>FROM produits</code></td>
+<td><code>FROM produits</code></td>
+</tr>
+<tr>
+<td><code>WHERE stock = 0;</code></td>
+<td><code>WHERE stock = 0;</code></td>
+</tr>
+<tr>
+<td><strong>4 lignes</strong> : les noms des produits en rupture</td>
+<td><strong>1 ligne, 1 case</strong> : <code>4</code></td>
+</tr>
+</tbody>
+</table>
+<p>Une <strong>fonction d’agrégat</strong> résume plusieurs lignes en
+une seule valeur.</p>
+</section>
+<section id="cinq-fonctions-dagrégat" class="slide code">
+<h2>Cinq fonctions d’agrégat</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Calcule</th>
+<th>Sur la boutique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COUNT(*)</code></td>
+<td>le nombre de lignes</td>
+<td>clients : <strong>12</strong></td>
+</tr>
+<tr>
+<td><code>SUM(stock)</code></td>
+<td>la somme d’une colonne</td>
+<td>exemplaires en stock : <strong>100</strong></td>
+</tr>
+<tr>
+<td><code>AVG(prix)</code></td>
+<td>la moyenne</td>
+<td>prix moyen : <strong>78,01</strong></td>
+</tr>
+<tr>
+<td><code>MIN(prix)</code></td>
+<td>la plus petite valeur</td>
+<td>moins cher : <strong>7,90</strong></td>
+</tr>
+<tr>
+<td><code>MAX(prix)</code></td>
+<td>la plus grande valeur</td>
+<td>plus cher : <strong>389,00</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>SELECT MIN(prix), MAX(prix) FROM produits;</code> : deux
+agrégats, <strong>une seule ligne</strong>.</p>
+</section>
+<section id="le-where-choisit-lagrégat-résume" class="slide concept">
+<h2>Le <code>WHERE</code> choisit, l’agrégat résume</h2>
+<p>Prix moyen des <strong>jeux PS5</strong> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(prix)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> produits</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> categorie <span class="op">=</span> <span class="st">&#39;jeu&#39;</span> <span class="kw">AND</span> plateforme <span class="op">=</span> <span class="st">&#39;PS5&#39;</span>;</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Ce qui reste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FROM produits</code></td>
+<td>les 20 produits</td>
+</tr>
+<tr>
+<td><code>WHERE …</code></td>
+<td>Gran Turismo 7 (29,90) et Ratchet &amp; Clank (24,90)</td>
+</tr>
+<tr>
+<td><code>AVG(prix)</code></td>
+<td>(29,90 + 24,90) ÷ 2 = <strong>27,40</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Sans le <code>WHERE</code>, la moyenne porte sur <strong>toute la
+table</strong>.</p>
+</section>
+<section id="count-ou-countville" class="slide compare">
+<h2><code>COUNT(*)</code> ou <code>COUNT(ville)</code> ?</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th><code>SELECT COUNT(*) FROM clients;</code></th>
+<th><code>SELECT COUNT(ville) FROM clients;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ce qui est compté</td>
+<td>les <strong>lignes</strong></td>
+<td>les cases <code>ville</code> <strong>non vides</strong></td>
+</tr>
+<tr>
+<td>Résultat</td>
+<td>12</td>
+<td><strong>11</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Un client n’a pas renseigné sa ville : sa case vaut
+<code>NULL</code>. Les agrégats sur une colonne
+<strong>ignorent</strong> les <code>NULL</code>.</p>
+<p>Pour les retrouver : <code>WHERE ville IS NULL</code> (et non
+<code>= NULL</code>).</p>
+</section>
+<section id="trois-pièges" class="slide warning">
+<h2>Trois pièges</h2>
+<ul>
+<li><strong><code>COUNT</code> ou <code>SUM</code> ?</strong>
+<code>COUNT</code> compte des lignes (des références) ;
+<code>SUM(stock)</code> additionne des exemplaires. Se demander :
+compte-t-on ou additionne-t-on ?</li>
+<li><strong>Le <code>WHERE</code> oublié</strong> : le calcul porte sur
+toute la table, et la valeur a l’air juste.</li>
+<li><strong>Une colonne à côté d’un agrégat</strong> :
+<code>SELECT nom, MAX(prix)</code> n’a pas de sens, car le résultat n’a
+qu’une ligne. MySQL la refuse ; le regroupement (<code>GROUP BY</code>)
+viendra plus tard.</li>
+</ul>
+</section>
+<section id="à-vous-deux-demandes-combien" class="slide question">
+<h2>À vous : deux demandes « combien ? »</h2>
+<p><strong>Papier · seul · 5 minutes</strong></p>
+<p><strong>À produire :</strong> la requête, puis la valeur que vous
+prévoyez.</p>
+<ol type="1">
+<li>Combien de <strong>jeux Switch</strong> la boutique propose-t-elle
+?</li>
+<li>Quel est le prix du <strong>jeu le plus cher</strong> ?</li>
+</ol>
+</section>
+<section id="en-demi-groupe-latelier-en-ligne" class="slide activity">
+<h2>En demi-groupe : l’atelier en ligne</h2>
+<p><strong>Sur poste · seul · jusqu’au défi</strong></p>
+<p><strong>À produire :</strong> les demandes réussies dans l’atelier «
+Sélectionner et compter », jusqu’au défi de sortie.</p>
+<ol type="1">
+<li>Ouvrir l’atelier sur cours.siovision.fr, page Bloc 1.</li>
+<li>Avant chaque vérification, noter le nombre de lignes et, pour un
+calcul, la valeur prévue.</li>
+<li>Défi réussi : passer à l’extension.</li>
+</ol>
+</section>
+<section id="à-retenir" class="slide summary">
+<h2>À retenir</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fonction d’agrégat</td>
+<td>Résume plusieurs lignes en une seule valeur</td>
+</tr>
+<tr>
+<td><code>COUNT(*)</code> / <code>COUNT(colonne)</code></td>
+<td>Compte les lignes / les cases non vides</td>
+</tr>
+<tr>
+<td><code>SUM</code>, <code>AVG</code></td>
+<td>Additionne, fait la moyenne d’une colonne numérique</td>
+</tr>
+<tr>
+<td><code>MIN</code>, <code>MAX</code></td>
+<td>La plus petite, la plus grande valeur</td>
+</tr>
+<tr>
+<td><code>WHERE</code> puis agrégat</td>
+<td>Le filtre choisit les lignes, l’agrégat les résume</td>
+</tr>
+</tbody>
+</table>
+</section>

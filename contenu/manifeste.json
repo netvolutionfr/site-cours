@@ -1479,6 +1479,43 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc1/SQ04-P02-P03-atelier-select-agregats",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ04",
+   "titre": "Atelier SQL — sélectionner et compter",
+   "sousTitre": "Filtrer, trier, puis calculer avec COUNT, SUM, AVG, MIN et MAX",
+   "nature": "Activité",
+   "date": "2026-11-26",
+   "pdf": null,
+   "pieces": [],
+   "brut": null,
+   "titres": [],
+   "composant": "Sql"
+  },
+  {
+   "slug": "sio/1sio-bloc1/SQ04-P02-P03-slides-select-agregats",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc1",
+   "sequence": "sio/1sio-bloc1/SQ04",
+   "titre": "Des listes aux chiffres",
+   "sousTitre": "Sélectionner sur une table, puis compter et totaliser",
+   "nature": "Diaporama",
+   "date": "2026-11-26",
+   "pdf": "/sio/1sio-bloc1/SQ04-P02-P03-slides-select-agregats.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "sélectionner-sur-une-table-puis-compter-et-totaliser",
+     "text": "Sélectionner sur une table, puis compter et totaliser"
+    }
+   ]
+  },
+  {
    "slug": "sio/1sio-bloc1/SQ04-P02-atelier-select",
    "matiere": "sio",
    "classe": "1sio",
@@ -2274,6 +2311,83 @@
    ]
   },
   {
+   "slug": "sio/1sio-bloc3/SQ05-P01-slides-menaces-services-en-ligne",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ05",
+   "titre": "Lundi matin à la boutique",
+   "sousTitre": "Ce qui peut arriver à un service en ligne",
+   "nature": "Diaporama",
+   "date": "2026-11-26",
+   "pdf": "/sio/1sio-bloc3/SQ05-P01-slides-menaces-services-en-ligne.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "ce-qui-peut-arriver-à-un-service-en-ligne",
+     "text": "Ce qui peut arriver à un service en ligne"
+    }
+   ]
+  },
+  {
+   "slug": "sio/1sio-bloc3/SQ05-support-eleve",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "sequence": "sio/1sio-bloc3/SQ05",
+   "titre": "Menaces et attaques contre les services en ligne",
+   "sousTitre": "Décomposer un incident, connaître les obligations, évaluer un risque",
+   "nature": "Cours complet",
+   "date": null,
+   "pdf": "/sio/1sio-bloc3/SQ05-support-eleve.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 3,
+     "slug": "le-fil-de-la-séquence",
+     "text": "Le fil de la séquence"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-ce-qui-peut-arriver-à-un-service-en-ligne",
+     "text": "Partie 1 — Ce qui peut arriver à un service en ligne"
+    },
+    {
+     "depth": 4,
+     "slug": "cinq-mots-pour-décrire-un-incident",
+     "text": "Cinq mots pour décrire un incident"
+    },
+    {
+     "depth": 4,
+     "slug": "un-exemple-décomposé-le-message-1",
+     "text": "Un exemple décomposé : le message 1"
+    },
+    {
+     "depth": 4,
+     "slug": "ce-quune-attaque-abîme",
+     "text": "Ce qu’une attaque abîme"
+    },
+    {
+     "depth": 4,
+     "slug": "activité-les-incidents-du-lundi",
+     "text": "Activité — Les incidents du lundi"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-message-2-la-page-daccueil-remplacée",
+     "text": "Partie 1 — Message 2, la page d’accueil remplacée"
+    },
+    {
+     "depth": 3,
+     "slug": "partie-1-les-incidents-du-lundi",
+     "text": "Partie 1 — Les incidents du lundi"
+    }
+   ]
+  },
+  {
    "slug": "sio/1sio-fil-rouge/J0-cours-reprendre-audit-vpi",
    "matiere": "sio",
    "classe": "1sio",
@@ -2400,6 +2514,142 @@
      "depth": 3,
      "slug": "vérification-avant-de-montrer-votre-travail",
      "text": "Vérification avant de montrer votre travail"
+    }
+   ]
+  },
+  {
+   "slug": "sio/2sisr-bloc3/revision-e7-consignes-incident-messagerie",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "bloc3",
+   "sequence": "sio/2sisr-bloc3/",
+   "titre": "Lire une consigne, construire sa réponse",
+   "sousTitre": "Révision E7 — cas Relais Intérim",
+   "nature": "Activité",
+   "date": "2026-11-23",
+   "pdf": "/sio/2sisr-bloc3/revision-e7-consignes-incident-messagerie.pdf",
+   "pieces": [],
+   "brut": null,
+   "titres": [
+    {
+     "depth": 2,
+     "slug": "partie-1-lire-une-consigne-avant-dy-répondre",
+     "text": "Partie 1 — Lire une consigne avant d’y répondre"
+    },
+    {
+     "depth": 3,
+     "slug": "les-quatre-parties-dune-consigne",
+     "text": "Les quatre parties d’une consigne"
+    },
+    {
+     "depth": 3,
+     "slug": "les-verbes-de-consigne",
+     "text": "Les verbes de consigne"
+    },
+    {
+     "depth": 3,
+     "slug": "fait-observé-ou-déduction",
+     "text": "Fait observé ou déduction"
+    },
+    {
+     "depth": 3,
+     "slug": "méthode-pour-chaque-question",
+     "text": "Méthode pour chaque question"
+    },
+    {
+     "depth": 3,
+     "slug": "présentation-du-contexte",
+     "text": "Présentation du contexte"
+    },
+    {
+     "depth": 3,
+     "slug": "mission-1-analyser-lincident",
+     "text": "Mission 1 — Analyser l’incident"
+    },
+    {
+     "depth": 4,
+     "slug": "question-1.1",
+     "text": "Question 1.1"
+    },
+    {
+     "depth": 4,
+     "slug": "question-1.2",
+     "text": "Question 1.2"
+    },
+    {
+     "depth": 3,
+     "slug": "mission-2-réagir-et-protéger",
+     "text": "Mission 2 — Réagir et protéger"
+    },
+    {
+     "depth": 4,
+     "slug": "question-2.1",
+     "text": "Question 2.1"
+    },
+    {
+     "depth": 4,
+     "slug": "question-2.2",
+     "text": "Question 2.2"
+    },
+    {
+     "depth": 4,
+     "slug": "pour-aller-plus-loin-question-2.3",
+     "text": "Pour aller plus loin — Question 2.3"
+    },
+    {
+     "depth": 3,
+     "slug": "base-documentaire",
+     "text": "Base documentaire"
+    },
+    {
+     "depth": 4,
+     "slug": "document-1-message-reçu-par-mme-garnier",
+     "text": "Document 1 — Message reçu par Mme Garnier"
+    },
+    {
+     "depth": 4,
+     "slug": "document-2-journal-de-connexion-du-compte-i.garnierrelais-interim.fr",
+     "text": "Document 2 — Journal de connexion du compte i.garnier@relais-interim.fr"
+    },
+    {
+     "depth": 4,
+     "slug": "document-3-journal-daudit-de-la-boîte-aux-lettres",
+     "text": "Document 3 — Journal d’audit de la boîte aux lettres"
+    },
+    {
+     "depth": 4,
+     "slug": "document-4-état-de-la-sécurité-de-la-messagerie",
+     "text": "Document 4 — État de la sécurité de la messagerie"
+    },
+    {
+     "depth": 2,
+     "slug": "partie-3-bilan-personnel",
+     "text": "Partie 3 — Bilan personnel"
+    },
+    {
+     "depth": 3,
+     "slug": "question-1.1-1",
+     "text": "Question 1.1"
+    },
+    {
+     "depth": 3,
+     "slug": "question-1.2-1",
+     "text": "Question 1.2"
+    },
+    {
+     "depth": 3,
+     "slug": "question-2.1-1",
+     "text": "Question 2.1"
+    },
+    {
+     "depth": 3,
+     "slug": "question-2.2-1",
+     "text": "Question 2.2"
+    },
+    {
+     "depth": 3,
+     "slug": "question-2.3",
+     "text": "Question 2.3"
     }
    ]
   },
@@ -3549,10 +3799,12 @@
    "code": "SQ04",
    "titre": "Interroger la base de données d'une boutique en ligne (initiation SQL)",
    "debut": "2026-11-19",
-   "fin": "2026-11-19",
+   "fin": "2026-11-26",
    "supports": [
     "sio/1sio-bloc1/SQ04-P01-tableur-base-relationnelle",
-    "sio/1sio-bloc1/SQ04-P02-atelier-select"
+    "sio/1sio-bloc1/SQ04-P02-atelier-select",
+    "sio/1sio-bloc1/SQ04-P02-P03-slides-select-agregats",
+    "sio/1sio-bloc1/SQ04-P02-P03-atelier-select-agregats"
    ]
   },
   {
@@ -3623,6 +3875,21 @@
    ]
   },
   {
+   "id": "sio/1sio-bloc3/SQ05",
+   "matiere": "sio",
+   "classe": "1sio",
+   "rubrique": "bloc3",
+   "rubriqueLibelle": "Bloc 3",
+   "code": "SQ05",
+   "titre": "Menaces et attaques contre les services en ligne",
+   "debut": "2026-11-26",
+   "fin": "2026-11-26",
+   "supports": [
+    "sio/1sio-bloc3/SQ05-support-eleve",
+    "sio/1sio-bloc3/SQ05-P01-slides-menaces-services-en-ligne"
+   ]
+  },
+  {
    "id": "sio/1sio-fil-rouge/fil-rouge-vpi",
    "matiere": "sio",
    "classe": "1sio",
@@ -3636,6 +3903,20 @@
     "sio/1sio-fil-rouge/J0-tp-audit-site-livre-ia",
     "sio/1sio-fil-rouge/J0-cours-reprendre-audit-vpi",
     "sio/1sio-fil-rouge/J0-reprise-audit-2026-11-05"
+   ]
+  },
+  {
+   "id": "sio/2sisr-bloc3/",
+   "matiere": "sio",
+   "classe": "2sisr",
+   "rubrique": "bloc3",
+   "rubriqueLibelle": "Bloc 3",
+   "code": "",
+   "titre": "Bloc 3",
+   "debut": "2026-11-23",
+   "fin": "2026-11-23",
+   "supports": [
+    "sio/2sisr-bloc3/revision-e7-consignes-incident-messagerie"
    ]
   },
   {
