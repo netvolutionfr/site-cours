@@ -106,6 +106,109 @@ export const ateliers: Record<string, Atelier> = {
 			},
 		],
 	},
+	'SQ04-P02-P03-atelier-select-agregats': {
+		base: boutique,
+		intro:
+			"Même boutique, nouvelles demandes. Les quatre premières reprennent la sélection sur une table ; les suivantes demandent des chiffres plutôt que des listes. Avant de vérifier, notez le nombre de lignes attendu et, pour un calcul, écrivez sur papier la valeur que vous prévoyez. Travaillez seul et sans IA.",
+		exercices: [
+			{
+				id: 'consoles',
+				titre: '1. Consoles disponibles',
+				demande: 'Un client cherche une console <strong>en stock</strong>. Affichez le nom et le prix des consoles disponibles, de la <strong>moins chère à la plus chère</strong>.',
+				attendu: "SELECT nom, prix FROM produits WHERE categorie = 'console' AND stock > 0 ORDER BY prix;",
+				ordre: true,
+				indices: ['Deux conditions : la catégorie et le stock.', '« Disponible » : au moins un exemplaire.'],
+			},
+			{
+				id: 'retro',
+				titre: '2. Les parenthèses comptent',
+				demande: 'Pour une vitrine rétro, la gérante veut les <strong>jeux</strong> (pas les consoles) sur <strong>Game Boy</strong> ou sur <strong>Super Nintendo</strong> : nom et plateforme.',
+				attendu: "SELECT nom, plateforme FROM produits WHERE categorie = 'jeu' AND (plateforme = 'Game Boy' OR plateforme = 'Super Nintendo');",
+				indices: ["Une console apparaît dans votre résultat ? Relisez l'ordre dans lequel AND et OR s'appliquent.", 'AND passe avant OR, comme × avant + : des parenthèses regroupent les deux plateformes.'],
+			},
+			{
+				id: 'octobre',
+				titre: "3. Les commandes d'octobre",
+				demande: "Le comptable veut les commandes passées en <strong>octobre 2026</strong> : numéro, date et statut, dans l'ordre chronologique.",
+				attendu: "SELECT id, date_commande, statut FROM commandes WHERE date_commande >= '2026-10-01' AND date_commande < '2026-11-01' ORDER BY date_commande;",
+				ordre: true,
+				indices: ["Une date s'écrit 'AAAA-MM-JJ' et se compare comme un nombre.", 'Deux bornes : à partir du 1er octobre, avant le 1er novembre.'],
+			},
+			{
+				id: 'sans-ville',
+				titre: '4. La case vide',
+				demande: "Pour les livraisons, il faut relancer les clients qui n'ont <strong>pas renseigné leur ville</strong> : nom et prénom.",
+				attendu: 'SELECT nom, prenom FROM clients WHERE ville IS NULL;',
+				indices: ["Une case vide vaut NULL : ce n'est ni 0 ni un texte vide.", 'WHERE ville = NULL ne renvoie rien : on écrit WHERE ville IS NULL.'],
+			},
+			{
+				id: 'livrees',
+				titre: '5. Compter au lieu de lister',
+				demande: "La gérante ne veut plus la liste des commandes livrées, seulement <strong>leur nombre</strong>. Avant d'exécuter la requête fournie : combien de lignes va-t-elle afficher ? Quelle valeur ?",
+				depart: "SELECT COUNT(*)\nFROM commandes\nWHERE statut = 'livrée';",
+				attendu: "SELECT COUNT(*) FROM commandes WHERE statut = 'livrée';",
+			},
+			{
+				id: 'lille',
+				titre: '6. Clients lillois',
+				demande: 'Combien la boutique a-t-elle de clients à <strong>Lille</strong> ?',
+				attendu: "SELECT COUNT(*) FROM clients WHERE ville = 'Lille';",
+				indices: ['Le WHERE choisit les lignes, COUNT(*) les compte.'],
+			},
+			{
+				id: 'villes-renseignees',
+				titre: '7. Compter une colonne',
+				demande: 'Combien de clients ont <strong>renseigné leur ville</strong> ? Une seule requête, sans WHERE.',
+				attendu: 'SELECT COUNT(ville) FROM clients;',
+				indices: ['COUNT(*) compte les lignes ; COUNT(une_colonne) ne compte que les cases non vides.', "Comparez avec l'exercice 4."],
+			},
+			{
+				id: 'stock-accessoires',
+				titre: '8. Additionner',
+				demande: "Combien d'<strong>accessoires</strong> (toutes références confondues) y a-t-il en stock ?",
+				attendu: "SELECT SUM(stock) FROM produits WHERE categorie = 'accessoire';",
+				indices: ["On ne compte pas des lignes : on additionne les valeurs d'une colonne.", "COUNT donnerait le nombre de références, pas le nombre d'exemplaires."],
+			},
+			{
+				id: 'moyenne-game-boy',
+				titre: '9. Moyenne',
+				demande: 'Quel est le <strong>prix moyen</strong> des <strong>jeux Game Boy</strong> ?',
+				attendu: "SELECT AVG(prix) FROM produits WHERE categorie = 'jeu' AND plateforme = 'Game Boy';",
+			},
+			{
+				id: 'fourchette',
+				titre: '10. Fourchette de prix',
+				demande: 'Pour la page « Consoles », affichez sur une seule ligne le prix de la console <strong>la moins chère</strong> et celui de <strong>la plus chère</strong>, en stock ou non.',
+				attendu: "SELECT MIN(prix), MAX(prix) FROM produits WHERE categorie = 'console';",
+				indices: ['Deux agrégats dans le même SELECT, séparés par une virgule.'],
+			},
+			{
+				id: 'plateformes',
+				titre: '11. Combien de plateformes ?',
+				demande: 'Sur combien de <strong>plateformes différentes</strong> la boutique vend-elle des produits ?',
+				attendu: 'SELECT COUNT(DISTINCT plateforme) FROM produits;',
+				indices: ['COUNT(plateforme) compte 20 cases : chaque plateforme y est plusieurs fois.', 'Le mot-clé « sans doublon » de la semaine dernière se place dans les parenthèses.'],
+			},
+			{
+				id: 'defi',
+				titre: '12. Défi de sortie',
+				demande:
+					"Pour l'assurance, la gérante doit déclarer la <strong>valeur du stock des jeux Switch</strong> : pour chaque jeu, son prix multiplié par le nombre d'exemplaires en stock, le tout additionné. Une seule requête, une seule valeur.",
+				attendu: "SELECT SUM(prix * stock) FROM produits WHERE categorie = 'jeu' AND plateforme = 'Switch';",
+				indices: ['Un calcul peut se placer dans un agrégat : SUM(colonne * colonne).', "Si le moteur affiche 778.1999…, c'est un arrondi de calcul : ROUND(…, 2) l'arrange."],
+				defi: true,
+			},
+			{
+				id: 'jointure',
+				titre: 'Extension. Deux tables',
+				demande:
+					'Le service client veut les commandes <strong>non livrées</strong> avec le <strong>nom du client</strong> : numéro de commande, nom, prénom et statut. La table <code>commandes</code> ne connaît que <code>client_id</code> : il faut la relier à <code>clients</code>.',
+				depart: 'SELECT commandes.id, clients.nom, clients.prenom, commandes.statut\nFROM commandes\nJOIN clients ON ...\nWHERE ...;',
+				attendu: "SELECT commandes.id, clients.nom, clients.prenom, commandes.statut FROM commandes JOIN clients ON commandes.client_id = clients.id WHERE commandes.statut <> 'livrée';",
+				indices: ['ON indique quelle colonne de commandes correspond à quelle colonne de clients : suivez la clé étrangère.', "« Différent de » s'écrit <> en SQL."],
+			},
+		],
+	},
 };
 
 export const titresAtelier = (nom: string) =>
