@@ -1,0 +1,12 @@
+---
+// Présentation animée (Prof : dossier *-cinematic). Le balisage vient de l'export ; le moteur, le style
+// et les polices sont servis depuis le dossier public du support. Une seule présentation par page.
+const { base, html } = Astro.props as { base: string; html: string };
+if (!base || !html) throw new Error('Présentation animée incomplète (base ou balisage absent)');
+---
+
+<p class="consigne-cine">Cliquez dans la présentation, puis avancez avec <kbd>→</kbd> ou <kbd>Espace</kbd> et revenez avec <kbd>←</kbd>. Plein écran : <kbd>F</kbd>. Notes : <kbd>N</kbd>.</p>
+<link rel="stylesheet" href={`${base}style.css`} />
+<Fragment set:html={html} />
+<script is:inline src={`${base}content.js`}></script>
+<script is:inline src={`${base}app.js`}></script>
