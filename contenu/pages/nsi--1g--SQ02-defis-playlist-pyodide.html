@@ -78,6 +78,13 @@ for titre in playlist:
     print(titre)
 print(playlist)</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">{}</script></section>
 <h4 id="défi-2-compter-les-titres">Défi 2 — Compter les titres</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> Un <strong>compteur</strong> est une
+variable qui vaut 0 <strong>avant</strong> la boucle et qui augmente de
+1 <strong>dans</strong> la boucle, à chaque élément que l’on veut
+compter. Après la boucle, il contient le nombre d’éléments comptés. Si
+on le remet à 0 dans la boucle, il recommence à chaque tour.</p>
+</blockquote>
 <p>Écrivez <code>nb_titres(playlist)</code> qui renvoie le nombre de
 titres <strong>sans utiliser <code>len</code></strong>. Comme pour un
 texte, <code>for titre in playlist</code> fait un tour par élément.</p>
@@ -88,6 +95,12 @@ texte, <code>for titre in playlist</code> fait un tour par élément.</p>
     return nb</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["nb_titres([\"Intro\", \"Nuit\", \"Pluie\"]) == 3","nb_titres([\"Solo\"]) == 1","nb_titres([]) == 0"]</script></section>
 <h4 id="défi-3-le-titre-est-il-déjà-là">Défi 3 — Le titre est-il déjà là
 ?</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> Un <code>return</code> placé dans une
+boucle arrête la fonction <strong>immédiatement</strong> : les tours
+suivants n’ont pas lieu. Demandez-vous à quel moment on est sûr que le
+titre est présent, et à quel moment on est sûr qu’il est absent.</p>
+</blockquote>
 <p>Écrivez <code>contient(playlist, titre)</code> qui renvoie
 <code>True</code> si le titre est dans la liste, <code>False</code>
 sinon. N’utilisez pas l’écriture toute faite
@@ -101,15 +114,30 @@ durées</h3>
 secondes, dans le même ordre que les titres : <code>durees[0]</code> est
 la durée du premier morceau.</p>
 <h4 id="défi-4-durée-totale">Défi 4 — Durée totale</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> Un <strong>accumulateur</strong> généralise
+le compteur : à chaque tour, on n’ajoute plus 1, mais la <strong>valeur
+lue</strong>. On l’initialise avant la boucle à une valeur qui ne change
+pas le résultat : 0 pour une somme.</p>
+</blockquote>
+<p>Écrivez <code>duree_totale(durees)</code> qui renvoie la durée totale
+de la playlist, sans utiliser <code>sum</code>.</p>
 <section class="exo-py" data-lettre="A">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def duree_totale(durees):
     ...</textarea><div class="barre"><button type="button" data-action="tester">▶ Tester</button><button type="button" data-action="executer">Exécuter</button><button type="button" data-action="indenter" title="Insérer 4 espaces">⇥ Indenter</button><button type="button" data-action="reset">Recommencer</button></div><pre class="sortie" hidden></pre><div class="resultats" aria-live="polite"></div></div><script type="application/json" class="tests">["duree_totale([200, 185, 240]) == 625","duree_totale([90]) == 90","duree_totale([]) == 0"]</script></section>
 <h4 id="défi-5-le-morceau-le-plus-long">Défi 5 — Le morceau le plus
 long</h4>
+<blockquote>
+<p><strong>Nouveau.</strong> On parcourt une liste de deux façons.
+<code>for d in durees</code> donne les <strong>valeurs</strong> une à
+une. <code>for i in range(len(durees))</code> donne les
+<strong>indices</strong> 0, 1, 2…, et <code>durees[i]</code> est la
+valeur rangée à l’indice <code>i</code>. Quand la réponse attendue est
+une <strong>position</strong>, il faut les indices.</p>
+</blockquote>
 <p>Écrivez <code>plus_long(durees)</code> qui renvoie
 l’<strong>indice</strong> du morceau le plus long dans une liste non
-vide (le premier en cas d’égalité). Il faut l’indice : parcourez avec
-<code>range(len(durees))</code>.</p>
+vide (le premier en cas d’égalité).</p>
 <section class="exo-py" data-lettre="Y">
 <div class="editeur"><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Votre code Python">def plus_long(durees):
     i_max = 0
